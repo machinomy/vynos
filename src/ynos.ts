@@ -1,1 +1,1 @@
-console.log('Hello, this is Yonos');
+alert('Hello, this is Ynoss');
