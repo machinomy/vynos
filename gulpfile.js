@@ -1,92 +1,93 @@
 "use strict";
 
-const path = require('path');
+const path = require("path");
 const gulp = require("gulp");
+const gutil = require("gulp-util");
 const webpack = require("webpack");
-const ts = require("gulp-typescript");
-const gulpUtil = require("gulp-util");
-const serve = require('gulp-serve');
+const WebpackDevServer = require('webpack-dev-server');
 
-const BUILD_PATH = path.resolve(__dirname, 'build');
-const DIST_PATH = path.resolve(__dirname, 'dist');
+const BUILD_PATH = path.resolve(__dirname, "build");
+
+const YNOS_PORT=9090;
 const HARNESS_PORT = 8080;
 
-function webpackConfig () {
-  return {
-    entry: {
-      ynos: './build/ynos.js',
-    },
-    devtool: 'source-map',
-    output: {
-      filename: '[name].bundle.js',
-      path: DIST_PATH
-    },
-    plugins: [],
-    devServer: {
-      contentBase: BUILD_PATH,
-      hot: true,
-      compress: false,
-      port: HARNESS_PORT
-    },
-    module: {
-      loaders: [
-        {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ["react"],
-            }
-          }
-        },
-      ]
-    }
-  };
-}
-
-function prodWebpackConfig () {
-  let config = Object.create(webpackConfig());
-  config.plugins = config.plugins.concat(
-    new webpack.DefinePlugin({
-      "process.env": {
-        // This has effect on the react lib size
-        "NODE_ENV": JSON.stringify("production")
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin()
-  );
-  return config;
-}
-
-gulp.task("build", () => {
-  return gulp.src("src/**/*.ts")
-    .pipe(ts({
-      noImplicitAny: true,
-      declaration: true
-    }))
-    .pipe(gulp.dest("build"))
+const YNOS_WEBPACK_CONFIG = webpackConfig({
+  ynos: path.resolve(__dirname, "ynos/ynos.ts"),
+  frame: path.resolve(__dirname, "ynos/frame.ts")
 });
 
-gulp.task("dist", ["build"], (callback) => {
-  // run webpack
-  webpack(prodWebpackConfig(), (err, stats) => {
-    if(err) throw new gulpUtil.PluginError("webpack:build", err);
-    gulpUtil.log('[dist]', stats.toString({
+const HARNESS_WEBPACK_CONFIG = webpackConfig({
+  harness: path.resolve(__dirname, "harness/harness.ts"),
+});
+
+function webpackConfig (entry) {
+  let config = {
+    entry: entry,
+    devtool: "source-map",
+    output: {
+      filename: "[name].bundle.js",
+      path: BUILD_PATH
+    },
+    plugins: [],
+    resolve: {
+      extensions: [".ts", ".tsx", ".js", ".json"]
+    },
+    module: {
+      rules: [
+        { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+        { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+      ]
+    },
+  };
+
+  if (process.env.NODE_ENV === 'production') {
+    config.plugins = config.plugins.concat(
+      new webpack.DefinePlugin({
+        "process.env": {
+          // This has effect on the react lib size
+          "NODE_ENV": JSON.stringify("production")
+        }
+      }),
+      new webpack.optimize.UglifyJsPlugin()
+    );
+    config.output.path = BUILD_PATH;
+  }
+
+  return config
+}
+
+// Build Ynos, Frame
+gulp.task("build", callback => {
+  webpack(YNOS_WEBPACK_CONFIG).run(function(err, stats) {
+    if(err) throw new gutil.PluginError('build', err);
+    gutil.log('build', stats.toString({
       colors: true
     }));
     callback();
   });
 });
 
-gulp.task("harness:serve:prod", ["dist"], serve({
-  root: [ "harness", "dist" ],
-  port: 8080
-}));
-
-gulp.task("harness:serve:dev", () => {
-
+// Serve Ynos, Frame at http://localhost:8080/webpack-dev-server
+gulp.task("build:serve", () => {
+  new WebpackDevServer(webpack(YNOS_WEBPACK_CONFIG), {
+    stats: {
+      colors: true
+    },
+    contentBase: 'ynos/'
+  }).listen(YNOS_PORT, 'localhost', function(err) {
+    if(err) throw new gutil.PluginError('build:serve', err);
+    gutil.log('webpack-dev-server', `http://localhost:${YNOS_PORT}/webpack-dev-server/index.html`);
+  });
 });
 
-gulp.task("harness", ["harness:serve:dev"]);
-gulp.task("harness:prod", ["harness:serve:prod"]);
+gulp.task("harness:serve", ["build:serve"], () => {
+  new WebpackDevServer(webpack(HARNESS_WEBPACK_CONFIG), {
+    stats: {
+      colors: true
+    },
+    contentBase: 'harness/'
+  }).listen(HARNESS_PORT, 'localhost', function(err) {
+    if(err) throw new gutil.PluginError('harness:serve', err);
+    gutil.log('webpack-dev-server', `http://localhost:${HARNESS_PORT}/webpack-dev-server/index.html`);
+  });
+});
