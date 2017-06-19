@@ -1,13 +1,24 @@
 {
   "compilerOptions": {
+    "moduleResolution": "node",
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "commonjs",
+    "strict": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "target": "es5",
-    "jsx": "react"
+    "module":"es2015",
+    "lib": ["dom", "dom.iterable", "es2015", "es2015.iterable"],
+    "declarationDir": "dist/types",
+    "typeRoots": [
+      "node_modules/@types",
+      "types"
+    ]
   },
   "include": [
-    "./ynos/**/*"
+    "ynos"
   ]
 }

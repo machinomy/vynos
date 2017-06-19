@@ -5,8 +5,9 @@ const gulp = require("gulp");
 const gutil = require("gulp-util");
 const webpack = require("webpack");
 const WebpackDevServer = require('webpack-dev-server');
+const PackageLoadersPlugin = require('webpack-package-loaders-plugin')
 
-const BUILD_PATH = path.resolve(__dirname, "build");
+const DIST_PATH = path.resolve(__dirname, "dist");
 
 const YNOS_PORT=9090;
 const HARNESS_PORT = 8080;
@@ -26,9 +27,14 @@ function webpackConfig (entry) {
     devtool: "source-map",
     output: {
       filename: "[name].bundle.js",
-      path: BUILD_PATH
+      path: DIST_PATH
     },
-    plugins: [],
+    plugins: [
+      new webpack.DefinePlugin({
+        "window.FRAME_URL": JSON.stringify(`http://localhost:${YNOS_PORT}/frame.html`)
+      }),
+      new PackageLoadersPlugin()
+    ],
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".json"]
     },
@@ -50,7 +56,7 @@ function webpackConfig (entry) {
       }),
       new webpack.optimize.UglifyJsPlugin()
     );
-    config.output.path = BUILD_PATH;
+    config.output.path = DIST_PATH;
   }
 
   return config
