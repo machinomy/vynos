@@ -1,7 +1,7 @@
 declare module "dnode/browser" {
   import {Readable, Writable} from "stream";
 
-  class Dnode implements Writable {
+  export class Dnode implements Writable {
     pipe<T extends Writable>(destination: T, options?: { end?: boolean }): T;
 
     removeAllListeners(event?: string | symbol): this;

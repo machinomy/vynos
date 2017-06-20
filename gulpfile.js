@@ -9,12 +9,22 @@ const PackageLoadersPlugin = require('webpack-package-loaders-plugin')
 
 const DIST_PATH = path.resolve(__dirname, "dist");
 
-const YNOS_PORT=9090;
+const FRAME_PORT=9090;
 const HARNESS_PORT = 8080;
 
 const YNOS_WEBPACK_CONFIG = webpackConfig({
-  ynos: path.resolve(__dirname, "ynos/ynos.ts"),
-  frame: path.resolve(__dirname, "ynos/frame.ts")
+  ynos: [
+    `webpack-dev-server/client?http://localhost:${HARNESS_PORT}`,
+    'webpack/hot/only-dev-server',
+    'react-hot-loader/patch',
+    path.resolve(__dirname, "ynos/ynos.ts"),
+  ],
+  frame: [
+    `webpack-dev-server/client?http://localhost:${FRAME_PORT}`,
+    'webpack/hot/only-dev-server',
+    'react-hot-loader/patch',
+    path.resolve(__dirname, "ynos/frame.ts")
+  ]
 });
 
 const HARNESS_WEBPACK_CONFIG = webpackConfig({
@@ -30,8 +40,10 @@ function webpackConfig (entry) {
       path: DIST_PATH
     },
     plugins: [
+      new webpack.HotModuleReplacementPlugin(),
+      new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
-        "window.FRAME_URL": JSON.stringify(`http://localhost:${YNOS_PORT}/frame.html`)
+        "window.FRAME_URL": JSON.stringify(`http://localhost:${FRAME_PORT}/frame.html`)
       }),
       new PackageLoadersPlugin()
     ],
@@ -40,7 +52,13 @@ function webpackConfig (entry) {
     },
     module: {
       rules: [
-        { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+        {
+          test: /\.tsx?$/,
+          loaders: [
+            "react-hot-loader/webpack",
+            "awesome-typescript-loader"
+          ]
+        },
         { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
       ]
     },
@@ -76,13 +94,24 @@ gulp.task("build", callback => {
 // Serve Ynos, Frame at http://localhost:8080/webpack-dev-server
 gulp.task("build:serve", () => {
   new WebpackDevServer(webpack(YNOS_WEBPACK_CONFIG), {
+    contentBase: 'ynos/',
+    hot: true,
+    historyApiFallback: true,
+    quiet: false,
+    noInfo: false,
     stats: {
-      colors: true
-    },
-    contentBase: 'ynos/'
-  }).listen(YNOS_PORT, 'localhost', function(err) {
+      // Config for minimal console.log mess.
+      assets: false,
+      colors: true,
+      version: false,
+      hash: false,
+      timings: false,
+      chunks: false,
+      chunkModules: false
+    }
+  }).listen(FRAME_PORT, 'localhost', function(err) {
     if(err) throw new gutil.PluginError('build:serve', err);
-    gutil.log('webpack-dev-server', `http://localhost:${YNOS_PORT}/webpack-dev-server/index.html`);
+    gutil.log('webpack-dev-server', `http://localhost:${FRAME_PORT}/webpack-dev-server/index.html`);
   });
 });
 
