@@ -8,6 +8,7 @@ import {State} from "./state";
 import {RouteElement} from "little-router";
 import _ from "lodash";
 import InitPage from "./pages/init";
+import UnlockPage from "./pages/UnlockPage";
 
 export interface FrameAppProps {
   pageComponent: React.ComponentClass<any>;
@@ -32,12 +33,6 @@ class PreferencesPage extends React.Component<any, any> {
   }
 }
 
-class UnlockPage extends React.Component<any, any> {
-  render() {
-    return <p>UnlockPage</p>
-  }
-}
-
 const ROUTES: Array<RouteElement> = [
   { path: '/', component: WalletPage },
   { path: '/wallet/*', component: WalletPage },
@@ -47,9 +42,7 @@ const ROUTES: Array<RouteElement> = [
 
 function mapStateToProps(state: State, ownProps: FrameAppProps): FrameAppProps {
   let isKeyringPresent = !_.isEmpty(state.init.keyring);
-  console.log('isKeyringPresent', isKeyringPresent);
   let needInit = !(state.init.didAcceptTerms && isKeyringPresent && state.init.didStoreSeed);
-  console.log('needInit', needInit);
 
   let pageComponent = null;
   if (needInit) {

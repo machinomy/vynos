@@ -1,4 +1,4 @@
-import ethereumWallet from "ethereumjs-wallet";
+import Wallet from "ethereumjs-wallet";
 import passworder from "browser-passworder";
 
 interface BufferLike {
@@ -6,8 +6,12 @@ interface BufferLike {
   data: string;
 }
 
+function isBufferLike(something: BufferLike|any): something is BufferLike {
+  return (something as BufferLike).type === "Buffer"
+}
+
 export default class Keyring {
-  wallet: ethereumWallet;
+  wallet: Wallet;
 
   static serialize (keyring: Keyring, password: string): Promise<string> {
     let privateKey = keyring.wallet.getPrivateKey();
@@ -18,12 +22,16 @@ export default class Keyring {
 
   static deserialize (string: string, password: string): Promise<Keyring> {
     let unbase64 = Buffer.from(string, "base64").toString();
-    return passworder.decrypt(password, unbase64).then((privateKey: Buffer) => {
-      return new Keyring(privateKey)
+    return passworder.decrypt(password, unbase64).then((privateKey: Buffer|BufferLike) => {
+      if (isBufferLike(privateKey)) {
+        return new Keyring(Buffer.from(privateKey.data))
+      } else {
+        return new Keyring(privateKey)
+      }
     })
   }
 
   constructor (privateKey: Buffer) {
-    this.wallet = ethereumWallet.fromPrivateKey(privateKey);
+    this.wallet = Wallet.fromPrivateKey(privateKey);
   }
 }
