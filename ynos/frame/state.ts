@@ -1,3 +1,5 @@
+import Wallet from "ethereumjs-wallet";
+
 export interface InitState {
   keyring: string|null;
   didAcceptTerms: string|null;
@@ -5,7 +7,7 @@ export interface InitState {
 }
 
 export interface RuntimeState {
-  wallet?: string;
+  wallet?: Wallet;
   mnemonic?: string;
 }
 

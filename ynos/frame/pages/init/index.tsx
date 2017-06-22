@@ -3,37 +3,33 @@ import {connect} from "react-redux";
 import {State} from "../../state";
 import _ from "lodash";
 import TermsComponent from "./TermsComponent";
+import PasswordComponent from "./PasswordComponent";
+import SeedComponent from "./SeedComponent";
+import bip39 from "bip39";
+import {Dispatch} from "react-redux";
+import actions from "../../actions";
 
 export interface InitPageStateProps {
   didNotAcceptTerms: boolean;
   mnemonic?: string;
 }
 
-export type InitPageProps = InitPageStateProps;
-
-type PasswordComponentProps = {
-  onSetPassword: Function
+export interface InitPageDispatchProps {
+  onSetMnemonic: (mnemonic: string, password: string) => void;
 }
 
-class PasswordComponent extends React.Component<PasswordComponentProps, undefined> {
-  render () {
-    return <p>PasswordComponent</p>
-  }
-}
-
-class SeedComponent extends React.Component<any, any> {
-  render () {
-    return <p>SeedComponent</p>
-  }
-}
+export type InitPageProps = InitPageStateProps & InitPageDispatchProps;
 
 export class InitPage extends React.Component<InitPageProps, any> {
   constructor(props: InitPageProps) {
-    super(props)
+    super(props);
+    this.handleSetPassword = this.handleSetPassword.bind(this);
   }
 
-  handleSetPassword () {
-    console.log("InitPage#handleSetPassword");
+  handleSetPassword (password: string) {
+    let mnemonic = bip39.generateMnemonic();
+    console.log(this.props);
+    this.props.onSetMnemonic(mnemonic, password);
   }
 
   renderChild() {
@@ -61,4 +57,13 @@ function mapStateToProps (state: State): InitPageStateProps {
   }
 }
 
-export default connect<InitPageProps, any, any>(mapStateToProps)(InitPage)
+function mapDispatchToProps(dispatch: Dispatch<any>): InitPageDispatchProps {
+  return {
+    onSetMnemonic: (mnemonic: string, password: string) => {
+      dispatch(actions.runtime.setMnemonic(mnemonic));
+      dispatch(actions.init.generateKeyring({mnemonic, password}));
+    }
+  }
+}
+
+export default connect<InitPageStateProps, InitPageDispatchProps, any>(mapStateToProps, mapDispatchToProps)(InitPage)

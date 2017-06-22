@@ -47,7 +47,9 @@ const ROUTES: Array<RouteElement> = [
 
 function mapStateToProps(state: State, ownProps: FrameAppProps): FrameAppProps {
   let isKeyringPresent = !_.isEmpty(state.init.keyring);
+  console.log('isKeyringPresent', isKeyringPresent);
   let needInit = !(state.init.didAcceptTerms && isKeyringPresent && state.init.didStoreSeed);
+  console.log('needInit', needInit);
 
   let pageComponent = null;
   if (needInit) {

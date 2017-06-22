@@ -21,7 +21,7 @@ function renderFrameApp() {
   let mountPoint = document.getElementById("mount-point");
   if (mountPoint) {
     let nextReducers = require("./frame/reducers").default;
-    store.replaceReducer(nextReducers)
+    store.replaceReducer(nextReducers);
     let FrameApp = require("./frame/FrameApp").default;
     let stream = new FrameStream("YNOS").toParent();
     let container = React.createElement(AppContainer, undefined, React.createElement(FrameApp, {stream: stream}));
