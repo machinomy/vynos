@@ -19,11 +19,13 @@
     "webpack-package-loaders-plugin": "^3.0.0"
   },
   "dependencies": {
+    "@types/bluebird": "^3.5.6",
     "@types/lodash": "^4.14.66",
     "@types/node": "^8.0.0",
     "@types/react": "^15.0.29",
     "@types/react-dom": "^15.5.0",
     "@types/react-redux": "^4.4.44",
+    "bluebird": "^3.5.0",
     "dnode": "^1.2.2",
     "duplexify": "^3.5.0",
     "little-router": "^2.3.2",

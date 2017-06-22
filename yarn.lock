@@ -6,6 +6,10 @@
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/bignumber.js/-/bignumber.js-4.0.2.tgz#22a16946c9faa9f2c9c0ad4c7c3734a3033320ae"
 
+"@types/bluebird@^3.5.6":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.5.6.tgz#5af2db8d2b743f5cc552a665d52ed890c19af74f"
+
 "@types/jasmine@^2.5.52":
   version "2.5.52"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.52.tgz#6ea5435d5c71562296e63ef27a4718f94f2fbb13"
@@ -346,6 +350,10 @@ block-stream@*:
   resolved "https://registry.yarnpkg.com/block-stream/-/block-stream-0.0.9.tgz#13ebfe778a03205cfe03751481ebb4b3300c126a"
   dependencies:
     inherits "~2.0.0"
+
+bluebird@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.6"

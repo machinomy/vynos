@@ -1,16 +1,17 @@
 import * as React from "react";
 import dnode, {Dnode} from "dnode/browser";
-import FrameStream from "../lib/FrameStream";
 import ThemeProvider from "./components/ThemeProvider";
 import {Duplex} from "stream";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import routing from "./lib/routing";
 import {State} from "./state";
 import {RouteElement} from "little-router";
 import _ from "lodash";
+import InitPage from "./pages/init";
 
 export interface FrameAppProps {
-  pageComponent: React.ComponentClass<any>
+  pageComponent: React.ComponentClass<any>;
+  stream: Duplex;
 }
 
 class WalletPage extends React.Component<any, any> {
@@ -31,12 +32,6 @@ class PreferencesPage extends React.Component<any, any> {
   }
 }
 
-class InitPage extends React.Component<any, any> {
-  render() {
-    return <p>InitPage</p>
-  }
-}
-
 class UnlockPage extends React.Component<any, any> {
   render() {
     return <p>UnlockPage</p>
@@ -50,7 +45,7 @@ const ROUTES: Array<RouteElement> = [
   { path: '/preferences/*', component: PreferencesPage },
 ];
 
-function mapStateToProps(state: State): FrameAppProps {
+function mapStateToProps(state: State, ownProps: FrameAppProps): FrameAppProps {
   let isKeyringPresent = !_.isEmpty(state.init.keyring);
   let needInit = !(state.init.didAcceptTerms && isKeyringPresent && state.init.didStoreSeed);
 
@@ -65,22 +60,28 @@ function mapStateToProps(state: State): FrameAppProps {
   }
 
   return {
-    pageComponent: pageComponent
+    pageComponent: pageComponent,
+    stream: ownProps.stream
   }
 }
 
 export class FrameApp extends React.Component<FrameAppProps, undefined> {
-  constructor () {
-    super();
-    /*
-    this.stream = new FrameStream("YNOS").toParent();
+  stream: Duplex;
+  dnode: Dnode;
+
+  constructor (props: FrameAppProps) {
+    super(props);
+    this.stream = props.stream;
     this.dnode = dnode({
       initAccount: (callback: Function) => {
         callback();
       }
     });
     this.stream.pipe(this.dnode).pipe(this.stream);
-    */
+  }
+
+  componentWillUnmount () {
+    this.dnode.end();
   }
 
   render () {

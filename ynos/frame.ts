@@ -8,16 +8,23 @@ import {Provider} from "react-redux";
 import * as redux from "redux";
 import reducers from "./frame/reducers";
 import {INITIAL_STATE} from "./frame/state";
+import FrameStream from "./lib/FrameStream";
+import injectTapEventPlugin from "react-tap-event-plugin";
+
+injectTapEventPlugin();
+
+const middleware = redux.compose(redux.applyMiddleware(thunkMiddleware, createLogger()), autoRehydrate());
+const store = redux.createStore(reducers, INITIAL_STATE, middleware);
+persistStore(store, { blacklist: ['runtime'] });
 
 function renderFrameApp() {
   let mountPoint = document.getElementById("mount-point");
   if (mountPoint) {
-    const middleware = redux.compose(redux.applyMiddleware(thunkMiddleware, createLogger()), autoRehydrate());
-    const store = redux.createStore(reducers, INITIAL_STATE, middleware);
-    persistStore(store, { blacklist: ['runtime'] });
-
+    let nextReducers = require("./frame/reducers").default;
+    store.replaceReducer(nextReducers)
     let FrameApp = require("./frame/FrameApp").default;
-    let container = React.createElement(AppContainer, undefined, React.createElement(FrameApp));
+    let stream = new FrameStream("YNOS").toParent();
+    let container = React.createElement(AppContainer, undefined, React.createElement(FrameApp, {stream: stream}));
     let provider = React.createElement(Provider, {store: store}, container);
     render(provider, mountPoint);
   } else {

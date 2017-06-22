@@ -1,17 +1,18 @@
 import * as redux from "redux";
 import { INITIAL_STATE } from "./state";
 import { reducerWithInitialState } from "typescript-fsa-reducers";
-import * as initActions from "./actions/init";
+import actions from "./actions";
 
 const initReducer = reducerWithInitialState(INITIAL_STATE.init)
-  .case(initActions.acceptTerms, initActions.acceptTermsHandler)
-  .case(initActions.setKeyring, initActions.setKeyringHandler);
+  .case(actions.init.acceptTerms, actions.init.acceptTermsHandler)
+  .case(actions.init.setKeyring, actions.init.setKeyringHandler);
+
+const runtimeReducer = reducerWithInitialState(INITIAL_STATE.runtime)
+  .case(actions.runtime.setMnemonic, actions.runtime.setMnemonicHandler);
 
 export default redux.combineReducers({
   init: initReducer,
-  runtime: function(state) {
-    return state || INITIAL_STATE.runtime;
-  },
+  runtime: runtimeReducer,
   routing: function(state) {
     return state || INITIAL_STATE.routing;
   }

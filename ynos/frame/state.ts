@@ -5,7 +5,8 @@ export interface InitState {
 }
 
 export interface RuntimeState {
-  wallet?: string
+  wallet?: string;
+  mnemonic?: string;
 }
 
 export interface RoutingState {
