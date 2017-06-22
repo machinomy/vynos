@@ -8,6 +8,7 @@ let _window = (<DevWindow & YnosWindow>window);
 export interface Ynos {
   getAccount: () => void
   openChannel: () => void
+  depositToChannel: () => void
   closeChannel: () => void
   listChannels: () => void
   makePayment: () => void
