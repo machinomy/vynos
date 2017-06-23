@@ -24,6 +24,9 @@ const YNOS_WEBPACK_CONFIG = webpackConfig({
     'webpack/hot/only-dev-server',
     'react-hot-loader/patch',
     path.resolve(__dirname, "ynos/frame.ts")
+  ],
+  worker: [
+    path.resolve(__dirname, "ynos/worker.ts")
   ]
 });
 

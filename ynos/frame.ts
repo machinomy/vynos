@@ -17,6 +17,17 @@ const middleware = redux.compose(redux.applyMiddleware(thunkMiddleware, createLo
 const store = redux.createStore(reducers, INITIAL_STATE, middleware);
 persistStore(store, { blacklist: ['runtime'] });
 
+if ("serviceWorker" in navigator) {
+  // TODO Configure it properly through WebPack
+  navigator.serviceWorker.register("worker.bundle.js", {scope: "./"}).then(registration => {
+    console.log("REGISTERED", registration)
+  }).catch(error => {
+    console.log("ERROR", error)
+  })
+} else {
+  alert("ERROR FIXME SW: Browser is not supported");
+}
+
 function renderFrameApp() {
   let mountPoint = document.getElementById("mount-point");
   if (mountPoint) {
