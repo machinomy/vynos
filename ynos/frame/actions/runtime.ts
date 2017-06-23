@@ -1,6 +1,8 @@
 import Wallet from "ethereumjs-wallet";
 import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
 import {RuntimeState} from "../state";
+import * as eth from "../lib/eth";
+import * as micropayments from "../lib/micropayments";
 
 const actionCreator = actionCreatorFactory();
 
@@ -11,5 +13,12 @@ export function setMnemonicHandler(state: RuntimeState, mnemonic: string): Runti
 
 export const setWallet: ActionCreator<Wallet> = actionCreator<Wallet>('runtime/setWallet');
 export function setWalletHandler(state: RuntimeState, wallet: Wallet): RuntimeState {
-  return { ...state, wallet: wallet };
+  let web3 = eth.buildWeb3(wallet);
+  let account = wallet.getAddressString();
+  let machinomyClient = micropayments.buildMachinomyClient(web3, account);
+  return { ...state,
+    wallet: wallet,
+    web3: web3,
+    machinomyClient: machinomyClient
+  };
 }

@@ -9,16 +9,11 @@ import {RouteElement} from "little-router";
 import _ from "lodash";
 import InitPage from "./pages/init";
 import UnlockPage from "./pages/UnlockPage";
+import WalletPage from "./pages/wallet/index";
 
 export interface FrameAppProps {
   pageComponent: React.ComponentClass<any>;
   stream: Duplex;
-}
-
-class WalletPage extends React.Component<any, any> {
-  render() {
-    return <p>WalletPage</p>
-  }
 }
 
 class ChannelsPage extends React.Component<any, any> {

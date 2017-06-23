@@ -62,6 +62,11 @@ function webpackConfig (entry) {
         { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
       ]
     },
+    node: {
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty'
+    }
   };
 
   if (process.env.NODE_ENV === 'production') {

@@ -1,4 +1,6 @@
 import Wallet from "ethereumjs-wallet";
+import Web3 from "web3";
+import { Sender } from "machinomy";
 
 export interface InitState {
   keyring: string|null;
@@ -9,6 +11,8 @@ export interface InitState {
 export interface RuntimeState {
   wallet?: Wallet;
   mnemonic?: string;
+  web3?: Web3;
+  machinomyClient?: Sender
 }
 
 export interface RoutingState {
