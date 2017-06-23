@@ -1,4 +1,5 @@
 import {YnosWindow} from "../ynos/YnosWindow";
+import {error} from "util";
 
 let _window = (<YnosWindow>window);
 
@@ -8,9 +9,11 @@ window.addEventListener("load", function () {
         if (activateButton) {
             activateButton.addEventListener('click', function () {
                 _window.ynos.initFrame().then(() => {
-                    return _window.ynos.initAccount();
-                }).then(() => {
-                    alert('OK')
+                    return _window.ynos.getAccount();
+                }).then(address => {
+                    alert(address)
+                }).catch(error => {
+                    alert(error)
                 });
             });
         } else {

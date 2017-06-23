@@ -6,7 +6,7 @@ import dnode from "dnode/browser";
 let _window = (<DevWindow & YnosWindow>window);
 
 export interface Ynos {
-  getAccount: () => void
+  getAccount: () => Promise<string>
   openChannel: () => void
   depositToChannel: () => void
   closeChannel: () => void
@@ -22,8 +22,16 @@ class YnosImpl implements Ynos {
   stream: Duplex;
   remote: any;
 
-  getAccount () {
-
+  getAccount (): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.remote.getAccount((error: string, address: string) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(address);
+        }
+      })
+    })
   }
 
   openChannel () {
@@ -43,6 +51,10 @@ class YnosImpl implements Ynos {
   }
 
   payInChannel () {
+
+  }
+
+  depositToChannel (): void {
 
   }
 

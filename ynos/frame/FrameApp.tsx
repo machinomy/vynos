@@ -14,6 +14,7 @@ import WalletPage from "./pages/wallet/index";
 export interface FrameAppProps {
   pageComponent: React.ComponentClass<any>;
   stream: Duplex;
+  state: State;
 }
 
 class ChannelsPage extends React.Component<any, any> {
@@ -35,6 +36,42 @@ const ROUTES: Array<RouteElement> = [
   { path: '/preferences/*', component: PreferencesPage },
 ];
 
+export class FrameApp extends React.Component<FrameAppProps, undefined> {
+  stream: Duplex;
+  dnode: Dnode;
+
+  constructor (props: FrameAppProps) {
+    super(props);
+    this.stream = props.stream;
+    this.dnode = dnode({
+      initAccount: (callback: Function) => {
+        callback();
+      },
+      getAccount: (callback: Function) => {
+        if (this.props.state.runtime.wallet) {
+          let wallet = this.props.state.runtime.wallet;
+          let address = wallet.getAddressString();
+          callback(null, address);
+        } else {
+          callback(new Error("No wallet yet"), null);
+        }
+      }
+    });
+    this.stream.pipe(this.dnode).pipe(this.stream);
+  }
+
+  componentWillUnmount () {
+    this.dnode.end();
+  }
+
+  render () {
+    let childPage = React.createElement(this.props.pageComponent);
+    return <ThemeProvider>
+      {childPage}
+    </ThemeProvider>
+  }
+}
+
 function mapStateToProps(state: State, ownProps: FrameAppProps): FrameAppProps {
   let isKeyringPresent = !_.isEmpty(state.init.keyring);
   let needInit = !(state.init.didAcceptTerms && isKeyringPresent && state.init.didStoreSeed);
@@ -51,34 +88,8 @@ function mapStateToProps(state: State, ownProps: FrameAppProps): FrameAppProps {
 
   return {
     pageComponent: pageComponent,
-    stream: ownProps.stream
-  }
-}
-
-export class FrameApp extends React.Component<FrameAppProps, undefined> {
-  stream: Duplex;
-  dnode: Dnode;
-
-  constructor (props: FrameAppProps) {
-    super(props);
-    this.stream = props.stream;
-    this.dnode = dnode({
-      initAccount: (callback: Function) => {
-        callback();
-      }
-    });
-    this.stream.pipe(this.dnode).pipe(this.stream);
-  }
-
-  componentWillUnmount () {
-    this.dnode.end();
-  }
-
-  render () {
-    let childPage = React.createElement(this.props.pageComponent);
-    return <ThemeProvider>
-      {childPage}
-    </ThemeProvider>
+    stream: ownProps.stream,
+    state: state
   }
 }
 
