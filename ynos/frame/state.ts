@@ -1,11 +1,13 @@
 import Wallet from "ethereumjs-wallet";
 import Web3 from "web3";
 import { Sender } from "machinomy";
+import BoughtItem from "./lib/BoughtItem";
 
 export interface InitState {
   keyring: string|null;
   didAcceptTerms: string|null;
   didStoreSeed: string|null;
+  bought?: Array<BoughtItem>
 }
 
 export interface RuntimeState {

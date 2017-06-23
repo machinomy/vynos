@@ -10,7 +10,8 @@ const initReducer = reducerWithInitialState(INITIAL_STATE.init)
 
 const runtimeReducer = reducerWithInitialState(INITIAL_STATE.runtime)
   .case(actions.runtime.setMnemonic, actions.runtime.setMnemonicHandler)
-  .case(actions.runtime.setWallet, actions.runtime.setWalletHandler);
+  .case(actions.runtime.setWallet, actions.runtime.setWalletHandler)
+  .case(actions.runtime.doLock, actions.runtime.doLockHandler);
 
 export default redux.combineReducers({
   init: initReducer,

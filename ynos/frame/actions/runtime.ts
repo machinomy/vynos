@@ -22,3 +22,12 @@ export function setWalletHandler(state: RuntimeState, wallet: Wallet): RuntimeSt
     machinomyClient: machinomyClient
   };
 }
+
+export const doLock = actionCreator<void>('runtime/doLock');
+export function doLockHandler(state: RuntimeState): RuntimeState {
+  let resultState = Object.assign({}, state);
+  delete resultState['wallet'];
+  delete resultState['web3'];
+  delete resultState['machinomyClient'];
+  return resultState;
+}
