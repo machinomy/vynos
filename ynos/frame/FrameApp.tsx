@@ -1,7 +1,7 @@
 import * as React from "react";
 import dnode, {Dnode} from "dnode/browser";
 import ThemeProvider from "./components/ThemeProvider";
-import {Duplex} from "stream";
+import {Duplex} from "readable-stream";
 import {connect} from "react-redux";
 import routing from "./lib/routing";
 import {State} from "./state";

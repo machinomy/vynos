@@ -1,7 +1,7 @@
 declare module "duplexify" {
-  import {Duplex, Readable, Writable} from "stream";
+  import {Duplex, Readable, Writable} from "readable-stream";
 
-  interface AsyncDuplex extends Duplex {
+  class AsyncDuplex extends Duplex {
     setReadable(stream: Readable): void;
     setWritable(stream: Writable): void;
   }

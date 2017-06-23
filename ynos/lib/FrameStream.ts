@@ -1,6 +1,6 @@
 import PostStream from "./PostStream";
 import duplexify from "duplexify";
-import {Duplex} from "stream";
+import {Duplex} from "readable-stream";
 
 export default class FrameStream {
   name: string;

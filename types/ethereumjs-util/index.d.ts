@@ -1,4 +1,6 @@
 declare module "ethereumjs-util" {
+  import { Buffer } from "buffer";
+
   interface Signature {
     v: number,
     r: Buffer,

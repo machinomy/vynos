@@ -4,6 +4,7 @@ import sigUtil from "eth-sig-util";
 import ZeroProvider from "web3-provider-engine/zero";
 import * as Web3 from "web3";
 import Wallet from "ethereumjs-wallet";
+import {Buffer} from "buffer";
 
 export function buildWeb3 (wallet: Wallet): Web3 {
   type GetAccountsCallback = (error: Error|null, result: string[]) => void;

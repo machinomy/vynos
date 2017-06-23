@@ -1,5 +1,5 @@
 import {DevWindow, YnosWindow} from "./YnosWindow";
-import {Duplex} from "stream";
+import {Duplex} from "readable-stream";
 import FrameStream from "./lib/FrameStream";
 import dnode from "dnode/browser";
 

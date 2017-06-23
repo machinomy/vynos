@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import Wallet from "ethereumjs-wallet";
 import Web3 from "web3";
 import _ from "lodash";
-import {RuntimeState, State} from "../../state";
-import {PaymentChannel, Sender} from "machinomy";
+import {State} from "../../state";
+import {PaymentChannel} from "machinomy";
 import {CSSProperties} from "react";
 import IconButton from "material-ui/IconButton";
 import FlatButton from "material-ui/FlatButton";
@@ -137,6 +137,8 @@ export interface WalletPageState {
 }
 
 export class WalletPage extends React.Component<WalletPageProps, WalletPageState> {
+  updateBalanceTimer: number;
+
   constructor (props: WalletPageProps) {
     super(props);
     if (!this.props.wallet) throw Error("Improbable error: props.wallet is not defined");
@@ -247,11 +249,14 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
   }
 
   componentDidMount () {
-    this.updateBalance()
+    this.updateBalance();
+    this.updateBalanceTimer = setInterval(() => {
+      this.updateBalance()
+    }, 500);
   }
 
-  componentDidUpdate () {
-    this.updateBalance()
+  componentWillUnmount () {
+    clearInterval(this.updateBalanceTimer);
   }
 
   render () {

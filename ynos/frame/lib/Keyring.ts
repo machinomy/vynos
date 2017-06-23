@@ -1,5 +1,6 @@
 import Wallet from "ethereumjs-wallet";
 import passworder from "browser-passworder";
+import { Buffer } from "buffer";
 
 interface BufferLike {
   type: string;

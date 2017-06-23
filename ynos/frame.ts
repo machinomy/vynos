@@ -33,14 +33,6 @@ function renderFrameApp() {
 }
 
 window.addEventListener("load", () => {
-  interface HotReload {
-    accept: (componentPath: string, callback: () => void) => void
-  }
-
-  interface HotModule extends NodeModule {
-    hot: HotReload
-  }
-
   let _module = <HotModule>module;
 
   renderFrameApp();

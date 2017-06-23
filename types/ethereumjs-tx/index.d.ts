@@ -1,4 +1,6 @@
 declare module "ethereumjs-tx" {
+  import { Buffer } from "buffer";
+
   export interface TransactionProperties {
     nonce: Buffer,
     gasPrice: Buffer,

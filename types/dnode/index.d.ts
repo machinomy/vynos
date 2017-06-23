@@ -1,6 +1,6 @@
 declare module "dnode/browser" {
-  import {Readable, Writable} from "stream";
-  import WritableStream = NodeJS.WritableStream;
+  import { Buffer } from "buffer";
+  import {Readable, Writable, WritableStream} from "readable-stream";
 
   export class Dnode implements Writable {
     pipe<T extends WritableStream>(destination: T, options?: { end?: boolean }): T;
