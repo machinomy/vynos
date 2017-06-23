@@ -1,5 +1,4 @@
 import {YnosWindow} from "../ynos/YnosWindow";
-import {error} from "util";
 
 let _window = (<YnosWindow>window);
 
