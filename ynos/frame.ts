@@ -3,6 +3,7 @@ import {render} from "react-dom";
 import {AppContainer} from "react-hot-loader";
 import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
+import localForage from "localforage";
 import { persistStore, autoRehydrate } from "redux-persist";
 import {Provider} from "react-redux";
 import * as redux from "redux";
@@ -15,7 +16,10 @@ injectTapEventPlugin();
 
 const middleware = redux.compose(redux.applyMiddleware(thunkMiddleware, createLogger()), autoRehydrate());
 const store = redux.createStore(reducers, INITIAL_STATE, middleware);
-persistStore(store, { blacklist: ['runtime'] });
+persistStore(store, {
+  storage: localForage,
+  blacklist: ['runtime']
+});
 
 if ("serviceWorker" in navigator) {
   // TODO Configure it properly through WebPack
