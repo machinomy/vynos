@@ -81,6 +81,35 @@ interface HotModule extends NodeModule {
   hot: HotReload
 }
 
+interface WindowClient {
+  url: string
+  id: string
+  frameType?: string
+  type: ClientType
+  postMessage: (message: any, transfer?: any[]) => void
+}
+
+type ClientType = "window" | "worker" | "sharedWorker" | "all"
+
+interface ClientsMatchAllOptions {
+  includeUncontrolled?: boolean
+  type: ClientType
+}
+
+interface Clients {
+  get: (id: string) => Promise<WindowClient>
+  matchAll: (options?: ClientsMatchAllOptions) => Promise<Array<WindowClient>>
+  openWindow: (url: string) => Promise<WindowClient|null>
+}
+
+interface WorkerGlobalScope extends EventTarget {
+
+}
+
+interface ServiceWorkerGlobalScope extends WorkerGlobalScope {
+  clients: Clients
+}
+
 declare var module: NodeModule;
 
 // Same as module.exports

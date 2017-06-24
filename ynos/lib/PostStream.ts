@@ -1,37 +1,52 @@
 import {Duplex} from "readable-stream";
 
+export type Target = Window | ServiceWorker | null;
+
+function isWindow(target: Target): target is Window {
+  return !!((target as Window).window);
+}
+
+function isServiceWorker(target: Target): target is ServiceWorker {
+  console.log("isServiceWorker", target);
+  return target instanceof ServiceWorker;
+}
+
 export type PostStreamOptions = {
   name: string,
   target: string,
-  targetWindow?: Window,
+  targetWindow: Target,
+  sourceWindow?: EventTarget,
   origin?: string
 }
 
 export default class PostStream extends Duplex {
-  name: string;
-  target: string;
-  targetWindow: Window;
+  sourceName: string;
+  targetName: string;
+  sourceWindow: EventTarget;
+  targetWindow: Target;
   origin: string;
 
   constructor (options: PostStreamOptions) {
     super({ objectMode: true });
 
-    this.name = options.name;
-    this.target = options.target;
+    this.sourceName = options.name;
+    this.targetName = options.target;
+    this.sourceWindow = options.sourceWindow || window;
     this.targetWindow = options.targetWindow || window;
+
     this.origin = (options.targetWindow ? '*' : window.location.origin);
 
-    window.addEventListener('message', this.onMessage.bind(this), false)
+    this.sourceWindow.addEventListener('message', this.onMessage.bind(this), false)
   }
 
   onMessage (event: MessageEvent) {
     let message = event.data;
 
-    let sameOrigin = this.origin === '*' || event.origin === this.origin;
-    let sameWindow = event.source === this.targetWindow;
+    let correctOrigin = this.origin === '*' || event.origin === this.origin;
+    let correctSource = event.source === this.targetWindow;
 
-    if (sameOrigin && sameWindow && typeof message === 'object') {
-      if (message.target === this.name && message.data) {
+    if (correctOrigin && correctSource && typeof message === 'object') {
+      if (message.target === this.sourceName && message.data) {
         try {
           this.push(message.data)
         } catch (error) {
@@ -47,10 +62,18 @@ export default class PostStream extends Duplex {
 
   _write (data: any, encoding: string, next: () => void) {
     let message = {
-      target: this.target,
+      target: this.targetName,
       data: data
     };
-    this.targetWindow.postMessage(message, this.origin);
+    if (isWindow(this.targetWindow)) {
+      console.log("iswindow");
+      this.targetWindow.postMessage(message, this.origin);
+    } else if (isServiceWorker(this.targetWindow)) {
+      console.log("isserviceworker");
+      this.targetWindow.postMessage(message);
+    } else {
+      console.log("_write", this.targetWindow);
+    }
     next()
   }
 }

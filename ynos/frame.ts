@@ -11,6 +11,8 @@ import reducers from "./frame/reducers";
 import {INITIAL_STATE} from "./frame/state";
 import FrameStream from "./lib/FrameStream";
 import injectTapEventPlugin from "react-tap-event-plugin";
+import PostStream from "./lib/PostStream";
+import dnode, {Dnode} from "dnode/browser";
 
 injectTapEventPlugin();
 
@@ -21,10 +23,27 @@ persistStore(store, {
   blacklist: ['runtime']
 });
 
+let d = dnode();
+let remote: any = null;
+
 if ("serviceWorker" in navigator) {
   // TODO Configure it properly through WebPack
   navigator.serviceWorker.register("worker.bundle.js", {scope: "./"}).then(registration => {
-    console.log("REGISTERED", registration)
+    console.log("REGISTERED", registration);
+    let serviceWorker = registration.active;
+    if (serviceWorker) {
+      let postStream = new PostStream({
+        name: "frame",
+        target: "worker",
+        targetWindow: serviceWorker,
+        sourceWindow: navigator.serviceWorker
+      });
+      postStream.pipe(d).pipe(postStream);
+      d.on("remote", (rr: any) => {
+        console.log("connected to the worker");
+        remote = rr;
+      });
+    }
   }).catch(error => {
     console.log("ERROR", error)
   })

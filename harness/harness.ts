@@ -7,9 +7,7 @@ window.addEventListener("load", function () {
         let activateButton = document.getElementById('activate');
         if (activateButton) {
             activateButton.addEventListener('click', function () {
-                _window.ynos.initFrame().then(() => {
-                    return _window.ynos.getAccount();
-                }).then(address => {
+                _window.ynos.getAccount().then(address => {
                     alert(address)
                 }).catch(error => {
                     alert(error)
