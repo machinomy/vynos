@@ -4872,8 +4872,8 @@ typescript-fsa@^2.0.0, typescript-fsa@^2.3.0, typescript-fsa@^2.3.1:
   resolved "https://registry.yarnpkg.com/typescript-fsa/-/typescript-fsa-2.3.1.tgz#e0f94f316aa3ea9b3a3ada10fbfeec4287c952b0"
 
 typescript@^2.4.1:
-  version "2.4.1-insiders.20170614"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.1-insiders.20170614.tgz#4f12ed67ba4230a9c0c03c30c46345e7cf585087"
+  version "2.4.1-insiders.20170615"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.1-insiders.20170615.tgz#1cf1dfa212b1ecf557a1192525633f1966b21daf"
 
 ua-parser-js@^0.7.9:
   version "0.7.12"

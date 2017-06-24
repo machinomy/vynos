@@ -17,18 +17,34 @@ function isWindowClient(something: any): something is WindowClient {
   return true;
 }
 
-let stream: Duplex | null = null;
+let n = 1;
+let streams: Array<Duplex> = [];
+let remotes: Array<any> = [];
+
+function append(port: MessagePort) {
+  console.log("APPEND");
+  let stream = new PortStream(port);
+  streams.push(stream);
+  let d = dnode({
+    hello: function (world: string, callback: Function) {
+      n += 1;
+      console.log(`Got ${world}, n: ${n}`);
+      callback(n);
+    }
+  });
+  d.on("remote", (rr: any) => {
+    remotes.push(rr);
+    remotes.forEach((r: any) => {
+      r.didAppend(n);
+    });
+  });
+  stream.pipe(d).pipe(stream);
+}
 
 self.addEventListener("message", (e) => {
   if (e.data === "PUSH_PORT") {
     let port = e.ports[0];
-    stream = new PortStream(port);
-    let d = dnode({
-      hello: function (world: string) {
-        console.log(`Got ${world}`)
-      }
-    });
-    stream.pipe(d).pipe(stream);
+    append(port);
   }
 });
 
@@ -44,5 +60,5 @@ self.addEventListener('install', e => {
 });
 
 self.addEventListener('activate', e => {
-  console.log('Activate event:', e);
+
 });

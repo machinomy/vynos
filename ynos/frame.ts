@@ -39,11 +39,17 @@ if ("serviceWorker" in navigator) {
     if (serviceWorker) {
       serviceWorker.postMessage("PUSH_PORT", [workerPort]);
       let workerStream = new PortStream(myPort);
-      let workerDnode = dnode();
+      let workerDnode = dnode({
+        didAppend: function (n: any) {
+          console.log("didAppend", n)
+        }
+      });
       workerStream.pipe(workerDnode).pipe(workerStream);
       workerDnode.on("remote", (_remote: any) => {
         remote = _remote;
-        remote.hello("foo");
+        remote.hello("foo", (response: any) => {
+          console.log("In frame", response);
+        });
       })
     }
   }).catch(error => {
