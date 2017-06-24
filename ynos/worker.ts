@@ -5,6 +5,9 @@ import { persistStore, autoRehydrate } from "redux-persist";
 import reducers from "./frame/reducers";
 import {INITIAL_STATE} from "./frame/state";
 import localForage from "localforage";
+import {PortStream} from "./lib/PortStream";
+import {Duplex} from "readable-stream";
+import dnode, {Dnode} from "dnode/browser";
 
 function underServiceWorker(self: any): self is ServiceWorkerGlobalScope {
   return true;
@@ -14,6 +17,20 @@ function isWindowClient(something: any): something is WindowClient {
   return true;
 }
 
+let stream: Duplex | null = null;
+
+self.addEventListener("message", (e) => {
+  if (e.data === "PUSH_PORT") {
+    let port = e.ports[0];
+    stream = new PortStream(port);
+    let d = dnode({
+      hello: function (world: string) {
+        console.log(`Got ${world}`)
+      }
+    });
+    stream.pipe(d).pipe(stream);
+  }
+});
 
 self.addEventListener('install', e => {
   /*
@@ -24,20 +41,6 @@ self.addEventListener('install', e => {
    blacklist: ['runtime']
    });
    */
-});
-
-self.addEventListener("message", (e: MessageEvent) => {
-  console.log("Received Message", e);
-  console.log(e.source);
-  console.log("Doing Pong");
-  if (underServiceWorker(self)) {
-    self.clients.matchAll({type: "all"}).then(clients => {
-      console.log("Clients", clients);
-    });
-  }
-  if (isWindowClient(e.source)) {
-    e.source.postMessage(`PONG ${e.data.toString()}`);
-  }
 });
 
 self.addEventListener('activate', e => {

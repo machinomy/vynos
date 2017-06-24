@@ -91,10 +91,10 @@ class YnosImpl implements Ynos {
       try {
         this.frame = buildFrame();
         let channel = new MessageChannel();
-        let framePort = channel.port2;
+        let otherPort = channel.port2;
         let myPort = channel.port1;
         this.frame.addEventListener("load", () => {
-          this.frame.contentWindow.postMessage("PUSH_PORT", "*", [framePort]);
+          this.frame.contentWindow.postMessage("PUSH_PORT", "*", [otherPort]);
         }, false);
         this.stream = new PortStream(myPort);
         document.body.appendChild(this.frame);

@@ -33,18 +33,18 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("worker.bundle.js", {scope: "./"}).then(registration => {
     console.log("REGISTERED", registration);
     let serviceWorker = registration.active;
+    let channel = new MessageChannel();
+    let workerPort = channel.port2;
+    let myPort = channel.port1;
     if (serviceWorker) {
-      let postStream = new PostStream({
-        name: "frame",
-        target: "worker",
-        targetWindow: serviceWorker,
-        sourceWindow: navigator.serviceWorker
-      });
-      postStream.pipe(d).pipe(postStream);
-      d.on("remote", (rr: any) => {
-        console.log("connected to the worker");
-        remote = rr;
-      });
+      serviceWorker.postMessage("PUSH_PORT", [workerPort]);
+      let workerStream = new PortStream(myPort);
+      let workerDnode = dnode();
+      workerStream.pipe(workerDnode).pipe(workerStream);
+      workerDnode.on("remote", (_remote: any) => {
+        remote = _remote;
+        remote.hello("foo");
+      })
     }
   }).catch(error => {
     console.log("ERROR", error)
