@@ -13,6 +13,8 @@ import FrameStream from "./lib/FrameStream";
 import injectTapEventPlugin from "react-tap-event-plugin";
 import PostStream from "./lib/PostStream";
 import dnode, {Dnode} from "dnode/browser";
+import {Duplex} from "readable-stream";
+import {PortStream} from "./lib/PortStream";
 
 injectTapEventPlugin();
 
@@ -51,13 +53,14 @@ if ("serviceWorker" in navigator) {
   alert("ERROR FIXME SW: Browser is not supported");
 }
 
+let stream: Duplex | null = null;
+
 function renderFrameApp() {
   let mountPoint = document.getElementById("mount-point");
-  if (mountPoint) {
+  if (mountPoint && stream) {
     let nextReducers = require("./frame/reducers").default;
     store.replaceReducer(nextReducers);
     let FrameApp = require("./frame/FrameApp").default;
-    let stream = new FrameStream("YNOS").toParent();
     let container = React.createElement(AppContainer, undefined, React.createElement(FrameApp, {stream: stream}));
     let provider = React.createElement(Provider, {store: store}, container);
     render(provider, mountPoint);
@@ -65,6 +68,14 @@ function renderFrameApp() {
     console.log("ERROR FIXME Pls");
   }
 }
+
+window.addEventListener("message", (e) => {
+  if (e.data === "PUSH_PORT") {
+    let port = e.ports[0];
+    stream = new PortStream(port);
+    renderFrameApp();
+  }
+});
 
 window.addEventListener("load", () => {
   let _module = <HotModule>module;

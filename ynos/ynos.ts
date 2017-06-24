@@ -2,8 +2,25 @@ import {DevWindow, YnosWindow} from "./YnosWindow";
 import {Duplex} from "readable-stream";
 import FrameStream from "./lib/FrameStream";
 import dnode from "dnode/browser";
+import {PortStream} from "./lib/PortStream";
 
 let _window = (<DevWindow & YnosWindow>window);
+
+function buildFrame(): HTMLIFrameElement {
+  let frame = document.createElement('iframe');
+  frame.id = 'ynos_frame';
+  frame.src = _window.FRAME_URL;
+  frame.style.borderWidth = '0px';
+  frame.style.position = 'fixed';
+  frame.style.top = '0px';
+  frame.style.right = '0px';
+  frame.style.bottom = '0px';
+  frame.height = '100%';
+  frame.width = '320px';
+  //frame.style.marginRight = '-320px';
+  frame.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin");
+  return frame;
+}
 
 export interface Ynos {
   getAccount: () => Promise<string>
@@ -72,22 +89,14 @@ class YnosImpl implements Ynos {
 
     return new Promise<void>((resolve, reject) => {
       try {
-        let frame = document.createElement('iframe');
-        frame.id = 'ynos_frame';
-        frame.src = _window.FRAME_URL;
-        frame.style.borderWidth = '0px';
-        frame.style.position = 'fixed';
-        frame.style.top = '0px';
-        frame.style.right = '0px';
-        frame.style.bottom = '0px';
-        frame.height = '100%';
-        frame.width = '320px';
-        //frame.style.marginRight = '-320px';
-        frame.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin");
-        this.frame = frame;
-        let stream = new FrameStream('YNOS');
-        this.stream = stream.toFrame(frame);
-
+        this.frame = buildFrame();
+        let channel = new MessageChannel();
+        let framePort = channel.port2;
+        let myPort = channel.port1;
+        this.frame.addEventListener("load", () => {
+          this.frame.contentWindow.postMessage("PUSH_PORT", "*", [framePort]);
+        }, false);
+        this.stream = new PortStream(myPort);
         document.body.appendChild(this.frame);
 
         let d = dnode();
