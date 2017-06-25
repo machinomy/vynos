@@ -15,6 +15,7 @@ import PostStream from "./lib/PostStream";
 import dnode, {Dnode} from "dnode/browser";
 import {Duplex} from "readable-stream";
 import {PortStream} from "./lib/PortStream";
+import PortChannel from "./lib/PortChannel";
 
 injectTapEventPlugin();
 
@@ -25,28 +26,24 @@ persistStore(store, {
   blacklist: ['runtime']
 });
 
-let d = dnode();
-let remote: any = null;
-
 if ("serviceWorker" in navigator) {
   // TODO Configure it properly through WebPack
   navigator.serviceWorker.register("worker.bundle.js", {scope: "./"}).then(registration => {
     console.log("REGISTERED", registration);
     let serviceWorker = registration.active;
-    let channel = new MessageChannel();
-    let workerPort = channel.port2;
-    let myPort = channel.port1;
     if (serviceWorker) {
-      serviceWorker.postMessage("PUSH_PORT", [workerPort]);
-      let workerStream = new PortStream(myPort);
-      let workerDnode = dnode({
+      let server = {
         didAppend: function (n: any) {
           console.log("didAppend", n)
         }
-      });
-      workerStream.pipe(workerDnode).pipe(workerStream);
-      workerDnode.on("remote", (_remote: any) => {
-        remote = _remote;
+      };
+      interface WorkerInterface {
+        hello: (m: string, callback: Function) => void;
+      }
+      let portChannel = new PortChannel<typeof server, WorkerInterface>(server);
+      portChannel.registerClient(serviceWorker);
+      portChannel.onRemote(remote => {
+        console.log("Connected to Remote");
         remote.hello("foo", (response: any) => {
           console.log("In frame", response);
         });

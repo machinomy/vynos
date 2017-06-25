@@ -5,8 +5,8 @@ interface KindaBuffer extends Buffer {
   _isBuffer: boolean
 }
 
-function isKindaBuffer(smth: any): smth is KindaBuffer {
-  return Buffer.isBuffer(smth);
+function isKindaBuffer(something: any): something is KindaBuffer {
+  return Buffer.isBuffer(something);
 }
 
 export class PortStream extends Duplex {
@@ -21,7 +21,6 @@ export class PortStream extends Duplex {
 
   onMessage (message: MessageEvent) {
     let data = message.data;
-    console.log("PortStream#onMessage", message);
     if (isKindaBuffer(data)) {
       delete data._isBuffer;
       this.push(Buffer.from(data))
