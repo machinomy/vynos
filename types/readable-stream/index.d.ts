@@ -52,7 +52,12 @@ declare module "readable-stream" {
     read?: (this: Readable, size?: number) => any;
   }
 
+  export interface ReadableState {
+    pipes: Writable | Array<Writable>;
+  }
+
   export class Readable extends Stream implements ReadableStream {
+    _readableState: ReadableState;
     readable: boolean;
     constructor(opts?: ReadableOptions);
     _read(size: number): void;
@@ -230,5 +235,9 @@ declare module "readable-stream" {
     end(): void;
     end(chunk: any, cb?: Function): void;
     end(chunk: any, encoding?: string, cb?: Function): void;
+  }
+
+  export class PassThrough extends Duplex {
+
   }
 }

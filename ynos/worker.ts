@@ -7,15 +7,17 @@ import {INITIAL_STATE} from "./frame/state";
 import localForage from "localforage";
 import {PortStream} from "./lib/PortStream";
 import {Duplex, Writable} from "readable-stream";
-import dnode, {Dnode} from "dnode/browser";
 import PortChannel from "./lib/PortChannel";
+import APortChannel from "./lib/APortChannel";
 
 let n = 1;
+
 
 interface FrameInterface {
   didAppend(n: any): void;
 }
 
+/*
 let serverInterface = {
   hello: function (world: string, callback: Function) {
     n += 1;
@@ -29,6 +31,36 @@ let serverInterface = {
 
 let portChannel = new PortChannel<typeof serverInterface, FrameInterface>(serverInterface);
 portChannel.registerServer(self);
+*/
+
+let serverInterface = {
+  hello: function (world: string, callback: Function) {
+    n += 1;
+    console.log(`Got ${world}, n: ${n}`);
+    portChannel.proxy(remote => {
+      remote.didAppend(n);
+    });
+    callback(n);
+  }
+};
+
+let d = dnode(serverInterface);
+
+let portChannel = new BPortChannel<typeof serverInterface, FrameInterface>(serverInterface, d);
+portChannel.registerServer(self);
+
+/*
+let aportChannel = new APortChannel();
+let d = dnode({
+  hello: function (world: string, callback: Function) {
+    n += 1;
+    console.log(`Got ${world}, n: ${n}`);
+    callback(n);
+  }
+});
+aportChannel.pipe(d).pipe(aportChannel);
+aportChannel.registerServer(self);
+*/
 
 self.addEventListener('install', e => {
   /*

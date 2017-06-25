@@ -42,7 +42,7 @@ if ("serviceWorker" in navigator) {
       }
       let portChannel = new PortChannel<typeof server, WorkerInterface>(server);
       portChannel.registerClient(serviceWorker);
-      portChannel.onRemote(remote => {
+      portChannel.onRemote((remote: WorkerInterface)=> {
         console.log("Connected to Remote");
         remote.hello("foo", (response: any) => {
           console.log("In frame", response);
@@ -64,9 +64,11 @@ function renderFrameApp() {
     let nextReducers = require("./frame/reducers").default;
     store.replaceReducer(nextReducers);
     let FrameApp = require("./frame/FrameApp").default;
+    /*
     let container = React.createElement(AppContainer, undefined, React.createElement(FrameApp, {stream: stream}));
     let provider = React.createElement(Provider, {store: store}, container);
     render(provider, mountPoint);
+     */
   } else {
     console.log("ERROR FIXME Pls");
   }
