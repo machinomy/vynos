@@ -7,12 +7,12 @@ let _window = (<DevWindow & YnosWindow>window);
 
 export interface Ynos {
   getAccount: () => Promise<string>
-  openChannel: () => void
-  depositToChannel: () => void
+  openChannel: () => PaymentChannel
+  depositToChannel: (ch: PaymentChannel) => void // add funds
   closeChannel: () => void
   listChannels: () => void
-  makePayment: () => void
-  payInChannel: () => void
+  makePayment: () => void // web3.eth.sendTransaction
+  payInChannel: (ch: PaymentChannel, amount: number) => Promise<PaymentChannel> // 
   initAccount: () => Promise<void>
   initFrame: () => Promise<void>
 }
