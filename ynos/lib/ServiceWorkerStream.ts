@@ -1,12 +1,12 @@
-import {Duplex} from "readable-stream";
+import {Duplex} from 'readable-stream'
 
 export default class ServiceWorkerStream extends Duplex {
-  serviceWorker: ServiceWorker
+  worker: ServiceWorkerGlobalScope
 
-  constructor(serviceWorker: ServiceWorker) {
+  constructor(worker: ServiceWorkerGlobalScope) {
     super({objectMode: true})
-    this.serviceWorker = serviceWorker
-    navigator.serviceWorker.onmessage = event => {
+    this.worker = worker
+    worker.onmessage = event => {
       this.push(event.data);
     }
   }
@@ -16,6 +16,13 @@ export default class ServiceWorkerStream extends Duplex {
   }
 
   _write(chunk: any, encoding: any, next: Function) {
-    this.serviceWorker.postMessage(chunk)
+    console.log("ServiceWorkerStream", chunk);
+    this.worker.clients.matchAll({includeUncontrolled: true}).then(clients => {
+      clients.forEach(client => {
+        client.postMessage(chunk)
+      })
+    })
+    next();
   }
+
 }

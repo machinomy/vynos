@@ -1,14 +1,14 @@
-import {Duplex} from 'readable-stream'
+import {Duplex} from "readable-stream";
 
 export default class ServiceWorkerClientStream extends Duplex {
-  worker: ServiceWorkerGlobalScope
+  serviceWorker: ServiceWorker
 
-  constructor(worker: ServiceWorkerGlobalScope) {
+  constructor(serviceWorker: ServiceWorker) {
     super({objectMode: true})
-    this.worker = worker
-    this.worker.onmessage = event => {
+    this.serviceWorker = serviceWorker
+    navigator.serviceWorker.addEventListener("message", (event: MessageEvent) => {
       this.push(event.data);
-    }
+    })
   }
 
   _read(n: number) {
@@ -16,11 +16,6 @@ export default class ServiceWorkerClientStream extends Duplex {
   }
 
   _write(chunk: any, encoding: any, next: Function) {
-    this.worker.clients.matchAll().then(clients => {
-      clients.forEach(client => {
-        client.postMessage(chunk)
-      })
-    })
+    this.serviceWorker.postMessage(chunk)
   }
-
 }

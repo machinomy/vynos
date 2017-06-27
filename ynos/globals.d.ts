@@ -93,7 +93,7 @@ type ClientType = "window" | "worker" | "sharedWorker" | "all"
 
 interface ClientsMatchAllOptions {
   includeUncontrolled?: boolean
-  type: ClientType
+  type?: ClientType
 }
 
 interface Clients {

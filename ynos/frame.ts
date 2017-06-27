@@ -18,6 +18,7 @@ import {PortStream} from "./lib/PortStream";
 import {Action} from "redux";
 import {EventEmitter} from "events";
 import Promise from "bluebird";
+import ServiceWorkerClientStream from "./lib/ServiceWorkerClientStream";
 
 injectTapEventPlugin();
 
@@ -138,41 +139,69 @@ function buildStore(sw: ServiceWorker): Promise<ServiceWorkerStore> {
   });
 }
 
-
-if ("serviceWorker" in navigator) {
-  // TODO Configure it properly through WebPack
-  navigator.serviceWorker.register("worker.bundle.js", {scope: "./"}).then(registration => {
-    console.log("REGISTERED", registration);
-    let serviceWorker = registration.active;
-    if (serviceWorker) {
-      let provider = new ServiceWorkerProvider(serviceWorker);
-      buildStore(serviceWorker).then(store => {
-        let mountPoint = document.getElementById("mount-point");
-        if (mountPoint) {
-          console.log("mount");
-          let FrameApp = require("./frame/FrameApp").default;
-          let container = React.createElement(AppContainer, undefined, React.createElement(FrameApp));
-          let provider = React.createElement(Provider, {store: store}, container);
-          render(provider, mountPoint);
-          /*
-           let nextReducers = require("./frame/reducers").default;
-           store.replaceReducer(nextReducers);
-           let FrameApp = require("./frame/FrameApp").default;
-           let container = React.createElement(AppContainer, undefined, React.createElement(FrameApp, {stream: stream}));
-           let provider = React.createElement(Provider, {store: store}, container);
-           render(provider, mountPoint);
-           */
-        } else {
-          console.log("ERROR FIXME Pls");
-        }
-      })
-    }
-  }).catch(error => {
-    console.log("ERROR", error)
+function setupStream(serviceWorker: ServiceWorker) {
+  console.log("setup for ", serviceWorker)
+  let streamS = new ServiceWorkerClientStream(serviceWorker);
+  streamS.on("data", chunk => {
+    console.log("got fresh data")
+    console.log(chunk)
   })
-} else {
-  alert("ERROR FIXME SW: Browser is not supported");
+  streamS.write({
+    id: "1",
+    jsonrpc: "2.0",
+    method: "ff",
+    params: null
+  })
 }
+
+function initServiceWorker(fn: (sw: ServiceWorker) => void) {
+  const isServiceWorker = (s: any): s is ServiceWorker => true
+  const extractServiceWorker = (r: ServiceWorkerRegistration, fn: (sw: ServiceWorker) => void) => {
+    let serviceWorker = r.active || r.installing || r.waiting;
+    if (serviceWorker) {
+      fn(serviceWorker)
+    }
+  }
+  const freshInstall = (sw: ServiceWorker) => {
+    const statechange = (e: Event) => {
+      console.log(e)
+      if (isServiceWorker(e.target)) {
+        console.log(e.target)
+        console.log(e.target.state)
+        if (e.target.state === "activated") {
+          fn(e.target)
+          sw.removeEventListener("statechange", statechange)
+        }
+      }
+    }
+    sw.addEventListener("statechange", statechange)
+  }
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("worker.bundle.js", {scope: "./"}).then(registration => {
+      registration.onupdatefound = () => {
+        console.log("onupdatefound")
+        extractServiceWorker(registration, sw => {
+          freshInstall(sw)
+        })
+      }
+      extractServiceWorker(registration, sw => {
+        freshInstall(sw)
+        fn(sw)
+      })
+    }).catch(error => {
+      console.log("ERROR", error)
+    })
+  } else {
+    console.log("ERROR FIXME SW: Browser is not supported");
+  }
+}
+
+initServiceWorker(sw => {
+  setupStream(sw)
+})
+
+
 
 let stream: Duplex | null = null;
 
