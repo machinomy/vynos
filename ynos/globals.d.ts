@@ -100,6 +100,7 @@ interface Clients {
   get: (id: string) => Promise<WindowClient>
   matchAll: (options?: ClientsMatchAllOptions) => Promise<Array<WindowClient>>
   openWindow: (url: string) => Promise<WindowClient|null>
+  claim: () => Promise<void>;
 }
 
 interface WorkerGlobalScope extends EventTarget {
@@ -108,6 +109,7 @@ interface WorkerGlobalScope extends EventTarget {
 
 interface ServiceWorkerGlobalScope extends WorkerGlobalScope {
   clients: Clients
+  skipWaiting: () => Promise<void>;
 }
 
 declare var module: NodeModule;

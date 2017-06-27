@@ -301,8 +301,8 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
 
 function mapStateToProps (state: State): WalletPageStateProps {
   return {
-    wallet: state.runtime.wallet,
-    web3: state.runtime.web3,
+    wallet: undefined, // FIXME state.runtime.wallet,
+    web3: undefined, // FIXME state.runtime.web3,
     bought: state.init.bought
   }
 }

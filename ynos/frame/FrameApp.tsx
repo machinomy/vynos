@@ -38,10 +38,10 @@ const ROUTES: Array<RouteElement> = [
 
 export class FrameApp extends React.Component<FrameAppProps, undefined> {
   stream: Duplex;
-  dnode: Dnode;
 
   constructor (props: FrameAppProps) {
     super(props);
+    /*
     this.stream = props.stream;
     this.dnode = dnode({
       initAccount: (callback: Function) => {
@@ -58,10 +58,7 @@ export class FrameApp extends React.Component<FrameAppProps, undefined> {
       }
     });
     this.stream.pipe(this.dnode).pipe(this.stream);
-  }
-
-  componentWillUnmount () {
-    this.dnode.end();
+     */
   }
 
   render () {
@@ -79,7 +76,7 @@ function mapStateToProps(state: State, ownProps: FrameAppProps): FrameAppProps {
   let pageComponent = null;
   if (needInit) {
     pageComponent = InitPage
-  } else if (_.isEmpty(state.runtime.wallet)) {
+  } else if (_.isEmpty(state.runtime.walletPresent)) {
     pageComponent = UnlockPage
   } else {
     let location = routing.location(state);

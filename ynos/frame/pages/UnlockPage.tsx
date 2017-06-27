@@ -15,11 +15,7 @@ export interface UnlockPageStateProps {
   keyring: string|null;
 }
 
-export interface UnlockPageDispatchProps {
-  onUnlock: (wallet: Wallet) => void;
-}
-
-export type UnlockPageProps = UnlockPageStateProps & UnlockPageDispatchProps;
+export type UnlockPageProps = UnlockPageStateProps;
 
 export type UnlockPageState = {
   password: string|null;
@@ -51,12 +47,6 @@ const MINOR_BUTTON_STYLE = {
 
 const ERROR_MESSAGE = "Incorrect password";
 
-function unlockWallet (keyringSerialized: string, password: string): Promise<Wallet> {
-  return Keyring.deserialize(keyringSerialized, password).then(keyring => {
-    return keyring.wallet
-  })
-}
-
 export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState> {
   constructor (props: UnlockPageProps) {
     super(props);
@@ -83,6 +73,9 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
       });
       let password = _.toString(this.state.password);
       if (this.props.keyring) {
+        console.log(this.props.keyring);
+        console.log("Trying to unlock...");
+        /*
         unlockWallet(this.props.keyring, password).then(wallet => {
           this.props.onUnlock(wallet)
         }).catch(error => {
@@ -92,6 +85,7 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
             passwordError: ERROR_MESSAGE
           })
         })
+         */
       }
     }
   }
@@ -131,12 +125,4 @@ function mapStateToProps (state: State): UnlockPageStateProps {
   }
 }
 
-function mapDispatchToProps (dispatch: Dispatch<any>): UnlockPageDispatchProps {
-  return {
-    onUnlock: (wallet: Wallet) => {
-      dispatch(actions.runtime.setWallet(wallet))
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(UnlockPage)
+export default connect<UnlockPageProps, undefined, any>(mapStateToProps)(UnlockPage)

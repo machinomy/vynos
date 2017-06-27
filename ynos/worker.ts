@@ -5,74 +5,68 @@ import { persistStore, autoRehydrate } from "redux-persist";
 import reducers from "./frame/reducers";
 import {INITIAL_STATE} from "./frame/state";
 import localForage from "localforage";
-import {PortStream} from "./lib/PortStream";
-import {Duplex, Writable} from "readable-stream";
-import PortChannel from "./lib/PortChannel";
-import APortChannel from "./lib/APortChannel";
+import * as runtime from "./frame/actions/runtime"
+import _ from "lodash";
 
-let n = 1;
-
-
-interface FrameInterface {
-  didAppend(n: any): void;
+interface AdapterRequest {
+  name: string;
+  data: any
 }
 
-/*
-let serverInterface = {
-  hello: function (world: string, callback: Function) {
-    n += 1;
-    console.log(`Got ${world}, n: ${n}`);
-    portChannel.proxy(remote => {
-      remote.didAppend(n);
-    });
-    callback(n);
+function isAdapterRequest(data: any): data is AdapterRequest {
+  return !!(typeof data === "object" && (data as AdapterRequest).name)
+}
+
+function isSWGC(window: any): window is ServiceWorkerGlobalScope {
+  return true;
+}
+
+const middleware = redux.compose(redux.applyMiddleware(thunkMiddleware, createLogger()), autoRehydrate());
+const store = redux.createStore(reducers, INITIAL_STATE, middleware);
+persistStore(store, { storage: localForage, blacklist: ['runtime'] });
+
+function broadcastStoreState() {
+  let state = store.getState();
+  if (isSWGC(self)) {
+    self.clients.matchAll().then(clients => {
+      clients.forEach(client => {
+        client.postMessage({
+          name: "ServiceWorkerStoreAdapter/getState/broadcast",
+          data: _.omit(state, 'runtime.background')
+        })
+      })
+    })
   }
-};
+}
 
-let portChannel = new PortChannel<typeof serverInterface, FrameInterface>(serverInterface);
-portChannel.registerServer(self);
-*/
-
-let serverInterface = {
-  hello: function (world: string, callback: Function) {
-    n += 1;
-    console.log(`Got ${world}, n: ${n}`);
-    portChannel.proxy(remote => {
-      remote.didAppend(n);
-    });
-    callback(n);
-  }
-};
-
-let d = dnode(serverInterface);
-
-let portChannel = new BPortChannel<typeof serverInterface, FrameInterface>(serverInterface, d);
-portChannel.registerServer(self);
-
-/*
-let aportChannel = new APortChannel();
-let d = dnode({
-  hello: function (world: string, callback: Function) {
-    n += 1;
-    console.log(`Got ${world}, n: ${n}`);
-    callback(n);
+store.subscribe(() => {
+  if (isSWGC(self)) {
+    broadcastStoreState()
   }
 });
-aportChannel.pipe(d).pipe(aportChannel);
-aportChannel.registerServer(self);
-*/
 
-self.addEventListener('install', e => {
-  /*
-   const middleware = redux.compose(redux.applyMiddleware(thunkMiddleware, createLogger()), autoRehydrate());
-   const store = redux.createStore(reducers, INITIAL_STATE, middleware);
-   persistStore(store, {
-   storage: localForage,
-   blacklist: ['runtime']
-   });
-   */
+self.addEventListener('message', ev => {
+  let message = ev.data;
+  if (isAdapterRequest(message)) {
+    switch (message.name) {
+      case 'ServiceWorkerStoreAdapter/getState':
+        broadcastStoreState();
+        break;
+      case 'ServiceWorkerStoreAdapter/dispatch':
+        let action = message.data;
+        store.dispatch(action);
+    }
+  }
 });
 
-self.addEventListener('activate', e => {
+self.addEventListener('install', (event: any) => {
+  if (isSWGC(self)) {
+    event.waitUntil(self.skipWaiting());
+  }
+});
 
+self.addEventListener('activate', (event: any) => {
+  if (isSWGC(self)) {
+    event.waitUntil(self.clients.claim());
+  }
 });

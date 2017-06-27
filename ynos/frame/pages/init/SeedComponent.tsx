@@ -80,7 +80,7 @@ export class SeedComponent extends React.Component<SeedComponentProps, SeedCompo
 
 function mapStateToProps (state: State): SeedComponentStateProps {
   return {
-    isButtonDisabled: !(state.runtime.wallet && state.init.keyring),
+    isButtonDisabled: !(state.runtime.walletPresent && state.init.keyring),
     mnemonic: state.runtime.mnemonic
   }
 }

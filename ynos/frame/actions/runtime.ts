@@ -16,18 +16,18 @@ export function setWalletHandler(state: RuntimeState, wallet: Wallet): RuntimeSt
   let web3 = eth.buildWeb3(wallet);
   let account = wallet.getAddressString();
   let machinomyClient = micropayments.buildMachinomyClient(web3, account);
-  return { ...state,
-    wallet: wallet,
-    web3: web3,
-    machinomyClient: machinomyClient
-  };
+  let nextState = Object.assign({}, state);
+  nextState.background.wallet = wallet;
+  nextState.background.web3 = web3;
+  nextState.background.machinomyClient = machinomyClient;
+  return nextState;
 }
 
 export const doLock = actionCreator<void>('runtime/doLock');
 export function doLockHandler(state: RuntimeState): RuntimeState {
   let resultState = Object.assign({}, state);
-  delete resultState['wallet'];
-  delete resultState['web3'];
-  delete resultState['machinomyClient'];
+  delete resultState.background['wallet'];
+  delete resultState.background['web3'];
+  delete resultState.background['machinomyClient'];
   return resultState;
 }

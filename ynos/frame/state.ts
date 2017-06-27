@@ -10,11 +10,16 @@ export interface InitState {
   bought?: Array<BoughtItem>
 }
 
-export interface RuntimeState {
+export interface BackgroundState {
   wallet?: Wallet;
-  mnemonic?: string;
   web3?: Web3;
-  machinomyClient?: Sender
+  machinomyClient?: Sender;
+}
+
+export interface RuntimeState {
+  walletPresent: boolean;
+  mnemonic?: string;
+  background: BackgroundState
 }
 
 export interface RoutingState {
@@ -34,9 +39,12 @@ export const INITIAL_STATE: State = {
     didAcceptTerms: null,
     didStoreSeed: null,
   },
-  runtime: {},
+  runtime: {
+    walletPresent: false,
+    background: {}
+  },
   routing: {
     maxLocationDepth: 10,
     locations: []
-  }
+  },
 };
