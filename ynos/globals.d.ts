@@ -103,6 +103,10 @@ interface Clients {
   claim: () => Promise<void>;
 }
 
+interface ExtendableEvent extends Event {
+  waitUntil<A>(promise: Promise<A>): void;
+}
+
 interface WorkerGlobalScope extends EventTarget {
 
 }
@@ -110,6 +114,9 @@ interface WorkerGlobalScope extends EventTarget {
 interface ServiceWorkerGlobalScope extends WorkerGlobalScope {
   clients: Clients
   skipWaiting: () => Promise<void>;
+  oninstall: (event: ExtendableEvent) => void;
+  onactivate: (event: ExtendableEvent) => void;
+  onmessage: (event: MessageEvent) => void;
 }
 
 declare var module: NodeModule;

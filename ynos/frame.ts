@@ -15,7 +15,6 @@ import PostStream from "./lib/PostStream";
 import dnode, {Dnode} from "dnode/browser";
 import {Duplex} from "readable-stream";
 import {PortStream} from "./lib/PortStream";
-import PortChannel from "./lib/PortChannel";
 import {Action} from "redux";
 import {EventEmitter} from "events";
 import Promise from "bluebird";
