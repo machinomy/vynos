@@ -19,6 +19,7 @@ import {Action} from "redux";
 import {EventEmitter} from "events";
 import Promise from "bluebird";
 import ServiceWorkerClientStream from "./lib/ServiceWorkerClientStream";
+import {initServiceWorkerClient} from "./lib/serviceWorkerClient"
 
 injectTapEventPlugin();
 
@@ -139,7 +140,7 @@ function buildStore(sw: ServiceWorker): Promise<ServiceWorkerStore> {
   });
 }
 
-function setupStream(serviceWorker: ServiceWorker) {
+initServiceWorkerClient(serviceWorker => {
   console.log("setup for ", serviceWorker)
   let streamS = new ServiceWorkerClientStream(serviceWorker);
   streamS.on("data", chunk => {
@@ -152,53 +153,6 @@ function setupStream(serviceWorker: ServiceWorker) {
     method: "ff",
     params: null
   })
-}
-
-function initServiceWorker(fn: (sw: ServiceWorker) => void) {
-  const isServiceWorker = (s: any): s is ServiceWorker => true
-  const extractServiceWorker = (r: ServiceWorkerRegistration, fn: (sw: ServiceWorker) => void) => {
-    let serviceWorker = r.active || r.installing || r.waiting;
-    if (serviceWorker) {
-      fn(serviceWorker)
-    }
-  }
-  const freshInstall = (sw: ServiceWorker) => {
-    const statechange = (e: Event) => {
-      console.log(e)
-      if (isServiceWorker(e.target)) {
-        console.log(e.target)
-        console.log(e.target.state)
-        if (e.target.state === "activated") {
-          fn(e.target)
-          sw.removeEventListener("statechange", statechange)
-        }
-      }
-    }
-    sw.addEventListener("statechange", statechange)
-  }
-
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("worker.bundle.js", {scope: "./"}).then(registration => {
-      registration.onupdatefound = () => {
-        console.log("onupdatefound")
-        extractServiceWorker(registration, sw => {
-          freshInstall(sw)
-        })
-      }
-      extractServiceWorker(registration, sw => {
-        freshInstall(sw)
-        fn(sw)
-      })
-    }).catch(error => {
-      console.log("ERROR", error)
-    })
-  } else {
-    console.log("ERROR FIXME SW: Browser is not supported");
-  }
-}
-
-initServiceWorker(sw => {
-  setupStream(sw)
 })
 
 
