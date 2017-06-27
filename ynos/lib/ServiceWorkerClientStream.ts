@@ -1,6 +1,6 @@
 import {Duplex} from 'readable-stream'
 
-export default class ClientStream extends Duplex {
+export default class ServiceWorkerClientStream extends Duplex {
   worker: ServiceWorkerGlobalScope
 
   constructor(worker: ServiceWorkerGlobalScope) {
