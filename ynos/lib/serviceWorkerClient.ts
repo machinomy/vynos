@@ -8,10 +8,7 @@ export function initServiceWorkerClient(main: (sw: ServiceWorker) => void) {
   }
   const freshInstall = (sw: ServiceWorker) => {
     const statechange = (e: Event) => {
-      console.log(e)
       if (isServiceWorker(e.target)) {
-        console.log(e.target)
-        console.log(e.target.state)
         if (e.target.state === "activated") {
           main(e.target)
           sw.removeEventListener("statechange", statechange)
@@ -24,7 +21,6 @@ export function initServiceWorkerClient(main: (sw: ServiceWorker) => void) {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("worker.bundle.js", {scope: "./"}).then(registration => {
       registration.onupdatefound = () => {
-        console.log("onupdatefound")
         extractServiceWorker(registration, sw => {
           freshInstall(sw)
         })
@@ -34,9 +30,8 @@ export function initServiceWorkerClient(main: (sw: ServiceWorker) => void) {
         main(sw)
       })
     }).catch(error => {
-      console.log("ERROR", error)
     })
   } else {
-    console.log("ERROR FIXME SW: Browser is not supported");
+    throw new Error("ERROR FIXME SW: Browser is not supported")
   }
 }
