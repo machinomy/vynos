@@ -1,13 +1,33 @@
 import {Duplex} from 'readable-stream'
 
-export default class ServiceWorkerStream extends Duplex {
-  worker: ServiceWorkerGlobalScope
+export interface ServiceWorkerStreamOptions {
+  sourceName: string
+  targetName: string
+  source: ServiceWorkerGlobalScope
+}
 
-  constructor(worker: ServiceWorkerGlobalScope) {
+export default class ServiceWorkerStream extends Duplex {
+  source: ServiceWorkerGlobalScope
+  targetName: string
+  sourceName: string
+
+  constructor(options: ServiceWorkerStreamOptions) {
     super({objectMode: true})
-    this.worker = worker
-    worker.onmessage = event => {
-      this.push(event.data);
+    this.source = options.source
+    this.targetName = options.targetName
+    this.sourceName = options.sourceName
+
+    this.source.addEventListener('message', this.onMessage.bind(this), false)
+  }
+
+  onMessage (event: MessageEvent) {
+    let message = event.data
+    if (typeof message === 'object' && message.target === this.sourceName && message.data) {
+      try {
+        this.push(message.data)
+      } catch (error) {
+        this.emit('error', error)
+      }
     }
   }
 
@@ -15,11 +35,14 @@ export default class ServiceWorkerStream extends Duplex {
     // Do Nothing
   }
 
-  _write(chunk: any, encoding: any, next: Function) {
-    console.log("ServiceWorkerStream", chunk);
-    this.worker.clients.matchAll({includeUncontrolled: true}).then(clients => {
+  _write(data: any, encoding: any, next: Function) {
+    let message = {
+      target: this.targetName,
+      data: data
+    };
+    this.source.clients.matchAll({includeUncontrolled: true}).then(clients => {
       clients.forEach(client => {
-        client.postMessage(chunk)
+        client.postMessage(message)
       })
     })
     next();

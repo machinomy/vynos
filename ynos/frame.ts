@@ -1,16 +1,20 @@
-import {Duplex} from "readable-stream";
-import {PortStream} from "./lib/PortStream";
-import ServiceWorkerClientStream from "./lib/ServiceWorkerClientStream";
 import {initServiceWorkerClient} from "./lib/serviceWorkerClient"
+import FrameStream from "./lib/FrameStream";
+import PostStream from "./lib/PostStream";
 
 initServiceWorkerClient(serviceWorker => {
-  console.log("setup for ", serviceWorker)
-  let streamS = new ServiceWorkerClientStream(serviceWorker);
-  streamS.on("data", chunk => {
+  let stream = new PostStream({
+    sourceName: "frame",
+    targetName: "worker",
+    source: navigator.serviceWorker,
+    target: serviceWorker
+  })
+
+  stream.on("data", chunk => {
     console.log("got fresh data")
     console.log(chunk)
   })
-  streamS.write({
+  stream.write({
     id: "1",
     jsonrpc: "2.0",
     method: "ff",
@@ -18,8 +22,6 @@ initServiceWorkerClient(serviceWorker => {
   })
 })
 
-
-let stream: Duplex | null = null;
 
 function renderFrameApp() {
   return;
@@ -38,15 +40,11 @@ function renderFrameApp() {
   */
 }
 
-window.addEventListener("message", (e) => {
-  if (e.data === "PUSH_PORT") {
-    let port = e.ports[0];
-    stream = new PortStream(port);
-    renderFrameApp();
-  }
-});
-
 window.addEventListener("load", () => {
+  let frameStream = new FrameStream("ynos").toParent()
+  frameStream.on("data", chunk => {
+    console.log("frame.frameStream received chunk", chunk)
+  })
   let _module = <HotModule>module;
 
   renderFrameApp();

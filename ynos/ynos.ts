@@ -90,21 +90,9 @@ class YnosImpl implements Ynos {
     return new Promise<void>((resolve, reject) => {
       try {
         this.frame = buildFrame();
-        let channel = new MessageChannel();
-        let otherPort = channel.port2;
-        let myPort = channel.port1;
-        this.frame.addEventListener("load", () => {
-          this.frame.contentWindow.postMessage("PUSH_PORT", "*", [otherPort]);
-        }, false);
-        this.stream = new PortStream(myPort);
+        this.stream = new FrameStream("ynos").toFrame(this.frame);
+        this.stream.write(`hello, frame! with love from ${window.location.href}`)
         document.body.appendChild(this.frame);
-
-        let d = dnode();
-        this.stream.pipe(d).pipe(this.stream);
-        d.on("remote", (remote: any) => {
-          this.remote = remote;
-          resolve();
-        });
       } catch (e) {
         reject(e);
       }

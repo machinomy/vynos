@@ -7,15 +7,14 @@ function isWindow(target: Target): target is Window {
 }
 
 function isServiceWorker(target: Target): target is ServiceWorker {
-  console.log("isServiceWorker", target);
   return target instanceof ServiceWorker;
 }
 
 export type PostStreamOptions = {
-  name: string,
-  target: string,
-  targetWindow: Target,
-  sourceWindow?: EventTarget,
+  sourceName: string,
+  targetName: string,
+  target?: Target,
+  source?: EventTarget,
   origin?: string
 }
 
@@ -29,12 +28,12 @@ export default class PostStream extends Duplex {
   constructor (options: PostStreamOptions) {
     super({ objectMode: true });
 
-    this.sourceName = options.name;
-    this.targetName = options.target;
-    this.sourceWindow = options.sourceWindow || window;
-    this.targetWindow = options.targetWindow || window;
+    this.sourceName = options.sourceName;
+    this.targetName = options.targetName;
+    this.sourceWindow = options.source || window;
+    this.targetWindow = options.target || window;
 
-    this.origin = (options.targetWindow ? '*' : window.location.origin);
+    this.origin = (options.target ? '*' : window.location.origin);
 
     this.sourceWindow.addEventListener('message', this.onMessage.bind(this), false)
   }
@@ -66,13 +65,11 @@ export default class PostStream extends Duplex {
       data: data
     };
     if (isWindow(this.targetWindow)) {
-      console.log("iswindow");
       this.targetWindow.postMessage(message, this.origin);
     } else if (isServiceWorker(this.targetWindow)) {
-      console.log("isserviceworker");
       this.targetWindow.postMessage(message);
     } else {
-      console.log("_write", this.targetWindow);
+      throw new Error("Can not write to empty target")
     }
     next()
   }

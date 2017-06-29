@@ -9,7 +9,7 @@ asServiceWorker(self => {
     end(null, {
       id: message.id,
       jsonrpc: message.jsonrpc,
-      result: "world!"
+      result: "Hi from worker!"
     })
   }
 
@@ -18,7 +18,11 @@ asServiceWorker(self => {
   let server = new StreamServer();
   server.add(helloHandler);
 
-  let stream = new ServiceWorkerStream(self);
+  let stream = new ServiceWorkerStream({
+    sourceName: "worker",
+    targetName: "frame",
+    source: self
+  });
   stream.pipe(server).pipe(stream);
 
   self.oninstall = event => {

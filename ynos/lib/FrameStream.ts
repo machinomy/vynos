@@ -21,9 +21,9 @@ export default class FrameStream {
     let result = duplexify.obj();
     frame.addEventListener("load", () => {
       let postStream = new PostStream({
-        name: this.parentName(),
-        target: this.childName(),
-        targetWindow: frame.contentWindow
+        sourceName: this.parentName(),
+        targetName: this.childName(),
+        target: frame.contentWindow
       });
       result.setWritable(postStream);
       result.setReadable(postStream)
@@ -33,9 +33,9 @@ export default class FrameStream {
 
   toParent (): Duplex {
     return new PostStream({
-      name: this.childName(),
-      target: this.parentName(),
-      targetWindow: window.parent
+      sourceName: this.childName(),
+      targetName: this.parentName(),
+      target: window.parent
     })
   }
 }
