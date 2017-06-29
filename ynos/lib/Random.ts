@@ -1,7 +1,10 @@
 export default class Random {
   randseed: Array<number>
 
-  constructor (seed: string) {
+  constructor (seed?: string) {
+    if (!seed) {
+      seed = Math.floor((Math.random()*Math.pow(10,16))).toString(16)
+    }
     let randseed = [0, 0, 0, 0]
     for (let i = 0; i < seed.length; i++) {
       randseed[i%4] = ((randseed[i%4] << 5) - randseed[i%4]) + seed.charCodeAt(i)

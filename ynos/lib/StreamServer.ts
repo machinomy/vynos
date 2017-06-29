@@ -1,9 +1,8 @@
 import {Duplex} from "readable-stream";
-import Payload from "./Payload";
-import Response from "./Response";
+import {RequestPayload, Response, Payload} from "./Payload";
 import _ from "lodash";
 
-export type EndFunction = (error: null, response?: Payload) => void;
+export type EndFunction = <A extends Payload>(error: null, response?: A) => void;
 export type Handler = (message: Payload, next: Function, end: EndFunction) => void;
 
 export default class StreamServer extends Duplex {
@@ -21,9 +20,9 @@ export default class StreamServer extends Duplex {
     return this;
   }
 
-  handle<A extends Payload>(payload: A): Promise<Response> {
+  handle<A extends Payload>(payload: A): Promise<Payload> {
     return new Promise((resolve, reject) => {
-      const end = (error: any, response?: Response) => {
+      const end = <A extends Payload>(error: null, response?: A) => {
         if (error) {
           reject(error)
         } else {
@@ -38,7 +37,7 @@ export default class StreamServer extends Duplex {
           head(payload, next, end)
         } else {
           if (this.verbose) console.log("No response for message", payload)
-          end(null)
+          end(null, payload)
         }
       }
 
@@ -50,7 +49,7 @@ export default class StreamServer extends Duplex {
     // Do Nothing
   }
 
-  _write<A extends Payload>(payload: A, encoding: string, next: Function) {
+  _write<A extends RequestPayload>(payload: A, encoding: string, next: Function) {
     this.handle(payload).then(response => {
       if (response) this.push(response)
     }).catch(error => {

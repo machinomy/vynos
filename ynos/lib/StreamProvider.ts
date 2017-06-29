@@ -1,5 +1,5 @@
 import {Duplex} from "readable-stream";
-import Payload from "./Payload";
+import Payload, {Response} from "./Payload";
 
 export default class StreamProvider extends Duplex {
   _callbacks: Map<number, Function>
@@ -33,13 +33,17 @@ export default class StreamProvider extends Duplex {
     // Do Nothing
   }
 
-  _write<A extends Payload>(payload: A, encoding: string, next: Function) {
+  _write<A extends Response>(payload: A, encoding: string, next: Function) {
+    console.log("_write", payload)
     let id = payload.id
-    let callback = this._callbacks.get(id)
-    if (callback) {
-      callback(payload)
-    } else {
-      throw new Error(`Can not find response callback for id ${id}`)
+    let isResult = !!payload.result
+    if (isResult) {
+      let callback = this._callbacks.get(id)
+      if (callback) {
+        callback(payload)
+      } else {
+        throw new Error(`Can not find response callback for id ${id}`)
+      }
     }
     next()
   }

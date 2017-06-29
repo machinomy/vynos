@@ -2,6 +2,7 @@ import {initServiceWorkerClient} from "./lib/serviceWorkerClient"
 import FrameStream from "./lib/FrameStream";
 import PostStream from "./lib/PostStream";
 import StreamServer, {Handler} from "./lib/StreamServer";
+import {RequestPayload} from "./lib/Payload";
 
 function renderFrameApp() {
   return;
@@ -20,24 +21,12 @@ function renderFrameApp() {
   */
 }
 
-const fooHandler: Handler = (message, next, end) => {
-  if (message.id < 5) {
+const blahHandler: Handler = (message: RequestPayload, next, end) => {
+  if (message.id >= 500 && message.method == "blah") {
     end(null, {
       id: message.id,
       jsonrpc: message.jsonrpc,
-      result: "Hi from foo frame!"
-    })
-  } else {
-    next();
-  }
-}
-
-const blahHandler: Handler = (message, next, end) => {
-  if (message.id >= 500) {
-    end(null, {
-      id: message.id,
-      jsonrpc: message.jsonrpc,
-      result: "Hi from blah frame!"
+      result: ["Hi from blah frame!"]
     })
   } else {
     next();
@@ -56,18 +45,17 @@ window.addEventListener("load", () => {
 
     let streamServer = new StreamServer();
     streamServer.add(blahHandler)
-      .add(fooHandler)
 
-    windowStream.pipe(streamServer).pipe(windowStream);
-    windowStream.pipe(workerStream).pipe(windowStream);
+    windowStream.pipe(streamServer).pipe(workerStream).pipe(windowStream)
 
     onUnload(() => {
       windowStream.unpipe(streamServer)
-      streamServer.unpipe(windowStream)
-      windowStream.unpipe(workerStream)
+      streamServer.unpipe(workerStream)
       workerStream.unpipe(windowStream)
+
       windowStream.end()
       workerStream.end()
+      streamServer.end()
     })
 
     /*

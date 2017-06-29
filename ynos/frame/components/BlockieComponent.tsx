@@ -1,5 +1,5 @@
 import * as React from "react";
-import Random from "../lib/Random";
+import Random from "../../lib/Random";
 import _ from "lodash";
 
 export function stringToColor(string: string): null|string {

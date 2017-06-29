@@ -3,6 +3,9 @@ import {Duplex} from "readable-stream";
 import FrameStream from "./lib/FrameStream";
 import dnode from "dnode/browser";
 import {PortStream} from "./lib/PortStream";
+import StreamProvider from "./lib/StreamProvider";
+import {AccountsRequest, AccountsResponse} from "./lib/rpc/eth";
+import {randomId} from "./lib/Payload"
 
 let _window = (<DevWindow & YnosWindow>window);
 
@@ -34,18 +37,33 @@ export interface Ynos {
   initFrame: () => Promise<void>
 }
 
+class YnosClient {
+  streamProvider: StreamProvider
+
+  constructor (stream: Duplex) {
+    this.streamProvider = new StreamProvider()
+    this.streamProvider.pipe(stream).pipe(this.streamProvider)
+  }
+
+  getAccount(): Promise<string> {
+    let request = new AccountsRequest()
+    return this.streamProvider.ask(request).then((response: AccountsResponse) => {
+      console.log("getAccount", response.result);
+      return response.result[0]
+    })
+  }
+}
+
 class YnosImpl implements Ynos {
   frame: HTMLIFrameElement;
   stream: Duplex;
+  client: YnosClient
   remote: any;
 
   getAccount (): Promise<string> {
-    this.stream.write({
-      id: Math.floor(Math.random()*10),
-      jsonrpc: "2.0",
-      method: "getAccount"
-    })
-    return Promise.resolve("foo");
+    let a = this.client.getAccount();
+    console.log("YnosImpl.getAccount", a)
+    return a
     /*
     return new Promise((resolve, reject) => {
       this.remote.getAccount((error: string, address: string) => {
@@ -98,9 +116,7 @@ class YnosImpl implements Ynos {
       try {
         this.frame = buildFrame();
         this.stream = new FrameStream("ynos").toFrame(this.frame);
-        this.stream.on("data", chunk => {
-          console.log("window received", chunk)
-        })
+        this.client = new YnosClient(this.stream)
         document.body.appendChild(this.frame);
         resolve();
       } catch (e) {
