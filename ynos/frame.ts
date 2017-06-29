@@ -58,23 +58,6 @@ window.addEventListener("load", () => {
       streamServer.end()
     })
 
-    /*
-    workerStream.on("data", chunk => {
-      console.log("got fresh data")
-      console.log(chunk)
-    })
-    workerStream.write({
-      id: "1",
-      jsonrpc: "2.0",
-      method: "ff",
-      params: null
-    })
-
-
-    windowStream.on("data", chunk => {
-      console.log("frame.frameStream received chunk", chunk)
-    })*/
-
     let _module = <HotModule>module;
     renderFrameApp();
     if (_module.hot) {
