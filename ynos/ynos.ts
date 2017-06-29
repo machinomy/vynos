@@ -40,7 +40,13 @@ class YnosImpl implements Ynos {
   remote: any;
 
   getAccount (): Promise<string> {
-    console.log("getAccount");
+    this.stream.write({
+      id: Math.floor(Math.random()*10),
+      jsonrpc: "2.0",
+      method: "getAccount"
+    })
+    return Promise.resolve("foo");
+    /*
     return new Promise((resolve, reject) => {
       this.remote.getAccount((error: string, address: string) => {
         if (error) {
@@ -50,6 +56,7 @@ class YnosImpl implements Ynos {
         }
       })
     })
+    */
   }
 
   openChannel () {
@@ -91,8 +98,11 @@ class YnosImpl implements Ynos {
       try {
         this.frame = buildFrame();
         this.stream = new FrameStream("ynos").toFrame(this.frame);
-        this.stream.write(`hello, frame! with love from ${window.location.href}`)
+        this.stream.on("data", chunk => {
+          console.log("window received", chunk)
+        })
         document.body.appendChild(this.frame);
+        resolve();
       } catch (e) {
         reject(e);
       }

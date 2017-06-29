@@ -1,11 +1,10 @@
 import {asServiceWorker} from './worker/window'
 import BackgroundController from "./worker/BackgroundController";
-import StreamServer, {Handler, ResponseEndFunction} from "./lib/StreamServer";
+import StreamServer, {Handler} from "./lib/StreamServer";
 import ServiceWorkerStream from "./lib/ServiceWorkerStream";
 
 asServiceWorker(self => {
-  const helloHandler: Handler = (message, next, end: ResponseEndFunction) => {
-    console.log("Hello handler got", message)
+  const helloHandler: Handler = (message, next, end) => {
     end(null, {
       id: message.id,
       jsonrpc: message.jsonrpc,
@@ -15,8 +14,8 @@ asServiceWorker(self => {
 
   let backgroundController = new BackgroundController();
 
-  let server = new StreamServer();
-  server.add(helloHandler);
+  let server = new StreamServer()
+  server.add(helloHandler)
 
   let stream = new ServiceWorkerStream({
     sourceName: "worker",

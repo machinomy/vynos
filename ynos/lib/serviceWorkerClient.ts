@@ -1,4 +1,8 @@
-export function initServiceWorkerClient(main: (sw: ServiceWorker) => void) {
+export function initServiceWorkerClient(main: (sw: ServiceWorker, onUnload: Function) => void) {
+  console.log("initServiceWorkerClient")
+
+  let _unload: Function|null = null;
+
   const isServiceWorker = (s: any): s is ServiceWorker => true
   const extractServiceWorker = (r: ServiceWorkerRegistration, fn: (sw: ServiceWorker) => void) => {
     let serviceWorker = r.active || r.installing || r.waiting;
@@ -6,12 +10,20 @@ export function initServiceWorkerClient(main: (sw: ServiceWorker) => void) {
       fn(serviceWorker)
     }
   }
-  const freshInstall = (sw: ServiceWorker) => {
+  const freshInstall = (sw: ServiceWorker, r: ServiceWorkerRegistration) => {
     const statechange = (e: Event) => {
+      console.log("statechange", e)
       if (isServiceWorker(e.target)) {
         if (e.target.state === "activated") {
-          main(e.target)
+          main(e.target, (fn: Function) => { _unload = fn });
           sw.removeEventListener("statechange", statechange)
+        }
+
+        if (e.target.state === "redundant" && _unload) {
+          _unload();
+          r.unregister().then(result => {
+            initServiceWorkerClient(main)
+          })
         }
       }
     }
@@ -22,14 +34,15 @@ export function initServiceWorkerClient(main: (sw: ServiceWorker) => void) {
     navigator.serviceWorker.register("worker.bundle.js", {scope: "./"}).then(registration => {
       registration.onupdatefound = () => {
         extractServiceWorker(registration, sw => {
-          freshInstall(sw)
+          freshInstall(sw, registration)
         })
       }
       extractServiceWorker(registration, sw => {
-        freshInstall(sw)
-        main(sw)
+        freshInstall(sw, registration)
+        main(sw, (fn: Function) => { _unload = fn })
       })
     }).catch(error => {
+      console.error(error)
     })
   } else {
     throw new Error("ERROR FIXME SW: Browser is not supported")

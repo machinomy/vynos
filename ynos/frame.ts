@@ -1,27 +1,7 @@
 import {initServiceWorkerClient} from "./lib/serviceWorkerClient"
 import FrameStream from "./lib/FrameStream";
 import PostStream from "./lib/PostStream";
-
-initServiceWorkerClient(serviceWorker => {
-  let stream = new PostStream({
-    sourceName: "frame",
-    targetName: "worker",
-    source: navigator.serviceWorker,
-    target: serviceWorker
-  })
-
-  stream.on("data", chunk => {
-    console.log("got fresh data")
-    console.log(chunk)
-  })
-  stream.write({
-    id: "1",
-    jsonrpc: "2.0",
-    method: "ff",
-    params: null
-  })
-})
-
+import StreamServer, {Handler} from "./lib/StreamServer";
 
 function renderFrameApp() {
   return;
@@ -40,18 +20,79 @@ function renderFrameApp() {
   */
 }
 
-window.addEventListener("load", () => {
-  let frameStream = new FrameStream("ynos").toParent()
-  frameStream.on("data", chunk => {
-    console.log("frame.frameStream received chunk", chunk)
-  })
-  let _module = <HotModule>module;
-
-  renderFrameApp();
-
-  if (_module.hot) {
-    _module.hot.accept("./ynos/frame/FrameApp.tsx", () => {
-      renderFrameApp();
+const fooHandler: Handler = (message, next, end) => {
+  if (message.id < 5) {
+    end(null, {
+      id: message.id,
+      jsonrpc: message.jsonrpc,
+      result: "Hi from foo frame!"
     })
+  } else {
+    next();
   }
+}
+
+const blahHandler: Handler = (message, next, end) => {
+  if (message.id >= 500) {
+    end(null, {
+      id: message.id,
+      jsonrpc: message.jsonrpc,
+      result: "Hi from blah frame!"
+    })
+  } else {
+    next();
+  }
+}
+
+window.addEventListener("load", () => {
+  initServiceWorkerClient((serviceWorker, onUnload) => {
+    let workerStream = new PostStream({
+      sourceName: "frame",
+      targetName: "worker",
+      source: navigator.serviceWorker,
+      target: serviceWorker
+    })
+    let windowStream = new FrameStream("ynos").toParent()
+
+    let streamServer = new StreamServer();
+    streamServer.add(blahHandler)
+      .add(fooHandler)
+
+    windowStream.pipe(streamServer).pipe(windowStream);
+    windowStream.pipe(workerStream).pipe(windowStream);
+
+    onUnload(() => {
+      windowStream.unpipe(streamServer)
+      streamServer.unpipe(windowStream)
+      windowStream.unpipe(workerStream)
+      workerStream.unpipe(windowStream)
+      windowStream.end()
+      workerStream.end()
+    })
+
+    /*
+    workerStream.on("data", chunk => {
+      console.log("got fresh data")
+      console.log(chunk)
+    })
+    workerStream.write({
+      id: "1",
+      jsonrpc: "2.0",
+      method: "ff",
+      params: null
+    })
+
+
+    windowStream.on("data", chunk => {
+      console.log("frame.frameStream received chunk", chunk)
+    })*/
+
+    let _module = <HotModule>module;
+    renderFrameApp();
+    if (_module.hot) {
+      _module.hot.accept("./ynos/frame/FrameApp.tsx", () => {
+        renderFrameApp();
+      })
+    }
+  })
 });

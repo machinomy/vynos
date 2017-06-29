@@ -35,7 +35,7 @@ export default class PostStream extends Duplex {
 
     this.origin = (options.target ? '*' : window.location.origin);
 
-    this.sourceWindow.addEventListener('message', this.onMessage.bind(this), false)
+    this.sourceWindow.addEventListener('message', this.onMessage.bind(this))
   }
 
   onMessage (event: MessageEvent) {
@@ -72,5 +72,10 @@ export default class PostStream extends Duplex {
       throw new Error("Can not write to empty target")
     }
     next()
+  }
+
+  end () {
+    super.end()
+    this.sourceWindow.removeEventListener('message', this.onMessage.bind(this))
   }
 }
