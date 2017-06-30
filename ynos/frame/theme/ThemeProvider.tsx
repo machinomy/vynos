@@ -14,6 +14,8 @@ const BLUE_THEME = getMuiTheme({
   }
 });
 
+console.log(BLUE_THEME)
+
 export default class ThemeProvider extends React.Component<any, any> {
   render () {
     return <MuiThemeProvider muiTheme={BLUE_THEME}>
