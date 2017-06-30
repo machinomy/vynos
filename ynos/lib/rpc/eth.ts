@@ -1,4 +1,4 @@
-import {JSONRPC, randomId, RequestPayload, Response} from "../Payload"
+import {JSONRPC, randomId, RequestPayload, ResponsePayload} from "../Payload"
 
 export class AccountsRequest implements RequestPayload {
   method: string;
@@ -14,6 +14,6 @@ export class AccountsRequest implements RequestPayload {
   }
 }
 
-export interface AccountsResponse extends Response {
+export interface AccountsResponse extends ResponsePayload {
   params: string[]
 }

@@ -1,5 +1,5 @@
 import {Duplex} from "readable-stream";
-import {RequestPayload, Response, Payload} from "./Payload";
+import {RequestPayload, ResponsePayload, Payload} from "./Payload";
 import _ from "lodash";
 
 export type EndFunction = <A extends Payload>(error: null, response?: A) => void;
@@ -37,7 +37,6 @@ export default class StreamServer extends Duplex {
           head(payload, next, end)
         } else {
           if (this.verbose) console.log("No response for message", payload)
-          end(null, payload)
         }
       }
 

@@ -1,4 +1,5 @@
-import {JSONRPC, randomId, RequestPayload, Response} from "../Payload"
+import {JSONRPC, randomId, RequestPayload, ResponsePayload} from "../Payload"
+import {SharedState} from "../../worker/State";
 
 export class InitAccountRequest implements RequestPayload {
   method: string;
@@ -16,6 +17,21 @@ export class InitAccountRequest implements RequestPayload {
   }
 }
 
-export interface InitAccountResponse extends Response {
+export interface InitAccountResponse extends ResponsePayload {
   params: string[]
+}
+
+export class GetSharedStateRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC
+  method: "yns_getSharedState"
+  params: any[];
+
+  static match(payload: RequestPayload): payload is GetSharedStateRequest {
+    return payload.method === "yns_getSharedState"
+  }
+}
+
+export interface GetSharedStateResponse extends ResponsePayload {
+  result: SharedState
 }

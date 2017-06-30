@@ -25,7 +25,7 @@ export const INITIAL_STATE: State = {
   runtime: {},
   shared: {
     page: {
-      name: "loading"
+      name: "wallet"
     }
   }
 }

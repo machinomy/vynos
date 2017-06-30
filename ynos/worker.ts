@@ -1,27 +1,15 @@
 import {asServiceWorker} from './worker/window'
 import BackgroundController from "./worker/BackgroundController";
-import StreamServer, {Handler} from "./lib/StreamServer";
+import StreamServer from "./lib/StreamServer";
 import ServiceWorkerStream from "./lib/ServiceWorkerStream";
-import {AccountsRequest} from "./lib/rpc/eth";
+import BackgroundHandler from "./lib/BackgroundHandler";
 
 asServiceWorker(self => {
-  const ethAccountsHandler: Handler = (message: AccountsRequest, next, end) => {
-    console.log("ethAccountsHandler", message)
-    if (message.method === "eth_accounts") {
-      end(null, {
-        id: message.id,
-        jsonrpc: message.jsonrpc,
-        result: ["0xdeadbeaf"]
-      })
-    } else {
-      next();
-    }
-  }
-
-  let backgroundController = new BackgroundController();
+  let backgroundController = new BackgroundController()
+  let background = new BackgroundHandler(backgroundController)
 
   let server = new StreamServer(true)
-  server.add(ethAccountsHandler)
+  server.add(background.handler)
 
   let stream = new ServiceWorkerStream({
     sourceName: "worker",

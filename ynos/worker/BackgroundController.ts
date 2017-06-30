@@ -13,8 +13,14 @@ export default class BackgroundController {
 
   setPage(name: string): Promise<SharedState> {
     this.store.dispatch(actions.setPage({name: "foo"}))
-    let state = this.store.getState()
-    console.log(state)
-    return Promise.resolve(state.shared)
+    return this.getSharedState()
+  }
+
+  getSharedState(): Promise<SharedState> {
+    return this.getState().then(state => state.shared)
+  }
+
+  getState(): Promise<State> {
+    return Promise.resolve(this.store.getState())
   }
 }

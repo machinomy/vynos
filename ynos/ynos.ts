@@ -42,7 +42,7 @@ class YnosClient {
   streamProvider: StreamProvider
 
   constructor (stream: Duplex) {
-    this.streamProvider = new StreamProvider()
+    this.streamProvider = new StreamProvider("YnosClient")
     this.streamProvider.pipe(stream).pipe(this.streamProvider)
   }
 
