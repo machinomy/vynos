@@ -1,8 +1,13 @@
 import {INITIAL_STATE, SharedState} from "../worker/State";
 import WorkerProxy from "./WorkerProxy";
 
+export interface InitPageState {
+  didAcceptTerms: boolean
+}
+
 export interface TempState {
   workerProxy?: WorkerProxy
+  initPage: InitPageState
 }
 
 export interface FrameState {
@@ -11,6 +16,10 @@ export interface FrameState {
 }
 
 export const INITIAL_FRAME_STATE: FrameState = {
-  temp: {},
+  temp: {
+    initPage: {
+      didAcceptTerms: false
+    }
+  },
   shared: INITIAL_STATE.shared
 }

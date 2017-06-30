@@ -1,20 +1,30 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {FrameState} from "./state";
-import any = jasmine.any;
+import InitPage from "./pages/init"
+import ThemeProvider from "./components/ThemeProvider";
 
 export interface FrameApplicationProps {
-  pageName: string
+  didInit: boolean
+}
+
+function childPage(props: FrameApplicationProps) {
+  if (props.didInit) {
+    return <p>FrameApplication: didInit</p>
+  } else {
+    return <InitPage />
+  }
 }
 
 const FrameApplication: React.SFC<FrameApplicationProps> = (props) => {
-  let pageName = props.pageName
-  return <p>FrameApplication: {pageName}</p>
+  return <ThemeProvider>
+    {childPage(props)}
+  </ThemeProvider>
 }
 
 function mapStateToProps(state: FrameState): FrameApplicationProps {
   return {
-    pageName: state.shared.page.name
+    didInit: state.shared.didInit
   }
 }
 

@@ -7,7 +7,7 @@ export interface PageState {
 }
 
 export interface SharedState {
-  page: PageState
+  didInit: boolean
 }
 
 export interface BackgroundState {
@@ -24,8 +24,6 @@ export const INITIAL_STATE: State = {
   background: {},
   runtime: {},
   shared: {
-    page: {
-      name: "wallet"
-    }
+    didInit: false,
   }
 }

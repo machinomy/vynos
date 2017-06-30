@@ -1,6 +1,9 @@
 import React from 'react'
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
+import injectTapEventPlugin from "react-tap-event-plugin";
+
+injectTapEventPlugin();
 
 const BLUE_THEME = getMuiTheme({
   fontFamily: ['Source Sans Pro', 'sans-serif'],
