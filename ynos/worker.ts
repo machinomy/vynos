@@ -7,8 +7,7 @@ import BackgroundHandler from "./lib/BackgroundHandler";
 asServiceWorker(self => {
   let backgroundController = new BackgroundController()
   let background = new BackgroundHandler(backgroundController)
-
-  let server = new StreamServer(true)
+  let server = new StreamServer("Worker", true)
   server.add(background.handler)
 
   let stream = new ServiceWorkerStream({
@@ -16,7 +15,8 @@ asServiceWorker(self => {
     targetName: "frame",
     source: self
   });
-  stream.pipe(server).pipe(stream);
+  stream.pipe(server).pipe(stream)
+  background.broadcastSharedState(stream)
 
   self.oninstall = event => {
     event.waitUntil(self.skipWaiting())

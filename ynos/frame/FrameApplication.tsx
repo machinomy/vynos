@@ -24,15 +24,14 @@ export default class FrameApplication extends React.Component<FrameApplicationPr
     this.onSharedStateBroadcast = this.onSharedStateBroadcast.bind(this)
   }
 
-  componentDidMount() {
-    this.props.workerProxy.addListener(SharedStateBroadcastType, this.onSharedStateBroadcast)
+  onSharedStateBroadcast(data: SharedStateBroadcast) {
+    this.setState({
+      frameState: data.result
+    })
   }
 
-  onSharedStateBroadcast(data: SharedStateBroadcast) {
-    console.log("onSharedStateBroadcast")
-    this.setState({
-      frameState: data.payload
-    })
+  componentDidMount() {
+    this.props.workerProxy.addListener(SharedStateBroadcastType, this.onSharedStateBroadcast)
   }
 
   componentWillUnmount() {
@@ -48,7 +47,7 @@ export default class FrameApplication extends React.Component<FrameApplicationPr
 export function render(document: HTMLDocument, workerProxy: WorkerProxy) {
   let mountPoint = document.getElementById(MOUNT_POINT_ID)
   if (mountPoint) {
-    workerProxy.getSharedState().then((frameState: SharedState) => {
+    workerProxy.getSharedState().then(frameState => {
       let element = React.createElement(FrameApplication, { workerProxy, frameState })
       DOM.render(element, mountPoint)
     })

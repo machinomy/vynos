@@ -1,7 +1,7 @@
 export const JSONRPC = "2.0"
 
 export interface Payload {
-  id: number
+  id: number|string
   jsonrpc: string
   method?: string
   params?: any[]
@@ -11,7 +11,7 @@ export default Payload
 
 export interface RequestPayload extends Payload {
   method: string
-  params: any[]
+  params: any
 }
 
 export interface ResponsePayload extends Payload {

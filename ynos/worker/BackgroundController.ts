@@ -3,6 +3,7 @@ import reducers from "./reducers";
 import {INITIAL_STATE, SharedState, State} from "./State";
 import {Store} from "redux";
 import * as actions from "./actions";
+import {EventEmitter} from "events";
 
 export default class BackgroundController {
   store: Store<State>
@@ -22,5 +23,13 @@ export default class BackgroundController {
 
   getState(): Promise<State> {
     return Promise.resolve(this.store.getState())
+  }
+
+  didChangeSharedState(fn: (state: SharedState) => void) {
+    this.store.subscribe(() => {
+      let state = this.store.getState()
+      let sharedState = state.shared
+      fn(sharedState)
+    })
   }
 }

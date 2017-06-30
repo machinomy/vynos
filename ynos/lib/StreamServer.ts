@@ -8,11 +8,13 @@ export type Handler = (message: Payload, next: Function, end: EndFunction) => vo
 export default class StreamServer extends Duplex {
   _handlers: Array<Handler>
   verbose: boolean
+  name: string
 
-  constructor(verbose: boolean = false) {
+  constructor(name?: string, verbose: boolean = false) {
     super({objectMode: true})
     this._handlers = [];
-    this.verbose = verbose
+    this.name = `StreamServer at ${name}` || "StreamServer";
+    this.verbose = verbose;
   }
 
   add(handler: Handler): this {
@@ -36,7 +38,7 @@ export default class StreamServer extends Duplex {
         if (head) {
           head(payload, next, end)
         } else {
-          if (this.verbose) console.log("No response for message", payload)
+          if (this.verbose) console.log(`${this.name}: No response for message`, payload)
         }
       }
 

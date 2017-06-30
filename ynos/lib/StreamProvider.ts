@@ -9,7 +9,7 @@ export default class StreamProvider extends Duplex {
   constructor(name?: string, strict?: boolean) {
     super({objectMode: true})
     this._callbacks = new Map()
-    this.name = `${name}StreamProvider` || "StreamProvider"
+    this.name = `StreamProvider at ${name}` || "StreamProvider"
     this.strict = strict || false
   }
 
@@ -49,7 +49,7 @@ export default class StreamProvider extends Duplex {
       if (callback) {
         callback(payload)
       } else if (this.strict) {
-        throw new Error(`${this.name}: Can not find response callback for id ${id}`)
+        console.error(`${this.name}: Can not find response callback for id ${id}`)
       }
     }
     next()
