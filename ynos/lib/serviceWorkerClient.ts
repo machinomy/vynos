@@ -1,6 +1,4 @@
 export function initServiceWorkerClient(main: (sw: ServiceWorker, onUnload: Function) => void) {
-  console.log("initServiceWorkerClient")
-
   let _unload: Function|null = null;
 
   const isServiceWorker = (s: any): s is ServiceWorker => true
@@ -12,7 +10,6 @@ export function initServiceWorkerClient(main: (sw: ServiceWorker, onUnload: Func
   }
   const freshInstall = (sw: ServiceWorker, r: ServiceWorkerRegistration) => {
     const statechange = (e: Event) => {
-      console.log("statechange", e)
       if (isServiceWorker(e.target)) {
         if (e.target.state === "activated") {
           main(e.target, (fn: Function) => { _unload = fn });

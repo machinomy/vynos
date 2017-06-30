@@ -4,6 +4,9 @@ let _window = (<YnosWindow>window);
 
 window.addEventListener("load", function () {
     _window.ynos.initFrame().then(() => {
+        _window.ynos.initAccount().then(() => {
+            console.log("initAccount")
+        })
         let activateButton = document.getElementById('activate');
         if (activateButton) {
             activateButton.addEventListener('click', function () {

@@ -6,6 +6,7 @@ import {PortStream} from "./lib/PortStream";
 import StreamProvider from "./lib/StreamProvider";
 import {AccountsRequest, AccountsResponse} from "./lib/rpc/eth";
 import {randomId} from "./lib/Payload"
+import {InitAccountRequest, InitAccountResponse} from "./lib/rpc/yns";
 
 let _window = (<DevWindow & YnosWindow>window);
 
@@ -33,7 +34,7 @@ export interface Ynos {
   listChannels: () => void
   makePayment: () => void
   payInChannel: () => void
-  initAccount: () => Promise<void>
+  initAccount: () => Promise<string>
   initFrame: () => Promise<void>
 }
 
@@ -48,7 +49,13 @@ class YnosClient {
   getAccount(): Promise<string> {
     let request = new AccountsRequest()
     return this.streamProvider.ask(request).then((response: AccountsResponse) => {
-      console.log("getAccount", response.result);
+      return response.result[0]
+    })
+  }
+
+  initAccount(): Promise<string> {
+    let request = new InitAccountRequest()
+    return this.streamProvider.ask(request).then((response: InitAccountResponse) => {
       return response.result[0]
     })
   }
@@ -58,23 +65,9 @@ class YnosImpl implements Ynos {
   frame: HTMLIFrameElement;
   stream: Duplex;
   client: YnosClient
-  remote: any;
 
   getAccount (): Promise<string> {
-    let a = this.client.getAccount();
-    console.log("YnosImpl.getAccount", a)
-    return a
-    /*
-    return new Promise((resolve, reject) => {
-      this.remote.getAccount((error: string, address: string) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(address);
-        }
-      })
-    })
-    */
+    return this.client.getAccount();
   }
 
   openChannel () {
@@ -101,12 +94,10 @@ class YnosImpl implements Ynos {
 
   }
 
-  initAccount (): Promise<void> {
-    if (!this.remote) return Promise.reject(new Error("Do initFrame first"));
+  initAccount (): Promise<string> {
+    if (!this.client) return Promise.reject(new Error("Do initFrame first"))
 
-    return new Promise<void>((resolve, reject) => {
-      this.remote.initAccount(resolve)
-    });
+    return this.client.initAccount()
   }
 
   initFrame (): Promise<void> {

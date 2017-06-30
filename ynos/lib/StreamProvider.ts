@@ -2,7 +2,7 @@ import {Duplex} from "readable-stream";
 import Payload, {Response} from "./Payload";
 
 export default class StreamProvider extends Duplex {
-  _callbacks: Map<number, Function>
+  _callbacks: Map<string, Function>
 
   constructor() {
     super({objectMode: true})
@@ -14,7 +14,7 @@ export default class StreamProvider extends Duplex {
     let result = new Promise<B>((resolve, reject) => {
       let resolved = false
 
-      this._callbacks.set(id, (response: B) => {
+      this._callbacks.set(id.toString(), (response: B) => {
         resolved = true
         resolve(response)
       })
@@ -29,16 +29,19 @@ export default class StreamProvider extends Duplex {
     return result
   }
 
+  listen<B>(id: string, handler: (response: B) => void) {
+    this._callbacks.set(id, handler)
+  }
+
   _read(n: number) {
     // Do Nothing
   }
 
   _write<A extends Response>(payload: A, encoding: string, next: Function) {
-    console.log("_write", payload)
     let id = payload.id
     let isResult = !!payload.result
     if (isResult) {
-      let callback = this._callbacks.get(id)
+      let callback = this._callbacks.get(id.toString())
       if (callback) {
         callback(payload)
       } else {
