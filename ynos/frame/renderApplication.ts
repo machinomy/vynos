@@ -8,6 +8,7 @@ import {INITIAL_FRAME_STATE} from "./state";
 import reducers from "./reducers";
 import {createLogger} from "redux-logger";
 import * as redux from "redux";
+import {setWorkerProxy} from "./actions/temp";
 
 const MOUNT_POINT_ID = "mount-point"
 
@@ -17,6 +18,7 @@ function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
     let store = redux.createStore(reducers, INITIAL_FRAME_STATE, middleware)
     let remoteStore = new RemoteStore(workerProxy, frameState)
     remoteStore.wireToLocal(store)
+    store.dispatch(setWorkerProxy(workerProxy))
 
     function reload() {
       let FrameApplication = require("./FrameApplication").default
