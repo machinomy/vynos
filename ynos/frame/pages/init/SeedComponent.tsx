@@ -5,7 +5,7 @@ import RaisedButton from "material-ui/RaisedButton";
 import actions from "../../actions";
 import {Dispatch} from "react-redux";
 import {CSSProperties} from "react";
-import {State} from "../../state";
+import {State} from "../../astate";
 
 export interface SeedComponentStateProps {
   mnemonic?: string,

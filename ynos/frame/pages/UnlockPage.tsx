@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {State} from "../state";
+import {State} from "../astate";
 import Keyring from "../lib/Keyring";
 import Wallet from "ethereumjs-wallet";
 import LargeLogoLayout from "../components/large_logo_layout";

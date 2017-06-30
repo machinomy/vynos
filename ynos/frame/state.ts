@@ -1,50 +1,16 @@
-import Wallet from "ethereumjs-wallet";
-import Web3 from "web3";
-import { Sender } from "machinomy";
-import BoughtItem from "./lib/BoughtItem";
+import {SharedState} from "../worker/State";
+import WorkerProxy from "./WorkerProxy";
 
-export interface InitState {
-  keyring: string|null;
-  didAcceptTerms: string|null;
-  didStoreSeed: string|null;
-  bought?: Array<BoughtItem>
+export interface TempState {
+  workerProxy?: WorkerProxy
 }
 
-export interface BackgroundState {
-  wallet?: Wallet;
-  web3?: Web3;
-  machinomyClient?: Sender;
+export interface FrameState {
+  temp: TempState
+  shared: SharedState | null
 }
 
-export interface RuntimeState {
-  walletPresent: boolean;
-  mnemonic?: string;
-  background: BackgroundState
+export const INITIAL_FRAME_STATE: FrameState = {
+  temp: {},
+  shared: null
 }
-
-export interface RoutingState {
-  maxLocationDepth: number;
-  locations: Array<string>;
-}
-
-export interface State {
-  init: InitState;
-  runtime: RuntimeState;
-  routing: RoutingState;
-}
-
-export const INITIAL_STATE: State = {
-  init: {
-    keyring: null,
-    didAcceptTerms: null,
-    didStoreSeed: null,
-  },
-  runtime: {
-    walletPresent: false,
-    background: {}
-  },
-  routing: {
-    maxLocationDepth: 10,
-    locations: []
-  },
-};

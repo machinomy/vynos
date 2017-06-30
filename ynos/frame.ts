@@ -2,21 +2,7 @@ import {initServiceWorkerClient} from "./lib/serviceWorkerClient"
 import FrameStream from "./lib/FrameStream";
 import PostStream from "./lib/PostStream";
 import WorkerProxy from "./frame/WorkerProxy";
-
-function renderFrameApplication(workerProxy: WorkerProxy) {
-  function attach() {
-    let render = require("./frame/FrameApplication").render
-    render(document, workerProxy)
-  }
-
-  let hotReload = (module as HotModule).hot
-  if (hotReload) {
-    attach()
-    hotReload.accept("./ynos/frame/FrameApplication.tsx", () => {
-      attach()
-    })
-  }
-}
+import renderApplication from "./frame/renderApplication";
 
 window.addEventListener("load", () => {
   initServiceWorkerClient((serviceWorker, onUnload) => {
@@ -35,7 +21,7 @@ window.addEventListener("load", () => {
     workerStream.pipe(workerProxy.stream)
     workerProxy.stream.pipe(workerStream)
 
-    renderFrameApplication(workerProxy)
+    renderApplication(document, workerProxy)
 
     onUnload(() => {
       windowStream.unpipe(workerStream)

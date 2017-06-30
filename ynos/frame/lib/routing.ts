@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import * as littleRouter from 'little-router'
-import {State} from "../state";
+import {State} from "../astate";
 
 const DEFAULT = '/';
 

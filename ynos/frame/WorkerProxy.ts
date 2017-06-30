@@ -4,6 +4,7 @@ import {INITIAL_STATE, SharedState} from "../worker/State";
 import {randomId} from "../lib/Payload";
 import {isSharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
 import {GetSharedStateRequest, GetSharedStateResponse, SetPageRequest, SetPageResponse} from "../lib/rpc/yns";
+import {Action} from "redux";
 
 export default class WorkerProxy extends EventEmitter {
   stream: StreamProvider
@@ -40,5 +41,9 @@ export default class WorkerProxy extends EventEmitter {
     return this.stream.ask(request).then((response: GetSharedStateResponse) => {
       return response.result
     })
+  }
+
+  dispatch<A extends Action>(action: A) {
+    console.warn("WorkerProxy#dispatch", action)
   }
 }

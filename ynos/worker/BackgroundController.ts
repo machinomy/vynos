@@ -3,7 +3,6 @@ import reducers from "./reducers";
 import {INITIAL_STATE, SharedState, State} from "./State";
 import {Store} from "redux";
 import * as actions from "./actions";
-import {EventEmitter} from "events";
 
 export default class BackgroundController {
   store: Store<State>
@@ -13,7 +12,7 @@ export default class BackgroundController {
   }
 
   setPage(name: string): Promise<SharedState> {
-    this.store.dispatch(actions.setPage({name: "foo"}))
+    this.store.dispatch(actions.setPage({name: name}))
     return this.getSharedState()
   }
 

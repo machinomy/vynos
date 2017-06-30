@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import Wallet from "ethereumjs-wallet";
 import Web3 from "web3";
 import _ from "lodash";
-import {State} from "../../state";
+import {State} from "../../astate";
 import {PaymentChannel} from "machinomy";
 import {CSSProperties} from "react";
 import IconButton from "material-ui/IconButton";

@@ -1,6 +1,6 @@
 import actionCreatorFactory, {ActionCreator, AsyncActionCreators} from "typescript-fsa";
 import { bindThunkAction } from "typescript-fsa-redux-thunk";
-import {InitState} from "../state";
+import {InitState} from "../astate";
 import bip39 from "bip39";
 import {Dispatch} from "redux";
 import hdkey from "ethereumjs-wallet/hdkey";

@@ -1,20 +1,18 @@
 import * as redux from "redux";
-import { INITIAL_STATE } from "./state";
+import {FrameState, INITIAL_FRAME_STATE} from "./state";
 import { reducerWithInitialState } from "typescript-fsa-reducers";
 import actions from "./actions";
+import {Reducer} from "redux";
 
-const initReducer = reducerWithInitialState(INITIAL_STATE.init)
-  .case(actions.init.acceptTerms, actions.init.acceptTermsHandler)
-  .case(actions.init.setKeyring, actions.init.setKeyringHandler)
-  .case(actions.init.didStoreSeed, actions.init.didStoreSeedHandler);
+const tempReducer = reducerWithInitialState(INITIAL_FRAME_STATE.temp)
+  .case(actions.temp.setWorkerProxy, actions.temp.setWorkerProxyHandler)
 
-const runtimeReducer = reducerWithInitialState(INITIAL_STATE.runtime)
-  .case(actions.runtime.setMnemonic, actions.runtime.setMnemonicHandler);
+const sharedReducer = reducerWithInitialState(INITIAL_FRAME_STATE.shared)
+  .case(actions.shared.setSharedState, actions.shared.setSharedStateHandler)
 
-export default redux.combineReducers({
-  init: initReducer,
-  runtime: runtimeReducer,
-  routing: function(state) {
-    return state || INITIAL_STATE.routing;
-  }
+const reducers: Reducer<FrameState> = redux.combineReducers({
+  temp: tempReducer,
+  shared: sharedReducer
 });
+
+export default reducers

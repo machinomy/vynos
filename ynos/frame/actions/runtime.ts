@@ -1,6 +1,6 @@
 import Wallet from "ethereumjs-wallet";
 import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
-import {RuntimeState} from "../state";
+import {RuntimeState} from "../astate";
 import * as eth from "../lib/eth";
 import * as micropayments from "../lib/micropayments";
 
