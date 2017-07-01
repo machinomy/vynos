@@ -1,7 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {FrameState} from "../../state";
-import RaisedButton from "../../theme/RaisedButton";
 
 const MOTIVATION_STYLE = {
   textAlign: 'center',
@@ -43,7 +42,7 @@ const TermsSubpage: React.SFC<TermsSubpageProps> = (props) => {
     </div>
     <div style={TOU_STYLE}>Read <a href="#" onClick={handleTouClick}>Terms of Use</a></div>
     <div style={BUTTON_CONTAINER_STYLE}>
-      <RaisedButton label="Accept" primary={true} onTouchTap={onAcceptTerms} />
+      <button onClick={onAcceptTerms}>Accept</button>
     </div>
   </div>
 }

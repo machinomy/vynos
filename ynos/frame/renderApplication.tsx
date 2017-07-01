@@ -9,7 +9,8 @@ import reducers from "./reducers";
 import {createLogger} from "redux-logger";
 import * as redux from "redux";
 import {setWorkerProxy} from "./actions/temp";
-import ThemeProvider from "./theme/ThemeProvider";
+
+import 'normalize.css';
 
 const MOUNT_POINT_ID = "mount-point"
 
@@ -24,8 +25,7 @@ function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
     function reload() {
       let FrameApplication = require("./FrameApplication").default
       let application = React.createElement(FrameApplication, { workerProxy, frameState })
-      let theme = React.createElement(ThemeProvider, undefined, application)
-      let container = React.createElement(AppContainer, undefined, theme)
+      let container = React.createElement(AppContainer, undefined, application)
       let provider = React.createElement(Provider, { store: store }, container);
       DOM.render(provider, mountPoint)
     }
