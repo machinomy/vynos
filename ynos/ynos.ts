@@ -22,7 +22,7 @@ function buildFrame(): HTMLIFrameElement {
   frame.height = '100%';
   frame.width = '320px';
   //frame.style.marginRight = '-320px';
-  frame.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin");
+  frame.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin allow-popups");
   return frame;
 }
 

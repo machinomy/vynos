@@ -65,7 +65,7 @@ export class TermsComponent extends React.Component<TermsComponentProps, undefin
 function mapDispatchToProps(dispatch: Dispatch<any>): TermsComponentProps {
   return {
     onAcceptTerms: () => {
-      dispatch(actions.init.acceptTerms(new Date()))
+      // dispatch(actions.init.acceptTerms(new Date()))
     }
   }
 }

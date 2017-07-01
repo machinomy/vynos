@@ -61,7 +61,6 @@ function mapDispatchToProps(dispatch: Dispatch<any>): InitPageDispatchProps {
   return {
     onSetMnemonic: (mnemonic: string, password: string) => {
       dispatch(actions.runtime.setMnemonic(mnemonic));
-      dispatch(actions.init.generateKeyring({mnemonic, password}));
     }
   }
 }

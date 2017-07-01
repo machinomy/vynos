@@ -1,15 +1,14 @@
-import actionCreatorFactory, {ActionCreator, AsyncActionCreators} from "typescript-fsa";
-import { bindThunkAction } from "typescript-fsa-redux-thunk";
-import {InitState} from "../astate";
-import bip39 from "bip39";
-import {Dispatch} from "redux";
-import hdkey from "ethereumjs-wallet/hdkey";
-import * as runtime from "./runtime";
-import Keyring from "../lib/Keyring";
-import {ThunkAction} from "redux-thunk";
+import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
+import {TempState} from "../../state";
 
-const actionCreator = actionCreatorFactory();
+const actionCreator = actionCreatorFactory("init");
 
+export const didAcceptTerms: ActionCreator<boolean> = actionCreator<boolean>("didAcceptTerms");
+export function didAcceptTermsHandler(state: TempState, accepted: boolean): TempState {
+  return { ...state, initPage: { didAcceptTerms: accepted }}
+}
+
+/*
 export const acceptTerms: ActionCreator<Date> = actionCreator<Date>("init/acceptTerms");
 export function acceptTermsHandler(state: InitState, date: Date): InitState {
   return { ...state, didAcceptTerms: date.toISOString() };
@@ -43,3 +42,4 @@ export const generateKeyring = bindThunkAction(generateKeyringCreator,
       dispatch(setKeyring(serialized))
     })
   });
+*/

@@ -88,7 +88,7 @@ function mapStateToProps (state: State): SeedComponentStateProps {
 function mapDispatchToProps (dispatch: Dispatch<any>): SeedComponentDispatchProps {
   return {
     onDoneButtonClick: () => {
-      dispatch(actions.init.didStoreSeed(new Date()))
+      // dispatch(actions.init.didStoreSeed(new Date()))
     }
   }
 }

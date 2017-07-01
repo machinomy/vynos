@@ -1,55 +1,53 @@
 import * as React from "react";
-import {connect} from "react-redux";
+import {connect, Dispatch} from "react-redux";
 import {FrameState} from "../../state";
+import Button from "@react-mdc/button";
+import actions from "../../actions";
 
-const MOTIVATION_STYLE = {
-  textAlign: 'center',
-  marginTop: 20,
-  marginBottom: 45
-};
+const TERMS_OF_USE_ADDRESS = 'https://example.com';
 
-const TOU_STYLE = {
-  textAlign: 'center',
-  fontSize: '16px',
-  fontFamily: ['Source Sans Pro', 'sans-serif'],
-};
+const style = require("../../styles/ynos.css")
 
-const BUTTON_CONTAINER_STYLE = {
-  textAlign: 'center',
-  top: '325px',
-  width: '240px',
-  //position: 'absolute'
-};
+export interface TermsSubpageStateProps {
 
-export interface TermsSubpageProps {
 }
+
+export interface TermsSubpageDispatchProps {
+  didAcceptTerms: () => void
+}
+
+type TermsSubpageProps = TermsSubpageDispatchProps & TermsSubpageStateProps
 
 function handleTouClick() {
-  console.log("handleTouClick")
-}
-
-function onAcceptTerms() {
-  console.log("onAcceptTerms")
+  window.open(TERMS_OF_USE_ADDRESS, '_blank')
 }
 
 const TermsSubpage: React.SFC<TermsSubpageProps> = (props) => {
   return <div>
     ffs
-    <div style={MOTIVATION_STYLE}>
+    <div className={style.initTermsMotivation}>
       Ready to unlock a true value<br/>
       of quality content<br/>
       through <em>real</em> micropayments?
     </div>
-    <div style={TOU_STYLE}>Read <a href="#" onClick={handleTouClick}>Terms of Use</a></div>
-    <div style={BUTTON_CONTAINER_STYLE}>
-      <button onClick={onAcceptTerms}>Accept</button>
+    <div className={style.initTermsTermsLink}>
+      Read <a href="#" onClick={handleTouClick}>Terms of Use</a>
+    </div>
+    <div className={style.initTermsButtonContainer}>
+      <Button raised primary onClick={props.didAcceptTerms}>Accept</Button>
     </div>
   </div>
 }
 
-function mapStateToProps(state: FrameState): TermsSubpageProps {
+function mapStateToProps(state: FrameState): TermsSubpageStateProps {
   return {
   }
 }
 
-export default connect<TermsSubpageProps, undefined, any>(mapStateToProps)(TermsSubpage)
+function mapDispatchToProps(dispatch: Dispatch<FrameState>): TermsSubpageDispatchProps {
+  return {
+    didAcceptTerms: () => dispatch(actions.temp.init.didAcceptTerms(true))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TermsSubpage)
