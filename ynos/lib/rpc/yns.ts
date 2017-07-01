@@ -54,3 +54,20 @@ export class SetPageRequest implements RequestPayload {
 export interface SetPageResponse extends ResponsePayload {
   result: SharedState
 }
+
+export class GenKeyringRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof SetPageRequest.method;
+  params: string[];
+
+  static method = "yns_genKeyring"
+
+  static match(payload: RequestPayload): payload is GenKeyringRequest {
+    return payload.method === GenKeyringRequest.method
+  }
+}
+
+export interface GenKeyringResponse extends ResponsePayload {
+  result: string
+}

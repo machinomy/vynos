@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {State} from "../../astate";
 import _ from "lodash";
 import TermsComponent from "./TermsComponent";
-import PasswordComponent from "./PasswordComponent";
+import PasswordComponent from "./PasswordSubpage";
 import SeedComponent from "./SeedComponent";
 import bip39 from "bip39";
 import {Dispatch} from "react-redux";
@@ -36,7 +36,7 @@ export class InitPage extends React.Component<InitPageProps, any> {
     if (this.props.didNotAcceptTerms) {
       return React.createElement(TermsComponent);
     } else if (_.isEmpty(this.props.mnemonic)) {
-      return React.createElement(PasswordComponent, {onSetPassword: this.handleSetPassword});
+      return React.createElement(PasswordComponent);
     } else if (this.props.mnemonic) {
       return <SeedComponent />
     } else {

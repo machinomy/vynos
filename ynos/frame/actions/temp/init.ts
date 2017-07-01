@@ -1,12 +1,19 @@
 import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
 import {TempState} from "../../state";
+import {string} from "prop-types";
 
 const actionCreator = actionCreatorFactory("init");
 
 export const didAcceptTerms: ActionCreator<boolean> = actionCreator<boolean>("didAcceptTerms");
 export function didAcceptTermsHandler(state: TempState, accepted: boolean): TempState {
-  return { ...state, initPage: { didAcceptTerms: accepted }}
+  return { ...state, initPage: { ...state.initPage, didAcceptTerms: accepted }}
 }
+
+export const didReceiveMnemonic: ActionCreator<string> = actionCreator<string>("didReceiveMnemonic");
+export function didReceiveMnemonicHandler(state: TempState, mnemonic: string): TempState {
+  return { ...state, initPage: { ...state.initPage, mnemonic: mnemonic }}
+}
+
 
 /*
 export const acceptTerms: ActionCreator<Date> = actionCreator<Date>("init/acceptTerms");

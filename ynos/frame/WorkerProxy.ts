@@ -1,9 +1,12 @@
 import StreamProvider from "../lib/StreamProvider";
 import {EventEmitter} from "events";
 import {INITIAL_STATE, SharedState} from "../worker/State";
-import {randomId} from "../lib/Payload";
+import {JSONRPC, randomId} from "../lib/Payload";
 import {isSharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
-import {GetSharedStateRequest, GetSharedStateResponse, SetPageRequest, SetPageResponse} from "../lib/rpc/yns";
+import {
+  GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, SetPageRequest,
+  SetPageResponse
+} from "../lib/rpc/yns";
 import {Action} from "redux";
 
 export default class WorkerProxy extends EventEmitter {
@@ -22,7 +25,7 @@ export default class WorkerProxy extends EventEmitter {
   setPage(name: string): Promise<SharedState> {
     let request: SetPageRequest = {
       id: randomId(),
-      jsonrpc: "2.0",
+      jsonrpc: JSONRPC,
       method: SetPageRequest.method,
       params: [name]
     }
@@ -31,10 +34,22 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
+  genKeyring(password: string): Promise<string> {
+    let request: GenKeyringRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: GenKeyringRequest.method,
+      params: [password]
+    }
+    return this.stream.ask(request).then((response: GenKeyringResponse) => {
+      return response.result
+    })
+  }
+
   getSharedState(): Promise<SharedState> {
     let request: GetSharedStateRequest = {
       id: randomId(),
-      jsonrpc: "2.0",
+      jsonrpc: JSONRPC,
       method: GetSharedStateRequest.method,
       params: []
     }

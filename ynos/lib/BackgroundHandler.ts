@@ -1,7 +1,10 @@
 import BackgroundController from "../worker/BackgroundController";
 import {JSONRPC, RequestPayload} from "./Payload";
 import {EndFunction} from "./StreamServer";
-import {GetSharedStateRequest, GetSharedStateResponse, SetPageRequest, SetPageResponse} from "./rpc/yns";
+import {
+  GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, SetPageRequest,
+  SetPageResponse
+} from "./rpc/yns";
 import {Writable} from "readable-stream";
 import {SharedStateBroadcast, SharedStateBroadcastType} from "./rpc/SharedStateBroadcast";
 
@@ -21,9 +24,7 @@ export default class BackgroundHandler {
         result: sharedState
       }
       end(null, response)
-    }).catch(error => {
-      end(error)
-    })
+    }).catch(end)
   }
 
   setPage(message: SetPageRequest, next: Function, end: EndFunction) {
@@ -34,9 +35,19 @@ export default class BackgroundHandler {
         result: sharedState
       }
       end(null, response)
-    }).catch(error => {
-      end(error)
-    })
+    }).catch(end)
+  }
+
+  genKeyring(message: GenKeyringRequest, next: Function, end: EndFunction) {
+    let password: string = message.params[0]
+    this.controller.genKeyring(password).then((mnemonic: string) => {
+      let response: GenKeyringResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: mnemonic
+      }
+      end(null, response)
+    }).catch(end)
   }
 
   handler (message: RequestPayload, next: Function, end: EndFunction) {
@@ -44,6 +55,8 @@ export default class BackgroundHandler {
       this.getSharedState(message, next, end)
     } else if (SetPageRequest.match(message)) {
       this.setPage(message, next, end)
+    } else if (GenKeyringRequest.match(message)) {
+      this.genKeyring(message, next, end)
     } else {
       next()
     }

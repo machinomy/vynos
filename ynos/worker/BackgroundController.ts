@@ -24,6 +24,10 @@ export default class BackgroundController {
     return Promise.resolve(this.store.getState())
   }
 
+  genKeyring(password: string): Promise<string> {
+    return Promise.resolve("foomonic")
+  }
+
   didChangeSharedState(fn: (state: SharedState) => void) {
     this.store.subscribe(() => {
       let state = this.store.getState()
