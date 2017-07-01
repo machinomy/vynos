@@ -1,8 +1,7 @@
 import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
 import {TempState} from "../../state";
-import {string} from "prop-types";
 
-const actionCreator = actionCreatorFactory("init");
+const actionCreator = actionCreatorFactory("frame/init");
 
 export const didAcceptTerms: ActionCreator<boolean> = actionCreator<boolean>("didAcceptTerms");
 export function didAcceptTermsHandler(state: TempState, accepted: boolean): TempState {

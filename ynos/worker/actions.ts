@@ -1,10 +1,36 @@
 import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
 import {PageState, State} from "./State";
+import Wallet from "ethereumjs-wallet";
 
 const actionCreator = actionCreatorFactory();
+
+// Shared
 
 export const setPage = actionCreator<PageState>("shared/setPage")
 export function setPageHandler(state: State, pageState: PageState): State {
   // return { ...state, shared: { ...state.shared, page: pageState }}
   return state
 }
+
+// Runtime
+
+export const setWallet = actionCreator<Wallet>("runtime/setWallet")
+export function setWalletHandler(state: State, wallet: Wallet): State {
+  return { ...state, runtime: { ...state.runtime, wallet: wallet } }
+}
+
+// Background
+export const setKeyring = actionCreator<string>("background/setKeyring")
+export function setKeyringHandler(state: State, keyring: string): State {
+  return { ...state, background: { ...state.background, keyring: keyring } }
+}
+
+export const setDidStoreMnemonic = actionCreator<boolean>("background/setDidStoreMnemonic")
+export function setDidStoreMnemonicHandler(state: State): State {
+  return {
+    ...state,
+    background: { ...state.background, didInit: true },
+    shared: { ...state.shared, didInit: true }
+  }
+}
+

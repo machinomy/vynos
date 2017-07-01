@@ -38,6 +38,23 @@ export interface GetSharedStateResponse extends ResponsePayload {
   result: SharedState
 }
 
+export class DidStoreMnemonicRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof DidStoreMnemonicRequest.method;
+  params: any[];
+
+  static method: string = "yns_didStoreMnemonic"
+
+  static match(payload: RequestPayload): payload is DidStoreMnemonicRequest {
+    return payload.method === DidStoreMnemonicRequest.method
+  }
+}
+
+export interface DidStoreMnemonicResponse extends ResponsePayload {
+  result: null
+}
+
 export class SetPageRequest implements RequestPayload {
   id: number;
   jsonrpc: typeof JSONRPC;

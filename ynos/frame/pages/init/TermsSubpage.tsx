@@ -1,7 +1,6 @@
 import * as React from "react";
 import {connect, Dispatch} from "react-redux";
 import {FrameState} from "../../state";
-import Button from "@react-mdc/button";
 import actions from "../../actions";
 
 const TERMS_OF_USE_ADDRESS = 'https://example.com';
@@ -34,7 +33,7 @@ const TermsSubpage: React.SFC<TermsSubpageProps> = (props) => {
       Read <a href="#" onClick={handleTouClick}>Terms of Use</a>
     </div>
     <div className={style.initTermsButtonContainer}>
-      <Button raised primary onClick={props.didAcceptTerms}>Accept</Button>
+      <button onClick={props.didAcceptTerms}>Accept</button>
     </div>
   </div>
 }

@@ -2,22 +2,23 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {FrameState} from "./state";
 import InitPage from "./pages/init"
+import WalletPage from "./pages/wallet"
 
 export interface FrameApplicationProps {
-  didInit: boolean
+  needInit: boolean
 }
 
 const FrameApplication: React.SFC<FrameApplicationProps> = (props) => {
-  if (props.didInit) {
-    return <p>FrameApplication: didInit</p>
-  } else {
+  if (props.needInit) {
     return <InitPage />
+  } else {
+    return <WalletPage />
   }
 }
 
 function mapStateToProps(state: FrameState): FrameApplicationProps {
   return {
-    didInit: state.shared.didInit
+    needInit: !state.shared.didInit
   }
 }
 

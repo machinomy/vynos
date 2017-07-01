@@ -3,7 +3,7 @@ import WorkerProxy from "../WorkerProxy";
 import {TempState} from "../state";
 import * as initActions from "./temp/init"
 
-const actionCreator = actionCreatorFactory("temp");
+const actionCreator = actionCreatorFactory("frame/temp");
 
 export const setWorkerProxy: ActionCreator<WorkerProxy> = actionCreator<WorkerProxy>("setWorkerProxy");
 export function setWorkerProxyHandler(state: TempState, workerProxy: WorkerProxy): TempState {

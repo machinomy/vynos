@@ -1,5 +1,7 @@
-export interface RuntimeState {
+import Wallet from "ethereumjs-wallet";
 
+export interface RuntimeState {
+  wallet?: Wallet
 }
 
 export interface PageState {
@@ -11,7 +13,8 @@ export interface SharedState {
 }
 
 export interface BackgroundState {
-
+  didInit: boolean,
+  keyring?: string
 }
 
 export interface State {
@@ -21,7 +24,9 @@ export interface State {
 }
 
 export const INITIAL_STATE: State = {
-  background: {},
+  background: {
+    didInit: false
+  },
   runtime: {},
   shared: {
     didInit: false,

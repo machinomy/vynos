@@ -1,9 +1,7 @@
 import * as React from "react";
-import Textfield from "@react-mdc/textfield"
-import Button from "@react-mdc/button";
 import {Dispatch} from "redux";
 import {FrameState} from "../../state";
-import {ChangeEvent, CSSProperties} from "react";
+import {ChangeEvent, FormEvent} from "react";
 import WorkerProxy from "../../WorkerProxy";
 import {connect} from "react-redux";
 import actions from "../../actions";
@@ -15,30 +13,8 @@ export interface PasswordSubpageState {
   passwordConfirmationError: null | string
 }
 
-const TEXT_FIELD_STYLE = {
-  marginTop: -5,
-  width: 240
-};
-
-const BUTTON_CONTAINER_STYLE: CSSProperties = {
-  textAlign: "center",
-  width: "240px",
-  top: "325px",
-  position: "absolute"
-};
-
-const BUTTON_STYLE = {
-  boxShadow: null
-};
-
-const MINOR_BUTTON_STYLE = {
-  display: 'block',
-  lineHeight: '25px',
-  height: 25
-};
-
 const PASSWORD_CONFIRMATION_HINT_TEXT = 'Same as password';
-const MINIMUM_PASSWORD_LENGTH = 8;
+const MINIMUM_PASSWORD_LENGTH = 0; // FIXME ACHTUNG MUST BE 8
 const PASSWORD_HINT_TEXT = `At least ${MINIMUM_PASSWORD_LENGTH} characters`;
 
 export interface PasswordSubpageStateProps {
@@ -83,19 +59,10 @@ export class PasswordSubpage extends React.Component<PasswordSubpageProps, Passw
     return !(passwordError || passwordConfirmationError)
   }
 
-  handleSubmit () {
+  handleSubmit (ev: FormEvent<HTMLFormElement>) {
+    ev.preventDefault()
     if (this.isValid() && this.state.password) {
       this.props.genKeyring(this.props.workerProxy, this.state.password)
-    }
-  }
-
-  passwordConfirmationStyle () {
-    if (this.state.passwordError) {
-      return Object.assign({}, TEXT_FIELD_STYLE, {
-        marginTop: -1*(25 + 2 + 5)
-      })
-    } else {
-      return TEXT_FIELD_STYLE
     }
   }
 
@@ -131,55 +98,14 @@ export class PasswordSubpage extends React.Component<PasswordSubpageProps, Passw
       <h1>
         Encrypt your new wallet
       </h1>
-      <Textfield fullwidth onChange={this.handleChangePassword}>
-        <Textfield.Input id="password"/>
-        <Textfield.Label htmlFor="password">
-          Password
-        </Textfield.Label>
-      </Textfield>
-      <Textfield fullwidth onChange={this.handleChangePasswordConfirmation}>
-        <Textfield.Input id="password-confirmation" />
-        <Textfield.Label htmlFor="password-confirmation">
-          Password Confirmation
-        </Textfield.Label>
-      </Textfield>
-      {this.renderError()}
-      <Button raised primary onClick={this.handleSubmit}>Create wallet</Button>
+      <form onSubmit={this.handleSubmit}>
+        <input type="password" placeholder="Password" onChange={this.handleChangePassword} />
+        <input type="password" placeholder="Password Confirmation" onChange={this.handleChangePasswordConfirmation} />
+        {this.renderError()}
+        <button type="submit">Create wallet</button>
+      </form>
     </div>
   }
-
-  /*
-  render () {
-    return <div>
-      <h1>
-        Encrypt your new wallet
-      </h1>
-      <TextField
-        floatingLabelText="Password"
-        hintText={PASSWORD_HINT_TEXT}
-        errorText={this.state.passwordError}
-        type="password"
-        style={TEXT_FIELD_STYLE}
-        onChange={this.handlePasswordChange} />
-      <TextField
-        floatingLabelText="Password Confirmation"
-        hintText={PASSWORD_CONFIRMATION_HINT_TEXT}
-        errorText={this.state.passwordConfirmationError}
-        type="password"
-        style={this.passwordConfirmationStyle()}
-        onChange={this.handlePasswordConfirmationChange} />
-
-      <div style={BUTTON_CONTAINER_STYLE}>
-        <div>
-          <RaisedButton label="CREATE WALLET" style={BUTTON_STYLE} primary={true} onTouchTap={this.handleSubmit} />
-        </div>
-        <div>
-          <a href="#FIXME" style={MINOR_BUTTON_STYLE}>Restore wallet</a>
-        </div>
-      </div>
-    </div>
-  }
-   */
 }
 
 function mapStateToProps(state: FrameState): PasswordSubpageStateProps {

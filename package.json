@@ -54,7 +54,6 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-hot-loader": "next",
-    "react-material-components-web": "^0.1.17",
     "react-redux": "^5.0.5",
     "react-tap-event-plugin": "^2.0.1",
     "readable-stream": "^2.3.2",

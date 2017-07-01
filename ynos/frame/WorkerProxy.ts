@@ -4,6 +4,7 @@ import {INITIAL_STATE, SharedState} from "../worker/State";
 import {JSONRPC, randomId} from "../lib/Payload";
 import {isSharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
 import {
+  DidStoreMnemonicRequest, DidStoreMnemonicResponse,
   GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, SetPageRequest,
   SetPageResponse
 } from "../lib/rpc/yns";
@@ -55,6 +56,18 @@ export default class WorkerProxy extends EventEmitter {
     }
     return this.stream.ask(request).then((response: GetSharedStateResponse) => {
       return response.result
+    })
+  }
+
+  didStoreMnemonic(): Promise<void> {
+    let request: DidStoreMnemonicRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: DidStoreMnemonicRequest.method,
+      params: []
+    }
+    return this.stream.ask(request).then((response: DidStoreMnemonicResponse) => {
+      return;
     })
   }
 

@@ -4,7 +4,6 @@ import WorkerProxy from "./WorkerProxy";
 export interface InitPageState {
   didAcceptTerms: boolean
   mnemonic: string|null
-  didStoreMnemonic: boolean
 }
 
 export interface TempState {
@@ -22,7 +21,6 @@ export const INITIAL_FRAME_STATE: FrameState = {
     initPage: {
       didAcceptTerms: false,
       mnemonic: null,
-      didStoreMnemonic: false
     }
   },
   shared: INITIAL_STATE.shared

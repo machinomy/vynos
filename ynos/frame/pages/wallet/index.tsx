@@ -6,15 +6,11 @@ import _ from "lodash";
 import {State} from "../../astate";
 import {PaymentChannel} from "machinomy";
 import {CSSProperties} from "react";
-import IconButton from "material-ui/IconButton";
-import FlatButton from "material-ui/FlatButton";
-import RaisedButton from "material-ui/RaisedButton"
 import BlockieComponent from '../../components/BlockieComponent'
 import browser from '../../lib/browser'
 import {Dispatch} from "redux";
 import actions from "../../actions";
 import BoughtItem from "../../lib/BoughtItem";
-import {List, ListItem} from "material-ui/List";
 
 const TERMS_OF_USE_ADDRESS = 'https://literatepayments.com'
 
@@ -141,9 +137,9 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
 
   constructor (props: WalletPageProps) {
     super(props);
-    if (!this.props.wallet) throw Error("Improbable error: props.wallet is not defined");
+    // if (!this.props.wallet) throw Error("Improbable error: props.wallet is not defined");
     this.state = {
-      address: this.props.wallet.getAddressString(),
+      address: '0xdeadbeaf',//this.props.wallet.getAddressString(),
       balance: '-',
       channels: []
     };
@@ -169,10 +165,10 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
     let items = _.map(this.props.bought, (item: BoughtItem)=> {
       if (item && item.media && item.title && item.date) {
         let title = <span>{item.title}<br/>{item.price}</span>
-        return <ListItem primaryText={item.media} secondaryText={title} secondaryTextLines={2} key={item.date} />
+        return <li key={item.date}>{item.media}-{title}</li>
       }
     })
-    return <List style={{padding: 0}}>{items}</List>
+    return <ul style={{padding: 0}}>{items}</ul>
   }
 
   renderOperations () {
@@ -213,7 +209,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
         boxShadow: null
       }
       const openExplorer = () => {
-        browser.tabs.create({ active: true, url: 'https://literatepayments.com' })
+        window.open('https://literatepayments.com', '_blank')
       } // FIXME
       return <div>
         <h1 style={headingStyle}>You are ready</h1>
@@ -225,7 +221,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
           for you to start
         </div>
         <div style={BUTTON_CONTAINER_STYLE}>
-          <RaisedButton label="EXPLORE" primary={true} style={buttonStyle} onTouchTap={openExplorer} />
+          <button style={buttonStyle} onClick={openExplorer}>EXPLORE</button>
         </div>
       </div>
     } else {
@@ -268,9 +264,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
             <div style={APP_BAR_TITLE_STYLE}>Wallet</div>
           </div>
           <div style={APP_BAR_RIGHT_STYLE}>
-            <IconButton iconClassName="material-icons" style={ICON_STYLE_RIGHT} iconStyle={{iconHoverColor: '#29ABE2'}} onTouchTap={this.handleLock}>
-              lock
-            </IconButton>
+            <button style={ICON_STYLE_RIGHT} onClick={this.handleLock}>Lock</button>
           </div>
         </div>
         <div style={SECOND_LINE_STYLE}>
@@ -282,10 +276,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
             <div className="account-details-row" style={ACCOUNT_DETAILS_ROW_STYLE}>
               {this.renderBalance()}
               <div style={FLAT_BUTTON_BLOCK_STYLE}>
-                <FlatButton label="Refill" primary={true} style={FLAT_BUTTON_STYLE} onTouchTap={this.handleRefill} labelStyle={FLAT_BUTTON_LABEL_STYLE} />
-                {/*
-                 <FlatButton label="Send" primary={true} style={FLAT_BUTTON_STYLE} onTouchTap={this.handleRefill} labelStyle={FLAT_BUTTON_LABEL_STYLE} />
-                 */}
+                <button style={FLAT_BUTTON_STYLE} onClick={this.handleRefill}>Refill</button>
               </div>
             </div>
           </div>
@@ -303,7 +294,7 @@ function mapStateToProps (state: State): WalletPageStateProps {
   return {
     wallet: undefined, // FIXME state.runtime.wallet,
     web3: undefined, // FIXME state.runtime.web3,
-    bought: state.init.bought
+    bought: undefined // state.init.bought
   }
 }
 

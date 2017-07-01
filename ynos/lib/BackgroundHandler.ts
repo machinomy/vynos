@@ -2,6 +2,7 @@ import BackgroundController from "../worker/BackgroundController";
 import {JSONRPC, RequestPayload} from "./Payload";
 import {EndFunction} from "./StreamServer";
 import {
+  DidStoreMnemonicRequest, DidStoreMnemonicResponse,
   GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, SetPageRequest,
   SetPageResponse
 } from "./rpc/yns";
@@ -50,6 +51,17 @@ export default class BackgroundHandler {
     }).catch(end)
   }
 
+  didStoreMnemonic(message: DidStoreMnemonicRequest, next: Function, end: EndFunction) {
+    this.controller.didStoreMnemonic().then(() => {
+      let response: DidStoreMnemonicResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: null
+      }
+      end(null, response)
+    }).catch(end)
+  }
+
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (GetSharedStateRequest.match(message)) {
       this.getSharedState(message, next, end)
@@ -57,6 +69,8 @@ export default class BackgroundHandler {
       this.setPage(message, next, end)
     } else if (GenKeyringRequest.match(message)) {
       this.genKeyring(message, next, end)
+    } else if (DidStoreMnemonicRequest.match(message)) {
+      this.didStoreMnemonic(message, next, end)
     } else {
       next()
     }
