@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import Wallet from "ethereumjs-wallet";
 import Web3 from "web3";
 import _ from "lodash";
-import {State} from "../../astate";
 import {PaymentChannel} from "machinomy";
 import {CSSProperties} from "react";
 import BlockieComponent from '../../components/BlockieComponent'
@@ -11,6 +10,8 @@ import browser from '../../lib/browser'
 import {Dispatch} from "redux";
 import actions from "../../actions";
 import BoughtItem from "../../lib/BoughtItem";
+import {FrameState} from "../../state";
+import WorkerProxy from "../../WorkerProxy";
 
 const TERMS_OF_USE_ADDRESS = 'https://literatepayments.com'
 
@@ -115,6 +116,7 @@ const BALANCE_STYLE: CSSProperties = {
 }
 
 export interface WalletPageStateProps {
+  workerProxy: WorkerProxy
   wallet?: Wallet;
   web3?: Web3;
   bought?: any;
@@ -290,8 +292,9 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
   }
 }
 
-function mapStateToProps (state: State): WalletPageStateProps {
+function mapStateToProps (state: FrameState): WalletPageStateProps {
   return {
+    workerProxy: state.temp.workerProxy!,
     wallet: undefined, // FIXME state.runtime.wallet,
     web3: undefined, // FIXME state.runtime.web3,
     bought: undefined // state.init.bought

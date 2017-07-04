@@ -3,7 +3,7 @@ import {SharedState} from "../../worker/State";
 import WorkerProxy from "../WorkerProxy";
 import {EventEmitter} from "events";
 import {SharedStateBroadcastType, SharedStateBroadcast} from "../../lib/rpc/SharedStateBroadcast";
-import {Action, Reducer, Unsubscribe} from "redux";
+import {Action, Dispatch, Reducer, Unsubscribe} from "redux";
 import {FrameState} from "../state";
 import {setSharedState} from "../actions/shared";
 
@@ -47,8 +47,8 @@ export default class RemoteStore implements Store<SharedState> {
 
   wireToLocal(store: Store<FrameState>) {
     this.subscribe(() => {
-      store.dispatch(setSharedState(this.getState()))
+      store.dispatch(setSharedState({sharedState: this.getState(), store: store}))
     })
-    store.dispatch(setSharedState(this.getState()))
+    store.dispatch(setSharedState({sharedState: this.getState(), store: store}))
   }
 }

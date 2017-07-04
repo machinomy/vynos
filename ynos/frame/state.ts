@@ -1,5 +1,6 @@
 import {INITIAL_STATE, SharedState} from "../worker/State";
 import WorkerProxy from "./WorkerProxy";
+import Web3 from "web3";
 
 export interface InitPageState {
   didAcceptTerms: boolean
@@ -8,6 +9,7 @@ export interface InitPageState {
 
 export interface TempState {
   workerProxy?: WorkerProxy
+  web3?: Web3
   initPage: InitPageState
 }
 

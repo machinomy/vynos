@@ -13,6 +13,14 @@ export default class StreamProvider extends Duplex {
     this.strict = strict || false
   }
 
+  sendAsync<A extends Payload, B>(payload: A, callback: Function) {
+    this.ask(payload).then(result => {
+      callback(null, result)
+    }).catch(error => {
+      callback(error, null)
+    })
+  }
+
   ask<A extends Payload, B>(payload: A, timeout: number = 0): Promise<B> {
     let id = payload.id
     let result = new Promise<B>((resolve, reject) => {

@@ -55,27 +55,10 @@ export interface DidStoreMnemonicResponse extends ResponsePayload {
   result: null
 }
 
-export class SetPageRequest implements RequestPayload {
-  id: number;
-  jsonrpc: typeof JSONRPC;
-  method: typeof SetPageRequest.method;
-  params: any;
-
-  static method = "yns_setPageRequest"
-
-  static match(payload: RequestPayload): payload is SetPageRequest {
-    return payload.method === SetPageRequest.method
-  }
-}
-
-export interface SetPageResponse extends ResponsePayload {
-  result: SharedState
-}
-
 export class GenKeyringRequest implements RequestPayload {
   id: number;
   jsonrpc: typeof JSONRPC;
-  method: typeof SetPageRequest.method;
+  method: typeof GenKeyringRequest.method;
   params: string[];
 
   static method = "yns_genKeyring"
@@ -86,5 +69,22 @@ export class GenKeyringRequest implements RequestPayload {
 }
 
 export interface GenKeyringResponse extends ResponsePayload {
+  result: string
+}
+
+export class GetPrivateKeyRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof GetPrivateKeyRequest.method;
+  params: string[];
+
+  static method = "yns_getPrivateKey"
+
+  static match(payload: RequestPayload): payload is GetPrivateKeyRequest {
+    return payload.method === GetPrivateKeyRequest.method
+  }
+}
+
+export interface GetPrivateKeyResponse extends ResponsePayload {
   result: string
 }

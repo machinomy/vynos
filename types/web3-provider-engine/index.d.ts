@@ -5,7 +5,7 @@ declare module "web3-provider-engine" {
       web3_clientVersion?: string
     }
     rpcUrl?: string
-    getAccounts?: Function
+    getAccounts?: (error: any, accounts?: Array<string>) => void
     approveTransaction?: Function
     signTransaction?: Function
     signMessage?: Function
@@ -15,6 +15,7 @@ declare module "web3-provider-engine" {
   }
   interface Engine {
     on(event: string, handler: Function): void;
+    sendAsync(payload: any, callback: (error: any, response: any) => void): void
   }
 }
 

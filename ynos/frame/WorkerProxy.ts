@@ -1,14 +1,14 @@
 import StreamProvider from "../lib/StreamProvider";
 import {EventEmitter} from "events";
-import {INITIAL_STATE, SharedState} from "../worker/State";
+import {SharedState} from "../worker/State";
 import {JSONRPC, randomId} from "../lib/Payload";
 import {isSharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
 import {
   DidStoreMnemonicRequest, DidStoreMnemonicResponse,
-  GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, SetPageRequest,
-  SetPageResponse
+  GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse
 } from "../lib/rpc/yns";
 import {Action} from "redux";
+import Web3 from "web3";
 
 export default class WorkerProxy extends EventEmitter {
   stream: StreamProvider
@@ -23,16 +23,10 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  setPage(name: string): Promise<SharedState> {
-    let request: SetPageRequest = {
-      id: randomId(),
-      jsonrpc: JSONRPC,
-      method: SetPageRequest.method,
-      params: [name]
-    }
-    return this.stream.ask(request).then((response: SetPageResponse) => {
-      return response.result
-    })
+  getWeb3(): Promise<Web3> {
+    let web3 = new Web3()
+    web3.setProvider(this.stream)
+    return Promise.resolve(web3)
   }
 
   genKeyring(password: string): Promise<string> {

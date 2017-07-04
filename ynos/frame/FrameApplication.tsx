@@ -5,11 +5,12 @@ import InitPage from "./pages/init"
 import WalletPage from "./pages/wallet"
 
 export interface FrameApplicationProps {
-  needInit: boolean
+  isInitPageExpected: boolean
+  isWalletPageExpected: boolean
 }
 
 const FrameApplication: React.SFC<FrameApplicationProps> = (props) => {
-  if (props.needInit) {
+  if (props.isInitPageExpected) {
     return <InitPage />
   } else {
     return <WalletPage />
@@ -18,7 +19,8 @@ const FrameApplication: React.SFC<FrameApplicationProps> = (props) => {
 
 function mapStateToProps(state: FrameState): FrameApplicationProps {
   return {
-    needInit: !state.shared.didInit
+    isInitPageExpected: !(state.shared.didInit),
+    isWalletPageExpected: !!(state.temp.web3)
   }
 }
 

@@ -7,6 +7,7 @@ import StreamProvider from "./lib/StreamProvider";
 import {AccountsRequest, AccountsResponse} from "./lib/rpc/eth";
 import {randomId} from "./lib/Payload"
 import {InitAccountRequest, InitAccountResponse} from "./lib/rpc/yns";
+import Web3 from "web3"
 
 let _window = (<DevWindow & YnosWindow>window);
 
@@ -58,6 +59,12 @@ class YnosClient {
     return this.streamProvider.ask(request).then((response: InitAccountResponse) => {
       return response.result[0]
     })
+  }
+
+  getWeb3(): Web3 {
+    let web3 = new Web3()
+    web3.setProvider(this.streamProvider)
+    return web3
   }
 }
 
@@ -115,9 +122,15 @@ class YnosImpl implements Ynos {
       }
     });
   }
+
+  getWeb3(): Promise<Web3> {
+    if (!this.client) return Promise.reject(new Error("Do initFrame first"));
+
+    return Promise.resolve(this.client.getWeb3())
+  }
 }
 
 let ynosPresent = _window.ynos && _window.ynos instanceof YnosImpl;
 if (!ynosPresent) {
-  _window.ynos = new YnosImpl();
+  _window.ynos = new YnosImpl()
 }

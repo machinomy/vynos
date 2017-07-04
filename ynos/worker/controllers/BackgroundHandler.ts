@@ -1,13 +1,12 @@
-import BackgroundController from "../worker/BackgroundController";
-import {JSONRPC, RequestPayload} from "./Payload";
-import {EndFunction} from "./StreamServer";
+import BackgroundController from "./BackgroundController";
+import {JSONRPC, RequestPayload} from "../../lib/Payload";
+import {EndFunction} from "../../lib/StreamServer";
 import {
   DidStoreMnemonicRequest, DidStoreMnemonicResponse,
-  GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, SetPageRequest,
-  SetPageResponse
-} from "./rpc/yns";
+  GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse
+} from "../../lib/rpc/yns";
 import {Writable} from "readable-stream";
-import {SharedStateBroadcast, SharedStateBroadcastType} from "./rpc/SharedStateBroadcast";
+import {SharedStateBroadcast, SharedStateBroadcastType} from "../../lib/rpc/SharedStateBroadcast";
 
 export default class BackgroundHandler {
   controller: BackgroundController
@@ -20,17 +19,6 @@ export default class BackgroundHandler {
   getSharedState(message: GetSharedStateRequest, next: Function, end: EndFunction) {
     this.controller.getSharedState().then(sharedState => {
       let response: GetSharedStateResponse = {
-        id: message.id,
-        jsonrpc: JSONRPC,
-        result: sharedState
-      }
-      end(null, response)
-    }).catch(end)
-  }
-
-  setPage(message: SetPageRequest, next: Function, end: EndFunction) {
-    this.controller.setPage(message.params[0]).then(sharedState => {
-      let response: SetPageResponse = {
         id: message.id,
         jsonrpc: JSONRPC,
         result: sharedState
@@ -65,8 +53,6 @@ export default class BackgroundHandler {
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (GetSharedStateRequest.match(message)) {
       this.getSharedState(message, next, end)
-    } else if (SetPageRequest.match(message)) {
-      this.setPage(message, next, end)
     } else if (GenKeyringRequest.match(message)) {
       this.genKeyring(message, next, end)
     } else if (DidStoreMnemonicRequest.match(message)) {

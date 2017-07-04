@@ -1,11 +1,11 @@
 import * as redux from "redux";
-import reducers from "./reducers";
-import {INITIAL_STATE, SharedState, State} from "./State";
+import reducers from "../reducers";
+import {INITIAL_STATE, SharedState, State} from "../State";
 import {Store} from "redux";
-import * as actions from "./actions";
+import * as actions from "../actions";
 import bip39 from "bip39";
 import hdkey from "ethereumjs-wallet/hdkey";
-import Keyring from "../frame/lib/Keyring";
+import Keyring from "../../frame/lib/Keyring";
 import {createLogger} from "redux-logger";
 
 export default class BackgroundController {
@@ -14,11 +14,6 @@ export default class BackgroundController {
   constructor() {
     let middleware = redux.applyMiddleware(createLogger())
     this.store = redux.createStore(reducers, INITIAL_STATE, middleware)
-  }
-
-  setPage(name: string): Promise<SharedState> {
-    this.store.dispatch(actions.setPage({name: name}))
-    return this.getSharedState()
   }
 
   getSharedState(): Promise<SharedState> {
@@ -39,6 +34,16 @@ export default class BackgroundController {
       this.store.dispatch(actions.setKeyring(serialized))
       return mnemonic
     })
+  }
+
+  getAccounts(): Promise<Array<string>> {
+    let wallet = this.store.getState().runtime.wallet
+    if (wallet) {
+      let account = wallet.getAddressString()
+      return Promise.resolve([account])
+    } else {
+      return Promise.reject(new Error("Wallet is not available"))
+    }
   }
 
   didStoreMnemonic(): Promise<void> {

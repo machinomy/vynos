@@ -6,12 +6,6 @@ const actionCreator = actionCreatorFactory();
 
 // Shared
 
-export const setPage = actionCreator<PageState>("shared/setPage")
-export function setPageHandler(state: State, pageState: PageState): State {
-  // return { ...state, shared: { ...state.shared, page: pageState }}
-  return state
-}
-
 // Runtime
 
 export const setWallet = actionCreator<Wallet>("runtime/setWallet")
