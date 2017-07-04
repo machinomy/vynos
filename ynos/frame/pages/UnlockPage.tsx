@@ -1,18 +1,13 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {State} from "../astate";
-import Keyring from "../lib/Keyring";
-import Wallet from "ethereumjs-wallet";
 import LargeLogoLayout from "../components/large_logo_layout";
-import TextField from "material-ui/TextField";
-import RaisedButton from "material-ui/RaisedButton";
-import {CSSProperties} from "react";
+import {ChangeEvent, CSSProperties} from "react";
 import _ from "lodash";
-import {Dispatch} from "react-redux";
-import actions from "../actions";
+import WorkerProxy from "../WorkerProxy";
+import {FrameState} from "../state";
 
 export interface UnlockPageStateProps {
-  keyring: string|null;
+  workerProxy: WorkerProxy
 }
 
 export type UnlockPageProps = UnlockPageStateProps;
@@ -59,7 +54,8 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handlePasswordChange (event: Event, value: string) {
+  handlePasswordChange (event: ChangeEvent<HTMLInputElement>) {
+    let value = event.target.value
     this.setState({
       password: value,
       passwordError: null
@@ -72,21 +68,7 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
         loading: true
       });
       let password = _.toString(this.state.password);
-      if (this.props.keyring) {
-        console.log(this.props.keyring);
-        console.log("Trying to unlock...");
-        /*
-        unlockWallet(this.props.keyring, password).then(wallet => {
-          this.props.onUnlock(wallet)
-        }).catch(error => {
-          console.info(error);
-          this.setState({
-            loading: false,
-            passwordError: ERROR_MESSAGE
-          })
-        })
-         */
-      }
+      this.props.workerProxy.doUnlock(password).then()
     }
   }
 
@@ -100,28 +82,22 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
 
   render () {
     return <LargeLogoLayout>
-      <TextField
-        floatingLabelText="Password"
-        hintText="Password for the wallet"
-        errorText={this.state.passwordError}
-        type="password"
-        style={TEXT_FIELD_STYLE}
-        onChange={this.handlePasswordChange} />
-      <div style={BUTTON_CONTAINER_STYLE}>
+      <form style={BUTTON_CONTAINER_STYLE} onSubmit={this.handleSubmit}>
+        <input type="password" placeholder="Password for the wallet" style={TEXT_FIELD_STYLE} onChange={this.handlePasswordChange} />
         <div>
-          <RaisedButton label={this.buttonLabel()} style={BUTTON_STYLE} primary={true} onTouchTap={this.handleSubmit} />
+          <button style={BUTTON_STYLE}>{this.buttonLabel()}</button>
         </div>
         <div>
           <a href="#FIXME" style={MINOR_BUTTON_STYLE}>Forgot password?</a>
         </div>
-      </div>
+      </form>
     </LargeLogoLayout>
   }
 }
 
-function mapStateToProps (state: State): UnlockPageStateProps {
+function mapStateToProps (state: FrameState): UnlockPageStateProps {
   return {
-    keyring: state.init.keyring
+    workerProxy: state.temp.workerProxy!
   }
 }
 

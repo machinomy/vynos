@@ -10,6 +10,7 @@ export interface PageState {
 
 export interface SharedState {
   didInit: boolean
+  isLocked: boolean
 }
 
 export interface BackgroundState {
@@ -20,7 +21,11 @@ export interface BackgroundState {
 export interface State {
   background: BackgroundState,
   runtime: RuntimeState,
-  shared: SharedState
+}
+
+export const INITIAL_SHARED_STATE: SharedState = {
+  didInit: false,
+  isLocked: true
 }
 
 export const INITIAL_STATE: State = {
@@ -28,7 +33,11 @@ export const INITIAL_STATE: State = {
     didInit: false
   },
   runtime: {},
-  shared: {
-    didInit: false,
+}
+
+export function buildSharedState(state: State): SharedState {
+  return {
+    didInit: state.background.didInit,
+    isLocked: !state.runtime.wallet
   }
 }

@@ -4,6 +4,8 @@ import PostStream from "./lib/PostStream";
 import WorkerProxy from "./frame/WorkerProxy";
 import renderApplication from "./frame/renderApplication";
 
+let windowStream = new FrameStream("ynos").toParent()
+
 window.addEventListener("load", () => {
   initServiceWorkerClient((serviceWorker, onUnload) => {
     let workerStream = new PostStream({
@@ -12,7 +14,6 @@ window.addEventListener("load", () => {
       source: navigator.serviceWorker,
       target: serviceWorker
     })
-    let windowStream = new FrameStream("ynos").toParent()
 
     windowStream.pipe(workerStream)
     workerStream.pipe(windowStream)

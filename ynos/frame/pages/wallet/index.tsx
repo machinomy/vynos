@@ -115,18 +115,12 @@ const BALANCE_STYLE: CSSProperties = {
   marginRight: 10
 }
 
-export interface WalletPageStateProps {
+export interface WalletPageProps {
   workerProxy: WorkerProxy
   wallet?: Wallet;
   web3?: Web3;
   bought?: any;
 }
-
-export interface WalletPageDispatchProps {
-  onLock: Function
-}
-
-export type WalletPageProps = WalletPageStateProps & WalletPageDispatchProps;
 
 export interface WalletPageState {
   address: string|null;
@@ -232,7 +226,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
   }
 
   handleLock () {
-    this.props.onLock()
+    this.props.workerProxy.doLock().then()
   }
 
   updateBalance () {
@@ -313,7 +307,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
   }
 }
 
-function mapStateToProps (state: FrameState): WalletPageStateProps {
+function mapStateToProps (state: FrameState): WalletPageProps {
   let workerProxy = state.temp.workerProxy!
   return {
     workerProxy: workerProxy,
@@ -323,12 +317,4 @@ function mapStateToProps (state: FrameState): WalletPageStateProps {
   }
 }
 
-function mapDispatchToProps (dispatch: Dispatch<any>): WalletPageDispatchProps {
-  return {
-    onLock: () => {
-      dispatch(actions.runtime.doLock(undefined))
-    }
-  }
-}
-
-export default connect<WalletPageStateProps, WalletPageDispatchProps, any>(mapStateToProps, mapDispatchToProps)(WalletPage)
+export default connect<WalletPageProps, undefined, any>(mapStateToProps)(WalletPage)

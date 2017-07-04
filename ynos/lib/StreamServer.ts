@@ -22,28 +22,26 @@ export default class StreamServer extends Duplex {
     return this;
   }
 
-  handle<A extends Payload>(payload: A): Promise<Payload> {
-    return new Promise((resolve, reject) => {
-      const end = <A extends Payload>(error: null, response?: A) => {
-        if (error) {
-          reject(error)
-        } else {
-          resolve(response)
-        }
+  handle<A extends Payload>(payload: A) {
+    const end = <A extends Payload>(error: null, response?: A) => {
+      if (error) {
+        console.error(error)
+      } else {
+        if (response) this.push(response)
       }
+    }
 
-      const nextHandler = (handlers: Array<Handler>) => {
-        let head = _.head(handlers)
-        let next = () => nextHandler(_.tail(handlers))
-        if (head) {
-          head(payload, next, end)
-        } else {
-          if (this.verbose) console.log(`${this.name}: No response for message`, payload)
-        }
+    const nextHandler = (handlers: Array<Handler>) => {
+      let head = _.head(handlers)
+      let next = () => nextHandler(_.tail(handlers))
+      if (head) {
+        head(payload, next, end)
+      } else {
+        if (this.verbose) console.log(`${this.name}: No response for message`, payload)
       }
+    }
 
-      nextHandler(this._handlers)
-    })
+    nextHandler(this._handlers)
   }
 
   _read(n: number) {
@@ -51,11 +49,7 @@ export default class StreamServer extends Duplex {
   }
 
   _write<A extends RequestPayload>(payload: A, encoding: string, next: Function) {
-    this.handle(payload).then(response => {
-      if (response) this.push(response)
-    }).catch(error => {
-      console.error(error)
-    })
+    this.handle(payload)
     next()
   }
 }

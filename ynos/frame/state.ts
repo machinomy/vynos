@@ -1,6 +1,5 @@
-import {INITIAL_STATE, SharedState} from "../worker/State";
+import {INITIAL_SHARED_STATE, INITIAL_STATE, SharedState} from "../worker/State";
 import WorkerProxy from "./WorkerProxy";
-import Web3 from "web3";
 
 export interface InitPageState {
   didAcceptTerms: boolean
@@ -9,7 +8,6 @@ export interface InitPageState {
 
 export interface TempState {
   workerProxy?: WorkerProxy
-  web3?: Web3
   initPage: InitPageState
 }
 
@@ -25,5 +23,5 @@ export const INITIAL_FRAME_STATE: FrameState = {
       mnemonic: null,
     }
   },
-  shared: INITIAL_STATE.shared
+  shared: INITIAL_SHARED_STATE
 }

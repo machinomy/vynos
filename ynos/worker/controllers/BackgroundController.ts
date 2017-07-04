@@ -1,6 +1,6 @@
 import * as redux from "redux";
 import reducers from "../reducers";
-import {INITIAL_STATE, SharedState, State} from "../State";
+import {buildSharedState, INITIAL_STATE, SharedState, State} from "../State";
 import {Store} from "redux";
 import * as actions from "../actions";
 import bip39 from "bip39";
@@ -13,6 +13,8 @@ import { persistStore, autoRehydrate } from 'redux-persist';
 import localForage from "localforage";
 import {EventEmitter} from "events";
 
+const STATE_UPDATED_EVENT = "stateUpdated"
+
 export default class BackgroundController {
   store: Store<State>
   events: EventEmitter
@@ -24,9 +26,9 @@ export default class BackgroundController {
     this.events = new EventEmitter()
     this.hydrated = false
     localForage.config({driver: localForage.INDEXEDDB})
-    persistStore(this.store, { blacklist: ['runtime'], storage: localForage }, (error, result) => {
+    persistStore(this.store, { blacklist: ['runtime', 'shared'], storage: localForage }, (error, result) => {
       this.hydrated = true
-      this.events.emit("hydrated")
+      this.events.emit(STATE_UPDATED_EVENT)
     })
   }
 
@@ -34,12 +36,28 @@ export default class BackgroundController {
     if (this.hydrated) {
       fn()
     } else {
-      this.events.once("hydrated", fn.bind(this))
+      this.events.once(STATE_UPDATED_EVENT, () => {
+        fn()
+      })
     }
   }
 
+  awaitUnlock(fn: Function) {
+    const tryCall = () => {
+      this.getSharedState().then(sharedState => {
+        let isUnlocked = !sharedState.isLocked
+        if (isUnlocked) {
+          fn()
+        } else {
+          this.events.once(STATE_UPDATED_EVENT, tryCall)
+        }
+      })
+    }
+    tryCall()
+  }
+
   getSharedState(): Promise<SharedState> {
-    return this.getState().then(state => state.shared)
+    return this.getState().then(buildSharedState)
   }
 
   getState(): Promise<State> {
@@ -66,16 +84,20 @@ export default class BackgroundController {
     return this.getWallet().then(wallet => {
       let account = wallet.getAddressString()
       return [account]
+    }).catch(() => {
+      return []
     })
   }
 
   getWallet(): Promise<Wallet> {
-    let wallet = this.store.getState().runtime.wallet
-    if (wallet) {
-      return Promise.resolve(wallet)
-    } else {
-      return Promise.reject(new Error("Wallet is not available"))
-    }
+    return this.getState().then(state => {
+      let wallet = state.runtime.wallet
+      if (wallet) {
+        return Promise.resolve(wallet)
+      } else {
+        return Promise.reject(new Error("Wallet is not available"))
+      }
+    })
   }
 
   getPrivateKey(): Promise<Buffer> {
@@ -93,11 +115,31 @@ export default class BackgroundController {
     })
   }
 
+  unlockWallet(password: string): Promise<void> {
+    return this.getState().then(state => {
+      let keyring = state.background.keyring
+      if (keyring) {
+        return Promise.resolve(Keyring.deserialize(keyring, password))
+      } else {
+        return Promise.reject(new Error("Keyring is not present"))
+      }
+    }).then((keyring: Keyring) => {
+      this.store.dispatch(actions.setWallet(keyring.wallet))
+    })
+  }
+
+  lockWallet(): Promise<void> {
+    return this.getState().then(() => {
+      this.store.dispatch(actions.setWallet(undefined))
+    })
+  }
+
   didChangeSharedState(fn: (state: SharedState) => void) {
     this.store.subscribe(() => {
-      let state = this.store.getState()
-      let sharedState = state.shared
-      fn(sharedState)
+      this.events.emit(STATE_UPDATED_EVENT)
+      this.getSharedState().then(sharedState => {
+        fn(sharedState)
+      })
     })
   }
 }

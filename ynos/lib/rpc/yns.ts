@@ -9,16 +9,13 @@ export class InitAccountRequest implements RequestPayload {
 
   static method = "yns_initAccount"
 
-  constructor() {
-    this.id = randomId()
-    this.method = InitAccountRequest.method
-    this.jsonrpc = JSONRPC
-    this.params = []
+  static match(payload: RequestPayload): payload is InitAccountRequest {
+    return payload.method === InitAccountRequest.method
   }
 }
 
 export interface InitAccountResponse extends ResponsePayload {
-  params: string[]
+  result: string[]
 }
 
 export class GetSharedStateRequest implements RequestPayload {
@@ -72,19 +69,36 @@ export interface GenKeyringResponse extends ResponsePayload {
   result: string
 }
 
-export class GetPrivateKeyRequest implements RequestPayload {
+export class UnlockWalletRequest implements RequestPayload {
   id: number;
   jsonrpc: typeof JSONRPC;
-  method: typeof GetPrivateKeyRequest.method;
+  method: typeof UnlockWalletRequest.method;
   params: string[];
 
-  static method = "yns_getPrivateKey"
+  static method = "yns_unlockWallet"
 
-  static match(payload: RequestPayload): payload is GetPrivateKeyRequest {
-    return payload.method === GetPrivateKeyRequest.method
+  static match(payload: RequestPayload): payload is UnlockWalletRequest {
+    return payload.method === UnlockWalletRequest.method
   }
 }
 
-export interface GetPrivateKeyResponse extends ResponsePayload {
-  result: string
+export interface UnlockWalletResponse extends ResponsePayload {
+  result: null
+}
+
+export class LockWalletRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof LockWalletRequest.method;
+  params: string[];
+
+  static method = "yns_lockWallet"
+
+  static match(payload: RequestPayload): payload is LockWalletRequest {
+    return payload.method === LockWalletRequest.method
+  }
+}
+
+export interface LockWalletResponse extends ResponsePayload {
+  result: null
 }

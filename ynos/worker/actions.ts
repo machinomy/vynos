@@ -8,9 +8,11 @@ const actionCreator = actionCreatorFactory();
 
 // Runtime
 
-export const setWallet = actionCreator<Wallet>("runtime/setWallet")
-export function setWalletHandler(state: State, wallet: Wallet): State {
-  return { ...state, runtime: { ...state.runtime, wallet: wallet } }
+export const setWallet = actionCreator<Wallet|undefined>("runtime/setWallet")
+export function setWalletHandler(state: State, wallet: Wallet|undefined): State {
+  return { ...state,
+    runtime: { ...state.runtime, wallet: wallet }
+  }
 }
 
 // Background
@@ -23,8 +25,7 @@ export const setDidStoreMnemonic = actionCreator<boolean>("background/setDidStor
 export function setDidStoreMnemonicHandler(state: State): State {
   return {
     ...state,
-    background: { ...state.background, didInit: true },
-    shared: { ...state.shared, didInit: true }
+    background: { ...state.background, didInit: true }
   }
 }
 

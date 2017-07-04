@@ -3,7 +3,12 @@ import {JSONRPC, RequestPayload} from "../../lib/Payload";
 import {EndFunction} from "../../lib/StreamServer";
 import {
   DidStoreMnemonicRequest, DidStoreMnemonicResponse,
-  GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse
+  GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, InitAccountRequest,
+  InitAccountResponse,
+  LockWalletRequest,
+  LockWalletResponse,
+  UnlockWalletRequest,
+  UnlockWalletResponse
 } from "../../lib/rpc/yns";
 import {Writable} from "readable-stream";
 import {SharedStateBroadcast, SharedStateBroadcastType} from "../../lib/rpc/SharedStateBroadcast";
@@ -50,6 +55,40 @@ export default class BackgroundHandler {
     }).catch(end)
   }
 
+  unlockWallet(message: UnlockWalletRequest, next: Function, end: EndFunction) {
+    let password = message.params[0]
+    this.controller.unlockWallet(password).then(() => {
+      let response: UnlockWalletResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: null
+      }
+      end(null, response)
+    }).catch(end)
+  }
+
+  lockWallet(message: LockWalletRequest, next: Function, end: EndFunction) {
+    this.controller.lockWallet().then(() => {
+      let response: LockWalletResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: null
+      }
+      end(null, response)
+    }).catch(end)
+  }
+
+  initAccount(message: InitAccountRequest, next: Function, end: EndFunction) {
+    this.controller.awaitUnlock(() => {
+      let response: InitAccountResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: []
+      }
+      end(null, response)
+    })
+  }
+
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (GetSharedStateRequest.match(message)) {
       this.getSharedState(message, next, end)
@@ -57,6 +96,12 @@ export default class BackgroundHandler {
       this.genKeyring(message, next, end)
     } else if (DidStoreMnemonicRequest.match(message)) {
       this.didStoreMnemonic(message, next, end)
+    } else if (UnlockWalletRequest.match(message)) {
+      this.unlockWallet(message, next, end)
+    } else if (LockWalletRequest.match(message)) {
+      this.lockWallet(message, next, end)
+    } else if (InitAccountRequest.match(message)) {
+      this.initAccount(message, next, end)
     } else {
       next()
     }
