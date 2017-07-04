@@ -8,6 +8,7 @@ import {AccountsRequest, AccountsResponse} from "./lib/rpc/eth";
 import {randomId} from "./lib/Payload"
 import {InitAccountRequest, InitAccountResponse} from "./lib/rpc/yns";
 import Web3 from "web3"
+import {PaymentChannel} from "machinomy";
 
 let _window = (<DevWindow & YnosWindow>window);
 
@@ -29,12 +30,12 @@ function buildFrame(): HTMLIFrameElement {
 
 export interface Ynos {
   getAccount: () => Promise<string>
-  openChannel: () => void
-  depositToChannel: () => void
-  closeChannel: () => void
-  listChannels: () => void
-  makePayment: () => void
-  payInChannel: () => void
+  openChannel: () => Promise<PaymentChannel>
+  depositToChannel: (ch: PaymentChannel) => Promise<PaymentChannel>
+  closeChannel: (ch: PaymentChannel) => Promise<PaymentChannel>;
+  listChannels: () => Promise<Array<PaymentChannel>>;
+  makePayment: () => void // web3.eth.sendTransaction
+  payInChannel: (ch: PaymentChannel, amount: number) => Promise<PaymentChannel> // FIXME What about lifecycle events?
   initAccount: () => Promise<string>
   initFrame: () => Promise<void>
 }
@@ -77,28 +78,28 @@ class YnosImpl implements Ynos {
     return this.client.getAccount();
   }
 
-  openChannel () {
-
+  openChannel (): Promise<PaymentChannel> {
+    return Promise.reject(new Error('Not Implemented'))
   }
 
-  closeChannel () {
-
+  closeChannel (ch: PaymentChannel): Promise<PaymentChannel> {
+    return Promise.resolve(ch)
   }
 
-  listChannels () {
-
+  listChannels (): Promise<Array<PaymentChannel>> {
+    return Promise.resolve([])
   }
 
   makePayment () {
 
   }
 
-  payInChannel () {
-
+  payInChannel (ch: PaymentChannel, amount: number): Promise<PaymentChannel> {
+    return Promise.resolve(ch)
   }
 
-  depositToChannel (): void {
-
+  depositToChannel (ch: PaymentChannel): Promise<PaymentChannel> {
+    return Promise.resolve(ch)
   }
 
   initAccount (): Promise<string> {
