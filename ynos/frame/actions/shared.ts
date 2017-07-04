@@ -12,11 +12,5 @@ export type SetSharedStateArgs = {
 }
 export const setSharedState: ActionCreator<SetSharedStateArgs> = actionCreator<SetSharedStateArgs>("setSharedState");
 export function setSharedStateHandler(state: SharedState, {sharedState, store}: SetSharedStateArgs): SharedState {
-  let workerProxy = store.getState().temp.workerProxy
-  if (workerProxy) {
-    workerProxy.getWeb3().then(web3 => {
-      store.dispatch(temp.setWeb3(web3))
-    })
-  }
   return sharedState
 }

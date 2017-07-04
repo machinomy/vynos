@@ -23,10 +23,10 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  getWeb3(): Promise<Web3> {
+  getWeb3(): Web3 {
     let web3 = new Web3()
     web3.setProvider(this.stream)
-    return Promise.resolve(web3)
+    return web3
   }
 
   genKeyring(password: string): Promise<string> {

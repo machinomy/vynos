@@ -12,8 +12,10 @@ export interface FrameApplicationProps {
 const FrameApplication: React.SFC<FrameApplicationProps> = (props) => {
   if (props.isInitPageExpected) {
     return <InitPage />
-  } else {
+  } else if (props.isWalletPageExpected) {
     return <WalletPage />
+  } else {
+    return <p>Waiting...</p>
   }
 }
 

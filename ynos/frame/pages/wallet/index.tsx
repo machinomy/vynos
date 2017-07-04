@@ -129,7 +129,7 @@ export interface WalletPageDispatchProps {
 export type WalletPageProps = WalletPageStateProps & WalletPageDispatchProps;
 
 export interface WalletPageState {
-  address: string;
+  address: string|null;
   balance: string;
   channels: Array<PaymentChannel>;
 }
@@ -141,7 +141,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
     super(props);
     // if (!this.props.wallet) throw Error("Improbable error: props.wallet is not defined");
     this.state = {
-      address: '0xdeadbeaf',//this.props.wallet.getAddressString(),
+      address: null,
       balance: '-',
       channels: []
     };
@@ -236,7 +236,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
   }
 
   updateBalance () {
-    if (this.props.web3) {
+    if (this.props.web3 && this.state.address) {
       let web3 = this.props.web3;
       web3.eth.getBalance(this.state.address, (error, balance) => {
         this.setState({
@@ -246,8 +246,21 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
     }
   }
 
+  updateAddress () {
+    if (this.props.web3) {
+      let web3 = this.props.web3
+      web3.eth.getAccounts((error, accounts) => {
+        let address = accounts[0]
+        this.setState({
+          address: address
+        })
+      })
+    }
+  }
+
   componentDidMount () {
     this.updateBalance();
+    this.updateAddress();
     this.updateBalanceTimer = setInterval(() => {
       this.updateBalance()
     }, 500);
@@ -257,7 +270,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
     clearInterval(this.updateBalanceTimer);
   }
 
-  render () {
+  renderPage (address: string) {
     return <div style={{backgroundColor: '#fafafa', height: 420}}>
       <div style={APP_BAR_CONTAINER_STYLE}>
         <div style={APP_BAR_STYLE}>
@@ -270,7 +283,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
           </div>
         </div>
         <div style={SECOND_LINE_STYLE}>
-          <BlockieComponent seed={this.state.address} scale={6.25} style={BLOCKIE_STYLE} />
+          <BlockieComponent seed={address} scale={6.25} style={BLOCKIE_STYLE} />
           <div>
             <div className="account-name" style={ACCOUNT_NAME_STYLE}>
               Account 1
@@ -290,13 +303,22 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
       </div>
     </div>
   }
+
+  render () {
+    if (this.state.address) {
+      return this.renderPage(this.state.address)
+    } else {
+      return <p>Loading...</p>
+    }
+  }
 }
 
 function mapStateToProps (state: FrameState): WalletPageStateProps {
+  let workerProxy = state.temp.workerProxy!
   return {
-    workerProxy: state.temp.workerProxy!,
+    workerProxy: workerProxy,
     wallet: undefined, // FIXME state.runtime.wallet,
-    web3: undefined, // FIXME state.runtime.web3,
+    web3: workerProxy.getWeb3(), // FIXME state.runtime.web3,
     bought: undefined // state.init.bought
   }
 }
