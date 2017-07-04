@@ -9,13 +9,33 @@ import Keyring from "../../frame/lib/Keyring";
 import {createLogger} from "redux-logger";
 import {Buffer} from "buffer";
 import Wallet from "ethereumjs-wallet";
+import { persistStore, autoRehydrate } from 'redux-persist';
+import localForage from "localforage";
+import {EventEmitter} from "events";
 
 export default class BackgroundController {
   store: Store<State>
+  events: EventEmitter
+  hydrated: boolean
 
   constructor() {
-    let middleware = redux.applyMiddleware(createLogger())
-    this.store = redux.createStore(reducers, INITIAL_STATE, middleware)
+    let middleware = redux.compose(redux.applyMiddleware(createLogger()), autoRehydrate())
+    this.store = redux.createStore(reducers, INITIAL_STATE, middleware) as Store<State>
+    this.events = new EventEmitter()
+    this.hydrated = false
+    localForage.config({driver: localForage.INDEXEDDB})
+    persistStore(this.store, { blacklist: ['runtime'], storage: localForage }, (error, result) => {
+      this.hydrated = true
+      this.events.emit("hydrated")
+    })
+  }
+
+  awaitHydrated(fn: Function) {
+    if (this.hydrated) {
+      fn()
+    } else {
+      this.events.once("hydrated", fn.bind(this))
+    }
   }
 
   getSharedState(): Promise<SharedState> {
@@ -23,7 +43,11 @@ export default class BackgroundController {
   }
 
   getState(): Promise<State> {
-    return Promise.resolve(this.store.getState())
+    return new Promise(resolve => {
+      this.awaitHydrated(() => {
+        resolve(this.store.getState())
+      })
+    })
   }
 
   genKeyring(password: string): Promise<string> {
@@ -61,8 +85,12 @@ export default class BackgroundController {
   }
 
   didStoreMnemonic(): Promise<void> {
-    this.store.dispatch(actions.setDidStoreMnemonic(true))
-    return Promise.resolve()
+    return new Promise(resolve => {
+      this.awaitHydrated(() => {
+        this.store.dispatch(actions.setDidStoreMnemonic(true))
+        resolve()
+      })
+    })
   }
 
   didChangeSharedState(fn: (state: SharedState) => void) {
