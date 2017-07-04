@@ -7,9 +7,11 @@ export interface MachinomyWindowExt {
   LOGLEVEL?: string
 }
 
+let _window = self as MachinomyWindowExt
+
 export const buildMachinomyClient = (web3: Web3, account: string) => {
+  console.log("buildMachinomyClient", account)
   const MACHINOMY_NETWORK = 'ropsten'
-  let _window = window as MachinomyWindowExt
   _window.BROWSER = true
   _window.MACHINOMY_NETWORK = MACHINOMY_NETWORK
   _window.LOGLEVEL = 'debug'

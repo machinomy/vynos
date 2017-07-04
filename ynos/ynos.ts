@@ -4,9 +4,10 @@ import FrameStream from "./lib/FrameStream";
 import StreamProvider from "./lib/StreamProvider";
 import {AccountsRequest, AccountsResponse} from "./lib/rpc/eth";
 import {JSONRPC, randomId} from "./lib/Payload"
-import {InitAccountRequest, InitAccountResponse} from "./lib/rpc/yns";
+import {InitAccountRequest, InitAccountResponse, OpenChannelRequest, OpenChannelResponse} from "./lib/rpc/yns";
 import Web3 from "web3"
-import {PaymentChannel} from "machinomy";
+import PaymentChannel from "./lib/PaymentChannel";
+import BigNumber from "bignumber.js";
 
 let _window = (<DevWindow & YnosWindow>window);
 
@@ -28,7 +29,7 @@ function buildFrame(): HTMLIFrameElement {
 
 export interface Ynos {
   getAccount: () => Promise<string>
-  openChannel: (receiverAccount: string, channelValue: number) => Promise<PaymentChannel>
+  openChannel: (receiverAccount: string, channelValue: BigNumber.BigNumber) => Promise<PaymentChannel>
   depositToChannel: (ch: PaymentChannel) => Promise<PaymentChannel>
   closeChannel: (ch: PaymentChannel) => Promise<PaymentChannel>;
   listChannels: () => Promise<Array<PaymentChannel>>;
@@ -36,6 +37,7 @@ export interface Ynos {
   payInChannel: (ch: PaymentChannel, amount: number) => Promise<PaymentChannel> // FIXME What about lifecycle events?
   initAccount: () => Promise<string>
   initFrame: () => Promise<void>
+  getWeb3(): Promise<Web3>
 }
 
 class YnosClient {
@@ -70,6 +72,18 @@ class YnosClient {
     web3.setProvider(this.streamProvider)
     return web3
   }
+
+  openChannel (receiverAccount: string, channelValue: BigNumber.BigNumber): Promise<PaymentChannel> {
+    let request: OpenChannelRequest = {
+      id: randomId(),
+      method: OpenChannelRequest.method,
+      jsonrpc: JSONRPC,
+      params: [receiverAccount, channelValue.toString()]
+    }
+    return this.streamProvider.ask(request).then((response: OpenChannelResponse) => {
+      return new PaymentChannel(response.result[0])
+    })
+  }
 }
 
 class YnosImpl implements Ynos {
@@ -83,8 +97,10 @@ class YnosImpl implements Ynos {
     return this.client.getAccount();
   }
 
-  openChannel (receiverAccount: string, channelValue: number): Promise<PaymentChannel> {
-    return Promise.reject(new Error('Not Implemented'))
+  openChannel (receiverAccount: string, channelValue: BigNumber.BigNumber): Promise<PaymentChannel> {
+    if (!this.client) return Promise.reject(new Error("Do initFrame first"))
+
+    return this.client.openChannel(receiverAccount, channelValue)
   }
 
   closeChannel (ch: PaymentChannel): Promise<PaymentChannel> {

@@ -223,4 +223,8 @@ declare module "readable-stream" {
   export class PassThrough extends Duplex {
 
   }
+
+  export abstract class Transform extends Duplex {
+    abstract _transform(chunk: any, encoding: any, cb: (err: any) => void): void
+  }
 }

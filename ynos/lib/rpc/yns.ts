@@ -1,5 +1,6 @@
 import {JSONRPC, randomId, RequestPayload, ResponsePayload} from "../Payload"
 import {SharedState} from "../../worker/State";
+import {PaymentChannel as mPaymentChannel} from "machinomy";
 
 export class InitAccountRequest implements RequestPayload {
   id: number;
@@ -101,4 +102,21 @@ export class LockWalletRequest implements RequestPayload {
 
 export interface LockWalletResponse extends ResponsePayload {
   result: null
+}
+
+export class OpenChannelRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof OpenChannelRequest.method;
+  params: [string, string];
+
+  static method = "yns_openChannel"
+
+  static match(payload: RequestPayload): payload is OpenChannelRequest {
+    return payload.method === OpenChannelRequest.method
+  }
+}
+
+export interface OpenChannelResponse extends ResponsePayload {
+  result: [mPaymentChannel] //
 }

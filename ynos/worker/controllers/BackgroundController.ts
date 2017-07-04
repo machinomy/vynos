@@ -12,6 +12,7 @@ import Wallet from "ethereumjs-wallet";
 import { persistStore, autoRehydrate } from 'redux-persist';
 import localForage from "localforage";
 import {EventEmitter} from "events";
+import {PaymentChannel} from "machinomy";
 
 const STATE_UPDATED_EVENT = "stateUpdated"
 

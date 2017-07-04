@@ -27,7 +27,7 @@ declare module "machinomy" {
   }
 
   class ChannelContract {
-
+    buildPaymentChannel (sender: string, receiver: string, channelValue: number): Promise<PaymentChannel>
   }
 
   interface channel {
@@ -54,6 +54,7 @@ declare module "machinomy" {
 
   export class Sender {
     storage: Storage
+    contract: ChannelContract
   }
 
   interface sender {

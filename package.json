@@ -50,6 +50,7 @@
     "lodash": "^4.17.4",
     "machinomy": "^0.3.5",
     "material-components-web": "^0.14.0",
+    "mux-demux": "^3.7.9",
     "normalize.css": "^7.0.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
