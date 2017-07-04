@@ -7,6 +7,8 @@ import bip39 from "bip39";
 import hdkey from "ethereumjs-wallet/hdkey";
 import Keyring from "../../frame/lib/Keyring";
 import {createLogger} from "redux-logger";
+import {Buffer} from "buffer";
+import Wallet from "ethereumjs-wallet";
 
 export default class BackgroundController {
   store: Store<State>
@@ -37,13 +39,25 @@ export default class BackgroundController {
   }
 
   getAccounts(): Promise<Array<string>> {
+    return this.getWallet().then(wallet => {
+      let account = wallet.getAddressString()
+      return [account]
+    })
+  }
+
+  getWallet(): Promise<Wallet> {
     let wallet = this.store.getState().runtime.wallet
     if (wallet) {
-      let account = wallet.getAddressString()
-      return Promise.resolve([account])
+      return Promise.resolve(wallet)
     } else {
       return Promise.reject(new Error("Wallet is not available"))
     }
+  }
+
+  getPrivateKey(): Promise<Buffer> {
+    return this.getWallet().then(wallet => {
+      return wallet.getPrivateKey()
+    })
   }
 
   didStoreMnemonic(): Promise<void> {

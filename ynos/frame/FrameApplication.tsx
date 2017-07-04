@@ -14,15 +14,14 @@ const FrameApplication: React.SFC<FrameApplicationProps> = (props) => {
     return <InitPage />
   } else if (props.isWalletPageExpected) {
     return <WalletPage />
-  } else {
-    return <p>Waiting...</p>
   }
+  return <p>Waiting...</p>
 }
 
 function mapStateToProps(state: FrameState): FrameApplicationProps {
   return {
     isInitPageExpected: !(state.shared.didInit),
-    isWalletPageExpected: !!(state.temp.web3)
+    isWalletPageExpected: !!(state.shared.didInit && state.temp.workerProxy)
   }
 }
 

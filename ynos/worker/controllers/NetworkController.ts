@@ -3,6 +3,12 @@ import ZeroClientProvider from "web3-provider-engine/zero"
 import {Engine, ProviderOpts} from "web3-provider-engine";
 import {Payload} from "../../lib/Payload";
 import {EndFunction} from "../../lib/StreamServer";
+import Tx from 'ethereumjs-tx'
+import {Buffer} from "buffer";
+const ethUtil = require('ethereumjs-util')
+const sigUtil = require('eth-sig-util')
+
+export type ApproveTransactionCallback = (error: any, isApproved: true) => void
 
 export default class NetworkController {
   background: BackgroundController
@@ -33,9 +39,50 @@ export default class NetworkController {
     })
   }
 
+  approveTransaction(txParams: any, callback: ApproveTransactionCallback) {
+    callback(null, true)
+  }
+
+  signTransaction(rawTx: any, callback: any) {
+    this.background.getPrivateKey().then(privateKey => {
+      let tx = new Tx(rawTx)
+      tx.sign(privateKey)
+      let txHex = '0x' + Buffer.from(tx.serialize()).toString('hex')
+      callback(null, txHex)
+    }).catch(error => {
+      callback(error)
+    })
+  }
+
+  signMessage(messageParams: any, callback: any) {
+    this.background.getPrivateKey().then(privateKey => {
+      let message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
+      let msgSig = ethUtil.ecsign(message, privateKey)
+      let rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
+      console.log('sign message: ', messageParams)
+      callback(null, rawMsgSig)
+    }).catch(error => {
+      callback(error)
+    })
+  }
+
   providerOpts(): ProviderOpts {
     return {
-      getAccounts: this.getAccounts.bind(this)
+      static: {
+        eth_syncing: false,
+        web3_clientVersion: `LiteratePayments/v${1.0}`,
+      },
+      rpcUrl: 'https://ropsten.infura.io/',
+      getAccounts: this.getAccounts.bind(this),
+      approveTransaction: this.approveTransaction.bind(this),
+      signTransaction: this.signTransaction.bind(this),
+      signMessage: this.signMessage.bind(this)
+      // tx signing, newUnapprovedTransaction
+      //processTransaction: processTransaction,
+      // old style msg signing, newUnsignedMessage
+      //processMessage: processMessage,
+      // new style msg signing, newUnsignedPersonalMessage
+      //processPersonalMessage: processPersonalMessage,
     }
   }
 }
