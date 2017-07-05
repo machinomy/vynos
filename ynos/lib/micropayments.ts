@@ -10,7 +10,6 @@ export interface MachinomyWindowExt {
 let _window = self as MachinomyWindowExt
 
 export const buildMachinomyClient = (web3: Web3, account: string) => {
-  console.log("buildMachinomyClient", account)
   const MACHINOMY_NETWORK = 'ropsten'
   _window.BROWSER = true
   _window.MACHINOMY_NETWORK = MACHINOMY_NETWORK

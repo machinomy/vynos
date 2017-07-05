@@ -2,7 +2,7 @@ import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
 import {PageState, State} from "./State";
 import Wallet from "ethereumjs-wallet";
 
-const actionCreator = actionCreatorFactory();
+const actionCreator = actionCreatorFactory("worker");
 
 // Shared
 

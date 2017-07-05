@@ -35,7 +35,7 @@ export interface Ynos {
   listChannels: () => Promise<Array<PaymentChannel>>;
   makePayment: () => void // web3.eth.sendTransaction
   payInChannel: (ch: PaymentChannel, amount: number) => Promise<PaymentChannel> // FIXME What about lifecycle events?
-  initAccount: () => Promise<string>
+  initAccount: () => Promise<void>
   initFrame: () => Promise<void>
   getWeb3(): Promise<Web3>
 }
@@ -55,7 +55,7 @@ class YnosClient {
     })
   }
 
-  initAccount(): Promise<string> {
+  initAccount(): Promise<void> {
     let request: InitAccountRequest = {
       id: randomId(),
       method: InitAccountRequest.method,
@@ -63,7 +63,7 @@ class YnosClient {
       params: []
     }
     return this.streamProvider.ask(request).then((response: InitAccountResponse) => {
-      return response.result[0]
+      return;
     })
   }
 
@@ -123,7 +123,7 @@ class YnosImpl implements Ynos {
     return Promise.resolve(ch)
   }
 
-  initAccount (): Promise<string> {
+  initAccount (): Promise<void> {
     if (!this.client) return Promise.reject(new Error("Do initFrame first"))
 
     return this.client.initAccount()

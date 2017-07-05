@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import LargeLogoLayout from "../components/large_logo_layout";
-import {ChangeEvent, CSSProperties} from "react";
+import {ChangeEvent, CSSProperties, FormEvent} from "react";
 import _ from "lodash";
 import WorkerProxy from "../WorkerProxy";
 import {FrameState} from "../state";
@@ -62,7 +62,8 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
     })
   }
 
-  handleSubmit () {
+  handleSubmit (ev: FormEvent<HTMLFormElement>) {
+    ev.preventDefault()
     if (!this.state.loading) {
       this.setState({
         loading: true
