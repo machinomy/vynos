@@ -116,22 +116,5 @@ window.addEventListener("load", function () {
       })
     }
   }
-
-  let activateButton = document.getElementById('activate');
-  if (activateButton) {
-    let button: HTMLElement = activateButton
-    button.setAttribute("disabled", "disabled")
-    ynos.initAccount().then(() => {
-      button.removeAttribute("disabled")
-      button.addEventListener('click', function () {
-        ynos.getAccount().then((address: string) => {
-          console.log(address)
-
-        }).catch(error => {
-          alert(error)
-        });
-      });
-    })
-  }
 })
 
