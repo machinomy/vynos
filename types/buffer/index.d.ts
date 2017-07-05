@@ -1,5 +1,6 @@
 declare module "buffer" {
   export class Buffer {
+    length: number
     write(string: string, offset?: number, length?: number, encoding?: string): number;
     toString(encoding?: string, start?: number, end?: number): string;
     toJSON(): { type: 'Buffer', data: any[] };

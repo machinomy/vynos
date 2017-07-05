@@ -2,7 +2,7 @@ import NetworkController from "./NetworkController";
 import BackgroundController from "./BackgroundController";
 import PaymentChannel from "../../lib/PaymentChannel";
 import {buildMachinomyClient} from "../../lib/micropayments";
-import machinomy from "machinomy";
+import machinomy, {Payment} from "machinomy";
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -105,5 +105,13 @@ export default class MicropaymentsController {
     } else {
       return Promise.reject("account is not ready")
     }
+  }
+
+  payInChannel(channel: PaymentChannel, amount: number): Promise<[PaymentChannel, Payment]> {
+    return machinomy.Payment.fromPaymentChannel(this.network.web3, channel, amount).then(payment => {
+      let nextPaymentChannel = new PaymentChannel(machinomy.channel.PaymentChannel.fromPayment(payment))
+      let result: [PaymentChannel, Payment] = [nextPaymentChannel, payment]
+      return result
+    })
   }
 }

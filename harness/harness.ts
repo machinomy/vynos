@@ -5,6 +5,14 @@ let _window = (<YnosWindow>window);
 
 let recentPaymentChannel: PaymentChannel|null = null
 
+function updateRecentPaymentChannel(channel: PaymentChannel) {
+  recentPaymentChannel = channel
+  let code = document.getElementById("payment-channel-code")
+  if (code) {
+    code.textContent = JSON.stringify(channel.toJSON())
+  }
+}
+
 window.addEventListener("load", function () {
   let ynos = _window.ynos
 
@@ -50,7 +58,7 @@ window.addEventListener("load", function () {
           }
           ynos.openChannel(receiverAccount, amount).then((paymentChannel: PaymentChannel) => {
             console.log(paymentChannel)
-            recentPaymentChannel = paymentChannel
+            updateRecentPaymentChannel(paymentChannel)
             let resultSpan = document.getElementById("open_channel_id")
             if (resultSpan) {
               resultSpan.textContent = paymentChannel.channelId + ", state: " + paymentChannel.state
@@ -71,12 +79,39 @@ window.addEventListener("load", function () {
         if (recentPaymentChannel) {
           ynos.closeChannel(recentPaymentChannel).then((paymentChannel: PaymentChannel) => {
             console.log(paymentChannel)
-            recentPaymentChannel = paymentChannel
+            updateRecentPaymentChannel(paymentChannel)
             let resultSpan = document.getElementById("open_channel_id")
             if (resultSpan) {
               resultSpan.textContent = paymentChannel.channelId + ", state: " + paymentChannel.state
             }
           })
+        }
+      })
+    }
+  }
+
+  let paymentForm = document.getElementById("pay_in_channel")
+  if (paymentForm) {
+    paymentForm.onsubmit = function (ev: Event) {
+      ev.preventDefault()
+      ynos.initFrame().then(() => {
+        return ynos.initAccount()
+      }).then(() => {
+        return ynos.getWeb3()
+      }).then(web3 => {
+        if (recentPaymentChannel) {
+          let amountElement = document.getElementById("payment-amount") as HTMLInputElement
+          if (amountElement) {
+            let amountEth = parseFloat(amountElement.value)
+            let amount = parseInt(web3.toWei(amountEth, "ether").toString())
+            ynos.payInChannel(recentPaymentChannel, amount).then(({channel, payment}) => {
+              updateRecentPaymentChannel(channel)
+              let paymentCode = document.getElementById("payment-code")
+              if (paymentCode) {
+                paymentCode.textContent = JSON.stringify(payment)
+              }
+            })
+          }
         }
       })
     }

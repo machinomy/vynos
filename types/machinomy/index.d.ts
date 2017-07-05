@@ -40,6 +40,9 @@ declare module "machinomy" {
 
   interface channel {
     contract: ChannelContract
+    PaymentChannel: {
+      fromPayment: (payment: Payment) => PaymentChannel
+    }
   }
 
   interface configuration {
@@ -47,7 +50,17 @@ declare module "machinomy" {
   }
 
   export class Payment {
+    channelId: string
+    sender: string
+    receiver: string
+    price: number
+    value: number
+    channelValue: number
+    v: number
+    r: string
+    s: string
 
+    static fromPaymentChannel(web3: Web3, channel: PaymentChannel, price: number): Promise<Payment>
   }
 
   interface ChannelsDatabase {

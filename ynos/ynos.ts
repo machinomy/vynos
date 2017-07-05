@@ -6,11 +6,12 @@ import {AccountsRequest, AccountsResponse} from "./lib/rpc/eth";
 import {JSONRPC, randomId} from "./lib/Payload"
 import {
   CloseChannelRequest, CloseChannelResponse, InitAccountRequest, InitAccountResponse, OpenChannelRequest,
-  OpenChannelResponse
+  OpenChannelResponse, PayInChannelRequest, PayInChannelResponse
 } from "./lib/rpc/yns";
 import Web3 from "web3"
 import PaymentChannel from "./lib/PaymentChannel";
 import BigNumber from "bignumber.js";
+import {Payment} from "machinomy";
 
 let _window = (<DevWindow & YnosWindow>window);
 
@@ -37,10 +38,15 @@ export interface Ynos {
   closeChannel: (ch: PaymentChannel) => Promise<PaymentChannel>;
   listChannels: () => Promise<Array<PaymentChannel>>;
   makePayment: () => void // web3.eth.sendTransaction
-  payInChannel: (ch: PaymentChannel, amount: number) => Promise<PaymentChannel> // FIXME What about lifecycle events?
+  payInChannel: (ch: PaymentChannel, amount: number) => Promise<YnosPayInChannelResponse> // FIXME What about lifecycle events?
   initAccount: () => Promise<void>
   initFrame: () => Promise<void>
   getWeb3(): Promise<Web3>
+}
+
+export type YnosPayInChannelResponse = {
+  channel: PaymentChannel
+  payment: Payment
 }
 
 class YnosClient {
@@ -99,6 +105,24 @@ class YnosClient {
       return new PaymentChannel(response.result[0])
     })
   }
+
+
+  payInChannel (channel: PaymentChannel, amount: number): Promise<YnosPayInChannelResponse> {
+    let request: PayInChannelRequest = {
+      id: randomId(),
+      method: PayInChannelRequest.method,
+      jsonrpc: JSONRPC,
+      params: [channel.toJSON(), amount]
+    }
+    return this.streamProvider.ask(request).then((response: PayInChannelResponse) => {
+      let paymentChannel = new PaymentChannel(response.result[0])
+      let payment = response.result[1]
+      return {
+        channel: paymentChannel,
+        payment: payment
+      }
+    })
+  }
 }
 
 class YnosImpl implements Ynos {
@@ -132,8 +156,10 @@ class YnosImpl implements Ynos {
     throw new Error("Not Implemented")
   }
 
-  payInChannel (ch: PaymentChannel, amount: number): Promise<PaymentChannel> {
-    return Promise.resolve(ch)
+  payInChannel (ch: PaymentChannel, amount: number): Promise<YnosPayInChannelResponse> {
+    if (!this.client) return Promise.reject(new Error("Do initFrame first"))
+
+    return this.client.payInChannel(ch, amount)
   }
 
   depositToChannel (ch: PaymentChannel): Promise<PaymentChannel> {
