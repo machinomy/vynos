@@ -23,12 +23,18 @@
             <div class="col">
                 <h1>Ynos</h1>
                 <p>
-                    <p id="account_address">Account Address: Loading...</p>
+                    <p>Account Address: <span id="account_address">Loading...</span></p>
                 </p>
                 <div>
                     <form id="open_channel">
-                        <input type="text" id="receiver_address" />
-                        <button type="submit">Open Channel, 0.01 Eth</button>
+                        <p>Receiver Address: <input type="text" id="receiver_address" /></p>
+                        <p><button type="submit">Open Channel, 0.01 Eth</button></p>
+                        <p>Channel id: <span id="open_channel_id">n/a</span></p>
+                    </form>
+                </div>
+                <div>
+                    <form id="close_channel">
+                        <p><button type="submit">Start settle channel</button></p>
                     </form>
                 </div>
             </div>

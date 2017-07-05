@@ -7,6 +7,7 @@ declare module "machinomy" {
     value: number;
     channelId: string;
     receiver: string;
+    sender: string;
   }
 
   interface MachinomyStorageChannels {
@@ -14,7 +15,8 @@ declare module "machinomy" {
   }
 
   export class Storage {
-    channels: MachinomyStorageChannels;
+    channels: MachinomyStorageChannels
+    payments: PaymentsDatabase
   }
 
   export class Paywall {}
@@ -28,6 +30,12 @@ declare module "machinomy" {
 
   class ChannelContract {
     buildPaymentChannel (sender: string, receiver: string, channelValue: number): Promise<PaymentChannel>
+    startSettle(account: string, channelId: string, payment: number): Promise<void>
+    claim(receiver: string, channelId: string, value: number, v: number, r: string, s: string): Promise<number>
+    finishSettle(account: string, channelId: string): Promise<number>
+    canClaim(channelId: string, paymentValue: number, v: number, r: string, s: string): boolean
+    canFinishSettle(account: string, channelId: string): boolean
+    getUntil(channelId: string): number
   }
 
   interface channel {
@@ -42,8 +50,19 @@ declare module "machinomy" {
 
   }
 
-  class ChannelsDatabase {
+  interface ChannelsDatabase {
     all (): Promise<Array<PaymentChannel>>
+  }
+
+  interface PaymentDoc {
+    value: number
+    v: number
+    r: string
+    s: string
+  }
+
+  interface PaymentsDatabase {
+    firstMaximum(channelId: string): Promise<PaymentDoc>
   }
 
   interface storage {

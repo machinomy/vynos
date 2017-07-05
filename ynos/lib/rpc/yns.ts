@@ -120,3 +120,20 @@ export class OpenChannelRequest implements RequestPayload {
 export interface OpenChannelResponse extends ResponsePayload {
   result: [mPaymentChannel] //
 }
+
+export class CloseChannelRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof CloseChannelRequest.method;
+  params: [mPaymentChannel];
+
+  static method = "yns_closeChannel"
+
+  static match(payload: RequestPayload): payload is CloseChannelRequest {
+    return payload.method === CloseChannelRequest.method
+  }
+}
+
+export interface CloseChannelResponse extends ResponsePayload {
+  result: [mPaymentChannel] //
+}

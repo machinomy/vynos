@@ -4,7 +4,10 @@ import FrameStream from "./lib/FrameStream";
 import StreamProvider from "./lib/StreamProvider";
 import {AccountsRequest, AccountsResponse} from "./lib/rpc/eth";
 import {JSONRPC, randomId} from "./lib/Payload"
-import {InitAccountRequest, InitAccountResponse, OpenChannelRequest, OpenChannelResponse} from "./lib/rpc/yns";
+import {
+  CloseChannelRequest, CloseChannelResponse, InitAccountRequest, InitAccountResponse, OpenChannelRequest,
+  OpenChannelResponse
+} from "./lib/rpc/yns";
 import Web3 from "web3"
 import PaymentChannel from "./lib/PaymentChannel";
 import BigNumber from "bignumber.js";
@@ -84,6 +87,18 @@ class YnosClient {
       return new PaymentChannel(response.result[0])
     })
   }
+
+  closeChannel(channel: PaymentChannel): Promise<PaymentChannel> {
+    let request: CloseChannelRequest = {
+      id: randomId(),
+      method: CloseChannelRequest.method,
+      jsonrpc: JSONRPC,
+      params: [channel.toJSON()]
+    }
+    return this.streamProvider.ask(request).then((response: CloseChannelResponse) => {
+      return new PaymentChannel(response.result[0])
+    })
+  }
 }
 
 class YnosImpl implements Ynos {
@@ -104,7 +119,9 @@ class YnosImpl implements Ynos {
   }
 
   closeChannel (ch: PaymentChannel): Promise<PaymentChannel> {
-    return Promise.resolve(ch)
+    if (!this.client) return Promise.reject(new Error("Do initFrame first"))
+
+    return this.client.closeChannel(ch)
   }
 
   listChannels (): Promise<Array<PaymentChannel>> {
@@ -112,7 +129,7 @@ class YnosImpl implements Ynos {
   }
 
   makePayment () {
-
+    throw new Error("Not Implemented")
   }
 
   payInChannel (ch: PaymentChannel, amount: number): Promise<PaymentChannel> {

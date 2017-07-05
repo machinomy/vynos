@@ -6,6 +6,7 @@ export default class PaymentChannel {
   value: number;
   channelId: string;
   receiver: string;
+  sender: string;
 
   constructor(opts: PC) {
     this.state = opts.state
@@ -13,6 +14,7 @@ export default class PaymentChannel {
     this.value = opts.value
     this.channelId = opts.channelId
     this.receiver = opts.receiver
+    this.sender = opts.sender
   }
 
   toJSON(): PC {
@@ -21,7 +23,8 @@ export default class PaymentChannel {
       spent: this.spent,
       value: this.value,
       channelId: this.channelId,
-      receiver: this.receiver
+      receiver: this.receiver,
+      sender: this.sender
     }
   }
 }
