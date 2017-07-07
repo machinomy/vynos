@@ -15,18 +15,20 @@ import {Payment} from "machinomy";
 
 let _window = (<DevWindow & YnosWindow>window);
 
-function buildFrame(): HTMLIFrameElement {
-  let frame = document.createElement('iframe');
-  frame.id = 'ynos_frame';
+function buildFrame(frame?: HTMLIFrameElement): HTMLIFrameElement {
+  if (!frame) {
+    frame = document.createElement('iframe');
+    frame.id = 'ynos_frame';
+    frame.style.borderWidth = '0px';
+    frame.style.position = 'fixed';
+    frame.style.top = '0px';
+    frame.style.right = '0px';
+    frame.style.bottom = '0px';
+    frame.height = '100%';
+    frame.width = '320px';
+    //frame.style.marginRight = '-320px';
+  }
   frame.src = _window.FRAME_URL;
-  frame.style.borderWidth = '0px';
-  frame.style.position = 'fixed';
-  frame.style.top = '0px';
-  frame.style.right = '0px';
-  frame.style.bottom = '0px';
-  frame.height = '100%';
-  frame.width = '320px';
-  //frame.style.marginRight = '-320px';
   frame.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin allow-popups allow-forms");
   return frame;
 }
@@ -172,15 +174,17 @@ class YnosImpl implements Ynos {
     return this.client.initAccount()
   }
 
-  initFrame (): Promise<void> {
+  initFrame (frame?: HTMLIFrameElement): Promise<void> {
     if (this.frame) return Promise.resolve();
 
     return new Promise<void>((resolve, reject) => {
       try {
-        this.frame = buildFrame();
+        this.frame = buildFrame(frame);
         this.stream = new FrameStream("ynos").toFrame(this.frame);
         this.client = new YnosClient(this.stream)
-        document.body.appendChild(this.frame);
+        if (!this.frame.parentElement) {
+          document.body.appendChild(this.frame);
+        }
         resolve();
       } catch (e) {
         reject(e);
