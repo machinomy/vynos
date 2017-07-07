@@ -8,6 +8,7 @@ import MicropaymentsHandler from "./worker/controllers/MicropaymentsHandler";
 import MicropaymentsController from "./worker/controllers/MicropaymentsController";
 
 asServiceWorker(self => {
+  // self.CONTRACT_ADDRESS = "0xdeadbeaf" // FIXME
   let backgroundController = new BackgroundController()
   let networkController = new NetworkController(backgroundController)
 

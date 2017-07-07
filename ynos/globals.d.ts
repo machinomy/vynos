@@ -112,6 +112,7 @@ interface WorkerGlobalScope extends EventTarget {
 }
 
 interface ServiceWorkerGlobalScope extends WorkerGlobalScope {
+  CONTRACT_ADDRESS: string // FIXME
   clients: Clients
   skipWaiting: () => Promise<void>;
   oninstall: (event: ExtendableEvent) => void;
