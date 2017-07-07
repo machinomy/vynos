@@ -5,7 +5,9 @@ import StreamProvider from "./lib/StreamProvider";
 import {AccountsRequest, AccountsResponse} from "./lib/rpc/eth";
 import {JSONRPC, randomId} from "./lib/Payload"
 import {
-  CloseChannelRequest, CloseChannelResponse, InitAccountRequest, InitAccountResponse, OpenChannelRequest,
+  CloseChannelRequest, CloseChannelResponse, InitAccountRequest, InitAccountResponse, ListChannelsRequest,
+  ListChannelsResponse,
+  OpenChannelRequest,
   OpenChannelResponse, PayInChannelRequest, PayInChannelResponse
 } from "./lib/rpc/yns";
 import Web3 from "web3"
@@ -125,6 +127,18 @@ class YnosClient {
       }
     })
   }
+
+  listChannels(): Promise<Array<PaymentChannel>> {
+    let request: ListChannelsRequest = {
+      id: randomId(),
+      method: ListChannelsRequest.method,
+      jsonrpc: JSONRPC,
+      params: []
+    }
+    return this.streamProvider.ask(request).then((response: ListChannelsResponse) => {
+      return response.result.map(pc => new PaymentChannel(pc))
+    })
+  }
 }
 
 class YnosImpl implements Ynos {
@@ -151,7 +165,9 @@ class YnosImpl implements Ynos {
   }
 
   listChannels (): Promise<Array<PaymentChannel>> {
-    return Promise.resolve([])
+    if (!this.client) return Promise.reject(new Error("Do initFrame first"))
+
+    return this.client.listChannels()
   }
 
   makePayment () {

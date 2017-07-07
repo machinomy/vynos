@@ -154,3 +154,20 @@ export class PayInChannelRequest implements RequestPayload {
 export interface PayInChannelResponse extends ResponsePayload {
   result: [mPaymentChannel, Payment]
 }
+
+export class ListChannelsRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof ListChannelsRequest.method;
+  params: any[];
+
+  static method = "yns_listChannels"
+
+  static match(payload: RequestPayload): payload is ListChannelsRequest {
+    return payload.method === ListChannelsRequest.method
+  }
+}
+
+export interface ListChannelsResponse extends ResponsePayload {
+  result: Array<mPaymentChannel>
+}

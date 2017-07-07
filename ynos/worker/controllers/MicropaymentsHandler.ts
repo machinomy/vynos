@@ -2,7 +2,8 @@ import MicropaymentsController from "./MicropaymentsController";
 import {RequestPayload} from "../../lib/Payload";
 import {EndFunction} from "../../lib/StreamServer";
 import {
-  CloseChannelRequest, CloseChannelResponse, OpenChannelRequest, OpenChannelResponse,
+  CloseChannelRequest, CloseChannelResponse, ListChannelsRequest, ListChannelsResponse, OpenChannelRequest,
+  OpenChannelResponse,
   PayInChannelRequest, PayInChannelResponse
 } from "../../lib/rpc/yns";
 import PaymentChannel from "../../lib/PaymentChannel";
@@ -56,6 +57,17 @@ export default class MicropaymentsHandler {
     }).catch(end)
   }
 
+  listChannels(message: ListChannelsRequest, next: Function, end: EndFunction) {
+    this.controller.listChannels().then(channels => {
+      let response: ListChannelsResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: channels.map(pc => pc.toJSON())
+      }
+      end(null, response)
+    })
+  }
+
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (OpenChannelRequest.match(message)) {
       this.openChannel(message, next, end)
@@ -63,6 +75,8 @@ export default class MicropaymentsHandler {
       this.closeChannel(message, next, end)
     } else if (PayInChannelRequest.match(message)) {
       this.payInChannel(message, next, end)
+    } else if (ListChannelsRequest.match(message)) {
+      this.listChannels(message, next, end)
     } else {
       next()
     }

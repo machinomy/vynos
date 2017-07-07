@@ -12,6 +12,7 @@ declare module "machinomy" {
 
   interface MachinomyStorageChannels {
     all: () => Promise<PaymentChannel[]>
+    saveOrUpdate: (channel: PaymentChannel) => Promise<void>
   }
 
   export class Storage {

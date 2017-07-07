@@ -25,7 +25,9 @@ export default class MicropaymentsController {
     console.log("MicropaymentsController.openChannel")
     if (this.account) {
       return this.client.contract.buildPaymentChannel(this.account, receiver, amount).then(pc => {
-        return new PaymentChannel(pc)
+        return this.client.storage.channels.saveOrUpdate(pc).then(() => {
+          return new PaymentChannel(pc)
+        })
       })
     } else {
       return Promise.reject("account is not ready")
@@ -38,7 +40,10 @@ export default class MicropaymentsController {
     let payment = paymentChannel.spent
     return this.client.contract.startSettle(this.account, channelId, payment).then(() => {
       let next = { ...paymentChannel.toJSON(), state: 1 }
-      return new PaymentChannel(next)
+      let channl = new PaymentChannel(next)
+      return this.client.storage.channels.saveOrUpdate(channl).then(() => {
+        return channl
+      })
     })
   }
 
@@ -54,6 +59,10 @@ export default class MicropaymentsController {
           console.log('Claimed ' + value + ' out of ' + paymentChannel.value + ' from channel ' + channelId)
           let next = { ...paymentChannel.toJSON(), state: 2 }
           return new PaymentChannel(next)
+        }).then(channel => {
+          return this.client.storage.channels.saveOrUpdate(channel).then(() => {
+            return channel
+          })
         })
       } else {
         return Promise.reject(new Error('Can not claim ' + paymentDoc.value + ' from channel ' + channelId))
@@ -69,6 +78,10 @@ export default class MicropaymentsController {
         console.log('Settled to pay ' + payment + ' to ' + paymentChannel.receiver)
         let next = { ...paymentChannel.toJSON(), state: 2 }
         return new PaymentChannel(next)
+      }).then(channel => {
+        return this.client.storage.channels.saveOrUpdate(channel).then(() => {
+          return channel
+        })
       })
     } else {
       let until = contract.getUntil(paymentChannel.channelId)
@@ -110,8 +123,16 @@ export default class MicropaymentsController {
   payInChannel(channel: PaymentChannel, amount: number): Promise<[PaymentChannel, Payment]> {
     return machinomy.Payment.fromPaymentChannel(this.network.web3, channel, amount).then(payment => {
       let nextPaymentChannel = new PaymentChannel(machinomy.channel.PaymentChannel.fromPayment(payment))
-      let result: [PaymentChannel, Payment] = [nextPaymentChannel, payment]
-      return result
+      return this.client.storage.channels.saveOrUpdate(nextPaymentChannel).then(() => {
+        let result: [PaymentChannel, Payment] = [nextPaymentChannel, payment]
+        return result
+      })
+    })
+  }
+
+  listChannels(): Promise<Array<PaymentChannel>> {
+    return this.client.storage.channels.all().then(channels => {
+      return channels.map(ch => new PaymentChannel(ch))
     })
   }
 }
