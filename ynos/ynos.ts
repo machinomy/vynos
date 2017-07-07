@@ -42,7 +42,7 @@ export interface Ynos {
   makePayment: () => void // web3.eth.sendTransaction
   payInChannel: (ch: PaymentChannel, amount: number) => Promise<YnosPayInChannelResponse> // FIXME What about lifecycle events?
   initAccount: () => Promise<void>
-  initFrame: () => Promise<void>
+  initFrame: (frame?: HTMLIFrameElement) => Promise<void>
   getWeb3(): Promise<Web3>
 }
 
