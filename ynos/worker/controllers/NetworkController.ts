@@ -71,12 +71,13 @@ export default class NetworkController {
   }
 
   providerOpts(): ProviderOpts {
+    const CONFIG = JSON.parse(fs.readFileSync(`../../config.json`))
     return {
       static: {
         eth_syncing: false,
         web3_clientVersion: `LiteratePayments/v${1.0}`,
       },
-      rpcUrl: 'https://ropsten.infura.io/',
+      rpcUrl: CONFIG.RPC_URL,
       getAccounts: this.getAccounts.bind(this),
       approveTransaction: this.approveTransaction.bind(this),
       signTransaction: this.signTransaction.bind(this),

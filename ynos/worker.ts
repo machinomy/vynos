@@ -8,7 +8,8 @@ import MicropaymentsHandler from "./worker/controllers/MicropaymentsHandler";
 import MicropaymentsController from "./worker/controllers/MicropaymentsController";
 
 asServiceWorker(self => {
-  // self.CONTRACT_ADDRESS = "0xdeadbeaf" // FIXME
+  const { CONTRACT_ADDRESS } = JSON.parse(fs.readFileSync('./config.json'))
+  self.CONTRACT_ADDRESS = CONTRACT_ADDRESS
   let backgroundController = new BackgroundController()
   let networkController = new NetworkController(backgroundController)
 

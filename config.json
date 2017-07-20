@@ -1,0 +1,4 @@
+{
+	"RPC_URL": "http://localhost:8545",
+	"CONTRACT_ADDRESS": "0xdeadbeef"
+}
