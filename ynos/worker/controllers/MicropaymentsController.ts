@@ -1,14 +1,16 @@
 import NetworkController from "./NetworkController";
 import BackgroundController from "./BackgroundController";
-import PaymentChannel from "../../lib/PaymentChannel";
 import {buildMachinomyClient} from "../../lib/micropayments";
-import machinomy, {Payment} from "machinomy";
+import Sender from "machinomy/lib/sender";
+import machinomy from "machinomy"
+import {Payment, PaymentChannel} from "machinomy/lib/channel";
+import Promise = require('bluebird')
 
 export default class MicropaymentsController {
   network: NetworkController
   background: BackgroundController
   account: string
-  client: machinomy.Sender
+  client: Sender
 
   constructor(network: NetworkController, background: BackgroundController) {
     this.network = network
@@ -50,14 +52,14 @@ export default class MicropaymentsController {
   claim(paymentChannel: PaymentChannel): Promise<PaymentChannel> {
     console.log("MicropaymentsController.claim")
     let channelId = paymentChannel.channelId
-    let storage: machinomy.Storage = this.client.storage
+    let storage = this.client.storage
     let contract = this.client.contract
     return storage.payments.firstMaximum(channelId).then(paymentDoc => {
       let canClaim = contract.canClaim(channelId, paymentDoc.value, Number(paymentDoc.v), paymentDoc.r, paymentDoc.s)
       if (canClaim) {
         return contract.claim(paymentChannel.receiver, paymentChannel.channelId, paymentDoc.value, Number(paymentDoc.v), paymentDoc.r, paymentDoc.s).then(value => {
           console.log('Claimed ' + value + ' out of ' + paymentChannel.value + ' from channel ' + channelId)
-          let next = { ...paymentChannel.toJSON(), state: 2 }
+          let next = { ...paymentChannel, state: 2 }
           return new PaymentChannel(next)
         }).then(channel => {
           return this.client.storage.channels.saveOrUpdate(channel).then(() => {

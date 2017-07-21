@@ -1,6 +1,7 @@
 import BackgroundController from "./BackgroundController";
 import ZeroClientProvider from "web3-provider-engine/zero"
-import {Engine, ProviderOpts} from "web3-provider-engine";
+import {ProviderOpts} from "web3-provider-engine";
+import Engine = require('web3-provider-engine')
 import {Payload} from "../../lib/Payload";
 import {EndFunction} from "../../lib/StreamServer";
 import Tx from 'ethereumjs-tx'
