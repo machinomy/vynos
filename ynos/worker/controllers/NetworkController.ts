@@ -6,6 +6,7 @@ import {EndFunction} from "../../lib/StreamServer";
 import Tx from 'ethereumjs-tx'
 import {Buffer} from "buffer";
 import Web3 from "web3";
+import {DevWindow} from "../../YnosWindow";
 const ethUtil = require('ethereumjs-util')
 const sigUtil = require('eth-sig-util')
 
@@ -71,16 +72,12 @@ export default class NetworkController {
   }
 
   providerOpts(): ProviderOpts {
-    const CONFIG = {
-        "RPC_URL": "http://localhost:8545",
-        "CONTRACT_ADDRESS": "0xdeadbeef"
-      }
     return {
       static: {
         eth_syncing: false,
         web3_clientVersion: `LiteratePayments/v${1.0}`,
       },
-      rpcUrl: CONFIG.RPC_URL,
+      rpcUrl: (window as DevWindow).RPC_URL,
       getAccounts: this.getAccounts.bind(this),
       approveTransaction: this.approveTransaction.bind(this),
       signTransaction: this.signTransaction.bind(this),

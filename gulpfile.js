@@ -46,7 +46,8 @@ function webpackConfig (entry) {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
-        "window.FRAME_URL": JSON.stringify(`http://localhost:${FRAME_PORT}/frame.html`)
+        "window.FRAME_URL": JSON.stringify(`http://localhost:${FRAME_PORT}/frame.html`),
+        "window.RPC_URL": JSON.stringify(`http://localhost:8545`)
       }),
       new PackageLoadersPlugin()
     ],

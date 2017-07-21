@@ -8,8 +8,6 @@ import MicropaymentsHandler from "./worker/controllers/MicropaymentsHandler";
 import MicropaymentsController from "./worker/controllers/MicropaymentsController";
 
 asServiceWorker(self => {
-  const CONTRACT_ADDRESS = "0xdeadbeef";
-  self.CONTRACT_ADDRESS = CONTRACT_ADDRESS
   let backgroundController = new BackgroundController()
   let networkController = new NetworkController(backgroundController)
 
