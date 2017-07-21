@@ -71,7 +71,10 @@ export default class NetworkController {
   }
 
   providerOpts(): ProviderOpts {
-    const CONFIG = JSON.parse(fs.readFileSync(`../../config.json`))
+    const CONFIG = {
+        "RPC_URL": "http://localhost:8545",
+        "CONTRACT_ADDRESS": "0xdeadbeef"
+      }
     return {
       static: {
         eth_syncing: false,
