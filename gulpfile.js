@@ -48,7 +48,7 @@ function webpackConfig (entry) {
       new webpack.DefinePlugin({
         "window.FRAME_URL": JSON.stringify(`http://localhost:${FRAME_PORT}/frame.html`),
         "window.RPC_URL": JSON.stringify(`http://localhost:8545`),
-        "self.CONTRACT_ADDRESS": null // JSON.stringify('0xdeadbeaf'),
+        "self.CONTRACT_ADDRESS": '[CONTRACT_ADDRESS]' // JSON.stringify('0xdeadbeaf'),
       }),
       new PackageLoadersPlugin()
     ],
