@@ -70,5 +70,8 @@
     "typescript-fsa-redux-thunk": "xdave/typescript-fsa-redux-thunk",
     "web3": "^0.19.0",
     "web3-provider-engine": "^13.0.3"
+  },
+  "custom": {
+    "contract_address": "[DEFAULT_CONTRACT_ADDRESS]"
   }
 }

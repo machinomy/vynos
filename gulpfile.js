@@ -6,11 +6,18 @@ const gutil = require("gulp-util");
 const webpack = require("webpack");
 const WebpackDevServer = require('webpack-dev-server');
 const PackageLoadersPlugin = require('webpack-package-loaders-plugin')
+const packageJson = require('./package.json')
 
 const DIST_PATH = path.resolve(__dirname, "dist");
 
 const FRAME_PORT=9090;
 const HARNESS_PORT = 8080;
+
+const CONTRACT_ADDRESS_PLACEHOLDER = '[DEFAULT_CONTRACT_ADDRESS]'
+let CONTRACT_ADDRESS = null
+if (packageJson.custom.contract_address !== CONTRACT_ADDRESS_PLACEHOLDER) {
+  CONTRACT_ADDRESS = packageJson.custom.contract_address
+}
 
 const YNOS_WEBPACK_CONFIG = webpackConfig({
   ynos: [
@@ -48,7 +55,7 @@ function webpackConfig (entry) {
       new webpack.DefinePlugin({
         "window.FRAME_URL": JSON.stringify(`http://localhost:${FRAME_PORT}/frame.html`),
         "window.RPC_URL": JSON.stringify(`http://localhost:8545`),
-        "self.CONTRACT_ADDRESS": '[CONTRACT_ADDRESS]' // JSON.stringify('0xdeadbeaf'),
+        "self.CONTRACT_ADDRESS": JSON.stringify(CONTRACT_ADDRESS),
       }),
       new PackageLoadersPlugin()
     ],
