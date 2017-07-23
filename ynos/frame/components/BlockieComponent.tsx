@@ -1,6 +1,6 @@
 import * as React from "react";
 import Random from "../../lib/Random";
-import _ from "lodash";
+import _ = require("lodash")
 
 export function stringToColor(string: string): null|string {
   if (_.isEmpty(string)) {

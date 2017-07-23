@@ -11,9 +11,9 @@ import {
   OpenChannelResponse, PayInChannelRequest, PayInChannelResponse
 } from "./lib/rpc/yns";
 import Web3 from "web3"
-import PaymentChannel from "./lib/PaymentChannel";
 import BigNumber from "bignumber.js";
-import {Payment} from "machinomy";
+import {Payment, PaymentChannel} from "machinomy/lib/channel";
+import Promise = require('bluebird')
 
 let _window = (<DevWindow & YnosWindow>window);
 
@@ -94,7 +94,7 @@ class YnosClient {
       params: [receiverAccount, channelValue.toString()]
     }
     return this.streamProvider.ask(request).then((response: OpenChannelResponse) => {
-      return new PaymentChannel(response.result[0])
+      return PaymentChannel.fromDocument(response.result[0])
     })
   }
 
@@ -106,7 +106,7 @@ class YnosClient {
       params: [channel.toJSON()]
     }
     return this.streamProvider.ask(request).then((response: CloseChannelResponse) => {
-      return new PaymentChannel(response.result[0])
+      return PaymentChannel.fromDocument(response.result[0])
     })
   }
 
@@ -119,7 +119,7 @@ class YnosClient {
       params: [channel.toJSON(), amount]
     }
     return this.streamProvider.ask(request).then((response: PayInChannelResponse) => {
-      let paymentChannel = new PaymentChannel(response.result[0])
+      let paymentChannel = PaymentChannel.fromDocument(response.result[0])
       let payment = response.result[1]
       return {
         channel: paymentChannel,
@@ -136,7 +136,7 @@ class YnosClient {
       params: []
     }
     return this.streamProvider.ask(request).then((response: ListChannelsResponse) => {
-      return response.result.map(pc => new PaymentChannel(pc))
+      return response.result.map(pc => PaymentChannel.fromDocument(pc))
     })
   }
 }

@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ = require('lodash')
 import * as littleRouter from 'little-router'
 import {State} from "../astate";
 

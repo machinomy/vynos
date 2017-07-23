@@ -6,8 +6,7 @@ import {
   OpenChannelResponse,
   PayInChannelRequest, PayInChannelResponse
 } from "../../lib/rpc/yns";
-import PaymentChannel from "../../lib/PaymentChannel";
-import { Payment } from "machinomy/lib/channel";
+import {Payment, PaymentChannel} from "machinomy/lib/channel";
 
 export default class MicropaymentsHandler {
   controller: MicropaymentsController
@@ -31,7 +30,7 @@ export default class MicropaymentsHandler {
   }
 
   closeChannel(message: CloseChannelRequest, next: Function, end: EndFunction) {
-    let channel = new PaymentChannel(message.params[0])
+    let channel = PaymentChannel.fromDocument(message.params[0])
     this.controller.closeChannel(channel).then(channel => {
       let response: CloseChannelResponse = {
         id: message.id,
@@ -43,7 +42,7 @@ export default class MicropaymentsHandler {
   }
 
   payInChannel(message: PayInChannelRequest, next: Function, end: EndFunction) {
-    let channel = new PaymentChannel(message.params[0])
+    let channel = PaymentChannel.fromDocument(message.params[0])
     let amount = message.params[1]
     this.controller.payInChannel(channel, amount).then(tuple => {
       let channel: PaymentChannel = tuple[0]

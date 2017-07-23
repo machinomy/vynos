@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {State} from "../../astate";
-import _ from "lodash";
+import _ = require("lodash");
 import TermsComponent from "./TermsComponent";
 import PasswordComponent from "./PasswordSubpage";
 import SeedComponent from "./SeedComponent";

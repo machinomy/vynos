@@ -1,5 +1,6 @@
 import {Duplex} from "readable-stream";
 import Payload, {ResponsePayload} from "./Payload";
+import Promise = require('bluebird')
 
 export default class StreamProvider extends Duplex {
   _callbacks: Map<string, Function>

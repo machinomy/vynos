@@ -2,7 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import LargeLogoLayout from "../components/large_logo_layout";
 import {ChangeEvent, CSSProperties, FormEvent} from "react";
-import _ from "lodash";
+import _ = require("lodash")
 import WorkerProxy from "../WorkerProxy";
 import {FrameState} from "../state";
 
