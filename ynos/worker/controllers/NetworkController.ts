@@ -73,12 +73,13 @@ export default class NetworkController {
   }
 
   providerOpts(): ProviderOpts {
+    let rpcUrl = (window as DevWindow).RPC_URL || 'https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH'
     return {
       static: {
         eth_syncing: false,
         web3_clientVersion: `LiteratePayments/v${1.0}`,
       },
-      rpcUrl: (window as DevWindow).RPC_URL,
+      rpcUrl: rpcUrl,
       getAccounts: this.getAccounts.bind(this),
       approveTransaction: this.approveTransaction.bind(this),
       signTransaction: this.signTransaction.bind(this),
