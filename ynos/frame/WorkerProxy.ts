@@ -11,9 +11,6 @@ import {
 } from "../lib/rpc/yns";
 import {Action} from "redux";
 import Web3 = require("web3")
-import machinomy from "machinomy"
-import {buildMachinomyClient} from "../lib/micropayments";
-import Sender from "machinomy/lib/sender";
 import Promise = require('bluebird')
 
 export default class WorkerProxy extends EventEmitter {
@@ -56,23 +53,6 @@ export default class WorkerProxy extends EventEmitter {
     }
     return this.stream.ask(request).then(() => {
       return;
-    })
-  }
-
-  getMachinomyClient(): Promise<Sender> {
-    return new Promise((resolve, reject) => {
-      let web3 = this.getWeb3()
-      return web3.eth.getAccounts((error, accounts) => {
-        if (error) {
-          reject(error)
-        } else if (accounts.length === 0) {
-          reject(new Error("No accounts found for machinomy to use"))
-        } else {
-          let account = accounts[0]
-          let client = buildMachinomyClient(web3, account)
-          resolve(client)
-        }
-      })
     })
   }
 
