@@ -1,5 +1,6 @@
 import Web3 from 'web3'
 import machinomy from 'machinomy'
+import Sender from "machinomy/lib/sender";
 
 export interface MachinomyWindowExt {
   BROWSER?: boolean
@@ -17,5 +18,5 @@ export const buildMachinomyClient = (web3: Web3, account: string) => {
   let transport = machinomy.transport.build()
   let storage = machinomy.storage.build(web3, `literate.${MACHINOMY_NETWORK}`, 'sender')
   let contract = machinomy.contract(web3)
-  return machinomy.sender.build(web3, account, contract, transport, storage)
+  return new Sender(web3, account, contract, transport, storage)
 }

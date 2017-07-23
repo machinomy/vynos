@@ -1,6 +1,6 @@
 import {Duplex} from "readable-stream";
 import {RequestPayload, ResponsePayload, Payload} from "./Payload";
-import _ from "lodash";
+import _ = require("lodash")
 
 export type EndFunction = <A extends Payload>(error: null, response?: A) => void;
 export type Handler = (message: Payload, next: Function, end: EndFunction) => void;

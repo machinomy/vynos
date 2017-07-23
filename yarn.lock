@@ -248,9 +248,47 @@
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/bignumber.js/-/bignumber.js-4.0.2.tgz#22a16946c9faa9f2c9c0ad4c7c3734a3033320ae"
 
-"@types/bluebird@^3.5.6":
+"@types/bluebird@3.5.6", "@types/bluebird@^3.5.6":
   version "3.5.6"
   resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.5.6.tgz#5af2db8d2b743f5cc552a665d52ed890c19af74f"
+
+"@types/body-parser@^1.16.4":
+  version "1.16.4"
+  resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.16.4.tgz#96f3660e6f88a677fee7250f5a5e6d6bda3c76bb"
+  dependencies:
+    "@types/express" "*"
+    "@types/node" "*"
+
+"@types/commander@^2.9.1":
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/@types/commander/-/commander-2.9.1.tgz#d4e464425baf4685bd49dd233be11de9c00c0784"
+  dependencies:
+    "@types/node" "*"
+
+"@types/cors@^2.8.1":
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.1.tgz#54073caf3b7a741e67fb82483f83a6cadfba7501"
+  dependencies:
+    "@types/express" "*"
+
+"@types/express-serve-static-core@*":
+  version "4.0.49"
+  resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.0.49.tgz#3438d68d26e39db934ba941f18e3862a1beeb722"
+  dependencies:
+    "@types/node" "*"
+
+"@types/express@*", "@types/express@^4.0.36":
+  version "4.0.36"
+  resolved "https://registry.yarnpkg.com/@types/express/-/express-4.0.36.tgz#14eb47de7ecb10319f0a2fb1cf971aa8680758c2"
+  dependencies:
+    "@types/express-serve-static-core" "*"
+    "@types/serve-static" "*"
+
+"@types/form-data@*":
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/@types/form-data/-/form-data-0.0.33.tgz#c9ac85b2a5fd18435b8c85d9ecb50e6d6c893ff8"
+  dependencies:
+    "@types/node" "*"
 
 "@types/jasmine@^2.5.52":
   version "2.5.52"
@@ -259,6 +297,32 @@
 "@types/lodash@^4.14.66":
   version "4.14.66"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.66.tgz#3dbb83477becf130611f8fac82a8fdb199805981"
+
+"@types/lodash@^4.14.68":
+  version "4.14.70"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.70.tgz#37bda4acfb3bb79143009cc9d00abd559f7dca30"
+
+"@types/mime@*":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@types/mime/-/mime-1.3.1.tgz#2cf42972d0931c1060c7d5fa6627fce6bd876f2f"
+
+"@types/nedb@^1.8.3":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@types/nedb/-/nedb-1.8.3.tgz#e6f21da4927147492084bbbc9dfbbc815310e08b"
+
+"@types/nock@^8.2.1":
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/@types/nock/-/nock-8.2.1.tgz#1fbe5bdecb943c109a778553fa4d2401cb9394b4"
+  dependencies:
+    "@types/node" "*"
+
+"@types/node@*", "@types/node@^8.0.9":
+  version "8.0.14"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.14.tgz#4a19dc6bb61d16c01cbadc7b30ac23518fff176b"
+
+"@types/node@^8.0.15":
+  version "8.0.15"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.15.tgz#8f23f8a4642ced357704d048010876fc0c7f179a"
 
 "@types/react-dom@^15.5.0":
   version "15.5.0"
@@ -276,6 +340,28 @@
 "@types/react@*", "@types/react@^15.0.29":
   version "15.0.29"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.29.tgz#a10831b9d025bcef6cab7bc1c6547bdddbabc938"
+
+"@types/request@^0.0.45":
+  version "0.0.45"
+  resolved "https://registry.yarnpkg.com/@types/request/-/request-0.0.45.tgz#c6e52be8b108eb035c35aa9af56a38a260c3e7e6"
+  dependencies:
+    "@types/form-data" "*"
+    "@types/node" "*"
+
+"@types/serve-static@*":
+  version "1.7.31"
+  resolved "https://registry.yarnpkg.com/@types/serve-static/-/serve-static-1.7.31.tgz#15456de8d98d6b4cff31be6c6af7492ae63f521a"
+  dependencies:
+    "@types/express-serve-static-core" "*"
+    "@types/mime" "*"
+
+"@types/tmp@^0.0.33":
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/@types/tmp/-/tmp-0.0.33.tgz#1073c4bc824754ae3d10cfab88ab0237ba964e4d"
+
+"@types/url-join@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@types/url-join/-/url-join-0.8.2.tgz#1181ecbe1d97b7034e0ea1e35e62e86cc26b422d"
 
 abbrev@1:
   version "1.1.0"
@@ -509,6 +595,12 @@ async@^1.4.2, async@^1.5.2:
 async@^2.0.1, async@^2.1.2, async@^2.4.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/async/-/async-2.4.1.tgz#62a56b279c98a11d0987096a01cc3eeb8eb7bbd7"
+  dependencies:
+    lodash "^4.14.0"
+
+async@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.5.0.tgz#843190fd6b7357a0b9e1c956edddd5ec8462b54d"
   dependencies:
     lodash "^4.14.0"
 
@@ -1067,9 +1159,13 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bluebird@^3.4.7, bluebird@^3.5.0:
+bluebird@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
+
+bn.js@4.11.7, bn.js@^4.11.7:
+  version "4.11.7"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.7.tgz#ddb048e50d9482790094c13eb3fcfc833ce7ab46"
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.11.3, bn.js@^4.4.0, bn.js@^4.8.0:
   version "4.11.6"
@@ -1460,10 +1556,8 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
     delayed-stream "~1.0.0"
 
 commander@^2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
-  dependencies:
-    graceful-readlink ">= 1.0.0"
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
 
 compressible@~2.0.8:
   version "2.0.10"
@@ -1544,8 +1638,8 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
 cors@^2.8.1:
-  version "2.8.3"
-  resolved "https://registry.yarnpkg.com/cors/-/cors-2.8.3.tgz#4cf78e1d23329a7496b2fc2225b77ca5bb5eb802"
+  version "2.8.4"
+  resolved "https://registry.yarnpkg.com/cors/-/cors-2.8.4.tgz#2bd381f2eb201020105cd50ea59da63090694686"
   dependencies:
     object-assign "^4"
     vary "^1"
@@ -2073,6 +2167,17 @@ etag@~1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.0.tgz#6f631aef336d6c46362b51764044ce216be3c051"
 
+eth-block-tracker@^1.1.0:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/eth-block-tracker/-/eth-block-tracker-1.1.3.tgz#c46a0f2bced9b49b88c7f3918856d7ec57fbdc29"
+  dependencies:
+    async-eventemitter "^0.2.2"
+    babelify "^7.3.0"
+    eth-query "^2.1.0"
+    ethjs-util "^0.1.3"
+    pify "^2.3.0"
+    tape "^4.6.3"
+
 eth-block-tracker@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/eth-block-tracker/-/eth-block-tracker-2.0.1.tgz#798259799464afeff29126ae21231fc8759f7a4b"
@@ -2135,7 +2240,7 @@ ethereumjs-util@^4.0.0, ethereumjs-util@^4.0.1, ethereumjs-util@^4.4.0:
     rlp "^2.0.0"
     secp256k1 "^3.0.1"
 
-ethereumjs-util@^5.0.0, ethereumjs-util@^5.0.1, ethereumjs-util@^5.1.1, ethereumjs-util@^5.1.2:
+ethereumjs-util@^5.0.0, ethereumjs-util@^5.1.1, ethereumjs-util@^5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/ethereumjs-util/-/ethereumjs-util-5.1.2.tgz#25ba0215cbb4c2f0b108a6f96af2a2e62e45921f"
   dependencies:
@@ -2692,10 +2797,6 @@ graceful-fs@~1.2.0:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-1.2.3.tgz#15a4806a57547cb2d2dbf27f42e89a8c3451b364"
 
-"graceful-readlink@>= 1.0.0":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
-
 gulp-cli@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/gulp-cli/-/gulp-cli-1.3.0.tgz#a6bfbb8be35341be290ae45cd3e401071216edd4"
@@ -2869,9 +2970,9 @@ homedir-polyfill@^1.0.0, homedir-polyfill@^1.0.1:
   dependencies:
     parse-passwd "^1.0.0"
 
-homedir@^0.6.0:
+"homedir@https://github.com/ukstv/node-homedir":
   version "0.6.0"
-  resolved "https://registry.yarnpkg.com/homedir/-/homedir-0.6.0.tgz#2b21db66bf08a6db38249a3eff52d7d18706af1e"
+  resolved "https://github.com/ukstv/node-homedir#c12f20b3e0b0f2cdf745cfda241ef3702c098098"
 
 hosted-git-info@^2.1.4:
   version "2.4.2"
@@ -3677,22 +3778,44 @@ macaddress@^0.2.8:
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
 
-machinomy@^0.3.6:
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/machinomy/-/machinomy-0.3.6.tgz#c50caef9243b50694d26dfa78f2d00826c44758b"
+machinomy@^1.0.0-alpha.16:
+  version "1.0.0-alpha.16"
+  resolved "https://registry.yarnpkg.com/machinomy/-/machinomy-1.0.0-alpha.16.tgz#188cd1c304bfda228af68b8995db5379603dbf36"
   dependencies:
-    bluebird "^3.4.7"
+    "@types/bignumber.js" "^4.0.2"
+    "@types/bluebird" "3.5.6"
+    "@types/body-parser" "^1.16.4"
+    "@types/commander" "^2.9.1"
+    "@types/cors" "^2.8.1"
+    "@types/express" "^4.0.36"
+    "@types/lodash" "^4.14.68"
+    "@types/nedb" "^1.8.3"
+    "@types/nock" "^8.2.1"
+    "@types/node" "^8.0.9"
+    "@types/request" "^0.0.45"
+    "@types/tmp" "^0.0.33"
+    "@types/url-join" "^0.8.2"
+    bluebird "^3.5.0"
     commander "^2.9.0"
     cors "^2.8.1"
-    ethereumjs-util "^5.0.1"
-    homedir "^0.6.0"
+    ethereumjs-util "^5.1.2"
+    homedir "https://github.com/ukstv/node-homedir"
     lodash "^4.17.4"
     loglevel "^1.4.1"
     nedb "^1.8.0"
+    ng2-logger "^1.0.3"
     prompt "^1.0.0"
     request "^2.76.0"
+    types-bn "^0.0.1"
+    types-ethereumjs-util "^0.0.5"
+    types-rlp "^0.0.1"
+    types-web3-fake-provider "^0.0.2"
+    types-web3-provider-engine "^0.0.2"
+    typescript "^2.4.1"
     url-join "^1.1.0"
     web3 "^0.19.0"
+    web3-provider-engine "^12.0.5"
+    web3-typescript-typings "https://github.com/machinomy/web3-typescript-typings"
 
 map-cache@^0.2.0:
   version "0.2.2"
@@ -3983,6 +4106,10 @@ nedb@^1.8.0:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+ng2-logger@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/ng2-logger/-/ng2-logger-1.0.3.tgz#1b44af3fe9f14bb27809a4365375d3f259213678"
 
 node-abi@^2.0.0:
   version "2.0.3"
@@ -5537,9 +5664,13 @@ sshpk@^1.7.0:
     jsbn "~0.1.0"
     tweetnacl "~0.14.0"
 
-stack-trace@0.0.9, stack-trace@0.0.x:
+stack-trace@0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.9.tgz#a8f6eaeca90674c333e7c43953f275b451510695"
+
+stack-trace@0.0.x:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.10.tgz#547c70b347e8d32b4e108ea1a2a159e5fdde19c0"
 
 stackframe@^0.3.1:
   version "0.3.1"
@@ -5871,6 +6002,38 @@ type-is@~1.6.15:
     media-typer "0.3.0"
     mime-types "~2.1.15"
 
+types-bn@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/types-bn/-/types-bn-0.0.1.tgz#4253c7c7251b14e1d77cdca6f58800e5e2b82c4b"
+  dependencies:
+    bn.js "4.11.7"
+
+types-ethereumjs-util@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/types-ethereumjs-util/-/types-ethereumjs-util-0.0.5.tgz#a65060741c73d1ee5157b9ba2d502b4fe4a19d1c"
+  dependencies:
+    bn.js "^4.11.7"
+    buffer "^5.0.6"
+    rlp "^2.0.0"
+
+types-rlp@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/types-rlp/-/types-rlp-0.0.1.tgz#cb9a2fe70bbdabda3c2c491b21bc04c8bd917f9b"
+  dependencies:
+    rlp "^2.0.0"
+
+types-web3-fake-provider@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/types-web3-fake-provider/-/types-web3-fake-provider-0.0.2.tgz#7e7b3e0a5d1e6ce7fe9761c316fdd15ab283087b"
+  dependencies:
+    web3-fake-provider "^0.1.0"
+
+types-web3-provider-engine@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/types-web3-provider-engine/-/types-web3-provider-engine-0.0.2.tgz#52fa33479f2d45ba55f642111fdba42e545f898d"
+  dependencies:
+    web3-provider-engine "^13.2.8"
+
 typescript-fsa-reducers@^0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/typescript-fsa-reducers/-/typescript-fsa-reducers-0.4.4.tgz#54a8b8fd0b9cf5fffafad575b6c93b97fa4dc568"
@@ -6109,6 +6272,34 @@ weak@^1.0.0:
     bindings "^1.2.1"
     nan "^2.0.5"
 
+web3-fake-provider@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/web3-fake-provider/-/web3-fake-provider-0.1.0.tgz#25aaee7524864c54b26929b5db725d29257af832"
+
+web3-provider-engine@^12.0.5:
+  version "12.2.4"
+  resolved "https://registry.yarnpkg.com/web3-provider-engine/-/web3-provider-engine-12.2.4.tgz#d222742a5818320eed6d6924118d95379eefbee8"
+  dependencies:
+    async "^2.1.2"
+    clone "^2.0.0"
+    eth-block-tracker "^1.1.0"
+    eth-sig-util "^1.2.1"
+    ethereumjs-block "^1.2.2"
+    ethereumjs-tx "^1.2.0"
+    ethereumjs-util "^5.1.1"
+    ethereumjs-vm "^2.0.2"
+    fetch-ponyfill "^4.0.0"
+    json-rpc-error "^2.0.0"
+    json-stable-stringify "^1.0.1"
+    promise-to-callback "^1.0.0"
+    readable-stream "^2.2.9"
+    request "^2.67.0"
+    semaphore "^1.0.3"
+    solc "^0.4.2"
+    tape "^4.4.0"
+    xhr "^2.2.0"
+    xtend "^4.0.1"
+
 web3-provider-engine@^13.0.3:
   version "13.0.3"
   resolved "https://registry.yarnpkg.com/web3-provider-engine/-/web3-provider-engine-13.0.3.tgz#a056d8b8b34c210d7f97d6e3c211f2123b89500f"
@@ -6133,9 +6324,33 @@ web3-provider-engine@^13.0.3:
     xhr "^2.2.0"
     xtend "^4.0.1"
 
-web3-typescript-typings@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/web3-typescript-typings/-/web3-typescript-typings-0.0.9.tgz#f0c9e9bfcf0effaf16f3498b3d3883686451428b"
+web3-provider-engine@^13.2.8:
+  version "13.2.8"
+  resolved "https://registry.yarnpkg.com/web3-provider-engine/-/web3-provider-engine-13.2.8.tgz#e1fa1e6b6b5a7526e44dec220d4a4f12ec813562"
+  dependencies:
+    async "^2.5.0"
+    clone "^2.0.0"
+    eth-block-tracker "^2.0.1"
+    eth-sig-util "^1.2.1"
+    ethereumjs-block "^1.2.2"
+    ethereumjs-tx "^1.2.0"
+    ethereumjs-util "^5.1.1"
+    ethereumjs-vm "^2.0.2"
+    fetch-ponyfill "^4.0.0"
+    json-rpc-error "^2.0.0"
+    json-stable-stringify "^1.0.1"
+    promise-to-callback "^1.0.0"
+    readable-stream "^2.2.9"
+    request "^2.67.0"
+    semaphore "^1.0.3"
+    solc "^0.4.2"
+    tape "^4.4.0"
+    xhr "^2.2.0"
+    xtend "^4.0.1"
+
+"web3-typescript-typings@https://github.com/machinomy/web3-typescript-typings":
+  version "0.2.1"
+  resolved "https://github.com/machinomy/web3-typescript-typings#129e3c32ddf33c19af1b81802d6f89b2aecf857d"
   dependencies:
     bignumber.js "^4.0.2"
 

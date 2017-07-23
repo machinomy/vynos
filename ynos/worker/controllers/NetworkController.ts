@@ -1,11 +1,12 @@
 import BackgroundController from "./BackgroundController";
-import ZeroClientProvider from "web3-provider-engine/zero"
-import {Engine, ProviderOpts} from "web3-provider-engine";
+import ZeroClientProvider = require("web3-provider-engine/zero")
+import {ProviderOpts} from "web3-provider-engine";
+import Engine = require('web3-provider-engine')
 import {Payload} from "../../lib/Payload";
 import {EndFunction} from "../../lib/StreamServer";
 import Tx from 'ethereumjs-tx'
 import {Buffer} from "buffer";
-import Web3 from "web3";
+import Web3 = require("web3")
 import {DevWindow} from "../../YnosWindow";
 const ethUtil = require('ethereumjs-util')
 const sigUtil = require('eth-sig-util')

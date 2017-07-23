@@ -7,12 +7,10 @@ import bip39 from "bip39";
 import hdkey from "ethereumjs-wallet/hdkey";
 import Keyring from "../../frame/lib/Keyring";
 import {createLogger} from "redux-logger";
-import {Buffer} from "buffer";
 import Wallet from "ethereumjs-wallet";
 import { persistStore, autoRehydrate } from 'redux-persist';
-import localForage from "localforage";
+import localForage = require("localforage")
 import {EventEmitter} from "events";
-import {PaymentChannel} from "machinomy";
 
 const STATE_UPDATED_EVENT = "stateUpdated"
 

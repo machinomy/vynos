@@ -1,5 +1,5 @@
 import PostStream from "./PostStream";
-import duplexify from "duplexify";
+import duplexify = require("duplexify");
 import {Duplex} from "readable-stream";
 
 export default class FrameStream {

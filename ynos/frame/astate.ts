@@ -1,6 +1,6 @@
 import Wallet from "ethereumjs-wallet";
 import Web3 from "web3";
-import { Sender } from "machinomy";
+import Sender from "machinomy/lib/sender";
 import BoughtItem from "./lib/BoughtItem";
 
 export interface InitState {

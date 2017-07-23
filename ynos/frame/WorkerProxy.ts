@@ -10,9 +10,11 @@ import {
   UnlockWalletResponse
 } from "../lib/rpc/yns";
 import {Action} from "redux";
-import Web3 from "web3";
+import Web3 = require("web3")
 import machinomy from "machinomy"
 import {buildMachinomyClient} from "../lib/micropayments";
+import Sender from "machinomy/lib/sender";
+import Promise = require('bluebird')
 
 export default class WorkerProxy extends EventEmitter {
   stream: StreamProvider
@@ -57,7 +59,7 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  getMachinomyClient(): Promise<machinomy.Sender> {
+  getMachinomyClient(): Promise<Sender> {
     return new Promise((resolve, reject) => {
       let web3 = this.getWeb3()
       return web3.eth.getAccounts((error, accounts) => {

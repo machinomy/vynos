@@ -2,8 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import Wallet from "ethereumjs-wallet";
 import Web3 from "web3";
-import _ from "lodash";
-import {PaymentChannel} from "machinomy";
+import _ = require("lodash")
 import {CSSProperties} from "react";
 import BlockieComponent from '../../components/BlockieComponent'
 import browser from '../../lib/browser'
@@ -12,6 +11,7 @@ import actions from "../../actions";
 import BoughtItem from "../../lib/BoughtItem";
 import {FrameState} from "../../state";
 import WorkerProxy from "../../WorkerProxy";
+import {PaymentChannel} from "machinomy/lib/channel";
 
 const TERMS_OF_USE_ADDRESS = 'https://literatepayments.com'
 
@@ -129,7 +129,7 @@ export interface WalletPageState {
 }
 
 export class WalletPage extends React.Component<WalletPageProps, WalletPageState> {
-  updateBalanceTimer: number;
+  updateBalanceTimer: any;
 
   constructor (props: WalletPageProps) {
     super(props);
