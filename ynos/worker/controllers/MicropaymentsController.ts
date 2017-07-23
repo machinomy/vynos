@@ -2,8 +2,7 @@ import NetworkController from "./NetworkController";
 import BackgroundController from "./BackgroundController";
 import {buildMachinomyClient} from "../../lib/micropayments";
 import Sender from "machinomy/lib/sender";
-import machinomy from "machinomy"
-import {Payment, PaymentChannel, PaymentJSON} from "machinomy/lib/channel";
+import {Payment, PaymentChannel } from "machinomy/lib/channel";
 import Promise = require('bluebird')
 import * as BigNumber from 'bignumber.js'
 
@@ -127,7 +126,7 @@ export default class MicropaymentsController {
   }
 
   payInChannel(channel: PaymentChannel, amount: number): Promise<[PaymentChannel, Payment]> {
-    return machinomy.Payment.fromPaymentChannel(this.network.web3, channel, amount).then(payment => {
+    return Payment.fromPaymentChannel(this.network.web3, channel, amount).then(payment => {
       let nextPaymentChannel = PaymentChannel.fromPayment(payment)
       return this.client.storage.channels.saveOrUpdate(nextPaymentChannel).then(() => {
         let result: [PaymentChannel, Payment] = [nextPaymentChannel, payment]

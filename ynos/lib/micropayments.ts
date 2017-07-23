@@ -1,5 +1,7 @@
 import Web3 from 'web3'
-import machinomy from 'machinomy'
+import * as transport from "machinomy/lib/transport"
+import * as storage from "machinomy/lib/storage"
+import * as channel from "machinomy/lib/channel"
 import Sender from "machinomy/lib/sender";
 
 export interface MachinomyWindowExt {
@@ -16,8 +18,8 @@ export const buildMachinomyClient = (web3: Web3, account: string) => {
   _window.BROWSER = true
   _window.MACHINOMY_NETWORK = MACHINOMY_NETWORK
   _window.LOGLEVEL = 'debug'
-  let transport = machinomy.transport.build()
-  let storage = machinomy.storage.build(web3, `literate.${MACHINOMY_NETWORK}`, 'sender')
-  let contract = machinomy.contract(web3, _window.CONTRACT_ADDRESS)
-  return new Sender(web3, account, contract, transport, storage)
+  let _transport = transport.build()
+  let _storage = storage.build(web3, `literate.${MACHINOMY_NETWORK}`, 'sender')
+  let contract = channel.contract(web3, _window.CONTRACT_ADDRESS)
+  return new Sender(web3, account, contract, _transport, _storage)
 }
