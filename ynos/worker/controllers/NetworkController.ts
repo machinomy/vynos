@@ -4,12 +4,12 @@ import {ProviderOpts} from "web3-provider-engine";
 import Engine = require('web3-provider-engine')
 import {Payload} from "../../lib/Payload";
 import {EndFunction} from "../../lib/StreamServer";
-import Tx from 'ethereumjs-tx'
+import Tx = require('ethereumjs-tx')
 import {Buffer} from "buffer";
 import Web3 = require("web3")
 import {DevWindow} from "../../YnosWindow";
-const ethUtil = require('ethereumjs-util')
-const sigUtil = require('eth-sig-util')
+import ethUtil = require('ethereumjs-util')
+import sigUtil = require('eth-sig-util')
 
 export type ApproveTransactionCallback = (error: any, isApproved: true) => void
 
@@ -21,8 +21,6 @@ export default class NetworkController {
   constructor (backgroundController: BackgroundController) {
     this.background = backgroundController
     this.provider = ZeroClientProvider(this.providerOpts())
-    console.log('NetworkControler')
-    console.log(this.providerOpts())
     this.web3 = new Web3(this.provider)
 
     this.handler = this.handler.bind(this)
@@ -66,7 +64,6 @@ export default class NetworkController {
       let message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
       let msgSig = ethUtil.ecsign(message, privateKey)
       let rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
-      console.log('sign message: ', messageParams)
       callback(null, rawMsgSig)
     }).catch(error => {
       callback(error)
