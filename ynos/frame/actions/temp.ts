@@ -2,7 +2,6 @@ import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
 import WorkerProxy from "../WorkerProxy";
 import {TempState} from "../state";
 import * as initActions from "./temp/init"
-import Web3 from "web3"
 
 const actionCreator = actionCreatorFactory("frame/temp");
 

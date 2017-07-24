@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import Wallet from "ethereumjs-wallet";
-import Web3 from "web3";
+import Web3 = require("web3")
 import _ = require("lodash")
 import {CSSProperties} from "react";
 import BlockieComponent from '../../components/BlockieComponent'

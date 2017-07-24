@@ -10,7 +10,7 @@ import {
   OpenChannelRequest,
   OpenChannelResponse, PayInChannelRequest, PayInChannelResponse
 } from "./lib/rpc/yns";
-import Web3 from "web3"
+import Web3 = require("web3")
 import BigNumber from "bignumber.js";
 import {Payment, PaymentChannel} from "machinomy/lib/channel";
 import Promise = require('bluebird')

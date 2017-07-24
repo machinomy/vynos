@@ -1,4 +1,4 @@
-import Web3 from 'web3'
+import Web3 =require('web3')
 import * as transport from "machinomy/lib/transport"
 import * as storage from "machinomy/lib/storage"
 import * as channel from "machinomy/lib/channel"
