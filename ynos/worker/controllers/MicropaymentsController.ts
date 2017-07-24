@@ -26,6 +26,7 @@ export default class MicropaymentsController {
   openChannel(receiver: string, amount: number): Promise<PaymentChannel> {
     console.log("MicropaymentsController.openChannel")
     if (this.account) {
+      console.log(this.client.web3.currentProvider)
       return this.client.contract.buildPaymentChannel(this.account, receiver, amount).then(pc => {
         return this.client.storage.channels.saveOrUpdate(pc).then(() => {
           return PaymentChannel.fromDocument(pc)

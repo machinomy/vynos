@@ -21,6 +21,8 @@ export default class NetworkController {
   constructor (backgroundController: BackgroundController) {
     this.background = backgroundController
     this.provider = ZeroClientProvider(this.providerOpts())
+    console.log('NetworkControler')
+    console.log(this.providerOpts())
     this.web3 = new Web3(this.provider)
 
     this.handler = this.handler.bind(this)
