@@ -16,7 +16,13 @@ const HARNESS_PORT = 8080;
 const CONTRACT_ADDRESS_PLACEHOLDER = '[DEFAULT_CONTRACT_ADDRESS]'
 let CONTRACT_ADDRESS = null
 if (packageJson.custom.contract_address !== CONTRACT_ADDRESS_PLACEHOLDER) {
-  CONTRACT_ADDRESS = packageJson.custom.contract_address
+  CONTRACT_ADDRESS = JSON.stringify(packageJson.custom.contract_address)
+}
+
+const RPC_URL_PLACEHOLDER = '[DEFAULT_RPC_URL]'
+let RPC_URL = JSON.stringify('https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH')
+if (packageJson.custom.rpc_url !== RPC_URL_PLACEHOLDER) {
+  RPC_URL = JSON.stringify(packageJson.custom.rpc_url)
 }
 
 const YNOS_WEBPACK_CONFIG = webpackConfig({
@@ -54,8 +60,8 @@ function webpackConfig (entry) {
       new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
         "window.FRAME_URL": JSON.stringify(`http://localhost:${FRAME_PORT}/frame.html`),
-        "window.RPC_URL": JSON.stringify(`http://localhost:8545`),
-        "self.CONTRACT_ADDRESS": JSON.stringify(CONTRACT_ADDRESS),
+        "window.RPC_URL": RPC_URL,
+        "self.CONTRACT_ADDRESS": CONTRACT_ADDRESS,
       }),
       new PackageLoadersPlugin()
     ],
