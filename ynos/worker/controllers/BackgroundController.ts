@@ -3,11 +3,11 @@ import reducers from "../reducers";
 import {buildSharedState, INITIAL_STATE, SharedState, State} from "../State";
 import {Store} from "redux";
 import * as actions from "../actions";
-import bip39 from "bip39";
-import hdkey from "ethereumjs-wallet/hdkey";
+import bip39 =require("bip39")
+import hdkey = require("ethereumjs-wallet/hdkey")
 import Keyring from "../../frame/lib/Keyring";
 import {createLogger} from "redux-logger";
-import Wallet from "ethereumjs-wallet";
+import Wallet = require("ethereumjs-wallet")
 import { persistStore, autoRehydrate } from 'redux-persist';
 import localForage = require("localforage")
 import {EventEmitter} from "events";

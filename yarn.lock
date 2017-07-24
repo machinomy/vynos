@@ -3988,9 +3988,9 @@ macaddress@^0.2.8:
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
 
-machinomy@^1.0.0-alpha.27:
-  version "1.0.0-alpha.27"
-  resolved "https://registry.yarnpkg.com/machinomy/-/machinomy-1.0.0-alpha.27.tgz#be06b498eb5ef1d58c8d97fd3e54f954cf4d0bc8"
+machinomy@^1.0.0-alpha.30:
+  version "1.0.0-alpha.30"
+  resolved "https://registry.yarnpkg.com/machinomy/-/machinomy-1.0.0-alpha.30.tgz#2e257ee284e91bfbb7aebb01b4e15cd5aea1d984"
   dependencies:
     "@types/bignumber.js" "^4.0.2"
     "@types/bluebird" "3.5.6"
