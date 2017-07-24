@@ -81,9 +81,7 @@ class YnosClient {
   }
 
   getWeb3(): Web3 {
-    let web3 = new Web3()
-    web3.setProvider(this.streamProvider)
-    return web3
+    return new Web3(this.streamProvider)
   }
 
   openChannel (receiverAccount: string, channelValue: BigNumber.BigNumber): Promise<PaymentChannel> {

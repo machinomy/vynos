@@ -72,6 +72,7 @@
     "web3-provider-engine": "^13.0.3"
   },
   "custom": {
-    "contract_address": "[DEFAULT_CONTRACT_ADDRESS]"
+    "contract_address": "[DEFAULT_CONTRACT_ADDRESS]",
+    "rpc_url": "[DEFAULT_RPC_URL]"
   }
 }

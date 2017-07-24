@@ -27,9 +27,7 @@ export default class WorkerProxy extends EventEmitter {
   }
 
   getWeb3(): Web3 {
-    let web3 = new Web3()
-    web3.setProvider(this.stream)
-    return web3
+    return new Web3(this.stream)
   }
 
   doLock(): Promise<void> {
