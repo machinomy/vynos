@@ -10,8 +10,8 @@ const packageJson = require('./package.json')
 
 const DIST_PATH = path.resolve(__dirname, "dist");
 
-const FRAME_PORT=9090;
-const HARNESS_PORT = 8080;
+const FRAME_PORT = 9090;
+const HARNESS_PORT = 9999;
 
 const CONTRACT_ADDRESS_PLACEHOLDER = '[DEFAULT_CONTRACT_ADDRESS]'
 let CONTRACT_ADDRESS = null
@@ -180,7 +180,7 @@ gulp.task("build", callback => {
   });
 });
 
-// Serve Ynos, Frame at http://localhost:8080/webpack-dev-server
+// Serve Ynos, Frame at http://localhost:9999/webpack-dev-server
 gulp.task("build:serve", () => {
   new WebpackDevServer(webpack(YNOS_WEBPACK_CONFIG), {
     contentBase: 'ynos/',
