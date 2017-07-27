@@ -180,6 +180,16 @@ gulp.task("build", callback => {
   });
 });
 
+gulp.task("build:harness", ["build"], () => {
+  webpack(HARNESS_WEBPACK_CONFIG).run(function(err, stats) {
+    if(err) throw new gutil.PluginError('build', err);
+    gutil.log('build:harness', stats.toString({
+      colors: true
+    }));
+    callback();
+  });
+});
+
 // Serve Ynos, Frame at http://localhost:9999/webpack-dev-server
 gulp.task("build:serve", () => {
   new WebpackDevServer(webpack(YNOS_WEBPACK_CONFIG), {
