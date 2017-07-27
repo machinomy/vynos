@@ -4,6 +4,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "gulp build",
+    "build:harness": "gulp build:harness",
     "harness": "gulp harness:serve"
   },
   "devDependencies": {
