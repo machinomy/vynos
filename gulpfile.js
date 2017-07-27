@@ -25,7 +25,7 @@ if (packageJson.custom.rpc_url !== RPC_URL_PLACEHOLDER) {
   RPC_URL = JSON.stringify(packageJson.custom.rpc_url)
 }
 
-const YNOS_WEBPACK_CONFIG = webpackConfig({
+const YNOS_LIVE_WEBPACK_CONFIG = webpackConfig({
   ynos: [
     `webpack-dev-server/client?http://localhost:${HARNESS_PORT}`,
     'webpack/hot/only-dev-server',
@@ -41,6 +41,12 @@ const YNOS_WEBPACK_CONFIG = webpackConfig({
   worker: [
     path.resolve(__dirname, "ynos/worker.ts")
   ]
+});
+
+const YNOS_WEBPACK_CONFIG = webpackConfig({
+  ynos: path.resolve(__dirname, "ynos/ynos.ts"),
+  frame: path.resolve(__dirname, "ynos/frame.ts"),
+  worker: path.resolve(__dirname, "ynos/worker.ts")
 });
 
 const HARNESS_WEBPACK_CONFIG = webpackConfig({
@@ -191,8 +197,8 @@ gulp.task("build:harness", ["build"], callback => {
 });
 
 // Serve Ynos, Frame at http://localhost:9999/webpack-dev-server
-gulp.task("build:serve", () => {
-  new WebpackDevServer(webpack(YNOS_WEBPACK_CONFIG), {
+gulp.task("serve", () => {
+  new WebpackDevServer(webpack(YNOS_LIVE_WEBPACK_CONFIG), {
     contentBase: 'ynos/',
     hot: true,
     historyApiFallback: true,
@@ -214,7 +220,7 @@ gulp.task("build:serve", () => {
   });
 });
 
-gulp.task("harness:serve", ["build:serve"], () => {
+gulp.task("serve:harness", ["serve"], () => {
   new WebpackDevServer(webpack(HARNESS_WEBPACK_CONFIG), {
     stats: {
       colors: true
@@ -225,3 +231,5 @@ gulp.task("harness:serve", ["build:serve"], () => {
     gutil.log('webpack-dev-server', `http://localhost:${HARNESS_PORT}/webpack-dev-server/index.html`);
   });
 });
+
+gulp.task("harness:serve", ["serve:harness"])
