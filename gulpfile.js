@@ -180,7 +180,7 @@ gulp.task("build", callback => {
   });
 });
 
-gulp.task("build:harness", ["build"], () => {
+gulp.task("build:harness", ["build"], callback => {
   webpack(HARNESS_WEBPACK_CONFIG).run(function(err, stats) {
     if(err) throw new gutil.PluginError('build', err);
     gutil.log('build:harness', stats.toString({
