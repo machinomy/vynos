@@ -6,12 +6,12 @@ import _ = require("lodash")
 import {CSSProperties} from "react";
 import BlockieComponent from '../../components/BlockieComponent'
 import browser from '../../lib/browser'
-import {Dispatch} from "redux";
-import actions from "../../actions";
 import BoughtItem from "../../lib/BoughtItem";
 import {FrameState} from "../../state";
 import WorkerProxy from "../../WorkerProxy";
 import {PaymentChannel} from "machinomy/lib/channel";
+import Button from '@react-mdc/button'
+const style = require("./wallet.css")
 
 const TERMS_OF_USE_ADDRESS = 'https://literatepayments.com'
 
@@ -210,14 +210,13 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
       return <div>
         <h1 style={headingStyle}>You are ready</h1>
         <div style={balloonContainerStyle}>
-          <p>Balloon style=balloonStyle</p>
         </div>
         <div style={motivationStyle}>
           We got something special<br />
           for you to start
         </div>
         <div style={BUTTON_CONTAINER_STYLE}>
-          <button style={buttonStyle} onClick={openExplorer}>EXPLORE</button>
+          <Button raised onClick={openExplorer}>Explore</Button>
         </div>
       </div>
     } else {
@@ -273,7 +272,9 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
             <div style={APP_BAR_TITLE_STYLE}>Wallet</div>
           </div>
           <div style={APP_BAR_RIGHT_STYLE}>
-            <button style={ICON_STYLE_RIGHT} onClick={this.handleLock}>Lock</button>
+            <Button onClick={this.handleLock} className={style.lockButton}>
+              <i className="material-icons">lock</i>
+            </Button>
           </div>
         </div>
         <div style={SECOND_LINE_STYLE}>
@@ -284,9 +285,6 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
             </div>
             <div className="account-details-row" style={ACCOUNT_DETAILS_ROW_STYLE}>
               {this.renderBalance()}
-              <div style={FLAT_BUTTON_BLOCK_STYLE}>
-                <button style={FLAT_BUTTON_STYLE} onClick={this.handleRefill}>Refill</button>
-              </div>
             </div>
           </div>
         </div>
