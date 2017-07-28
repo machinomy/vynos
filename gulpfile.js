@@ -9,17 +9,25 @@ const PackageLoadersPlugin = require('webpack-package-loaders-plugin')
 const packageJson = require('./package.json')
 
 const DIST_PATH = path.resolve(__dirname, "dist");
-
-const FRAME_PORT = 9090;
 const HARNESS_PORT = 9999;
 
-let host = 'http://localhost';
+const FRAME_HOST_PLACEHOLDER = '[DEFAULT_FRAME_HOST]'
+let FRAME_HOST = 'http://localhost';
 if (process.env.NODE_ENV) {
   let hosts = {
     staging: 'https://staging.machinomy.com',
     vagrant: 'https://192.168.50.4'
   };
-  host = hosts[process.env.NODE_ENV];
+  FRAME_HOST = hosts[process.env.NODE_ENV];
+}
+if (packageJson.custom.frame_host !== FRAME_HOST_PLACEHOLDER) {
+  FRAME_HOST = JSON.stringify(packageJson.custom.frame_host)
+}
+
+const FRAME_PORT_PLACEHOLDER = '[DEFAULT_FRAME_PORT]'
+let FRAME_PORT = 9090;
+if (packageJson.custom.frame_port !== FRAME_PORT_PLACEHOLDER) {
+  FRAME_PORT = JSON.stringify(packageJson.custom.frame_port)
 }
 
 const CONTRACT_ADDRESS_PLACEHOLDER = '[DEFAULT_CONTRACT_ADDRESS]'
@@ -74,7 +82,7 @@ function webpackConfig (entry) {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
-        "window.FRAME_URL": JSON.stringify(`${host}:${FRAME_PORT}/frame.html`),
+        "window.FRAME_URL": JSON.stringify(`${FRAME_HOST}:${FRAME_PORT}/frame.html`),
         "window.RPC_URL": RPC_URL,
         "self.CONTRACT_ADDRESS": CONTRACT_ADDRESS,
       }),
