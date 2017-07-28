@@ -17,7 +17,7 @@ let host = 'localhost';
 if (process.env.NODE_ENV) {
   let hosts = {
     staging: 'https://staging.machinomy.com',
-    vagrant: 'http://192.168.50.4'
+    vagrant: 'https://192.168.50.4'
   };
   host = hosts[process.env.NODE_ENV];
 }
