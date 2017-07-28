@@ -24,7 +24,7 @@ export interface LargeLogoLayoutProps {
   children: any
 }
 
-export default class LargeLogoLayout extends React.Component<LargeLogoLayoutProps, undefined> {
+export default class LargeLogoLayout extends React.Component<LargeLogoLayoutProps, {}> {
   render () {
     return <div>
       <div style={logoContainerStyle}>
