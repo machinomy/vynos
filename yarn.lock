@@ -6,13 +6,31 @@
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@material/animation/-/animation-0.2.3.tgz#25f24962cd649e76459a16ab234b7846a7a7f419"
 
+"@material/animation@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@material/animation/-/animation-0.3.0.tgz#57b13c75e705eba9686ec5e9fd03a361738ce76a"
+
 "@material/auto-init@^0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@material/auto-init/-/auto-init-0.1.2.tgz#a6d5f88efff08c087e53f55c2cdfbb22ce6f4901"
 
+"@material/base@^0.2.0", "@material/base@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@material/base/-/base-0.2.3.tgz#c4eb26b6d6e5840c254ad487588dc4f69b971f3e"
+
 "@material/base@^0.2.1":
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@material/base/-/base-0.2.1.tgz#1206df65da0bcde5df46e78b4d60a1e09fdc41cb"
+
+"@material/button@^0.3.4":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@material/button/-/button-0.3.10.tgz#fec02394db79ee7a5799917f806076c8047a00ad"
+  dependencies:
+    "@material/animation" "^0.3.0"
+    "@material/elevation" "^0.1.10"
+    "@material/ripple" "^0.8.1"
+    "@material/theme" "^0.1.6"
+    "@material/typography" "^0.2.3"
 
 "@material/button@^0.3.8":
   version "0.3.8"
@@ -66,6 +84,12 @@
     "@material/rtl" "^0.1.6"
     "@material/theme" "^0.1.5"
     "@material/typography" "^0.2.2"
+
+"@material/elevation@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@material/elevation/-/elevation-0.1.10.tgz#f0250c97c81663534b83c3428e764c9026d41ba1"
+  dependencies:
+    "@material/animation" "^0.3.0"
 
 "@material/elevation@^0.1.9":
   version "0.1.9"
@@ -156,6 +180,17 @@
     "@material/base" "^0.2.1"
     "@material/theme" "^0.1.5"
 
+"@material/ripple@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.8.1.tgz#6e1d9dee6453f68a8cfd3b9b7fcd253cc0e12f12"
+  dependencies:
+    "@material/base" "^0.2.3"
+    "@material/theme" "^0.1.6"
+
+"@material/rtl@^0.1.5":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.1.7.tgz#b38b771af183bcf34d643f600f17fc433698535a"
+
 "@material/rtl@^0.1.6":
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.1.6.tgz#64897f3050b2c53c378c6b4a7d2998cf61b2445b"
@@ -211,6 +246,16 @@
     "@material/theme" "^0.1.5"
     "@material/typography" "^0.2.2"
 
+"@material/textfield@^0.2.0":
+  version "0.2.11"
+  resolved "https://registry.yarnpkg.com/@material/textfield/-/textfield-0.2.11.tgz#21cf12115dbb39bae9f618de12b4c90cdab7ff54"
+  dependencies:
+    "@material/animation" "^0.2.3"
+    "@material/base" "^0.2.0"
+    "@material/rtl" "^0.1.5"
+    "@material/theme" "^0.1.5"
+    "@material/typography" "^0.2.2"
+
 "@material/textfield@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@material/textfield/-/textfield-0.3.0.tgz#17f44383e557d329957e824c2bb028376c7b7a34"
@@ -226,6 +271,10 @@
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.1.5.tgz#5c7bd9a1974d8c1c0eacf037e0235aad9c5cb699"
 
+"@material/theme@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@material/theme/-/theme-0.1.6.tgz#a2044973590a68f608b439d2ce33c17707bc000c"
+
 "@material/toolbar@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@material/toolbar/-/toolbar-0.4.1.tgz#52748240022137f076bebc631a72b4fe32e6f78f"
@@ -240,7 +289,7 @@
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.1.1.tgz#fb2e3437bd3284d39e9fb91485767ade6b2bd0c1"
 
-"@material/typography@^0.2.1":
+"@material/typography@^0.2.1", "@material/typography@^0.2.3":
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.2.3.tgz#cddf4178098c9c7b4c2e78a33049376b4d6aeb53"
 
@@ -261,6 +310,33 @@
     react "^15.4.2"
     react-dom "^15.5.4"
     remove "^0.1.5"
+
+"@react-mdc/button@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@react-mdc/button/-/button-0.1.8.tgz#96d04ee53b28768b604fb0a87c6293d073a7f5b3"
+  dependencies:
+    "@material/button" "^0.3.4"
+    "@react-mdc/base" "^0.1.12"
+    "@types/classnames" "0.0.32"
+    "@types/react" "^15.0.18"
+    classnames "^2.2.5"
+    react "^15.4.2"
+    react-dom "^15.4.2"
+
+"@react-mdc/textfield@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@react-mdc/textfield/-/textfield-0.1.11.tgz#4ed29707efd66546ed3c7dd85e7fcb818bcbd721"
+  dependencies:
+    "@material/textfield" "^0.2.0"
+    "@react-mdc/base" "^0.1.12"
+    "@types/classnames" "0.0.32"
+    "@types/prop-types" "^15.5.1"
+    "@types/react" "^15.0.18"
+    classnames "^2.2.5"
+    immutable "^3.8.1"
+    prop-types "^15.5.8"
+    react "^15.4.2"
+    react-dom "^15.4.2"
 
 "@react-mdc/typography@^0.1.8":
   version "0.1.8"
@@ -349,6 +425,10 @@
 "@types/node@*", "@types/node@^8.0.9":
   version "8.0.14"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.14.tgz#4a19dc6bb61d16c01cbadc7b30ac23518fff176b"
+
+"@types/prop-types@^15.5.1":
+  version "15.5.1"
+  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.1.tgz#1ecf52621299e65b855374337fb11fd2d1066fc1"
 
 "@types/react-dom@^15.5.0", "@types/react-dom@^15.5.1":
   version "15.5.1"
@@ -5164,7 +5244,7 @@ prompt@^1.0.0:
     utile "0.3.x"
     winston "2.1.x"
 
-prop-types@^15.5.10, prop-types@^15.5.4:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8:
   version "15.5.10"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
   dependencies:
