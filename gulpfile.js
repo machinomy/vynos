@@ -13,6 +13,15 @@ const DIST_PATH = path.resolve(__dirname, "dist");
 const FRAME_PORT = 9090;
 const HARNESS_PORT = 9999;
 
+let host = 'localhost';
+if (process.env.NODE_ENV) {
+  let hosts = {
+    staging: 'https://staging.machinomy.com',
+    vagrant: 'http://192.168.50.4'
+  };
+  host = hosts[process.env.NODE_ENV];
+}
+
 const CONTRACT_ADDRESS_PLACEHOLDER = '[DEFAULT_CONTRACT_ADDRESS]'
 let CONTRACT_ADDRESS = null
 if (packageJson.custom.contract_address !== CONTRACT_ADDRESS_PLACEHOLDER) {
@@ -65,7 +74,7 @@ function webpackConfig (entry) {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
-        "window.FRAME_URL": JSON.stringify(`http://localhost:${FRAME_PORT}/frame.html`),
+        "window.FRAME_URL": JSON.stringify(`${host}:${FRAME_PORT}/frame.html`),
         "window.RPC_URL": RPC_URL,
         "self.CONTRACT_ADDRESS": CONTRACT_ADDRESS,
       }),
