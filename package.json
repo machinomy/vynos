@@ -26,7 +26,7 @@
     "types-bn": "^0.0.1",
     "typescript": "^2.4.1",
     "web3-typescript-typings": "https://github.com/machinomy/web3-typescript-typings",
-    "webpack": "^2.6.1",
+    "webpack": "^3.4.1",
     "webpack-dev-server": "^2.4.5",
     "webpack-package-loaders-plugin": "^3.0.0"
   },
@@ -52,7 +52,7 @@
     "localforage": "^1.5.0",
     "lodash": "^4.17.4",
     "machinomy": "^1.0.0-alpha.31",
-    "material-components-web": "^0.14.0",
+    "material-components-web": "^0.16.0",
     "mux-demux": "^3.7.9",
     "normalize.css": "^7.0.0",
     "react": "^15.6.1",
@@ -69,7 +69,7 @@
     "typescript-fsa": "^2.3.1",
     "typescript-fsa-reducers": "^0.4.4",
     "typescript-fsa-redux-thunk": "xdave/typescript-fsa-redux-thunk",
-    "web3": "^0.19.0",
+    "web3": "^0.20.1",
     "web3-provider-engine": "^13.0.3"
   },
   "custom": {
