@@ -1,5 +1,7 @@
 # Ynos
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/machinomy/ynos.svg?token=1870817fee6b27d4542983529eaf1a72e3ac464a614640d2f9477d63c3d79862&ts=1501285253808)](https://greenkeeper.io/)
+
 > Micropayments for web.
 
 # Prerequisites
