@@ -75,7 +75,7 @@
   "custom": {
     "contract_address": "[DEFAULT_CONTRACT_ADDRESS]",
     "rpc_url": "[DEFAULT_RPC_URL]",
-    "frame_host": "[DEFAULT_FRAME_HOST",
-    "frame_port": "[DEFAULT_FRAME_PORT"
+    "frame_host": "[DEFAULT_FRAME_HOST]",
+    "frame_port": "[DEFAULT_FRAME_PORT]"
   }
 }
