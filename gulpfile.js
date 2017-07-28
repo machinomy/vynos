@@ -13,7 +13,7 @@ const DIST_PATH = path.resolve(__dirname, "dist");
 const FRAME_PORT = 9090;
 const HARNESS_PORT = 9999;
 
-let host = 'localhost';
+let host = 'http://localhost';
 if (process.env.NODE_ENV) {
   let hosts = {
     staging: 'https://staging.machinomy.com',
