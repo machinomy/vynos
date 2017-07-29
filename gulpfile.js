@@ -237,6 +237,29 @@ gulp.task("serve", () => {
   });
 });
 
+gulp.task("serve:built", () => {
+  new WebpackDevServer(webpack(YNOS_WEBPACK_CONFIG), {
+    contentBase: 'ynos/',
+    hot: true,
+    historyApiFallback: true,
+    quiet: false,
+    noInfo: false,
+    stats: {
+      // Config for minimal console.log mess.
+      assets: false,
+      colors: true,
+      version: false,
+      hash: false,
+      timings: false,
+      chunks: false,
+      chunkModules: false
+    }
+  }).listen(FRAME_PORT, 'localhost', function(err) {
+    if(err) throw new gutil.PluginError('serve:built', err);
+    gutil.log('webpack-dev-server', `http://localhost:${FRAME_PORT}/webpack-dev-server/index.html`);
+  });
+});
+
 gulp.task("serve:harness", ["serve"], () => {
   new WebpackDevServer(webpack(HARNESS_WEBPACK_CONFIG), {
     stats: {
