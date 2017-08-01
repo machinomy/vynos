@@ -11,19 +11,6 @@ const packageJson = require('./package.json')
 const DIST_PATH = path.resolve(__dirname, "dist");
 const HARNESS_PORT = 9999;
 
-const FRAME_HOST_PLACEHOLDER = '[DEFAULT_FRAME_HOST]'
-let FRAME_HOST = 'http://localhost';
-if (process.env.NODE_ENV) {
-  let hosts = {
-    staging: 'https://staging.machinomy.com',
-    vagrant: 'https://192.168.50.4'
-  };
-  FRAME_HOST = hosts[process.env.NODE_ENV];
-}
-if (packageJson.custom.frame_host !== FRAME_HOST_PLACEHOLDER) {
-  FRAME_HOST = JSON.stringify(packageJson.custom.frame_host)
-}
-
 const FRAME_PORT_PLACEHOLDER = '[DEFAULT_FRAME_PORT]'
 let FRAME_PORT = 9090;
 if (packageJson.custom.frame_port !== FRAME_PORT_PLACEHOLDER) {
@@ -82,7 +69,6 @@ function webpackConfig (entry) {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
-        "window.FRAME_URL": JSON.stringify(`${FRAME_HOST}:${FRAME_PORT}/frame.html`),
         "window.RPC_URL": RPC_URL,
         "self.CONTRACT_ADDRESS": CONTRACT_ADDRESS,
       }),
