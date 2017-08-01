@@ -31,8 +31,7 @@ function buildFrame(script: HTMLScriptElement, frame?: HTMLIFrameElement): HTMLI
     //frame.style.marginRight = '-320px';
   }
   let currentScriptAddress = script.src
-  let frameAddress = currentScriptAddress.replace('ynos.bundle.js', 'frame.html')
-  frame.src = frameAddress
+  frame.src = currentScriptAddress.replace('ynos.bundle.js', 'frame.html')
   frame.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin allow-popups allow-forms");
   return frame;
 }
