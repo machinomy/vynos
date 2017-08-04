@@ -12,7 +12,7 @@ import {
 } from "./lib/rpc/yns";
 import Web3 = require("web3")
 import BigNumber from "bignumber.js";
-import {Payment, PaymentChannel} from "machinomy/lib/channel";
+import {Payment, PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import Promise = require('bluebird')
 
 let _window = (<DevWindow & YnosWindow>window);
@@ -52,6 +52,10 @@ export interface Ynos {
 export type YnosPayInChannelResponse = {
   channel: PaymentChannel
   payment: Payment
+}
+
+function isPaymentChannel(pc: PaymentChannel|PaymentChannelJSON): pc is PaymentChannel {
+  return !!((pc as PaymentChannel).toJSON)
 }
 
 class YnosClient {
@@ -110,12 +114,15 @@ class YnosClient {
   }
 
 
-  payInChannel (channel: PaymentChannel, amount: number): Promise<YnosPayInChannelResponse> {
+  payInChannel (channel: PaymentChannel | PaymentChannelJSON, amount: number): Promise<YnosPayInChannelResponse> {
     let request: PayInChannelRequest = {
       id: randomId(),
       method: PayInChannelRequest.method,
       jsonrpc: JSONRPC,
-      params: [channel.toJSON(), amount]
+      params: [channel, amount]
+    }
+    if (isPaymentChannel(channel)) {
+      request.params = [channel.toJSON(), amount]
     }
     return this.streamProvider.ask(request).then((response: PayInChannelResponse) => {
       let paymentChannel = PaymentChannel.fromDocument(response.result[0])
