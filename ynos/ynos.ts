@@ -43,7 +43,7 @@ export interface Ynos {
   closeChannel: (ch: PaymentChannel) => Promise<PaymentChannel>;
   listChannels: () => Promise<Array<PaymentChannel>>;
   makePayment: () => void // web3.eth.sendTransaction
-  payInChannel: (ch: PaymentChannel, amount: number) => Promise<YnosPayInChannelResponse> // FIXME What about lifecycle events? Amount is bignumber, actually.
+  payInChannel: (ch: PaymentChannel, amount: number, override?: boolean) => Promise<YnosPayInChannelResponse> // FIXME What about lifecycle events? Amount is bignumber, actually.
   initAccount: () => Promise<void>
   initFrame: (frame?: HTMLIFrameElement) => Promise<void>
   getWeb3(): Promise<Web3>
@@ -114,15 +114,15 @@ class YnosClient {
   }
 
 
-  payInChannel (channel: PaymentChannel | PaymentChannelJSON, amount: number): Promise<YnosPayInChannelResponse> {
+  payInChannel (channel: PaymentChannel | PaymentChannelJSON, amount: number, override?: boolean): Promise<YnosPayInChannelResponse> {
     let request: PayInChannelRequest = {
       id: randomId(),
       method: PayInChannelRequest.method,
       jsonrpc: JSONRPC,
-      params: [channel, amount]
+      params: [channel, amount, override as boolean]
     }
     if (isPaymentChannel(channel)) {
-      request.params = [channel.toJSON(), amount]
+      request.params = [channel.toJSON(), amount, override as boolean]
     }
     return this.streamProvider.ask(request).then((response: PayInChannelResponse) => {
       let paymentChannel = PaymentChannel.fromDocument(response.result[0])
@@ -185,10 +185,10 @@ class YnosImpl implements Ynos {
     throw new Error("Not Implemented")
   }
 
-  payInChannel (ch: PaymentChannel, amount: number): Promise<YnosPayInChannelResponse> {
+  payInChannel (ch: PaymentChannel, amount: number, override?: boolean): Promise<YnosPayInChannelResponse> {
     if (!this.client) return Promise.reject(new Error("Do initFrame first"))
 
-    return this.client.payInChannel(ch, amount)
+    return this.client.payInChannel(ch, amount, override)
   }
 
   depositToChannel (ch: PaymentChannel): Promise<PaymentChannel> {

@@ -44,7 +44,8 @@ export default class MicropaymentsHandler {
   payInChannel(message: PayInChannelRequest, next: Function, end: EndFunction) {
     let channel = PaymentChannel.fromDocument(message.params[0])
     let amount = message.params[1]
-    this.controller.payInChannel(channel, amount).then(tuple => {
+    let override = message.params[2]
+    this.controller.payInChannel(channel, amount, override).then(tuple => {
       let channel: PaymentChannel = tuple[0]
       let payment: Payment = tuple[1]
       let response: PayInChannelResponse = {

@@ -126,10 +126,10 @@ export default class MicropaymentsController {
     }
   }
 
-  payInChannel(channel: PaymentChannel, amount: number): Promise<[PaymentChannel, Payment]> {
+  payInChannel(channel: PaymentChannel, amount: number, override?: boolean): Promise<[PaymentChannel, Payment]> {
     return this.client.storage.channels.firstById(channel.channelId).then(paymentChannel => {
       if (paymentChannel) {
-        return Payment.fromPaymentChannel(this.client.web3, paymentChannel, amount).then(payment => {
+        return Payment.fromPaymentChannel(this.client.web3, paymentChannel, amount, override).then(payment => {
           let nextPaymentChannel = PaymentChannel.fromPayment(payment)
           return this.client.storage.channels.saveOrUpdate(nextPaymentChannel).then(() => {
             let result: [PaymentChannel, Payment] = [nextPaymentChannel, payment]

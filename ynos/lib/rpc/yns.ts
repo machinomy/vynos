@@ -142,7 +142,7 @@ export class PayInChannelRequest implements RequestPayload {
   id: number;
   jsonrpc: typeof JSONRPC;
   method: typeof PayInChannelRequest.method;
-  params: [PaymentChannelJSON, number];
+  params: [PaymentChannelJSON, number, boolean];
 
   static method = "yns_payInChannel"
 
