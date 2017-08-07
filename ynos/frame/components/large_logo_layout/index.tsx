@@ -1,5 +1,6 @@
 import * as React from "react";
 //import LargeLogo from "./large_logo.svg";
+import Typography from '@react-mdc/typography'
 
 const logoContainerStyle = {
   width: '100%',
@@ -23,11 +24,13 @@ export interface LargeLogoLayoutProps {
   children: any
 }
 
-export default class LargeLogoLayout extends React.Component<LargeLogoLayoutProps, undefined> {
+export default class LargeLogoLayout extends React.Component<LargeLogoLayoutProps, {}> {
   render () {
     return <div>
       <div style={logoContainerStyle}>
-        <p>LargeLogo style=logoStyle </p>
+        <Typography>
+          <Typography.Text textStyle="title">VYNOS</Typography.Text>
+        </Typography>
       </div>
       <div style={childrenContainerStyle} className="large-logo-layout">
         {this.props.children}

@@ -18,9 +18,9 @@ export default class NetworkController {
   provider: Engine
   web3: Web3
 
-  constructor (backgroundController: BackgroundController) {
+  constructor (backgroundController: BackgroundController, rpcUrl: string | null = null) {
     this.background = backgroundController
-    this.provider = ZeroClientProvider(this.providerOpts())
+    this.provider = ZeroClientProvider(this.providerOpts(rpcUrl))
     this.web3 = new Web3(this.provider)
 
     this.handler = this.handler.bind(this)
@@ -70,8 +70,8 @@ export default class NetworkController {
     })
   }
 
-  providerOpts(): ProviderOpts {
-    let rpcUrl = (window as DevWindow).RPC_URL || 'https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH'
+  providerOpts(_rpcUrl: string | null): ProviderOpts {
+    let rpcUrl = _rpcUrl || (window as DevWindow).RPC_URL || 'https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH'
     return {
       static: {
         eth_syncing: false,

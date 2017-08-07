@@ -117,6 +117,7 @@ interface ServiceWorkerGlobalScope extends WorkerGlobalScope {
   oninstall: (event: ExtendableEvent) => void;
   onactivate: (event: ExtendableEvent) => void;
   onmessage: (event: MessageEvent) => void;
+  registration: ServiceWorkerRegistration;
 }
 
 declare var module: NodeModule;

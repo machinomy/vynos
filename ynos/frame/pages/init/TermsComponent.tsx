@@ -36,7 +36,7 @@ const BUTTON_CONTAINER_STYLE = {
   //position: 'absolute'
 };
 
-export class TermsComponent extends React.Component<TermsComponentProps, undefined> {
+export class TermsComponent extends React.Component<TermsComponentProps, {}> {
   constructor (props: TermsComponentProps) {
     super(props);
     this.handleTouClick = this.handleTouClick.bind(this)
