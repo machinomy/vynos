@@ -10,9 +10,11 @@ import {createLogger} from "redux-logger";
 import * as redux from "redux";
 import {setWorkerProxy} from "./actions/temp";
 
+/*
 import "normalize.css";
 import "material-components-web/dist/material-components-web.css";
 import "./styles/global.css";
+*/
 
 const MOUNT_POINT_ID = "mount-point"
 

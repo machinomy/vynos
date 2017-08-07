@@ -6,11 +6,13 @@ const   path                    = require("path"),
         autoprefixer            = require('autoprefixer-stylus'),
         ExtractTextPlugin       = require('extract-text-webpack-plugin');
 
-const   CONTRACT_ADDRESS_PLACEHOLDER  = '[DEFAULT_CONTRACT_ADDRESS]',
-        RPC_URL_PLACEHOLDER           = '[DEFAULT_RPC_URL]';
+const   CONTRACT_ADDRESS_PLACEHOLDER    = '[DEFAULT_CONTRACT_ADDRESS]',
+        RPC_URL_PLACEHOLDER             = '[DEFAULT_RPC_URL]';
 
-let     CONTRACT_ADDRESS  = null,
-        RPC_URL           = JSON.stringify('https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH');
+const   styleSource                     = path.resolve(__dirname, 'ynos/frame/css/style.styl');
+
+let     CONTRACT_ADDRESS                = null,
+        RPC_URL                         = JSON.stringify('https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH');
 
 if (packageJson.custom.contract_address !== CONTRACT_ADDRESS_PLACEHOLDER) {
     CONTRACT_ADDRESS = JSON.stringify(packageJson.custom.contract_address)
@@ -21,6 +23,7 @@ if (packageJson.custom.rpc_url !== RPC_URL_PLACEHOLDER) {
 }
 
 module.exports = function webpackConfig (entry) {
+    //entry.style = styleSource;
     let config = {
         entry: entry,
         devtool: "source-map",
@@ -36,14 +39,13 @@ module.exports = function webpackConfig (entry) {
                 "window.RPC_URL": RPC_URL,
                 "self.CONTRACT_ADDRESS": CONTRACT_ADDRESS,
             }),
-            new ExtractTextPlugin('styles.css'),
             new PackageLoadersPlugin()
         ],
         resolve: {
-            extensions: [".ts", ".tsx", ".js", ".json"]
+            extensions: [".ts", ".tsx", ".js", ".json", ".styl"]
         },
         module: {
-            rules: [
+            loaders: [
                 {
                     test: /\.tsx?$/,
                     loaders: [
@@ -51,27 +53,24 @@ module.exports = function webpackConfig (entry) {
                         "ts-loader"
                     ]
                 },
-                { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
                 {
                     test: /\.styl$/,
-                    use: ExtractTextPlugin.extract({
-                        fallback: 'style-loader',
-                        use: [
-                            {
-                                loader: 'css-loader'
-                            },
-                            {
-                                loader: 'stylus-loader',
-                                options: {
-                                    use: [autoprefixer({browsers: ['last 2 versions', 'ie >= 9']})],
-                                }
+                    use: [
+                        'style-loader',
+                        'css-loader',
+                        {
+                            loader: 'stylus-loader',
+                            options: {
+                                use: [autoprefixer({browsers: ['last 2 versions', 'ie >= 9']})],
                             }
-                        ]
-                    })
-                }
-
+                        },
+                    ],
+                },
+                { test: /\.(eot|woff|woff2|svg|ttf|png)([\?]?.*)$/, loader: "file-loader" },
+                { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
             ]
         },
+
         node: {
             fs: 'empty',
             net: 'empty',

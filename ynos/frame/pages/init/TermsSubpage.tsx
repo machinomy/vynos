@@ -5,7 +5,8 @@ import actions from "../../actions";
 
 const TERMS_OF_USE_ADDRESS = 'https://example.com';
 
-const style = require("../../styles/ynos.css")
+/*const style = require("../../styles/ynos.css")*/
+require('../../css/style.styl');
 
 export interface TermsSubpageStateProps {
 
@@ -23,20 +24,28 @@ function handleTouClick() {
 
 const TermsSubpage: React.SFC<TermsSubpageProps> = (props) => {
   return <div>
-    ffs
-    <div className={style.initTermsMotivation}>
-      Ready to unlock a true value<br/>
-      of quality content<br/>
-      through <em>real</em> micropayments?
+    <div className="terms-header">
+      <img src={require('../../css/images/logo.png')} className="terms-header__logo" alt="Logo" />
+      <h1 className="terms-header__caption">Literate<span className="terms-header__caption_text-wrap">Payments</span></h1>
     </div>
-    <div className={style.initTermsTermsLink}>
-      Read <a href="#" onClick={handleTouClick}>Terms of Use</a>
+    <div className="terms-subheader">
+      <p>Ready to unlock a true value<br/>
+        of quality content<br/>
+        through <em>real</em> micropayments?
+      </p>
     </div>
-    <div className={style.initTermsButtonContainer}>
-      <button onClick={props.didAcceptTerms}>Accept</button>
+    <div className="terms-read">
+      <p>
+        <a href="#" onClick={handleTouClick}>Read terms of use</a>
+      </p>
+    </div>
+    <div className="terms-accept">
+      <p>
+        <button onClick={props.didAcceptTerms}>Accept</button>
+      </p>
     </div>
   </div>
-}
+};
 
 function mapStateToProps(state: FrameState): TermsSubpageStateProps {
   return {
