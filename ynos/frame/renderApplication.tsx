@@ -29,8 +29,8 @@ function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
     function reload() {
       let FrameApplication = require("./FrameApplication").default
       let application = React.createElement(FrameApplication, { workerProxy, frameState })
-      let container = React.createElement(AppContainer, undefined, application)
-      let provider = React.createElement(Provider, { store: store }, container);
+      // FIXME let container = React.createElement(AppContainer, undefined, application)
+      let provider = React.createElement(Provider, { store: store }, application);
       DOM.render(provider, mountPoint)
     }
 

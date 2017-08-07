@@ -12,12 +12,12 @@ import {
 } from "./lib/rpc/yns";
 import Web3 = require("web3")
 import BigNumber from "bignumber.js";
-import {Payment, PaymentChannel} from "machinomy/lib/channel";
+import {Payment, PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import Promise = require('bluebird')
 
 let _window = (<DevWindow & YnosWindow>window);
 
-function buildFrame(frame?: HTMLIFrameElement): HTMLIFrameElement {
+function buildFrame(script: HTMLScriptElement, frame?: HTMLIFrameElement): HTMLIFrameElement {
   if (!frame) {
     frame = document.createElement('iframe');
     frame.id = 'ynos_frame';
@@ -30,7 +30,8 @@ function buildFrame(frame?: HTMLIFrameElement): HTMLIFrameElement {
     frame.width = '320px';
     //frame.style.marginRight = '-320px';
   }
-  frame.src = _window.FRAME_URL;
+  let currentScriptAddress = script.src
+  frame.src = currentScriptAddress.replace('ynos.bundle.js', 'frame.html')
   frame.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin allow-popups allow-forms");
   return frame;
 }
@@ -51,6 +52,10 @@ export interface Ynos {
 export type YnosPayInChannelResponse = {
   channel: PaymentChannel
   payment: Payment
+}
+
+function isPaymentChannel(pc: PaymentChannel|PaymentChannelJSON): pc is PaymentChannel {
+  return !!((pc as PaymentChannel).toJSON)
 }
 
 class YnosClient {
@@ -109,12 +114,15 @@ class YnosClient {
   }
 
 
-  payInChannel (channel: PaymentChannel, amount: number): Promise<YnosPayInChannelResponse> {
+  payInChannel (channel: PaymentChannel | PaymentChannelJSON, amount: number): Promise<YnosPayInChannelResponse> {
     let request: PayInChannelRequest = {
       id: randomId(),
       method: PayInChannelRequest.method,
       jsonrpc: JSONRPC,
-      params: [channel.toJSON(), amount]
+      params: [channel, amount]
+    }
+    if (isPaymentChannel(channel)) {
+      request.params = [channel.toJSON(), amount]
     }
     return this.streamProvider.ask(request).then((response: PayInChannelResponse) => {
       let paymentChannel = PaymentChannel.fromDocument(response.result[0])
@@ -143,6 +151,11 @@ class YnosImpl implements Ynos {
   frame: HTMLIFrameElement;
   stream: Duplex;
   client: YnosClient
+  currentScript: HTMLScriptElement
+
+  constructor(currentScript: HTMLScriptElement) {
+    this.currentScript = currentScript
+  }
 
   getAccount (): Promise<string> {
     if (!this.client) return Promise.reject(new Error("Do initFrame first"))
@@ -193,7 +206,7 @@ class YnosImpl implements Ynos {
 
     return new Promise<void>((resolve, reject) => {
       try {
-        this.frame = buildFrame(frame);
+        this.frame = buildFrame(this.currentScript, frame);
         this.stream = new FrameStream("ynos").toFrame(this.frame);
         this.client = new YnosClient(this.stream)
         if (!this.frame.parentElement) {
@@ -215,5 +228,5 @@ class YnosImpl implements Ynos {
 
 let ynosPresent = _window.ynos && _window.ynos instanceof YnosImpl;
 if (!ynosPresent) {
-  _window.ynos = new YnosImpl()
+  _window.ynos = new YnosImpl(document.currentScript as HTMLScriptElement)
 }

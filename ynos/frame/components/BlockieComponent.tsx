@@ -41,7 +41,7 @@ export interface BlockieComponentProps {
   style?: any
 }
 
-export default class BlockieComponent extends React.Component<BlockieComponentProps, undefined> {
+export default class BlockieComponent extends React.Component<BlockieComponentProps, {}> {
   size: number
   scale: number
   random: Random

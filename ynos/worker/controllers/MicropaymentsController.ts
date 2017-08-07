@@ -27,9 +27,9 @@ export default class MicropaymentsController {
     console.log("MicropaymentsController.openChannel")
     if (this.account) {
       console.log(this.client.web3.currentProvider)
-      return this.client.contract.buildPaymentChannel(this.account, receiver, amount).then(pc => {
-        return this.client.storage.channels.saveOrUpdate(pc).then(() => {
-          return PaymentChannel.fromDocument(pc)
+      return this.client.contract.buildPaymentChannel(this.account, receiver, amount).then(paymentChannelDocument => {
+        return this.client.storage.channels.saveOrUpdate(paymentChannelDocument).then(() => {
+          return PaymentChannel.fromDocument(paymentChannelDocument)
         })
       })
     } else {
@@ -127,12 +127,18 @@ export default class MicropaymentsController {
   }
 
   payInChannel(channel: PaymentChannel, amount: number): Promise<[PaymentChannel, Payment]> {
-    return Payment.fromPaymentChannel(this.network.web3, channel, amount).then(payment => {
-      let nextPaymentChannel = PaymentChannel.fromPayment(payment)
-      return this.client.storage.channels.saveOrUpdate(nextPaymentChannel).then(() => {
-        let result: [PaymentChannel, Payment] = [nextPaymentChannel, payment]
-        return result
-      })
+    return this.client.storage.channels.firstById(channel.channelId).then(paymentChannel => {
+      if (paymentChannel) {
+        return Payment.fromPaymentChannel(this.client.web3, paymentChannel, amount).then(payment => {
+          let nextPaymentChannel = PaymentChannel.fromPayment(payment)
+          return this.client.storage.channels.saveOrUpdate(nextPaymentChannel).then(() => {
+            let result: [PaymentChannel, Payment] = [nextPaymentChannel, payment]
+            return result
+          })
+        })
+      } else {
+        return Promise.reject(new Error('No channel present, really'))
+      }
     })
   }
 

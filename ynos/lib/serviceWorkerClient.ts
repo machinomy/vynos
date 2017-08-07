@@ -28,7 +28,8 @@ export function initServiceWorkerClient(main: (sw: ServiceWorker, onUnload: Func
   }
 
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("worker.bundle.js", {scope: "./"}).then(registration => {
+    let scriptUrl = window.location.href.replace('frame.html', 'worker.bundle.js')
+    navigator.serviceWorker.register(scriptUrl, {scope: "./"}).then(registration => {
       registration.onupdatefound = () => {
         extractServiceWorker(registration, sw => {
           freshInstall(sw, registration)

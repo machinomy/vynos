@@ -34,7 +34,7 @@ export interface MnemonicSubpageProps {
   workerProxy: WorkerProxy
 }
 
-export class MnemonicSubpage extends React.Component<MnemonicSubpageProps, undefined> {
+export class MnemonicSubpage extends React.Component<MnemonicSubpageProps, {}> {
   handleSubmit (ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     this.props.workerProxy.didStoreMnemonic().then()

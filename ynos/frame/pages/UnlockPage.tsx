@@ -5,6 +5,9 @@ import {ChangeEvent, CSSProperties, FormEvent} from "react";
 import _ = require("lodash")
 import WorkerProxy from "../WorkerProxy";
 import {FrameState} from "../state";
+import Button from '@react-mdc/button'
+import Textfield from '@react-mdc/textfield'
+import Typography from '@react-mdc/typography'
 
 export interface UnlockPageStateProps {
   workerProxy: WorkerProxy
@@ -30,10 +33,6 @@ const BUTTON_CONTAINER_STYLE: CSSProperties = {
   position: 'absolute'
 };
 
-const BUTTON_STYLE = {
-  boxShadow: null
-};
-
 const MINOR_BUTTON_STYLE = {
   display: 'block',
   lineHeight: '25px',
@@ -52,6 +51,7 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
     };
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleForgotPassword = this.handleForgotPassword.bind(this);
   }
 
   handlePasswordChange (event: ChangeEvent<HTMLInputElement>) {
@@ -77,20 +77,29 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
     if (this.state.loading) {
       return 'Loading...'
     } else {
-      return 'UNLOCK'
+      return 'Unlock'
     }
+  }
+
+  handleForgotPassword () {
+    alert('Not Yet Implemented')
   }
 
   render () {
     return <LargeLogoLayout>
       <form style={BUTTON_CONTAINER_STYLE} onSubmit={this.handleSubmit}>
-        <input type="password" placeholder="Password for the wallet" style={TEXT_FIELD_STYLE} onChange={this.handlePasswordChange} />
-        <div>
-          <button style={BUTTON_STYLE}>{this.buttonLabel()}</button>
-        </div>
-        <div>
-          <a href="#FIXME" style={MINOR_BUTTON_STYLE}>Forgot password?</a>
-        </div>
+        <Textfield>
+          <Textfield.Input id="password" autoComplete="password" type="password" onChange={this.handlePasswordChange} />
+          <Textfield.Label htmlFor="password">
+            Password
+          </Textfield.Label>
+        </Textfield>
+        <Button raised={true}>{this.buttonLabel()}</Button>
+        <Typography>
+          <Typography.Text textStyle="body1">
+            <a href="#" style={MINOR_BUTTON_STYLE} onClick={this.handleForgotPassword}>Forgot password?</a>
+          </Typography.Text>
+        </Typography>
       </form>
     </LargeLogoLayout>
   }
