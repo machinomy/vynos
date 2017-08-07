@@ -12,8 +12,9 @@ import {
 } from "./lib/rpc/yns";
 import Web3 = require("web3")
 import BigNumber from "bignumber.js";
-import {Payment, PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
+import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import Promise = require('bluebird')
+import Payment from "machinomy/lib/Payment";
 
 let _window = (<DevWindow & YnosWindow>window);
 

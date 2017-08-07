@@ -2,9 +2,10 @@ import NetworkController from "./NetworkController";
 import BackgroundController from "./BackgroundController";
 import {buildMachinomyClient} from "../../lib/micropayments";
 import Sender from "machinomy/lib/sender";
-import {Payment, PaymentChannel } from "machinomy/lib/channel";
+import { PaymentChannel } from "machinomy/lib/channel";
 import Promise = require('bluebird')
 import * as BigNumber from 'bignumber.js'
+import Payment from "machinomy/lib/Payment";
 
 export default class MicropaymentsController {
   network: NetworkController

@@ -1,6 +1,7 @@
-import {JSONRPC, randomId, RequestPayload, ResponsePayload} from "../Payload"
+import {JSONRPC, RequestPayload, ResponsePayload} from "../Payload"
 import {SharedState} from "../../worker/State";
-import {Payment, PaymentChannelJSON} from "machinomy/lib/channel";
+import {PaymentChannelJSON} from "machinomy/lib/channel";
+import Payment from "machinomy/lib/Payment";
 
 export class InitAccountRequest implements RequestPayload {
   id: number;

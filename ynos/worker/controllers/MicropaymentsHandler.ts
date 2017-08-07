@@ -6,7 +6,8 @@ import {
   OpenChannelResponse,
   PayInChannelRequest, PayInChannelResponse
 } from "../../lib/rpc/yns";
-import {Payment, PaymentChannel} from "machinomy/lib/channel";
+import {PaymentChannel} from "machinomy/lib/channel";
+import Payment from "machinomy/lib/Payment";
 
 export default class MicropaymentsHandler {
   controller: MicropaymentsController
