@@ -8,6 +8,9 @@ import {FrameState} from "../state";
 import Button from '@react-mdc/button'
 import Textfield from '@react-mdc/textfield'
 import Typography from '@react-mdc/typography'
+import classnames = require('classnames')
+
+const styles = require('./buy-sell-modal.scss')
 
 export interface UnlockPageStateProps {
   workerProxy: WorkerProxy
@@ -86,22 +89,23 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
   }
 
   render () {
-    return <LargeLogoLayout>
-      <form style={BUTTON_CONTAINER_STYLE} onSubmit={this.handleSubmit}>
-        <Textfield>
-          <Textfield.Input id="password" autoComplete="password" type="password" onChange={this.handlePasswordChange} />
-          <Textfield.Label htmlFor="password">
-            Password
-          </Textfield.Label>
-        </Textfield>
-        <Button raised={true}>{this.buttonLabel()}</Button>
-        <Typography>
-          <Typography.Text textStyle="body1">
-            <a href="#" style={MINOR_BUTTON_STYLE} onClick={this.handleForgotPassword}>Forgot password?</a>
-          </Typography.Text>
-        </Typography>
-      </form>
-    </LargeLogoLayout>
+    return <div className={styles.buySellModal}>
+      <div className={styles.tabContent}>
+        <div className={styles.vynosHeader}>
+          <h1>VYNOS</h1>
+        </div>
+        <div className={styles.vynosContent}>
+          <form onSubmit={this.handleSubmit}>
+            <div className={classnames(styles.inputGroup, styles.loginForm)}>
+              <label>Password</label>
+              <input type="text" />
+            </div>
+            <button className={styles.loginBtn} type="submit">LOGIN</button>
+            <button className={styles.cancelLoginBtn} type="cancel">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
   }
 }
 

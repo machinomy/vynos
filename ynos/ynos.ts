@@ -27,8 +27,8 @@ function buildFrame(script: HTMLScriptElement, frame?: HTMLIFrameElement): HTMLI
     frame.style.top = '0px';
     frame.style.right = '0px';
     frame.style.bottom = '0px';
-    frame.height = '100%';
-    frame.width = '320px';
+    frame.height = '506px';
+    frame.width = '480px';
     //frame.style.marginRight = '-320px';
   }
   let currentScriptAddress = script.src
