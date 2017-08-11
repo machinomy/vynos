@@ -98,7 +98,7 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
           <form onSubmit={this.handleSubmit}>
             <div className={classnames(styles.inputGroup, styles.loginForm)}>
               <label>Password</label>
-              <input type="text" />
+              <input type="password" onChange={this.handlePasswordChange} />
             </div>
             <button className={styles.loginBtn} type="submit">LOGIN</button>
             <button className={styles.cancelLoginBtn} type="cancel">Cancel</button>
