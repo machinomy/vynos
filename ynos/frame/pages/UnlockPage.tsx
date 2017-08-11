@@ -95,16 +95,14 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
           <h1>VYNOS</h1>
         </div>
         <form onSubmit={this.handleSubmit}>
-        <div className={styles.vynosContent}>
-
+          <div className={styles.vynosContent}>
             <div className={classnames(styles.inputGroup, styles.loginForm)}>
               <label>Password</label>
               <input type="password" onChange={this.handlePasswordChange} />
             </div>
             <button className={styles.loginBtn} type="submit">LOGIN</button>
             <button className={styles.cancelLoginBtn} type="cancel">Cancel</button>
-
-        </div>
+          </div>
         </form>
       </div>
     </div>
