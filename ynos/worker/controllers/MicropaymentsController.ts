@@ -59,20 +59,21 @@ export default class MicropaymentsController {
     return storage.payments.firstMaximum(channelId).then(paymentDoc => {
       if (paymentDoc) {
         let value = new BigNumber(paymentDoc.value)
-        let canClaim = contract.canClaim(channelId, value, Number(paymentDoc.v), paymentDoc.r, paymentDoc.s)
-        if (canClaim) {
-          return contract.claim(paymentChannel.receiver, paymentChannel.channelId, paymentDoc.value, Number(paymentDoc.v), paymentDoc.r, paymentDoc.s).then(value => {
-            console.log('Claimed ' + value + ' out of ' + paymentChannel.value + ' from channel ' + channelId)
-            let next = { ...paymentChannel, state: 2 }
-            return PaymentChannel.fromDocument(next)
-          }).then(channel => {
-            return this.client.storage.channels.saveOrUpdate(channel).then(() => {
-              return channel
+        return contract.canClaim(channelId, value, Number(paymentDoc.v), paymentDoc.r, paymentDoc.s).then(canClaim => {
+          if (canClaim) {
+            return contract.claim(paymentChannel.receiver, paymentChannel.channelId, paymentDoc.value, Number(paymentDoc.v), paymentDoc.r, paymentDoc.s).then(value => {
+              console.log('Claimed ' + value + ' out of ' + paymentChannel.value + ' from channel ' + channelId)
+              let next = { ...paymentChannel, state: 2 }
+              return PaymentChannel.fromDocument(next)
+            }).then(channel => {
+              return this.client.storage.channels.saveOrUpdate(channel).then(() => {
+                return channel
+              })
             })
-          })
-        } else {
-          return Promise.reject(new Error('Can not claim ' + paymentDoc.value + ' from channel ' + channelId))
-        }
+          } else {
+            return Promise.reject(new Error('Can not claim ' + paymentDoc.value + ' from channel ' + channelId))
+          }
+        })
       }
     })
   }
@@ -80,20 +81,22 @@ export default class MicropaymentsController {
   finishSettle(paymentChannel: PaymentChannel): Promise<PaymentChannel> {
     console.log("MicropaymentsController.finishSettle")
     let contract = this.client.contract
-    if (contract.canFinishSettle(this.account, paymentChannel.channelId)) {
-      return contract.finishSettle(this.account, paymentChannel.channelId).then(payment => {
-        console.log('Settled to pay ' + payment + ' to ' + paymentChannel.receiver)
-        let next = { ...paymentChannel.toJSON(), state: 2 }
-        return PaymentChannel.fromDocument(next)
-      }).then(channel => {
-        return this.client.storage.channels.saveOrUpdate(channel).then(() => {
-          return channel
+    return contract.canFinishSettle(this.account, paymentChannel.channelId).then(canFinishSettle => {
+      if (canFinishSettle) {
+        return contract.finishSettle(this.account, paymentChannel.channelId).then(payment => {
+          console.log('Settled to pay ' + payment + ' to ' + paymentChannel.receiver)
+          let next = { ...paymentChannel.toJSON(), state: 2 }
+          return PaymentChannel.fromDocument(next)
+        }).then(channel => {
+          return this.client.storage.channels.saveOrUpdate(channel).then(() => {
+            return channel
+          })
         })
-      })
-    } else {
-      let until = contract.getUntil(paymentChannel.channelId)
-      return Promise.reject(new Error('Can not finish settle until ' + until))
-    }
+      } else {
+        let until = contract.getUntil(paymentChannel.channelId)
+        return Promise.reject(new Error('Can not finish settle until ' + until))
+      }
+    })
   }
 
   closeChannel(paymentChannel: PaymentChannel): Promise<PaymentChannel> {

@@ -56,7 +56,7 @@
 		"little-router": "^2.3.2",
 		"localforage": "^1.5.0",
 		"lodash": "^4.17.4",
-		"machinomy": "^1.0.0-alpha.36",
+		"machinomy": "^1.0.0-alpha.37",
 		"material-components-web": "^0.14.0",
 		"mux-demux": "^3.7.9",
 		"normalize.css": "^7.0.0",
@@ -76,8 +76,8 @@
 		"web3-provider-engine": "^13.0.3"
 	},
 	"custom": {
-		"contract_address": "0x2ba14e3633b89a4f55c4cd58c5cebd0ace5ebee7",
-		"rpc_url": "http://localhost:8545",
+		"contract_address": "[DEFAULT_CONTRACT_ADDRESS]",
+		"rpc_url": "https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH ",
 		"frame_port": "[DEFAULT_FRAME_PORT]"
 	}
 }
