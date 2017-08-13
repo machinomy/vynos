@@ -1,13 +1,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import LargeLogoLayout from "../components/large_logo_layout";
+//import LargeLogoLayout from "../components/large_logo_layout";
 import {ChangeEvent, CSSProperties, FormEvent} from "react";
 import _ = require("lodash")
-import WorkerProxy from "../WorkerProxy";
-import {FrameState} from "../state";
-import Button from '@react-mdc/button'
-import Textfield from '@react-mdc/textfield'
-import Typography from '@react-mdc/typography'
+import WorkerProxy from "../../WorkerProxy";
+import {FrameState} from "../../reducers/state";
 
 export interface UnlockPageStateProps {
   workerProxy: WorkerProxy
@@ -86,22 +83,13 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
   }
 
   render () {
-    return <LargeLogoLayout>
+    return <div> {/* LargeLogoLayout */}
       <form style={BUTTON_CONTAINER_STYLE} onSubmit={this.handleSubmit}>
-        <Textfield>
-          <Textfield.Input id="password" autoComplete="password" type="password" onChange={this.handlePasswordChange} />
-          <Textfield.Label htmlFor="password">
-            Password
-          </Textfield.Label>
-        </Textfield>
-        <Button raised={true}>{this.buttonLabel()}</Button>
-        <Typography>
-          <Typography.Text textStyle="body1">
-            <a href="#" style={MINOR_BUTTON_STYLE} onClick={this.handleForgotPassword}>Forgot password?</a>
-          </Typography.Text>
-        </Typography>
+        <input id="password" autoComplete="password" type="password" onChange={this.handlePasswordChange} />
+        <button>{/*raised={true}*/}{this.buttonLabel()}</button>
+          <a href="#" style={MINOR_BUTTON_STYLE} onClick={this.handleForgotPassword}>Forgot password?</a>
       </form>
-    </LargeLogoLayout>
+    </div>
   }
 }
 

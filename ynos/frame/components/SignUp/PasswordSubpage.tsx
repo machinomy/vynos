@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Dispatch} from "redux";
-import {FrameState} from "../../state";
+import {FrameState} from "../../reducers/state";
 import {ChangeEvent, FormEvent} from "react";
 import WorkerProxy from "../../WorkerProxy";
 import {connect} from "react-redux";

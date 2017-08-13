@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {CSSProperties, FormEvent} from "react";
-import {FrameState} from "../../state";
+import {FrameState} from "../../reducers/state";
 import WorkerProxy from "../../WorkerProxy";
 
 const BUTTON_CONTAINER_STYLE: CSSProperties = {

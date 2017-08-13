@@ -1,3 +1,4 @@
+/*
 import * as React from "react";
 import {connect} from "react-redux";
 import {FrameState} from "../../state";
@@ -28,3 +29,4 @@ function mapStateToProps(state: FrameState): InitPageProps {
 }
 
 export default connect<InitPageProps, undefined, any>(mapStateToProps)(InitPage)
+*/

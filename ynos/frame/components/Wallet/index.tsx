@@ -7,11 +7,10 @@ import {CSSProperties} from "react";
 import BlockieComponent from '../../components/BlockieComponent'
 import browser from '../../lib/browser'
 import BoughtItem from "../../lib/BoughtItem";
-import {FrameState} from "../../state";
+import {FrameState} from "../../reducers/state";
 import WorkerProxy from "../../WorkerProxy";
 import {PaymentChannel} from "machinomy/lib/channel";
-import Button from '@react-mdc/button'
-const style = require("./wallet.css")
+//const style = require("./wallet.css")
 
 const TERMS_OF_USE_ADDRESS = 'https://literatepayments.com'
 
@@ -216,7 +215,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
           for you to start
         </div>
         <div style={BUTTON_CONTAINER_STYLE}>
-          <Button raised onClick={openExplorer}>Explore</Button>
+          <button onClick={openExplorer}>Explore</button>
         </div>
       </div>
     } else {
@@ -272,9 +271,9 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
             <div style={APP_BAR_TITLE_STYLE}>Wallet</div>
           </div>
           <div style={APP_BAR_RIGHT_STYLE}>
-            <Button onClick={this.handleLock} className={style.lockButton}>
+            <button onClick={this.handleLock} className='ss'>
               <i className="material-icons">lock</i>
-            </Button>
+            </button>
           </div>
         </div>
         <div style={SECOND_LINE_STYLE}>
