@@ -56,7 +56,7 @@
 		"little-router": "^2.3.2",
 		"localforage": "^1.5.0",
 		"lodash": "^4.17.4",
-		"machinomy": "^1.0.0-alpha.35",
+		"machinomy": "^1.0.0-alpha.36",
 		"material-components-web": "^0.14.0",
 		"mux-demux": "^3.7.9",
 		"normalize.css": "^7.0.0",
