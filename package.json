@@ -76,8 +76,8 @@
 		"web3-provider-engine": "^13.0.3"
 	},
 	"custom": {
-		"contract_address": "[DEFAULT_CONTRACT_ADDRESS]",
-		"rpc_url": "https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH ",
+		"contract_address": "0x99197c1303a5a9effa65952bfdab36d5ea8c05b0",
+		"rpc_url": "http://localhost:8545",
 		"frame_port": "[DEFAULT_FRAME_PORT]"
 	}
 }
