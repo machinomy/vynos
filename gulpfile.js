@@ -156,6 +156,10 @@ function webpackConfig (entry) {
             }
           ]
         },
+        {
+          test: /\.(png|jpg)$/,
+          loader: 'file-loader'
+        }
       ]
     },
     node: {

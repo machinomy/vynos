@@ -92,6 +92,7 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
     return <div className={styles.buySellModal}>
       <div className={styles.tabContent}>
         <div className={styles.vynosHeader}>
+          <img src={require('./cat3.png')} width={37} />
           <h1>VYNOS</h1>
         </div>
         <form onSubmit={this.handleSubmit}>
