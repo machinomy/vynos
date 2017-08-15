@@ -102,12 +102,15 @@ class YnosClient {
     })
   }
 
-  closeChannel(channel: PaymentChannel): Promise<PaymentChannel> {
+  closeChannel(channel: PaymentChannel | PaymentChannelJSON): Promise<PaymentChannel> {
     let request: CloseChannelRequest = {
       id: randomId(),
       method: CloseChannelRequest.method,
       jsonrpc: JSONRPC,
-      params: [channel.toJSON()]
+      params: [channel]
+    }
+    if (isPaymentChannel(channel)) {
+      request.params = [channel.toJSON()]
     }
     return this.streamProvider.ask(request).then((response: CloseChannelResponse) => {
       return PaymentChannel.fromDocument(response.result[0])
