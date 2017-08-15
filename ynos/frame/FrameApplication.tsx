@@ -4,6 +4,7 @@ import {FrameState} from "./state";
 import InitPage from "./pages/init"
 import WalletPage from "./pages/wallet"
 import UnlockPage from "./pages/UnlockPage";
+import _ = require('lodash')
 
 export interface FrameApplicationProps {
   isInitPageExpected: boolean
@@ -17,7 +18,14 @@ const FrameApplication: React.SFC<FrameApplicationProps> = (props) => {
   } else if (props.isUnlockPageExpected) {
     return <UnlockPage />
   } else if (props.isWalletPageExpected) {
-    return <WalletPage />
+    let scriptQuery = window.location.href.replace(/.*\?/, '')
+    let query = _.chain(scriptQuery).replace('?', '').split('&').map(_.ary(_.partial(_.split, _, '='), 1)).fromPairs().value()
+    let hideWallet = query.hideWallet
+    if (hideWallet) {
+      return <p></p>
+    } else {
+      return <WalletPage />
+    }
   }
   return <p>Waiting...</p>
 }
