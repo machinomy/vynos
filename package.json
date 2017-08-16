@@ -57,7 +57,7 @@
 		"little-router": "^2.3.2",
 		"localforage": "^1.5.0",
 		"lodash": "^4.17.4",
-		"machinomy": "^1.0.0-alpha.37",
+		"machinomy": "^1.0.0-alpha.39",
 		"material-components-web": "^0.14.0",
 		"mux-demux": "^3.7.9",
 		"normalize.css": "^7.0.0",
@@ -78,7 +78,7 @@
 		"web3-provider-engine": "^13.0.3"
 	},
 	"custom": {
-		"contract_address": "0x99197c1303a5a9effa65952bfdab36d5ea8c05b0",
+		"contract_address": "0xb7ba48b8c86a15fb9747dcd0fc40cbd4be78f8f4",
 		"rpc_url": "http://localhost:8545",
 		"frame_port": "[DEFAULT_FRAME_PORT]"
 	}
