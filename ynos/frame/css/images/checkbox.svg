@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-18 2248 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #009789;
+        clip-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+
+      .cls-3 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-4 {
+        opacity: 0.54;
+      }
+
+      .cls-5 {
+        fill-rule: evenodd;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <path id="path" class="cls-1" d="M19,3H5A2.006,2.006,0,0,0,3,5V19a2.006,2.006,0,0,0,2,2H19a2.006,2.006,0,0,0,2-2V5a2.006,2.006,0,0,0-2-2ZM10,17,5,12.192l1.4-1.346L10,14.308,17.6,7,19,8.346,10,17Z"/>
+    </clipPath>
+  </defs>
+  <g id="checkbox" transform="translate(-18 2248)">
+    <rect id="check_box_off" class="cls-2" width="24" height="24"/>
+    <g id="check_box_on_light" class="cls-3">
+      <g id="Group_135" data-name="Group 135" transform="translate(3 3)">
+        <g id="Group_134" data-name="Group 134">
+          <g id="Group_133" data-name="Group 133" class="cls-4" transform="translate(-400 -284)">
+            <g id="Group_132" data-name="Group 132" transform="translate(1 98)">
+              <g id="Group_131" data-name="Group 131" transform="translate(76 103)">
+                <g id="Group_130" data-name="Group 130" transform="translate(0 8)">
+                  <g id="Group_129" data-name="Group 129" transform="translate(0 56)">
+                    <g id="Group_128" data-name="Group 128">
+                      <path id="Path_884" data-name="Path 884" class="cls-5" d="M19-19V-5H5V-19Zm0-2H5a2.006,2.006,0,0,0-2,2V-5A2.006,2.006,0,0,0,5-3H19a2.006,2.006,0,0,0,2-2V-19a2.006,2.006,0,0,0-2-2Z" transform="translate(320 40)"/>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

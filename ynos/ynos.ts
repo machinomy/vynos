@@ -26,14 +26,15 @@ function buildFrame(script: HTMLScriptElement, frame?: HTMLIFrameElement): HTMLI
     frame.style.position = 'fixed';
     frame.style.top = '0px';
     frame.style.right = '0px';
-    frame.style.bottom = '0px';
-    frame.height = '100%';
+    frame.height = '420px';
     frame.width = '320px';
-    //frame.style.marginRight = '-320px';
   }
-  let currentScriptAddress = script.src
+
+  let currentScriptAddress = script.src;
+
   frame.src = currentScriptAddress.replace('ynos.bundle.js', 'frame.html')
   frame.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin allow-popups allow-forms");
+
   return frame;
 }
 
