@@ -14,7 +14,6 @@ declare module "material-ui/FlatButton" {
   export default class FlatButton extends React.Component<any, any> {}
 }
 
-
 declare module "material-ui/List" {
   export class List extends React.Component<any, any> {}
   export class ListItem extends React.Component<any, any> {}
@@ -31,3 +30,5 @@ declare module "material-ui/styles/MuiThemeProvider" {
 declare module "material-ui/styles/getMuiTheme" {
   export default function getMuiTheme(theme: any): any
 }
+
+declare module 'material-ui-image';

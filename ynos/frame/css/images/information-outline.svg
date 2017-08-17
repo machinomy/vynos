@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="780 295 11.5 11.5">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #c71514;
+      }
+    </style>
+  </defs>
+  <path id="information-outline" class="cls-1" d="M7.175,6.025h1.15V4.875H7.175M7.75,12.35a4.6,4.6,0,1,1,4.6-4.6,4.606,4.606,0,0,1-4.6,4.6M7.75,2A5.75,5.75,0,1,0,13.5,7.75,5.75,5.75,0,0,0,7.75,2m-.575,8.625h1.15V7.175H7.175Z" transform="translate(778 293)"/>
+</svg>

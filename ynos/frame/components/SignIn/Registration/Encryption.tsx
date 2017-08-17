@@ -1,10 +1,14 @@
 import * as React from "react";
 import {Dispatch} from "redux";
-import {FrameState} from "../../reducers/state";
+import {FrameState} from "../../../reducers/state";
 import {ChangeEvent, FormEvent} from "react";
-import WorkerProxy from "../../WorkerProxy";
+import WorkerProxy from "../../../WorkerProxy";
 import {connect} from "react-redux";
-import actions from "../../actions";
+import actions from "../../../actions";
+import Button from 'material-ui/RaisedButton'
+import Textfield from 'material-ui/TextField'
+import { Link } from 'react-router-dom'
+import '../../../css/Encryption.styl';
 
 export interface PasswordSubpageState {
   password: null | string,
@@ -27,7 +31,8 @@ export interface PasswordSubpageDispatchProps {
 
 export type PasswordSubpageProps = PasswordSubpageStateProps & PasswordSubpageDispatchProps
 
-export class PasswordSubpage extends React.Component<PasswordSubpageProps, PasswordSubpageState> {
+//export default class Encryption extends React.Component<PasswordSubpageProps, PasswordSubpageState> {
+export default class Encryption extends React.Component<any, any> {
   constructor (props: PasswordSubpageProps) {
     super(props);
     this.state = {
@@ -94,34 +99,55 @@ export class PasswordSubpage extends React.Component<PasswordSubpageProps, Passw
   }
 
   render () {
-    return <div>
-      <h1>
-        Encrypt your new wallet
-      </h1>
-      <form onSubmit={this.handleSubmit}>
-        <input type="password" placeholder="Password" onChange={this.handleChangePassword} />
-        <input type="password" placeholder="Password Confirmation" onChange={this.handleChangePasswordConfirmation} />
-        {this.renderError()}
-        <button type="submit">Create wallet</button>
-      </form>
-    </div>
+    return (
+        <div>
+          <div className="text-center encryption-text">Encrypt your new wallet</div>
+          <form onSubmit={this.handleSubmit}>
+            <div className="encryption-text-field text-center">
+              <Textfield
+                  onChange={() => {}}
+                  floatingLabelText="Password"
+                  floatingLabelStyle={{'font-family': "'source_sans_proregular', sans-serif", 'font-size': '16px', 'top': '26px'}}
+                  style={{'height': '60px'}}
+                  fullWidth
+                  inputStyle={{'margin-top': '2px'}}
+              />
+              <Textfield
+                  onChange={() => {}}
+                  floatingLabelText="Password Confirmation"
+                  floatingLabelStyle={{'font-family': "'source_sans_proregular', sans-serif", 'font-size': '16px', 'top': '26px'}}
+                  fullWidth
+                  style={{'height': '60px'}}
+                  inputStyle={{'margin-top': '2px'}}
+              />
+            </div>
+            {this.renderError()}
+            <div className="create-wallet text-center">
+              <Button className="btn-primary" backgroundColor="#077BC3" label={<span className="label-primary">CREATE A WALLET</span>}/>
+              <div className="restore-text text-center">
+                <Link to="#" className="to-restore">Restore wallet</Link>
+              </div>
+            </div>
+          </form>
+      </div>
+    )
   }
 }
 
-function mapStateToProps(state: FrameState): PasswordSubpageStateProps {
-  return {
-    workerProxy: state.temp.workerProxy!
-  }
-}
-
-function mapDispatchToProps(dispatch: Dispatch<FrameState>): PasswordSubpageDispatchProps {
-  return {
-    genKeyring: (workerProxy, password) => {
-      workerProxy.genKeyring(password).then(mnemonic => {
-        dispatch(actions.temp.init.didReceiveMnemonic(mnemonic))
-      })
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PasswordSubpage)
+// function mapStateToProps(state: FrameState): PasswordSubpageStateProps {
+//   return {
+//     workerProxy: state.temp.workerProxy!
+//   }
+// }
+//
+// function mapDispatchToProps(dispatch: Dispatch<FrameState>): PasswordSubpageDispatchProps {
+//   return {
+//     genKeyring: (workerProxy, password) => {
+//       workerProxy.genKeyring(password).then(mnemonic => {
+//         dispatch(actions.temp.init.didReceiveMnemonic(mnemonic))
+//       })
+//     }
+//   }
+// }
+//
+// export default connect(mapStateToProps, mapDispatchToProps)(PasswordSubpage)

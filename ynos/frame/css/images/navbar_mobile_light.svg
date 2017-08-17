@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-18 2458 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill-rule: evenodd;
+        opacity: 0.54;
+      }
+    </style>
+  </defs>
+  <g id="navbar_mobile_light" transform="translate(-34 2418)">
+    <rect id="rectangle" class="cls-1" width="24" height="24" transform="translate(16 40)"/>
+    <path id="path" class="cls-2" d="M3,18H21V16H3v2Zm0-5H21V11H3v2ZM3,6V8H21V6Z" transform="translate(16 40)"/>
+  </g>
+</svg>

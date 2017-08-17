@@ -12,6 +12,8 @@ import {createLogger} from "redux-logger";
 import * as redux from "redux";
 import {setWorkerProxy} from "./actions/temp";
 
+require('./css/style.styl');
+
 const MOUNT_POINT_ID  = "mount-point";
 
 function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
