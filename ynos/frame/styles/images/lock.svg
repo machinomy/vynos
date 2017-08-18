@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="240 2459 16 21">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: 0.54;
+      }
+    </style>
+  </defs>
+  <path id="lock" class="cls-1" d="M12,17a2,2,0,1,0-2-2,2,2,0,0,0,2,2m6-9a2,2,0,0,1,2,2V20a2,2,0,0,1-2,2H6a2,2,0,0,1-2-2V10A2,2,0,0,1,6,8H7V6A5,5,0,0,1,17,6V8h1M12,3A3,3,0,0,0,9,6V8h6V6A3,3,0,0,0,12,3Z" transform="translate(236 2458)"/>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="764 1478 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill-rule: evenodd;
+        opacity: 0.54;
+      }
+    </style>
+  </defs>
+  <g id="ic_arrow_back" transform="translate(764 1478)">
+    <rect id="rectangle" class="cls-1" width="24" height="24"/>
+    <path id="path" class="cls-2" d="M20,11H7.8l5.6-5.6L12,4,4,12l8,8,1.4-1.4L7.8,13H20V11Z"/>
+  </g>
+</svg>
