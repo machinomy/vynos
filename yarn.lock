@@ -14,15 +14,15 @@
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@material/auto-init/-/auto-init-0.1.2.tgz#a6d5f88efff08c087e53f55c2cdfbb22ce6f4901"
 
-"@material/base@^0.2.0", "@material/base@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@material/base/-/base-0.2.3.tgz#c4eb26b6d6e5840c254ad487588dc4f69b971f3e"
-
-"@material/base@^0.2.1":
+"@material/base@^0.2.0", "@material/base@^0.2.1":
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@material/base/-/base-0.2.1.tgz#1206df65da0bcde5df46e78b4d60a1e09fdc41cb"
 
-"@material/button@^0.3.4":
+"@material/base@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@material/base/-/base-0.2.3.tgz#c4eb26b6d6e5840c254ad487588dc4f69b971f3e"
+
+"@material/button@^0.3.4", "@material/button@^0.3.8":
   version "0.3.10"
   resolved "https://registry.yarnpkg.com/@material/button/-/button-0.3.10.tgz#fec02394db79ee7a5799917f806076c8047a00ad"
   dependencies:
@@ -31,16 +31,6 @@
     "@material/ripple" "^0.8.1"
     "@material/theme" "^0.1.6"
     "@material/typography" "^0.2.3"
-
-"@material/button@^0.3.8":
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/@material/button/-/button-0.3.8.tgz#47874a4879832da49890bc2a16c6cbf8eb0dc118"
-  dependencies:
-    "@material/animation" "^0.2.3"
-    "@material/elevation" "^0.1.9"
-    "@material/ripple" "^0.7.0"
-    "@material/theme" "^0.1.5"
-    "@material/typography" "^0.2.2"
 
 "@material/card@^0.2.4":
   version "0.2.4"
@@ -187,13 +177,9 @@
     "@material/base" "^0.2.3"
     "@material/theme" "^0.1.6"
 
-"@material/rtl@^0.1.5":
+"@material/rtl@^0.1.5", "@material/rtl@^0.1.6":
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.1.7.tgz#b38b771af183bcf34d643f600f17fc433698535a"
-
-"@material/rtl@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.1.6.tgz#64897f3050b2c53c378c6b4a7d2998cf61b2445b"
 
 "@material/select@^0.3.9":
   version "0.3.9"
@@ -289,13 +275,9 @@
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.1.1.tgz#fb2e3437bd3284d39e9fb91485767ade6b2bd0c1"
 
-"@material/typography@^0.2.1", "@material/typography@^0.2.3":
+"@material/typography@^0.2.1", "@material/typography@^0.2.2", "@material/typography@^0.2.3":
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.2.3.tgz#cddf4178098c9c7b4c2e78a33049376b4d6aeb53"
-
-"@material/typography@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.2.2.tgz#dc5f0763ad7d6e5ad5c86c394b360f2b4cf30bb2"
 
 "@react-mdc/base@^0.1.12":
   version "0.1.12"
@@ -710,15 +692,15 @@ async@^1.4.2, async@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
-async@^2.0.1, async@^2.1.2, async@^2.4.0:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/async/-/async-2.4.1.tgz#62a56b279c98a11d0987096a01cc3eeb8eb7bbd7"
+async@^2.0.1, async@^2.4.0, async@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.5.0.tgz#843190fd6b7357a0b9e1c956edddd5ec8462b54d"
   dependencies:
     lodash "^4.14.0"
 
-async@^2.1.5, async@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/async/-/async-2.5.0.tgz#843190fd6b7357a0b9e1c956edddd5ec8462b54d"
+async@^2.1.2, async@^2.1.5:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.4.1.tgz#62a56b279c98a11d0987096a01cc3eeb8eb7bbd7"
   dependencies:
     lodash "^4.14.0"
 
@@ -1285,11 +1267,11 @@ bluebird@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
 
-bn.js@4.11.7, bn.js@^4.11.7:
+bn.js@4.11.7, bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.11.3, bn.js@^4.11.7, bn.js@^4.4.0:
   version "4.11.7"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.7.tgz#ddb048e50d9482790094c13eb3fcfc833ce7ab46"
 
-bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.11.3, bn.js@^4.4.0, bn.js@^4.8.0:
+bn.js@^4.8.0:
   version "4.11.6"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.6.tgz#53344adb14617a13f6e8dd2ce28905d1c0ba3215"
 
@@ -1323,16 +1305,9 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bops@0.0.6:
+bops@0.0.6, bops@~0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/bops/-/bops-0.0.6.tgz#082d1d55fa01e60dbdc2ebc2dba37f659554cf3a"
-  dependencies:
-    base64-js "0.0.2"
-    to-utf8 "0.0.1"
-
-bops@~0.0.6:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/bops/-/bops-0.0.7.tgz#b4a0a5a839a406454af0fe05a8b91a7a766a54e2"
   dependencies:
     base64-js "0.0.2"
     to-utf8 "0.0.1"
@@ -4691,18 +4666,9 @@ normalize.css@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-7.0.0.tgz#abfb1dd82470674e0322b53ceb1aaf412938e4bf"
 
-"npmlog@0 || 1 || 2 || 3 || 4", npmlog@^4.0.0:
+"npmlog@0 || 1 || 2 || 3 || 4", npmlog@^4.0.0, npmlog@^4.0.1, npmlog@^4.0.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-4.1.2.tgz#08a7f2a8bf734604779a9efa4ad5cc717abb954b"
-  dependencies:
-    are-we-there-yet "~1.1.2"
-    console-control-strings "~1.1.0"
-    gauge "~2.7.3"
-    set-blocking "~2.0.0"
-
-npmlog@^4.0.1, npmlog@^4.0.2:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-4.1.0.tgz#dc59bee85f64f00ed424efb2af0783df25d1c0b5"
   dependencies:
     are-we-there-yet "~1.1.2"
     console-control-strings "~1.1.0"
@@ -5697,16 +5663,7 @@ redux-thunk@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.2.0.tgz#e615a16e16b47a19a515766133d1e3e99b7852e5"
 
-redux@^3.6.0:
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
-  dependencies:
-    lodash "^4.2.1"
-    lodash-es "^4.2.1"
-    loose-envify "^1.1.0"
-    symbol-observable "^1.0.3"
-
-redux@^3.7.0:
+redux@^3.6.0, redux@^3.7.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.0.tgz#07a623cafd92eee8abe309d13d16538f6707926f"
   dependencies:
@@ -6249,13 +6206,9 @@ sshpk@^1.7.0:
     jsbn "~0.1.0"
     tweetnacl "~0.14.0"
 
-stack-trace@0.0.9:
+stack-trace@0.0.9, stack-trace@0.0.x:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.9.tgz#a8f6eaeca90674c333e7c43953f275b451510695"
-
-stack-trace@0.0.x:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.10.tgz#547c70b347e8d32b4e108ea1a2a159e5fdde19c0"
 
 stackframe@^0.3.1:
   version "0.3.1"
@@ -6945,31 +6898,7 @@ web3-provider-engine@^13.0.3:
     xhr "^2.2.0"
     xtend "^4.0.1"
 
-web3-provider-engine@^13.2.8:
-  version "13.2.8"
-  resolved "https://registry.yarnpkg.com/web3-provider-engine/-/web3-provider-engine-13.2.8.tgz#e1fa1e6b6b5a7526e44dec220d4a4f12ec813562"
-  dependencies:
-    async "^2.5.0"
-    clone "^2.0.0"
-    eth-block-tracker "^2.0.1"
-    eth-sig-util "^1.2.1"
-    ethereumjs-block "^1.2.2"
-    ethereumjs-tx "^1.2.0"
-    ethereumjs-util "^5.1.1"
-    ethereumjs-vm "^2.0.2"
-    fetch-ponyfill "^4.0.0"
-    json-rpc-error "^2.0.0"
-    json-stable-stringify "^1.0.1"
-    promise-to-callback "^1.0.0"
-    readable-stream "^2.2.9"
-    request "^2.67.0"
-    semaphore "^1.0.3"
-    solc "^0.4.2"
-    tape "^4.4.0"
-    xhr "^2.2.0"
-    xtend "^4.0.1"
-
-web3-provider-engine@^13.2.9:
+web3-provider-engine@^13.2.8, web3-provider-engine@^13.2.9:
   version "13.2.9"
   resolved "https://registry.yarnpkg.com/web3-provider-engine/-/web3-provider-engine-13.2.9.tgz#1db7d6e1df4665c3e63f972c4d67087427200ed4"
   dependencies:
@@ -7118,15 +7047,9 @@ which-module@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/which-module/-/which-module-1.0.0.tgz#bba63ca861948994ff307736089e3b96026c2a4f"
 
-which@1, which@^1.2.9:
+which@1, which@^1.2.12, which@^1.2.9:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/which/-/which-1.3.0.tgz#ff04bdfc010ee547d780bec38e1ac1c2777d253a"
-  dependencies:
-    isexe "^2.0.0"
-
-which@^1.2.12:
-  version "1.2.14"
-  resolved "https://registry.yarnpkg.com/which/-/which-1.2.14.tgz#9a87c4378f03e827cecaf1acdf56c736c01c14e5"
   dependencies:
     isexe "^2.0.0"
 

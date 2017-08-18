@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"license": "Apache-2.0",
 	"scripts": {
+		"start": "gulp serve:built",
 		"build": "gulp build",
 		"build:harness": "gulp build:harness",
 		"harness": "gulp harness:serve"
@@ -78,8 +79,8 @@
 		"web3-provider-engine": "^13.0.3"
 	},
 	"custom": {
-		"contract_address": "0xb7ba48b8c86a15fb9747dcd0fc40cbd4be78f8f4",
-		"rpc_url": "http://localhost:8545",
+		"contract_address": "0xC365a7C7D222b781E7B50a95e005D89243Fc650D",
+		"rpc_url": "http://104.42.128.155:8545",
 		"frame_port": "[DEFAULT_FRAME_PORT]"
 	}
 }
