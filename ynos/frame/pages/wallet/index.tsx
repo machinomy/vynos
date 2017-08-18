@@ -11,7 +11,7 @@ import {FrameState} from "../../state";
 import WorkerProxy from "../../WorkerProxy";
 import {PaymentChannel} from "machinomy/lib/channel";
 import Button from '@react-mdc/button'
-const style = require("./wallet.css")
+//const style = require("./wallet.css")
 
 const TERMS_OF_USE_ADDRESS = 'https://literatepayments.com'
 
@@ -272,7 +272,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
             <div style={APP_BAR_TITLE_STYLE}>Wallet</div>
           </div>
           <div style={APP_BAR_RIGHT_STYLE}>
-            <Button onClick={this.handleLock} className={style.lockButton}>
+            <Button onClick={this.handleLock} className="style.lockButton">
               <i className="material-icons">lock</i>
             </Button>
           </div>

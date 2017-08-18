@@ -5,7 +5,7 @@ import actions from "../../actions";
 
 const TERMS_OF_USE_ADDRESS = 'https://example.com';
 
-const style = require("../../styles/ynos.css")
+//const style = require("../../styles/ynos.css")
 
 export interface TermsSubpageStateProps {
 
@@ -24,15 +24,15 @@ function handleTouClick() {
 const TermsSubpage: React.SFC<TermsSubpageProps> = (props) => {
   return <div>
     ffs
-    <div className={style.initTermsMotivation}>
+    <div className="initTermsMotivation">
       Ready to unlock a true value<br/>
       of quality content<br/>
       through <em>real</em> micropayments?
     </div>
-    <div className={style.initTermsTermsLink}>
+    <div className="initTermsTermsLink">
       Read <a href="#" onClick={handleTouClick}>Terms of Use</a>
     </div>
-    <div className={style.initTermsButtonContainer}>
+    <div className="initTermsButtonContainer">
       <button onClick={props.didAcceptTerms}>Accept</button>
     </div>
   </div>

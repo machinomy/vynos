@@ -2,7 +2,8 @@ const   path                    = require("path"),
         webpack                 = require("webpack"),
         packageJson             = require('./package.json'),
         DIST_PATH               = path.resolve(__dirname, "dist"),
-        PackageLoadersPlugin    = require('webpack-package-loaders-plugin');
+        PackageLoadersPlugin    = require('webpack-package-loaders-plugin'),
+        autoprefixer            = require('autoprefixer-stylus');
 
 const   CONTRACT_ADDRESS_PLACEHOLDER    = '[DEFAULT_CONTRACT_ADDRESS]',
         RPC_URL_PLACEHOLDER             = '[DEFAULT_RPC_URL]';
@@ -41,6 +42,19 @@ module.exports = function webpackConfig (entry) {
         module: {
             rules: [
                 {
+                    test: /\.styl$/,
+                    use: [
+                        'style-loader',
+                        'css-loader',
+                        {
+                            loader: 'stylus-loader',
+                            options: {
+                                use: [autoprefixer({browsers: ['last 2 versions', 'ie >= 9']})],
+                            }
+                        },
+                    ],
+                },
+                {
                     test: /\.tsx?$/,
                     loaders: [
                         "react-hot-loader/webpack",
@@ -48,72 +62,6 @@ module.exports = function webpackConfig (entry) {
                     ]
                 },
                 { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
-                {
-                    test: /\.css$/i,
-                    exclude: [/node_modules/],
-                    use: [
-                        {
-                            loader: 'style-loader'
-                        },
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                sourceMap: true,
-                                importLoaders: 1,
-                                modules: true,
-                                camelCase: true,
-                                localIdentName: '[name]_[local]_[hash:base64:5]',
-                                minimize: false
-                            },
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins: () => ([
-                                    require("postcss-import")(),
-                                    // Following CSS Nesting Module Level 3: http://tabatkins.github.io/specs/css-nesting/
-                                    require("postcss-nesting")(),
-                                    //https://github.com/ai/browserslist
-                                    require("autoprefixer")({
-                                        browsers: ['last 2 versions', 'ie >= 9']
-                                    })
-                                ])
-                            }
-                        }
-                    ]
-                },
-                {
-                    test: /\.css$/i,
-                    exclude: [path.resolve(__dirname, "ynos"), path.resolve(__dirname, "harness")],
-                    use: [
-                        {
-                            loader: 'style-loader'
-                        },
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                sourceMap: true,
-                                importLoaders: 1,
-                                minimize: true
-                            },
-                        },
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins: () => ([
-                                    require("postcss-import")({
-                                        //If you are using postcss-import v8.2.0 & postcss-loader v1.0.0 or later, this is unnecessary.
-                                        //addDependencyTo: webpack // Must be first item in list
-                                    }),
-                                    require("postcss-nesting")(),  // Following CSS Nesting Module Level 3: http://tabatkins.github.io/specs/css-nesting/
-                                    require("autoprefixer")({
-                                        browsers: ['last 2 versions', 'ie >= 9'] //https://github.com/ai/browserslist
-                                    })
-                                ])
-                            }
-                        }
-                    ]
-                },
             ]
         },
         node: {
