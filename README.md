@@ -17,10 +17,10 @@ yarn install
 
 Rename example.env to .env and set some environment variables:
 ```
-FRAME_PORT=80
-HARNESS_PORT=8081
-CONTRACT_ADDRESS=0x69caef6931141601ef781357c33639
-RPC_URL=http://localhost:4566
+FRAME_PORT=9090
+HARNESS_PORT=9999
+CONTRACT_ADDRESS=0x**************************
+RPC_URL=http://example.com:port
 ```
 
 # Run
@@ -28,7 +28,7 @@ RPC_URL=http://localhost:4566
 yarn run harness
 ```
 That command starts a web server to play with Ynos on localhost.
-Open browser on `http://localhost:8081` and click on some buttons.
+Open browser on `http://localhost:9999` and click on some buttons.
 
 # WTF is Harness
 It demonstrates Ynos work on localhost. It runs a web page (Ynos client) on localhost:8080.
