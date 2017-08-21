@@ -42,7 +42,7 @@ function webpackConfig (entry) {
                 },
                 { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
                 {
-                    test: /\.css$/i,
+                    test: /\.s?css$/i,
                     exclude: [/node_modules/],
                     use: [
                         {
@@ -58,6 +58,9 @@ function webpackConfig (entry) {
                                 localIdentName: '[name]_[local]_[hash:base64:5]',
                                 minimize: false
                             },
+                        },
+                        {
+                            loader: "sass-loader" // compiles Sass to CSS
                         },
                         {
                             loader: 'postcss-loader',
@@ -107,6 +110,10 @@ function webpackConfig (entry) {
                         }
                     ]
                 },
+                {
+                    test: /\.(png|jpg)$/,
+                    loader: 'file-loader'
+                }
             ]
         },
         node: {
