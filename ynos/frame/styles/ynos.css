@@ -1,3 +1,6 @@
+@import './fonts.css';
+@import './global.css';
+
 .init-terms-motivation {
     text-align: center;
     margin-top: 20px;
