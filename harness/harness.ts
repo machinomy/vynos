@@ -90,6 +90,27 @@ window.addEventListener("load", function () {
     }
   }
 
+  let finishSettleForm = document.getElementById("finish_settle")
+  if (finishSettleForm) {
+    finishSettleForm.onsubmit = function (ev: Event) {
+      ev.preventDefault()
+      ynos.initFrame().then(() => {
+        return ynos.initAccount()
+      }).then(() => {
+        if (recentPaymentChannel) {
+          ynos.closeChannel(recentPaymentChannel).then((paymentChannel: PaymentChannel) => {
+            console.log(paymentChannel)
+            updateRecentPaymentChannel(paymentChannel)
+            let resultSpan = document.getElementById("open_channel_id")
+            if (resultSpan) {
+              resultSpan.textContent = paymentChannel.channelId + ", state: " + paymentChannel.state
+            }
+          })
+        }
+      })
+    }
+  }
+
   let paymentForm = document.getElementById("pay_in_channel")
   if (paymentForm) {
     paymentForm.onsubmit = function (ev: Event) {

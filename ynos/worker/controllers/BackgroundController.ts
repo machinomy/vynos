@@ -44,7 +44,7 @@ export default class BackgroundController {
   awaitUnlock(fn: Function) {
     const tryCall = () => {
       this.getSharedState().then(sharedState => {
-        let isUnlocked = !sharedState.isLocked
+        let isUnlocked = !sharedState.isLocked && sharedState.didInit
         if (isUnlocked) {
           fn()
         } else {

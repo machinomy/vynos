@@ -27,8 +27,8 @@ function buildFrame(script: HTMLScriptElement, frame?: HTMLIFrameElement): HTMLI
     frame.style.top = '0px';
     frame.style.right = '0px';
     frame.style.bottom = '0px';
-    frame.height = '100%';
-    frame.width = '320px';
+    frame.height = '506px';
+    frame.width = '480px';
     //frame.style.marginRight = '-320px';
   }
   let currentScriptAddress = script.src
@@ -102,12 +102,15 @@ class YnosClient {
     })
   }
 
-  closeChannel(channel: PaymentChannel): Promise<PaymentChannel> {
+  closeChannel(channel: PaymentChannel | PaymentChannelJSON): Promise<PaymentChannel> {
     let request: CloseChannelRequest = {
       id: randomId(),
       method: CloseChannelRequest.method,
       jsonrpc: JSONRPC,
-      params: [channel.toJSON()]
+      params: [channel]
+    }
+    if (isPaymentChannel(channel)) {
+      request.params = [channel.toJSON()]
     }
     return this.streamProvider.ask(request).then((response: CloseChannelResponse) => {
       return PaymentChannel.fromDocument(response.result[0])

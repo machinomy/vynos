@@ -4,9 +4,36 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans:400,400i,500,500i,700,900|Source+Sans+Pro:400,400i,600,600i,700,700i,900,900i&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" integrity="sha256-HxaKz5E/eBbvhGMNwhWRPrAR9i/lG1JeT4mD6hCQ7s4=" crossorigin="anonymous" />
+    <style>
+        #mount-point #spinner {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            left: 50%;
+            top:50%;
+            margin: -50px 0 0 -50px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div id="mount-point">Loading...</div>
+    <div id="mount-point">
+        <div id="spinner">
+            <svg width="100px"  height="100px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-dual-ring" style="background-image: none; background-position: initial initial; background-repeat: initial initial;">
+                <circle cx="50" cy="50" fill="none" stroke-linecap="round" r="45" stroke-width="6" stroke="#ff3b81" stroke-dasharray="70.68583470577035 70.68583470577035">
+                    <animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="2.6s" begin="0s" repeatCount="indefinite"></animateTransform>
+                </circle>
+                <circle cx="50" cy="50" fill="none" stroke-linecap="round" r="38" stroke-width="6" stroke="#0d152a" stroke-dasharray="59.690260418206066 59.690260418206066" stroke-dashoffset="59.690260418206066">
+                    <animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2.6s" begin="0s" repeatCount="indefinite"></animateTransform>
+                </circle>
+            </svg>
+        </div>
+    </div>
     <script src="/frame.bundle.js"></script>
 </body>
 </html>
