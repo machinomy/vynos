@@ -1,24 +1,17 @@
 const   path                    = require("path"),
         webpack                 = require("webpack"),
-        packageJson             = require('./package.json'),
         DIST_PATH               = path.resolve(__dirname, "dist"),
         PackageLoadersPlugin    = require('webpack-package-loaders-plugin');
 
-const   CONTRACT_ADDRESS_PLACEHOLDER    = '[DEFAULT_CONTRACT_ADDRESS]',
-        RPC_URL_PLACEHOLDER             = '[DEFAULT_RPC_URL]';
 
-let     CONTRACT_ADDRESS                = null,
-        RPC_URL                         = JSON.stringify('https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH');
+require('dotenv').config({ path: '.env' });
 
-if (packageJson.custom.contract_address !== CONTRACT_ADDRESS_PLACEHOLDER) {
-    CONTRACT_ADDRESS = JSON.stringify(packageJson.custom.contract_address)
-}
 
-if (packageJson.custom.rpc_url !== RPC_URL_PLACEHOLDER) {
-    RPC_URL = JSON.stringify(packageJson.custom.rpc_url)
-}
+const   CONTRACT_ADDRESS    = process.env.CONTRACT_ADDRESS,
+        RPC_URL             = process.env.RPC_URL;
 
-module.exports = function webpackConfig (entry) {
+
+function webpackConfig (entry) {
     let config = {
         entry: entry,
         devtool: "source-map",
@@ -138,3 +131,36 @@ module.exports = function webpackConfig (entry) {
 
     return config
 }
+
+const YNOS_LIVE = webpackConfig({
+    ynos: [
+        `webpack-dev-server/client?http://localhost:${process.env.HARNESS_PORT}`,
+        'webpack/hot/only-dev-server',
+        'react-hot-loader/patch',
+        path.resolve(__dirname, "ynos/ynos.ts"),
+    ],
+    frame: [
+        `webpack-dev-server/client?http://localhost:${process.env.FRAME_PORT}`,
+        'webpack/hot/only-dev-server',
+        'react-hot-loader/patch',
+        path.resolve(__dirname, "ynos/frame.ts")
+    ],
+    worker: [
+        path.resolve(__dirname, "ynos/worker.ts")
+    ]
+});
+
+const YNOS = webpackConfig({
+    ynos: path.resolve(__dirname, "ynos/ynos.ts"),
+    frame: path.resolve(__dirname, "ynos/frame.ts"),
+    worker: path.resolve(__dirname, "ynos/worker.ts")
+});
+
+const HARNESS = webpackConfig({
+    harness: path.resolve(__dirname, "harness/harness.ts")
+});
+
+
+module.exports.HARNESS = HARNESS;
+module.exports.YNOS_LIVE = YNOS_LIVE;
+module.exports.YNOS = YNOS;

@@ -1,6 +1,7 @@
 build
 dist
 .idea
+.env
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template

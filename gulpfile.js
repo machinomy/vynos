@@ -5,16 +5,16 @@ const   path                        = require("path"),
         gutil                       = require("gulp-util"),
         webpack                     = require("webpack"),
         WebpackDevServer            = require('webpack-dev-server'),
-        YNOS_WEBPACK_CONFIG         = require('./ynos.webpack.config').YNOS_WEBPACK_CONFIG,
-        YNOS_LIVE_WEBPACK_CONFIG    = require('./ynos.webpack.config').YNOS_LIVE_WEBPACK_CONFIG,
-        HARNESS_WEBPACK_CONFIG      = require('./harness.webpack.config');
+        YNOS                        = require('./webpack').YNOS,
+        YNOS_LIVE                   = require('./webpack').YNOS_LIVE,
+        HARNESS                     = require('./webpack').HARNESS;
 
-require('dotenv').config({ path: 'app.config.env' });
+require('dotenv').config({ path: '.env' });
 
 
 // Build Ynos, Frame
 gulp.task("build", callback => {
-  webpack(YNOS_WEBPACK_CONFIG).run(function(err, stats) {
+  webpack(YNOS).run(function(err, stats) {
     if(err) throw new gutil.PluginError('build', err);
     gutil.log('build', stats.toString({
       colors: true
@@ -24,7 +24,7 @@ gulp.task("build", callback => {
 });
 
 gulp.task("build:harness", ["build"], callback => {
-  webpack(HARNESS_WEBPACK_CONFIG).run(function(err, stats) {
+  webpack(HARNESS).run(function(err, stats) {
     if(err) throw new gutil.PluginError('build', err);
     gutil.log('build:harness', stats.toString({
       colors: true
@@ -35,7 +35,7 @@ gulp.task("build:harness", ["build"], callback => {
 
 // Serve Ynos, Frame at http://localhost:9999/webpack-dev-server
 gulp.task("serve", () => {
-  new WebpackDevServer(webpack(YNOS_LIVE_WEBPACK_CONFIG), {
+  new WebpackDevServer(webpack(YNOS_LIVE), {
     contentBase: 'ynos/',
     hot: true,
     historyApiFallback: true,
@@ -58,7 +58,7 @@ gulp.task("serve", () => {
 });
 
 gulp.task("serve:built", () => {
-  new WebpackDevServer(webpack(YNOS_WEBPACK_CONFIG), {
+  new WebpackDevServer(webpack(YNOS), {
     contentBase: 'ynos/',
     hot: true,
     historyApiFallback: true,
@@ -81,7 +81,7 @@ gulp.task("serve:built", () => {
 });
 
 gulp.task("serve:harness", ["serve"], () => {
-  new WebpackDevServer(webpack(HARNESS_WEBPACK_CONFIG), {
+  new WebpackDevServer(webpack(HARNESS), {
     stats: {
       colors: true
     },

@@ -72,10 +72,5 @@
 		"typescript-fsa-redux-thunk": "xdave/typescript-fsa-redux-thunk",
 		"web3": "^0.19.0",
 		"web3-provider-engine": "^13.0.3"
-	},
-	"custom": {
-		"contract_address": "0x2ba14e3633b89a4f55c4cd58c5cebd0ace5ebee7",
-		"rpc_url": "http://localhost:8545",
-		"frame_port": "[DEFAULT_FRAME_PORT]"
 	}
 }
