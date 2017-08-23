@@ -6,6 +6,7 @@
 body, * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: 'source_sans_proregular', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
     font-size: 16px;
 }

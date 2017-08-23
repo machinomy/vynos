@@ -1,5 +1,5 @@
 import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
-import {RuntimeState} from "../astate";
+import {RuntimeState} from "../reducers/astate";
 
 const actionCreator = actionCreatorFactory();
 

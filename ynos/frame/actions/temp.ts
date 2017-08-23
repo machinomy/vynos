@@ -1,6 +1,6 @@
 import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
 import WorkerProxy from "../WorkerProxy";
-import {TempState} from "../state";
+import {TempState} from "../reducers/state";
 import * as initActions from "./temp/init"
 
 const actionCreator = actionCreatorFactory("frame/temp");

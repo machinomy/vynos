@@ -1,5 +1,5 @@
-import {INITIAL_SHARED_STATE, INITIAL_STATE, SharedState} from "../worker/State";
-import WorkerProxy from "./WorkerProxy";
+import {INITIAL_SHARED_STATE, INITIAL_STATE, SharedState} from "../../worker/State";
+import WorkerProxy from "../WorkerProxy";
 
 export interface InitPageState {
   didAcceptTerms: boolean

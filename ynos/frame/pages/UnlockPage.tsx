@@ -1,10 +1,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import LargeLogoLayout from "../components/large_logo_layout";
+//import LargeLogoLayout from "../components/large_logo_layout";
 import {ChangeEvent, CSSProperties, FormEvent} from "react";
 import _ = require("lodash")
 import WorkerProxy from "../WorkerProxy";
-import {FrameState} from "../state";
+import {FrameState} from "../reducers/state";
 import Button from '@react-mdc/button'
 import Textfield from '@react-mdc/textfield'
 import Typography from '@react-mdc/typography'

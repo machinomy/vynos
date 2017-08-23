@@ -7,7 +7,7 @@ import {CSSProperties} from "react";
 import BlockieComponent from '../../components/BlockieComponent'
 import browser from '../../lib/browser'
 import BoughtItem from "../../lib/BoughtItem";
-import {FrameState} from "../../state";
+import {FrameState} from "../../reducers/state";
 import WorkerProxy from "../../WorkerProxy";
 import {PaymentChannel} from "machinomy/lib/channel";
 import Button from '@react-mdc/button'
