@@ -2,8 +2,8 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {FrameState} from "../reducers/state";
 //import InitPage from "../../pages/init"
-import WalletPage from "../pages/wallet"
-import UnlockPage from "../pages/UnlockPage";
+//import WalletPage from "../pages/wallet"
+//import UnlockPage from "../pages/UnlockPage";
 import _ = require('lodash')
 import { Redirect } from 'react-router-dom';
 
@@ -22,15 +22,22 @@ const SignIn: React.SFC<SignInProps> = (props) => {
         }} />
 
     } else if (props.isUnlockPageExpected) {
-        return <UnlockPage />
+        //return <UnlockPage />
+        return <Redirect to={{
+            pathname: '/signin'
+        }} />
+
     } else if (props.isWalletPageExpected) {
+
         let scriptQuery = window.location.href.replace(/.*\?/, '')
         let query = _.chain(scriptQuery).replace('?', '').split('&').map(_.ary(_.partial(_.split, _, '='), 1)).fromPairs().value()
         let hideWallet = query.hideWallet
         if (hideWallet) {
             return <p></p>
         } else {
-            return <WalletPage />
+            return <Redirect to={{
+                pathname: '/welcome'
+            }} />
         }
     }
     return <p>Waiting...</p>

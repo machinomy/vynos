@@ -3,31 +3,8 @@ import {connect} from "react-redux";
 import {CSSProperties, FormEvent} from "react";
 import {FrameState} from "../../../../reducers/state";
 import WorkerProxy from "../../../../WorkerProxy";
-
-const BUTTON_CONTAINER_STYLE: CSSProperties = {
-    textAlign: 'center',
-    width: 240,
-    top: 325,
-    position: 'absolute'
-};
-
-const SUBTITLE_STYLE = {
-    fontFamily: ['Source Sans Pro', 'sans-serif'],
-    fontSize: 14,
-    textAlign: 'center'
-};
-
-const TEXT_AREA_STYLE = {
-    backgroundColor: '#E5F5FC',
-    fontFamily: ['Source Sans Pro', 'sans-serif'],
-    fontSize: 16,
-    textAlign: 'center',
-    width: 220,
-    padding: '15px 10px',
-    resize: 'none',
-    border: 'none',
-    borderRadius: 4
-};
+import Logo from '../../Header';
+import { Segment, Button, Form, Header } from 'semantic-ui-react'
 
 export interface MnemonicSubpageProps {
     mnemonic: string,
@@ -41,23 +18,22 @@ export class Mnemonic extends React.Component<MnemonicSubpageProps, {}> {
     }
 
     render () {
-        return <form onSubmit={this.handleSubmit.bind(this)}>
-            <h1>
+        return <Segment textAlign="center">
+            <Logo />
+            <Header as='h2'>
                 Remember these words
-            </h1>
-            <p style={SUBTITLE_STYLE}>
-                Save them somewhere safe and secret. <br />
-                These restore the wallet.
-            </p>
-            <div>
-                <textarea rows={3} style={TEXT_AREA_STYLE} readOnly={true} value={this.props.mnemonic} />
-            </div>
-            <div style={BUTTON_CONTAINER_STYLE}>
-                <div>
-                    <button type="submit">Done</button>
-                </div>
-            </div>
-        </form>
+                <Header.Subheader>
+                    Save them somewhere safe and secret. <br />
+                    These restore the wallet.
+                </Header.Subheader>
+            </Header>
+            <Form onSubmit={this.handleSubmit.bind(this)}>
+                <Form.Field control='textarea' rows='3' value={this.props.mnemonic} readOnly />
+                <p>
+                    <Button type='submit' primary>Done</Button>
+                </p>
+            </Form>
+        </Segment>
     }
 }
 

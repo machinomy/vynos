@@ -5,6 +5,8 @@ import {ChangeEvent, FormEvent} from "react";
 import WorkerProxy from "../../../../WorkerProxy";
 import {connect} from "react-redux";
 import actions from "../../../../actions";
+import { Segment, Form, Input, Header, Button } from 'semantic-ui-react'
+import Logo from '../../Header';
 
 export interface PasswordSubpageState {
     password: null | string,
@@ -94,17 +96,29 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
     }
 
     render () {
-        return <div>
-            <h1>
-                Encrypt your new wallet
-            </h1>
-            <form onSubmit={this.handleSubmit}>
-                <input type="password" placeholder="Password" onChange={this.handleChangePassword} />
-                <input type="password" placeholder="Password Confirmation" onChange={this.handleChangePasswordConfirmation} />
-                {this.renderError()}
-                <button type="submit">Create wallet</button>
-            </form>
-        </div>
+        return <Segment textAlign="center">
+            <Logo />
+            <Header as='h2'>Encrypt your new wallet</Header>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Group widths='equal'>
+                    <Form.Field>
+                        <input type="password" placeholder='Password' onChange={this.handleChangePassword} />
+                    </Form.Field>
+                    <Form.Field>
+                        <input type="password" placeholder='Password Confirmation' onChange={this.handleChangePasswordConfirmation} />
+                    </Form.Field>
+                </Form.Group>
+                <p>
+                    {this.renderError()}
+                </p>
+                <p>
+                    <Button type='submit' primary>Create wallet</Button>
+                </p>
+                <p>
+                    <a href="#">Restore wallet</a>
+                </p>
+            </Form>
+        </Segment>
     }
 }
 
