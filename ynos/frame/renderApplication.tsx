@@ -9,14 +9,12 @@ import reducers from "./reducers/reducers";
 import {createLogger} from "redux-logger";
 import * as redux from "redux";
 import {setWorkerProxy} from "./actions/temp";
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory'
+import { BrowserRouter as Router } from 'react-router-dom';
 import { routes } from './routes';
 
 import "material-components-web/dist/material-components-web.css";
 
-const history = createHistory();
-const MOUNT_POINT_ID = "mount-point"
+const MOUNT_POINT_ID = "mount-point";
 
 function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
   workerProxy.getSharedState().then(frameState => {
@@ -32,10 +30,11 @@ function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
       // FIXME let container = React.createElement(AppContainer, undefined, application)
       //let provider = React.createElement(Provider, { store: store }, application);
 
+
       DOM.render(
           <Provider store={store}>
             <Router>
-              {routes}
+                {routes}
             </Router>
           </Provider>
           ,mountPoint)

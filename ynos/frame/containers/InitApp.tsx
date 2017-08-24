@@ -18,7 +18,7 @@ const SignIn: React.SFC<SignInProps> = (props) => {
 
         //return <InitPage />
         return <Redirect to={{
-            pathname: '/wallet/create'
+            pathname: '/signup'
         }} />
 
     } else if (props.isUnlockPageExpected) {

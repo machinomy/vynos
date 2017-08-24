@@ -2,7 +2,7 @@ import * as React from "react";
 import { Image } from 'semantic-ui-react'
 
 const Header = () => (
-    <Image src={require('../../../styles/images/sign-in_logo.svg')} size='medium' />
+    <Image src={require('../../../styles/images/sign-in_logo.svg')} size='small' centered />
 );
 
 export default Header;
