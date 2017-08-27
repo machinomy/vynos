@@ -1,7 +1,7 @@
 import * as redux from "redux";
 import {FrameState, INITIAL_FRAME_STATE} from "./state";
 import { reducerWithInitialState } from "typescript-fsa-reducers";
-import actions from "./actions";
+import actions from "../actions";
 import {Reducer} from "redux";
 
 const tempReducer = reducerWithInitialState(INITIAL_FRAME_STATE.temp)

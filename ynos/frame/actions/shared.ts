@@ -1,7 +1,7 @@
 import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
 import {SharedState} from "../../worker/State";
 import {Store} from "redux";
-import {FrameState} from "../state";
+import {FrameState} from "../reducers/state";
 import * as temp from "./temp"
 
 const actionCreator = actionCreatorFactory("frame/shared");

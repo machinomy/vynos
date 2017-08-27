@@ -4,15 +4,17 @@ import {AppContainer} from "react-hot-loader";
 import WorkerProxy from "./WorkerProxy";
 import RemoteStore from "./lib/RemoteStore";
 import {Provider} from "react-redux";
-import {INITIAL_FRAME_STATE} from "./state";
-import reducers from "./reducers";
+import {INITIAL_FRAME_STATE} from "./reducers/state";
+import reducers from "./reducers/reducers";
 import {createLogger} from "redux-logger";
 import * as redux from "redux";
 import {setWorkerProxy} from "./actions/temp";
+import { BrowserRouter as Router } from 'react-router-dom';
+import { routes } from './routes';
 
 import "material-components-web/dist/material-components-web.css";
 
-const MOUNT_POINT_ID = "mount-point"
+const MOUNT_POINT_ID = "mount-point";
 
 function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
   workerProxy.getSharedState().then(frameState => {
@@ -23,11 +25,19 @@ function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
     store.dispatch(setWorkerProxy(workerProxy))
 
     function reload() {
-      let FrameApplication = require("./FrameApplication").default
-      let application = React.createElement(FrameApplication, { workerProxy, frameState })
+      //let FrameApplication = require("./FrameApplication").default
+      //let application = React.createElement(FrameApplication, { workerProxy, frameState })
       // FIXME let container = React.createElement(AppContainer, undefined, application)
-      let provider = React.createElement(Provider, { store: store }, application);
-      DOM.render(provider, mountPoint)
+      //let provider = React.createElement(Provider, { store: store }, application);
+
+
+      DOM.render(
+          <Provider store={store}>
+            <Router>
+                {routes}
+            </Router>
+          </Provider>
+          ,mountPoint)
     }
 
     reload()
