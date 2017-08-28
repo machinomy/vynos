@@ -25,10 +25,12 @@ function buildFrame(script: HTMLScriptElement, frame?: HTMLIFrameElement): HTMLI
     frame.style.borderWidth = '0px';
     frame.style.position = 'fixed';
     frame.style.top = '0px';
-    frame.style.right = '0px';
+    frame.style.right = '110px';
     frame.style.bottom = '0px';
-    frame.height = '420px';
+    frame.style.boxShadow = 'rgba(0, 0, 0, 0.1) 7px 10px 60px 10px';
+    frame.height = '440px';
     frame.width = '320px';
+
     //frame.style.marginRight = '-320px';
   }
   let currentScriptAddress = script.src
