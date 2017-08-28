@@ -1,9 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {FrameState} from "../reducers/state";
-//import InitPage from "../../pages/init"
-//import WalletPage from "../pages/wallet"
-//import UnlockPage from "../pages/UnlockPage";
 import _ = require('lodash')
 import { Redirect } from 'react-router-dom';
 

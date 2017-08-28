@@ -9,9 +9,16 @@ import reducers from "./reducers/reducers";
 import {createLogger} from "redux-logger";
 import * as redux from "redux";
 import {setWorkerProxy} from "./actions/temp";
-import { BrowserRouter as Router } from 'react-router-dom';
-import { routes } from './routes';
-
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+//import { routes } from './routes';
+import Account from './containers/Account';
+import SignUp from './components/SignIn/Registration';
+import SignIn from './components/SignIn/Authentication';
+import MyWallet from './components/Account/MyWallet';
+import Channels from './components/Account/Channels';
+import Preferences from './components/Account/Preferences';
+import Network from './components/Account/Network';
+import 'semantic-ui-css/semantic.min.css';
 import "material-components-web/dist/material-components-web.css";
 
 const MOUNT_POINT_ID = "mount-point";
@@ -30,14 +37,51 @@ function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
       // FIXME let container = React.createElement(AppContainer, undefined, application)
       //let provider = React.createElement(Provider, { store: store }, application);
 
+      if (!store.getState().shared.didInit) {
+        DOM.render(
+            <Provider store={store}>
+              <Router>
+                <Switch>
+                  <Route exact path = "/frame.html" component={SignUp} />
+                </Switch>
+              </Router>
+            </Provider>
+            ,mountPoint)
+      }
 
-      DOM.render(
-          <Provider store={store}>
-            <Router>
-                {routes}
-            </Router>
-          </Provider>
-          ,mountPoint)
+        if (store.getState().shared.didInit
+            && store.getState().temp.workerProxy
+            && store.getState().shared.isLocked) {
+            DOM.render(
+                <Provider store={store}>
+                    <Router>
+                        <Switch>
+                            <Route exact path = "/frame.html" component={SignIn} />
+                        </Switch>
+                    </Router>
+                </Provider>
+                ,mountPoint)
+        }
+
+      if (store.getState().shared.didInit
+                && store.getState().temp.workerProxy
+                && !store.getState().shared.isLocked) {
+        DOM.render(
+            <Provider store={store}>
+                <Router>
+                  <Account>
+                    <Switch>
+                      <Route exact path = "/frame.html" component={MyWallet} />
+                      <Route path = "/channels" component={Channels} />
+                      <Route path = "/preferences" component={Preferences} />
+                      <Route path = "/network" component={Network} />
+                    </Switch>
+                  </Account>
+                </Router>
+            </Provider>
+            ,mountPoint)
+      }
+
     }
 
     reload()

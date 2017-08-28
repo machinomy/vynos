@@ -7,7 +7,7 @@ import {EndFunction} from "../../lib/StreamServer";
 import Tx = require('ethereumjs-tx')
 import {Buffer} from "buffer";
 import Web3 = require("web3")
-import {DevWindow} from "../../YnosWindow";
+import {DevWindow} from "../../../ynos/YnosWindow";
 import ethUtil = require('ethereumjs-util')
 import sigUtil = require('eth-sig-util')
 
@@ -71,7 +71,8 @@ export default class NetworkController {
   }
 
   providerOpts(_rpcUrl: string | null): ProviderOpts {
-    let rpcUrl = _rpcUrl || (window as DevWindow).RPC_URL || 'https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH'
+    const rpcUrl = _rpcUrl || (window as DevWindow).RPC_URL || 'https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH';
+
     return {
       static: {
         eth_syncing: false,
