@@ -19,7 +19,9 @@ import Channels from './components/Account/Channels';
 import Preferences from './components/Account/Preferences';
 import Network from './components/Account/Network';
 import 'semantic-ui-css/semantic.min.css';
-import "material-components-web/dist/material-components-web.css";
+import TextTerms from './components/SignIn/Registration/Terms/TextTerms';
+//import "material-components-web/dist/material-components-web.css";
+//import "./styles/ynos.css";
 
 const MOUNT_POINT_ID = "mount-point";
 
@@ -36,13 +38,13 @@ function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
       //let application = React.createElement(FrameApplication, { workerProxy, frameState })
       // FIXME let container = React.createElement(AppContainer, undefined, application)
       //let provider = React.createElement(Provider, { store: store }, application);
-
       if (!store.getState().shared.didInit) {
         DOM.render(
             <Provider store={store}>
               <Router>
                 <Switch>
-                  <Route exact path = "/frame.html" component={SignUp} />
+                    <Route exact path = "/frame.html" component={SignUp} />
+                    <Route path = "/terms" component={TextTerms} />
                 </Switch>
               </Router>
             </Provider>

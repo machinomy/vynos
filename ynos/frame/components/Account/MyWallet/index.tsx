@@ -10,10 +10,10 @@ import BoughtItem from "../../../lib/BoughtItem";
 import {FrameState} from "../../../reducers/state";
 import WorkerProxy from "../../../WorkerProxy";
 import {PaymentChannel} from "machinomy/lib/channel";
-import { Container, Grid, List, Image, Segment, Header, Button } from 'semantic-ui-react'
+import { Container, Grid, List, Image, Header, Button } from 'semantic-ui-react'
 
 
-const style = require("./wallet.css")
+const style = require("../../../styles/ynos.css");
 
 const TERMS_OF_USE_ADDRESS = 'https://literatepayments.com'
 
@@ -167,34 +167,27 @@ export class MyWallet extends React.Component<WalletPageProps, WalletPageState> 
     }
 
     renderPage (address: any) {
-        return <Container>
-            <Grid columns={2}>
-                <Grid.Column>
-                    <List>
-                        <List.Item>
-                            <Image avatar src={require('../../../styles/images/avatar.svg')} size="mini" />
-                            <List.Content>
-                                <List.Header as='a'>Account1</List.Header>
-                                <List.Description>1.345 $125.34</List.Description>
-                            </List.Content>
-                        </List.Item>
-                    </List>
-                </Grid.Column>
-                <Grid.Column>
-                    <p><a href="#">Refill</a> <a href="#">Send</a></p>
-                </Grid.Column>
-            </Grid>
-            <Segment textAlign="center">
-                <Header as='h2'>You are ready</Header>
-                <Image src={require('../../../styles/images/welcome.svg')} size="small" centered />
-                <p>
-                    We got something <br />
-                    special for you to start
-                </p>
-                <p>
-                    <Button primary>Explore</Button>
-                </p>
-            </Segment>
+        return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder} ${style.containerIndent}`} >
+            {/*<List className={style.welcomeAccountInfo}>
+                <List.Item>
+                    <Image avatar src={require('../../../styles/images/avatar.svg')} />
+                    <List.Content>
+                        <List.Header as='a'>0x453535375735353</List.Header>
+                        <List.Description>1.345 $125.34</List.Description>
+                    </List.Content>
+                </List.Item>
+            </List>*/}
+            <Header as='h1' className={style.welcomeHeader}>You are ready</Header>
+            <p>
+                <Image src={require('../../../styles/images/welcome.svg')} size="tiny" centered />
+            </p>
+            <p>
+                We got something <br />
+                special for you to start
+            </p>
+            <p className={style.buttonNav}>
+                <Button primary>Explore</Button>
+            </p>
         </Container>
     }
 

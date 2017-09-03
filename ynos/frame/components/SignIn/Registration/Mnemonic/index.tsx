@@ -4,7 +4,8 @@ import {CSSProperties, FormEvent} from "react";
 import {FrameState} from "../../../../reducers/state";
 import WorkerProxy from "../../../../WorkerProxy";
 import Logo from '../../Header';
-import { Segment, Button, Form, Header } from 'semantic-ui-react'
+import { Container, Button, Form, Header } from 'semantic-ui-react'
+const style = require("../../../../styles/ynos.css");
 
 export interface MnemonicSubpageProps {
     mnemonic: string,
@@ -18,22 +19,24 @@ export class Mnemonic extends React.Component<MnemonicSubpageProps, {}> {
     }
 
     render () {
-        return <Segment textAlign="center">
-            <Logo />
-            <Header as='h2'>
-                Remember these words
-                <Header.Subheader>
-                    Save them somewhere safe and secret. <br />
-                    These restore the wallet.
-                </Header.Subheader>
-            </Header>
-            <Form onSubmit={this.handleSubmit.bind(this)}>
-                <Form.Field control='textarea' rows='3' value={this.props.mnemonic} readOnly />
-                <p>
-                    <Button type='submit' primary>Done</Button>
-                </p>
-            </Form>
-        </Segment>
+        return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
+                    <p className={style.signInLogo}>
+                        <Logo />
+                    </p>
+                    <Header as='h1' className={style.mnemonicHeader}>
+                        Remember these words
+                        <Header.Subheader>
+                            Save them somewhere safe and secret. <br />
+                            These restore the wallet.
+                        </Header.Subheader>
+                    </Header>
+                    <Form onSubmit={this.handleSubmit.bind(this)} className={style.mnemonicForm}>
+                        <Form.Field control='textarea' rows='2' value={this.props.mnemonic} readOnly autoHeight />
+                        <p className={style.buttonNav}>
+                            <Button type='submit' primary>Done</Button>
+                        </p>
+                    </Form>
+            </Container>
     }
 }
 

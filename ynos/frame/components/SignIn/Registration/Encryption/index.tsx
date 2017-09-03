@@ -5,8 +5,9 @@ import {ChangeEvent, FormEvent} from "react";
 import WorkerProxy from "../../../../WorkerProxy";
 import {connect} from "react-redux";
 import actions from "../../../../actions";
-import { Segment, Form, Input, Header, Button } from 'semantic-ui-react'
+import { Container, Form, Input, Header, Button } from 'semantic-ui-react'
 import Logo from '../../Header';
+const style = require("../../../../styles/ynos.css");
 
 export interface PasswordSubpageState {
     password: null | string,
@@ -96,29 +97,30 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
     }
 
     render () {
-        return <Segment textAlign="center">
-            <Logo />
-            <Header as='h2'>Encrypt your new wallet</Header>
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Group widths='equal'>
-                    <Form.Field>
-                        <input type="password" placeholder='Password' onChange={this.handleChangePassword} />
-                    </Form.Field>
-                    <Form.Field>
-                        <input type="password" placeholder='Password Confirmation' onChange={this.handleChangePasswordConfirmation} />
-                    </Form.Field>
-                </Form.Group>
-                <p>
-                    {this.renderError()}
-                </p>
-                <p>
-                    <Button type='submit' primary>Create wallet</Button>
-                </p>
-                <p>
-                    <a href="#">Restore wallet</a>
-                </p>
-            </Form>
-        </Segment>
+        return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
+                    <p className={style.signInLogo}>
+                        <Logo />
+                    </p>
+                    <Header as='h1' className={style.encryptionHeader}>Encrypt your new wallet</Header>
+                    <Form onSubmit={this.handleSubmit} className={style.encryptionForm}>
+                        <Form.Group widths='equal'>
+                            <Form.Field>
+                                <input type="password" placeholder='Password' onChange={this.handleChangePassword} />
+                            </Form.Field>
+                            <Form.Field>
+                                <input type="password" placeholder='Password Confirmation' onChange={this.handleChangePasswordConfirmation} />
+                            </Form.Field>
+                        </Form.Group>
+                        <p>
+                            {this.renderError()}
+                        </p>
+                        <p className={style.buttonNav}>
+                            <Button type='submit' primary>Create wallet</Button>
+                            <br />
+                            <a href="#">Restore wallet</a>
+                        </p>
+                    </Form>
+            </Container>
     }
 }
 
