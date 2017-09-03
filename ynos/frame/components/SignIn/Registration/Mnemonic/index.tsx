@@ -16,6 +16,7 @@ export class Mnemonic extends React.Component<MnemonicSubpageProps, {}> {
     handleSubmit (ev: FormEvent<HTMLFormElement>) {
         ev.preventDefault()
         this.props.workerProxy.didStoreMnemonic().then()
+        window.location.reload();
     }
 
     render () {
