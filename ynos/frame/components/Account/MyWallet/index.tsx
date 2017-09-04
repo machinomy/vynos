@@ -7,7 +7,7 @@ import {CSSProperties} from "react";
 import BlockieComponent from '../../../components/BlockieComponent'
 import browser from '../../../lib/browser'
 import BoughtItem from "../../../lib/BoughtItem";
-import {FrameState} from "../../../reducers/state";
+import {AppFrameState} from "../../../reducers/state";
 import WorkerProxy from "../../../WorkerProxy";
 import {PaymentChannel} from "machinomy/lib/channel";
 import { Container, Grid, List, Image, Header, Button } from 'semantic-ui-react'
@@ -119,7 +119,7 @@ export class MyWallet extends React.Component<WalletPageProps, WalletPageState> 
                     for you to start
                 </div>
                 <div style={BUTTON_CONTAINER_STYLE}>
-                    <Button raised onClick={openExplorer}>Explore</Button>
+                    <Button raised onClick={openExplorer} content="Explore" />
                 </div>
             </div>
         } else {
@@ -186,7 +186,7 @@ export class MyWallet extends React.Component<WalletPageProps, WalletPageState> 
                 special for you to start
             </p>
             <p className={style.buttonNav}>
-                <Button primary>Explore</Button>
+                <Button primary content="Explore" />
             </p>
         </Container>
     }
@@ -200,7 +200,7 @@ export class MyWallet extends React.Component<WalletPageProps, WalletPageState> 
     }
 }
 
-function mapStateToProps (state: FrameState): WalletPageProps {
+function mapStateToProps (state: AppFrameState): WalletPageProps {
     let workerProxy = state.temp.workerProxy!
     return {
         workerProxy: workerProxy,

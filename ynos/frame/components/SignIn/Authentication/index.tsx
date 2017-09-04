@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {ChangeEvent, CSSProperties, FormEvent} from "react";
 import _ = require("lodash")
 import WorkerProxy from "../../../WorkerProxy";
-import {FrameState} from "../../../reducers/state";
+import {AppFrameState} from "../../../reducers/state";
 //import Button from '@react-mdc/button'
 import Textfield from '@react-mdc/textfield'
 import Typography from '@react-mdc/typography'
@@ -56,6 +56,7 @@ export class Authentication extends React.Component<UnlockPageProps, UnlockPageS
             });
             let password = _.toString(this.state.password);
             this.props.workerProxy.doUnlock(password).then()
+            window.location.reload()
         }
     }
 
@@ -83,7 +84,7 @@ export class Authentication extends React.Component<UnlockPageProps, UnlockPageS
                     </Form.Field>
                 </Form.Group>
                 <p className={style.buttonNav}>
-                    <Button type='submit' primary>Unlock</Button>
+                    <Button type='submit' content={this.buttonLabel()} primary />
                     <br />
                     <a href="#">Forgot password?</a>
                 </p>
@@ -93,7 +94,7 @@ export class Authentication extends React.Component<UnlockPageProps, UnlockPageS
 }
 
 
-function mapStateToProps (state: FrameState): UnlockPageStateProps {
+function mapStateToProps (state: AppFrameState): UnlockPageStateProps {
     return {
         workerProxy: state.temp.workerProxy!
     }

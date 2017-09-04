@@ -1,5 +1,6 @@
 @import './fonts.css';
 @import './global.css';
+@import './hamburgers.css';
 
 a {
     color: #00AEEF !important;
@@ -199,6 +200,11 @@ Icon Fonts
     -moz-osx-font-smoothing: grayscale;
 }
 
+.vynos-arrow-back {
+    height: 0;
+    padding-right: 20px;
+}
+
 .vynos-arrow-back:before {
     line-height: 0;
     content: "\61";
@@ -206,7 +212,9 @@ Icon Fonts
     font-size: 22px;
 }
 
-.vynos-arrow-back {
-    height: 0;
-    padding-right: 20px;
+.vynos-info:before {
+    content: "\62";
+}
+.vynos-lock:before {
+    content: "\63";
 }

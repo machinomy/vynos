@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {CSSProperties, FormEvent} from "react";
-import {FrameState} from "../../../../reducers/state";
+import {AppFrameState} from "../../../../reducers/state";
 import WorkerProxy from "../../../../WorkerProxy";
 import Logo from '../../Header';
 import { Container, Button, Form, Header } from 'semantic-ui-react'
@@ -34,14 +34,14 @@ export class Mnemonic extends React.Component<MnemonicSubpageProps, {}> {
                     <Form onSubmit={this.handleSubmit.bind(this)} className={style.mnemonicForm}>
                         <Form.Field control='textarea' rows='2' value={this.props.mnemonic} readOnly autoHeight />
                         <p className={style.buttonNav}>
-                            <Button type='submit' primary>Done</Button>
+                            <Button type='submit' content="Done" primary />
                         </p>
                     </Form>
             </Container>
     }
 }
 
-function mapStateToProps (state: FrameState): MnemonicSubpageProps {
+function mapStateToProps (state: AppFrameState): MnemonicSubpageProps {
     return {
         mnemonic: state.temp.initPage.mnemonic!,
         workerProxy: state.temp.workerProxy!

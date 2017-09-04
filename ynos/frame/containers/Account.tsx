@@ -9,7 +9,29 @@ const Account: React.SFC<AccountProps> = (props) => {
     return <div>
         <Menu className={style.clearBorder}>
             <Menu.Menu className={style.menuIntoOneItemFluid}>
-                <Dropdown text='Wallet' id={style.menuItemFluid} pointing className="link">
+                <Dropdown
+                    icon={
+                        <div className={`${style.hamburger} ${style.hamburgerSpin}`}>
+                            <div className={style.hamburgerBox}>
+                                <div className={style.hamburgerInner} />
+                            </div>
+                        </div>
+                    }
+                    id={style.menuItemFluid}
+                    pointing
+                    className="link"
+                    onOpen={
+                        () => {
+
+                            console.log('cliked');
+                        }
+                    }
+
+                    onClose={
+                        () => {
+                            console.log('closed')
+                        }
+                    } >
                     <Dropdown.Menu className={style.submenuFluid}>
                         <Dropdown.Item as={Link} to='/frame.html'>Wallet</Dropdown.Item>
                         <Dropdown.Divider />

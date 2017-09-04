@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect, Dispatch} from "react-redux";
-import {FrameState} from "../../../../reducers/state";
+import {AppFrameState} from "../../../../reducers/state";
 import actions from "../../../../actions";
 import { Link } from 'react-router-dom';
 import { Button, Container  } from 'semantic-ui-react'
@@ -33,17 +33,17 @@ const Terms: React.SFC<TermsSubpageProps> = (props) => {
                     <Link to="/terms">Read Terms of Use</Link>
                 </p>
                 <p className={style.buttonNav}>
-                    <Button onClick={props.didAcceptTerms} primary>Accept</Button>
+                    <Button onClick={props.didAcceptTerms} content="Accept" primary />
                 </p>
         </Container>
 };
 
-function mapStateToProps(state: FrameState): TermsSubpageStateProps {
+function mapStateToProps(state: AppFrameState): TermsSubpageStateProps {
     return {
     }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<FrameState>): TermsSubpageDispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<AppFrameState>): TermsSubpageDispatchProps {
     return {
         didAcceptTerms: () => dispatch(actions.temp.init.didAcceptTerms(true))
     }

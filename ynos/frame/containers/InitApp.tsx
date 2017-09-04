@@ -1,29 +1,24 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {FrameState} from "../reducers/state";
+import {AppFrameState} from "../reducers/state";
 import _ = require('lodash')
-import { Redirect } from 'react-router-dom';
 
-export interface SignInProps {
+import SignUp from '../components/SignIn/Registration';
+import SignIn from '../components/SignIn/Authentication';
+import MyWallet from '../components/Account/MyWallet';
+import Account from '../containers/Account';
+
+export interface InitAppProps {
     isInitPageExpected: boolean
     isWalletPageExpected: boolean
     isUnlockPageExpected: boolean
 }
 
-const SignIn: React.SFC<SignInProps> = (props) => {
+const InitApp: React.SFC<InitAppProps> = (props) => {
     if (props.isInitPageExpected) {
-
-        //return <InitPage />
-        return <Redirect to={{
-            pathname: '/signup'
-        }} />
-
+        return <SignUp />
     } else if (props.isUnlockPageExpected) {
-        //return <UnlockPage />
-        return <Redirect to={{
-            pathname: '/signin'
-        }} />
-
+        return <SignIn />
     } else if (props.isWalletPageExpected) {
 
         let scriptQuery = window.location.href.replace(/.*\?/, '')
@@ -32,15 +27,15 @@ const SignIn: React.SFC<SignInProps> = (props) => {
         if (hideWallet) {
             return <p></p>
         } else {
-            return <Redirect to={{
-                pathname: '/welcome'
-            }} />
+            return <Account>
+                <MyWallet />
+            </Account>
         }
     }
     return <p>Waiting...</p>
 }
 
-function mapStateToProps(state: FrameState): SignInProps {
+function mapStateToProps(state: AppFrameState): InitAppProps {
     return {
         isInitPageExpected: !(state.shared.didInit),
         isWalletPageExpected: !!(state.shared.didInit && state.temp.workerProxy && !state.shared.isLocked),
@@ -48,4 +43,4 @@ function mapStateToProps(state: FrameState): SignInProps {
     }
 }
 
-export default connect<SignInProps, undefined, any>(mapStateToProps)(SignIn)
+export default connect<InitAppProps, undefined, any>(mapStateToProps)(InitApp)

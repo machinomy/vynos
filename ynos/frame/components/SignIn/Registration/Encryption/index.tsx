@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Dispatch} from "redux";
-import {FrameState} from "../../../../reducers/state";
+import {AppFrameState} from "../../../../reducers/state";
 import {ChangeEvent, FormEvent} from "react";
 import WorkerProxy from "../../../../WorkerProxy";
 import {connect} from "react-redux";
@@ -115,7 +115,7 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
                             {this.renderError()}
                         </p>
                         <p className={style.buttonNav}>
-                            <Button type='submit' primary>Create wallet</Button>
+                            <Button type='submit' content="Create wallet" primary />
                             <br />
                             <a href="#">Restore wallet</a>
                         </p>
@@ -124,13 +124,13 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
     }
 }
 
-function mapStateToProps(state: FrameState): PasswordSubpageStateProps {
+function mapStateToProps(state: AppFrameState): PasswordSubpageStateProps {
     return {
         workerProxy: state.temp.workerProxy!
     }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<FrameState>): PasswordSubpageDispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<AppFrameState>): PasswordSubpageDispatchProps {
     return {
         genKeyring: (workerProxy, password) => {
             workerProxy.genKeyring(password).then(mnemonic => {
