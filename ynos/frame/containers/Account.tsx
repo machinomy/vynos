@@ -6,10 +6,14 @@ const style = require("../styles/ynos.css");
 export interface AccountProps { }
 
 const Account: React.SFC<AccountProps> = (props) => {
+    console.log(props.children);
     return <div>
         <Menu className={style.clearBorder}>
             <Menu.Menu className={style.menuIntoOneItemFluid}>
-                <Dropdown
+                <Button icon className={style.btnLock}>
+                    <i className={style.vynosLock}></i>
+                </Button>
+                <Dropdown text="Wallet"
                     icon={
                         <div className={`${style.hamburger} ${style.hamburgerSpin}`}>
                             <div className={style.hamburgerBox}>
@@ -19,7 +23,7 @@ const Account: React.SFC<AccountProps> = (props) => {
                     }
                     id={style.menuItemFluid}
                     pointing
-                    className="link"
+                    className='link'
                     onOpen={
                         () => {
 
