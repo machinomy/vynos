@@ -15,9 +15,9 @@ export default (
         <Switch>
             <Route exact path="/frame.html" component={InitApp}/>
             <Route path="/terms" component={TextTerms}/>
-            <Route path="/channels" component={Channels}/>
-            <Route path="/preferences" component={Preferences}/>
-            <Route path="/network" component={Network}/>
+            <Route path="/channels" render={() => <Account><Channels /></Account>}/>
+            <Route path="/preferences" render={() => <Account><Preferences /></Account>}/>
+            <Route path="/network" render={() => <Account><Network /></Account>}/>
         </Switch>
     </Router>
 );
