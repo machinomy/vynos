@@ -23,8 +23,8 @@ function webpackConfig (entry) {
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NamedModulesPlugin(),
             new webpack.DefinePlugin({
-                "window.RPC_URL": RPC_URL,
-                "self.CONTRACT_ADDRESS": CONTRACT_ADDRESS,
+                "window.RPC_URL": JSON.stringify(RPC_URL),
+                "self.CONTRACT_ADDRESS": JSON.stringify(CONTRACT_ADDRESS)
             }),
             new PackageLoadersPlugin()
         ],

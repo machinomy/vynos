@@ -3,35 +3,72 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans:400,400i,500,500i,700,900|Source+Sans+Pro:400,400i,600,600i,700,700i,900,900i&amp;subset=cyrillic,cyrillic-ext" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" integrity="sha256-HxaKz5E/eBbvhGMNwhWRPrAR9i/lG1JeT4mD6hCQ7s4=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans:400,500,700|Roboto|Source+Sans+Pro:400,600" rel="stylesheet">
     <style>
-        #mount-point #spinner {
-            width: 100px;
-            height: 100px;
-            position: absolute;
-            left: 50%;
-            top:50%;
-            margin: -50px 0 0 -50px;
+        #mount-point {
+            width: 100%;
+            height: 100%;
         }
 
-        button {
-            cursor: pointer;
+        #mount-point #spinner {
+            position: absolute;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            text-align: center;
+        }
+
+        #mount-point #spinner > * {
+            margin: 0;
+        }
+
+        #mount-point #spinner .main-header svg {
+            width: 100px;
+        }
+
+        #mount-point #spinner > .main-header {
+            font: 400 40px 'Alegreya Sans', sans-serif;
+            color: #D04071;
+            line-height: 0;
         }
     </style>
 </head>
 <body>
     <div id="mount-point">
         <div id="spinner">
-            <svg width="100px"  height="100px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-dual-ring" style="background-image: none; background-position: initial initial; background-repeat: initial initial;">
-                <circle cx="50" cy="50" fill="none" stroke-linecap="round" r="45" stroke-width="6" stroke="#ff3b81" stroke-dasharray="70.68583470577035 70.68583470577035">
-                    <animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="2.6s" begin="0s" repeatCount="indefinite"></animateTransform>
-                </circle>
-                <circle cx="50" cy="50" fill="none" stroke-linecap="round" r="38" stroke-width="6" stroke="#0d152a" stroke-dasharray="59.690260418206066 59.690260418206066" stroke-dashoffset="59.690260418206066">
-                    <animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2.6s" begin="0s" repeatCount="indefinite"></animateTransform>
-                </circle>
-            </svg>
+            <h1 class="main-header">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+                    <style type="text/css">
+                    .st0{fill:#D04071;}
+                    </style>
+                    <g transform="rotate(0 50 50)">
+                        <path class="st0" d="M100,40L100,40c3.3,0,6,2.7,6,6v28c0,3.3-2.7,6-6,6l0,0c-3.3,0-6-2.7-6-6V46C94,42.7,96.7,40,100,40z	">
+                        <animate  accumulate="none" additive="replace" attributeName="opacity" begin="-0.6666666666666666s" calcMode="linear" dur="1s" fill="remove" repeatCount="indefinite" restart="always" times="0;1" values="1;0">
+                        </animate>
+                    </path>
+                    </g>
+                    <g transform="rotate(120 50 50)">
+                        <path class="st0" d="M68.3-78.3L68.3-78.3c3.3,0,6,2.7,6,6v28c0,3.3-2.7,6-6,6l0,0c-3.3,0-6-2.7-6-6l0-28
+                            C62.3-75.6,65-78.3,68.3-78.3z	">
+                            <animate  accumulate="none" additive="replace" attributeName="opacity" begin="-0.3333333333333333s" calcMode="linear" dur="1s" fill="remove" repeatCount="indefinite" restart="always" times="0;1" values="1;0">
+                            </animate>
+                        </path>
+                    </g>
+                    <g transform="rotate(240 50 50)">
+                        <path class="st0" d="M-18.3,8.3L-18.3,8.3c3.3,0,6,2.7,6,6l0,28c0,3.3-2.7,6-6,6l0,0c-3.3,0-6-2.7-6-6l0-28
+                        C-24.3,11-21.6,8.3-18.3,8.3z	">
+                            <animate  accumulate="none" additive="replace" attributeName="opacity" begin="0s" calcMode="linear" dur="1s" fill="remove" repeatCount="indefinite" restart="always" times="0;1" values="1;0">
+                            </animate>
+                        </path>
+                    </g>
+                </svg>
+                vynos
+            </h1>
         </div>
     </div>
     <script src="/frame.bundle.js"></script>

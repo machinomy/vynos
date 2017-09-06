@@ -1,5 +1,32 @@
 @import './fonts.css';
 @import './global.css';
+@import './hamburgers.css';
+
+a {
+    color: #00AEEF !important;
+}
+
+input {
+    border: 0 !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid rgba(34,36,38,.15) !important;
+    box-shadow: none !important;
+    padding: 5px 0 !important;
+    font-family: 'Source Sans Pro', sans-serif !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    text-transform: capitalize !important;
+}
+
+textarea {
+    text-align: center !important;
+    padding: 10px 35px !important;
+    background-color: rgba(0, 174, 239, 0.1) !important;
+    font-family: 'Source Sans Pro', sans-serif !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    border: 0 !important;
+}
 
 .init-terms-motivation {
     text-align: center;
@@ -17,3 +44,278 @@
     width: 320px;
     position: absolute;
 }
+
+p.sign-in-logo {
+    padding: 45px 0 0;
+}
+
+.flex-container  {
+    display: flex !important;
+    height: 100% !important;
+    flex-direction: column !important;
+
+    justify-content: space-between; /* align items in Main Axis */
+    align-items: center; /* align items in Cross Axis */
+    align-content: center; /* Extra space in Cross Axis */
+}
+
+p.read-terms > a {
+    font-size: 19px !important;
+    text-transform: capitalize;
+}
+
+.clear-border {
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+p.button-nav {
+    /*padding-bottom: 45px;*/
+    margin: 0 !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+p.button-nav > button {
+    width: 156px;
+    height: 36px;
+    background-color: #00AEEF !important;
+    color: #fff !important;
+    font-size: 14px !important;
+    font-family: 'Source Sans Pro', sans-serif !important;
+    font-weight: 400 !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+}
+
+h1.encryption-header {
+    margin-top: -15px !important;
+}
+
+h1.mnemonic-header {
+    margin-top: 0 !important;
+}
+
+h1.mnemonic-header > .sub.header {
+    color: #333;
+    font-size: 14px;
+}
+
+h1.encryption-header,
+h1.mnemonic-header,
+h1.welcome-header {
+    font-family: 'Alegreya Sans', sans-serif !important;
+    font-size: 26px !important;
+    font-weight: 400 !important;
+}
+
+.encryption-form {
+    padding: 0 25px;
+}
+
+.mnemonic-form,
+.auth-form {
+    width: 90%;
+}
+
+.auth-form-field {
+    padding-bottom: 45px !important;
+}
+
+.welcome-account-info {
+    text-align: left;
+    background-color: #fafafa;
+    box-shadow: 0 1px 11px -1px rgba(0,0,0,0.1);
+    position: absolute;
+    top: 0;
+    padding: 10px !important;
+    width: 100%;
+}
+
+.container-indent {
+    padding-top: 50px !important;
+}
+
+div.terms-text > p {
+    font-size: 12px;
+}
+
+
+
+#menu-item-fluid {
+    width: 100%;
+}
+
+.submenu-fluid {
+    width: 100% !important;
+    border: 0 !important;
+    padding: 0 50px !important;
+    margin: 0 !important;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
+    border-radius: 0 !important;
+    padding-bottom: 20px !important;
+}
+
+#menu-item-fluid > .submenu-fluid > a {
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 500 !important;
+    font-size: 22px !important;
+    text-align: center !important;
+    padding: 10px 0 !important;
+}
+
+#menu-item-fluid > .submenu-fluid > a:hover {
+    background: initial !important;
+}
+
+/******************************
+Icon Fonts
+******************************/
+[class*="vynos-"]:before {
+    font-family: "vynos" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.vynos-arrow-back {
+    height: 0;
+    padding-right: 20px;
+}
+
+.vynos-arrow-back:before {
+    line-height: 0;
+    content: "\61";
+    color: #bbb8b8;
+    font-size: 22px;
+}
+
+.vynos-info:before {
+    content: "\62";
+}
+.vynos-lock:before {
+    content: "\63";
+    font-size: 21px;
+    padding: 15px;
+}
+
+/******************************
+Top menu
+******************************/
+.hamburger {
+    padding: 15px 5px 15px 35px;
+    order: -1 !important;
+}
+
+.btn-lock {
+    position: absolute !important;
+    right: 0 !important;
+    z-index: 2 !important;
+    margin: auto !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    background: none !important;
+    color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.menu-into-one-item-fluid {
+    display: flex !important;
+    align-items: center !important;
+    font-family: 'Alegreya Sans', sans-serif;
+    font-weight: 500 !important;
+    font-size: 22px;
+    width: 100%;
+    color: #333 !important;
+    background-color: #fafafa !important;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
+    border-radius: 0;
+    position: relative;
+}
+
+.menu-into-one-item-fluid:hover {
+    background: #fafafa !important;
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
+}
+
+.menu-into-one-item-fluid:before,
+.submenu-fluid:after {
+    display: none !important;
+}
+
+.hamburger-inner,
+.hamburger-inner:after,
+.hamburger-inner:before {
+    border-radius: 0 !important;
+    background-color: rgba(0,0,0, 0.5);
+    width: 22px !important;
+    height: 3px !important;
+}
+
+.hamburger-inner:before {
+    top: -6px !important;
+}
+
+.hamburger-inner:after {
+    bottom: -6px !important;
+}
+
+#menu-item-fluid {
+    display: flex;
+    align-items: center;
+}
+
+#menu-item-fluid > * {
+    font-family: 'Alegreya Sans', sans-serif !important;
+    font-weight: 500 !important;
+    font-size: 22px;
+}
+
+/******************************
+Network page
+******************************/
+.form-network
+    input[type=radio] {
+        position: absolute !important;
+        visibility: hidden !important;
+        display: none !important;
+    }
+
+.form-network > * {
+    margin: 0 !important;
+}
+
+.form-network
+    label {
+        display: inline-block;
+        cursor: pointer;
+        font-family: "Roboto", sans-serif !important;
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+.form-network
+    input[type=radio]:checked + label {
+        background: #29ABE2;
+    }
+
+.form-network
+    label:before,
+.form-network
+    label:after {
+    display: none !important;
+}
+
+/******************************
+Transaction page
+******************************/
+.key-highlight {
+    color: #00AEEF;
+}
+

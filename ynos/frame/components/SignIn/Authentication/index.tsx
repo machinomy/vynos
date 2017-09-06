@@ -4,13 +4,14 @@ import {connect} from "react-redux";
 import {ChangeEvent, CSSProperties, FormEvent} from "react";
 import _ = require("lodash")
 import WorkerProxy from "../../../WorkerProxy";
-import {FrameState} from "../../../reducers/state";
+import {AppFrameState} from "../../../reducers/state";
 //import Button from '@react-mdc/button'
 import Textfield from '@react-mdc/textfield'
 import Typography from '@react-mdc/typography'
 import classnames = require('classnames')
-import { Segment, Form, Input, Header, Button } from 'semantic-ui-react'
+import { Container, Form, Input, Header, Button } from 'semantic-ui-react'
 import Logo from '../Header';
+const style = require("../../../styles/ynos.css");
 
 export interface UnlockPageStateProps {
     workerProxy: WorkerProxy
@@ -55,6 +56,7 @@ export class Authentication extends React.Component<UnlockPageProps, UnlockPageS
             });
             let password = _.toString(this.state.password);
             this.props.workerProxy.doUnlock(password).then()
+            window.location.reload()
         }
     }
 
@@ -71,27 +73,28 @@ export class Authentication extends React.Component<UnlockPageProps, UnlockPageS
     }
 
     render () {
-        return <Segment textAlign="center">
-            <Logo />
-            <Form onSubmit={this.handleSubmit}>
+        return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
+            <p className={style.signInLogo}>
+                <Logo />
+            </p>
+            <Form onSubmit={this.handleSubmit} className={style.authForm}>
                 <Form.Group widths='equal'>
-                    <Form.Field>
+                    <Form.Field className={style.authFormField}>
                         <input type="password" placeholder='Password' onChange={this.handlePasswordChange} />
                     </Form.Field>
                 </Form.Group>
-                <p>
-                    <Button type='submit' primary>Unlock</Button>
-                </p>
-                <p>
+                <p className={style.buttonNav}>
+                    <Button type='submit' content={this.buttonLabel()} primary />
+                    <br />
                     <a href="#">Forgot password?</a>
                 </p>
             </Form>
-        </Segment>
+        </Container>
     }
 }
 
 
-function mapStateToProps (state: FrameState): UnlockPageStateProps {
+function mapStateToProps (state: AppFrameState): UnlockPageStateProps {
     return {
         workerProxy: state.temp.workerProxy!
     }

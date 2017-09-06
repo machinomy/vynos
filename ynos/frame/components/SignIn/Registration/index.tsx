@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {FrameState} from "../../../reducers/state";
+import {AppFrameState} from "../../../reducers/state";
 import Terms from './Terms';
 import Encryption from './Encryption';
 import Mnemonic from './Mnemonic';
@@ -21,7 +21,7 @@ const Registration: React.SFC<Registration> = (props) => {
     }
 }
 
-function mapStateToProps(state: FrameState): Registration {
+function mapStateToProps(state: AppFrameState): Registration {
     return {
         needAcceptTerms: !state.temp.initPage.didAcceptTerms,
         needSetPassword: !state.temp.initPage.mnemonic,

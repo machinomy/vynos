@@ -7,7 +7,7 @@ export function initServiceWorkerClient(main: (sw: ServiceWorker, onUnload: Func
     if (serviceWorker) {
       fn(serviceWorker)
     }
-  };
+  }
   const freshInstall = (sw: ServiceWorker, r: ServiceWorkerRegistration) => {
     const statechange = (e: Event) => {
       if (isServiceWorker(e.target)) {
@@ -23,12 +23,12 @@ export function initServiceWorkerClient(main: (sw: ServiceWorker, onUnload: Func
           })
         }
       }
-    };
+    }
     sw.addEventListener("statechange", statechange)
-  };
+  }
 
   if ("serviceWorker" in navigator) {
-    let scriptUrl = window.location.href.replace('frame.html', 'worker.bundle.js');
+    let scriptUrl = window.location.href.replace('frame.html', 'worker.bundle.js')
     navigator.serviceWorker.register(scriptUrl, {scope: "./"}).then(registration => {
       registration.onupdatefound = () => {
         extractServiceWorker(registration, sw => {

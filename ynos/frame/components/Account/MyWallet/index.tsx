@@ -7,113 +7,16 @@ import {CSSProperties} from "react";
 import BlockieComponent from '../../../components/BlockieComponent'
 import browser from '../../../lib/browser'
 import BoughtItem from "../../../lib/BoughtItem";
-import {FrameState} from "../../../reducers/state";
+import {AppFrameState} from "../../../reducers/state";
 import WorkerProxy from "../../../WorkerProxy";
 import {PaymentChannel} from "machinomy/lib/channel";
-import Button from '@react-mdc/button'
-const style = require("./wallet.css")
+import { Container, Grid, List, Image, Header, Button } from 'semantic-ui-react'
+
+
+const style = require("../../../styles/ynos.css");
 
 const TERMS_OF_USE_ADDRESS = 'https://literatepayments.com'
 
-const APP_BAR_STYLE: CSSProperties = {
-    minHeight: 56,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-};
-
-const APP_BAR_CONTAINER_STYLE: CSSProperties = {
-    backgroundColor: '#ffffff',
-    minHeight: 56,
-    boxShadow: 'rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px',
-};
-
-const APP_BAR_WRAP_STYLE: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'row'
-};
-
-const APP_BAR_LEFT_STYLE: CSSProperties = {
-    width: 72,
-    height: 56,
-    textAlign: 'center'
-};
-
-const APP_BAR_RIGHT_STYLE: CSSProperties = {
-    width: 72,
-    height: 56,
-    textAlign: 'center'
-};
-
-const APP_BAR_TITLE_STYLE: CSSProperties = {
-    fontFamily: ['Alegreya Sans', 'sans-serif'],
-    fontWeight: 'normal',
-    fontSize: 22,
-    color: '#333333',
-    height: 56,
-    lineHeight: '58px',
-    width: 176,
-    textAlign: 'left'
-}
-
-const ICON_STYLE_RIGHT: CSSProperties = {
-    lineHeight: '56px'
-}
-
-const SECOND_LINE_STYLE: CSSProperties = {
-    marginTop: -5,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-}
-
-const BLOCKIE_STYLE: CSSProperties = {
-    margin: '0 10px 10px 10px',
-    height: 50
-}
-
-const ACCOUNT_NAME_STYLE: CSSProperties = {
-    fontFamily: ['Alegreya Sans', 'sans-serif'],
-    fontWeight: 'normal',
-    fontSize: 26,
-    color: '#333333',
-    width: 250,
-    textAlign: 'left'
-}
-
-const ACCOUNT_DETAILS_ROW_STYLE: CSSProperties = {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    fontFamily: ['Source Sans Pro', 'sans-serif'],
-    fontSize: 14,
-    marginTop: 5,
-    alignItems: 'flex-start'
-}
-
-const FLAT_BUTTON_BLOCK_STYLE: CSSProperties = {
-    paddingRight: 5
-}
-
-const FLAT_BUTTON_STYLE: CSSProperties = {
-    minWidth: 'inherit',
-    width: 'inherit',
-    height: 'inherit',
-    minHeight: 'inherit',
-    lineHeight: 'inherit',
-    padding: 5,
-    margin: '-5px 0px -5px 0px'
-}
-
-const FLAT_BUTTON_LABEL_STYLE: CSSProperties = {
-    paddingRight: 0,
-    paddingLeft: 0,
-    verticalAlign: 'inherit'
-}
-
-const BALANCE_STYLE: CSSProperties = {
-    marginRight: 10
-}
 
 export interface WalletPageProps {
     workerProxy: WorkerProxy
@@ -128,7 +31,7 @@ export interface WalletPageState {
     channels: Array<PaymentChannel>;
 }
 
-export class Welcome extends React.Component<WalletPageProps, WalletPageState> {
+export class MyWallet extends React.Component<WalletPageProps, WalletPageState> {
     updateBalanceTimer: any;
 
     constructor (props: WalletPageProps) {
@@ -216,7 +119,7 @@ export class Welcome extends React.Component<WalletPageProps, WalletPageState> {
                     for you to start
                 </div>
                 <div style={BUTTON_CONTAINER_STYLE}>
-                    <Button raised onClick={openExplorer}>Explore</Button>
+                    <Button raised onClick={openExplorer} content="Explore" />
                 </div>
             </div>
         } else {
@@ -264,36 +167,28 @@ export class Welcome extends React.Component<WalletPageProps, WalletPageState> {
     }
 
     renderPage (address: any) {
-        return <div style={{backgroundColor: '#fafafa', height: 420}}>
-            <div style={APP_BAR_CONTAINER_STYLE}>
-                <div style={APP_BAR_STYLE}>
-                    <div style={APP_BAR_WRAP_STYLE}>
-                        <div style={APP_BAR_LEFT_STYLE}>&nbsp;</div>
-                        <div style={APP_BAR_TITLE_STYLE}>Wallet</div>
-                    </div>
-                    <div style={APP_BAR_RIGHT_STYLE}>
-                        <Button onClick={this.handleLock} className={style.lockButton}>
-                            <i className="material-icons">lock</i>
-                        </Button>
-                    </div>
-                </div>
-                <div style={SECOND_LINE_STYLE}>
-                    <BlockieComponent seed={address} scale={6.25} style={BLOCKIE_STYLE} />
-                    <div>
-                        <div className="account-name" style={ACCOUNT_NAME_STYLE}>
-                            Account 1
-                        </div>
-                        <div className="account-details-row" style={ACCOUNT_DETAILS_ROW_STYLE}>
-                            {this.renderBalance()}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div style={{height: 309, overflow: 'scroll'}}>
-                {this.renderOperations()}
-            </div>
-        </div>
+        return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder} ${style.containerIndent}`} >
+            {/*<List className={style.welcomeAccountInfo}>
+                <List.Item>
+                    <Image avatar src={require('../../../styles/images/avatar.svg')} />
+                    <List.Content>
+                        <List.Header as='a'>0x453535375735353</List.Header>
+                        <List.Description>1.345 $125.34</List.Description>
+                    </List.Content>
+                </List.Item>
+            </List>*/}
+            <Header as='h1' className={style.welcomeHeader}>You are ready</Header>
+            <p>
+                <Image src={require('../../../styles/images/welcome.svg')} size="tiny" centered />
+            </p>
+            <p>
+                We got something <br />
+                special for you to start
+            </p>
+            <p className={style.buttonNav}>
+                <Button primary content="Explore" />
+            </p>
+        </Container>
     }
 
     render () {
@@ -305,7 +200,7 @@ export class Welcome extends React.Component<WalletPageProps, WalletPageState> {
     }
 }
 
-function mapStateToProps (state: FrameState): WalletPageProps {
+function mapStateToProps (state: AppFrameState): WalletPageProps {
     let workerProxy = state.temp.workerProxy!
     return {
         workerProxy: workerProxy,
@@ -315,4 +210,4 @@ function mapStateToProps (state: FrameState): WalletPageProps {
     }
 }
 
-export default connect<WalletPageProps, undefined, any>(mapStateToProps)(Welcome)
+export default connect<WalletPageProps, undefined, any>(mapStateToProps)(MyWallet)
