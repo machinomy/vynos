@@ -70,6 +70,7 @@ p.read-terms > a {
 }
 
 p.button-nav {
+    text-align: center;
     padding-bottom: 45px;
     margin: 0 !important;
 }
@@ -273,11 +274,38 @@ Top menu
     font-size: 22px;
 }
 
-/*#menu-item-fluid .text {*/
-    /*font-family: 'Alegreya Sans', sans-serif !important;*/
-    /*font-weight: 500 !important;*/
-    /*font-size: 22px;*/
-/*}*/
+/******************************
+Network page
+******************************/
+.form-network
+    input[type=radio] {
+        position: absolute !important;
+        visibility: hidden !important;
+        display: none !important;
+    }
 
-/*display: flex;*/
-/*align-items: center;*/
+.form-network > * {
+    margin: 0 !important;
+}
+
+.form-network
+    label {
+        display: inline-block;
+        cursor: pointer;
+        font-family: "Roboto", sans-serif !important;
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+.form-network
+    input[type=radio]:checked + label {
+        background: #29ABE2;
+    }
+
+.form-network
+    label:before,
+.form-network
+    label:after {
+    display: none !important;
+}
+

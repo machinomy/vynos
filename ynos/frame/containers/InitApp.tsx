@@ -18,7 +18,10 @@ const InitApp: React.SFC<InitAppProps> = (props) => {
     if (props.isInitPageExpected) {
         return <SignUp />
     } else if (props.isUnlockPageExpected) {
-        return <SignIn />
+        //return <SignIn />
+        return <Account>
+            <MyWallet />
+        </Account>
     } else if (props.isWalletPageExpected) {
 
         let scriptQuery = window.location.href.replace(/.*\?/, '')
