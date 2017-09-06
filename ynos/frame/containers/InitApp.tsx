@@ -7,6 +7,8 @@ import SignUp from '../components/SignIn/Registration';
 import SignIn from '../components/SignIn/Authentication';
 import MyWallet from '../components/Account/MyWallet';
 import Transaction from '../components/Account/Transaction';
+import Refill from '../components/Account/Refill';
+import Restoration from '../components/SignIn/Registration/Restoration';
 import Account from '../containers/Account';
 
 export interface InitAppProps {

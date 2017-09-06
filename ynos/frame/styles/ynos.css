@@ -70,9 +70,12 @@ p.read-terms > a {
 }
 
 p.button-nav {
-    text-align: center;
-    padding-bottom: 45px;
+    /*padding-bottom: 45px;*/
     margin: 0 !important;
+}
+
+.text-center {
+    text-align: center;
 }
 
 p.button-nav > button {
