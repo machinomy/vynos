@@ -12,7 +12,7 @@ export class Network extends React.Component<any, any> {
     render() {
 
         return (
-            <Container className={`${style.clearBorder}`}>
+            <Container className={style.clearBorder}>
                 <Form className={style.formNetwork}>
                     <Form.Group grouped>
                         <Form.Field control={Radio} label='One' value='1' />

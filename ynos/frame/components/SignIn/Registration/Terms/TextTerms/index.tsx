@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Link } from 'react-router-dom';
 import { Container, Menu } from 'semantic-ui-react'
 const style = require("../../../../../styles/ynos.css");
 

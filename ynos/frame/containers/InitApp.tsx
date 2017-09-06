@@ -6,6 +6,7 @@ import _ = require('lodash')
 import SignUp from '../components/SignIn/Registration';
 import SignIn from '../components/SignIn/Authentication';
 import MyWallet from '../components/Account/MyWallet';
+import Transaction from '../components/Account/Transaction';
 import Account from '../containers/Account';
 
 export interface InitAppProps {
@@ -18,10 +19,7 @@ const InitApp: React.SFC<InitAppProps> = (props) => {
     if (props.isInitPageExpected) {
         return <SignUp />
     } else if (props.isUnlockPageExpected) {
-        //return <SignIn />
-        return <Account>
-            <MyWallet />
-        </Account>
+        return <SignIn />
     } else if (props.isWalletPageExpected) {
 
         let scriptQuery = window.location.href.replace(/.*\?/, '')

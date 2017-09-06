@@ -309,3 +309,10 @@ Network page
     display: none !important;
 }
 
+/******************************
+Transaction page
+******************************/
+.key-highlight {
+    color: #00AEEF;
+}
+
