@@ -18,6 +18,7 @@ export interface InitAppProps {
 }
 
 const InitApp: React.SFC<InitAppProps> = (props) => {
+    console.log(props);
     if (props.isInitPageExpected) {
         return <SignUp />
     } else if (props.isUnlockPageExpected) {
