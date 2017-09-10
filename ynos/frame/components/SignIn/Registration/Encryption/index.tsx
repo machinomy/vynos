@@ -5,7 +5,7 @@ import {ChangeEvent, FormEvent} from "react";
 import WorkerProxy from "../../../../WorkerProxy";
 import {connect} from "react-redux";
 import actions from "../../../../actions";
-import { Container, Form, Input, Header, Button } from 'semantic-ui-react'
+import { Container, Form, Input, Header, Button, Divider } from 'semantic-ui-react'
 import Logo from '../../Header';
 const style = require("../../../../styles/ynos.css");
 
@@ -98,9 +98,8 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
 
     render () {
         return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
-                    <p className={style.signInLogo}>
-                        <Logo />
-                    </p>
+                    <Logo />
+                    <Divider hidden />
                     <Header as='h1' className={style.encryptionHeader}>Encrypt your new wallet</Header>
                     <Form onSubmit={this.handleSubmit} className={style.encryptionForm}>
                         <Form.Group widths='equal'>
@@ -114,11 +113,10 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
                         <p>
                             {this.renderError()}
                         </p>
-                        <p className={style.buttonNav}>
-                            <Button type='submit' content="Create wallet" primary />
-                            <br />
-                            <a href="#">Restore wallet</a>
-                        </p>
+                        <Divider hidden />
+                        <Button type='submit' content="Create wallet" primary className={style.buttonNav} />
+                        <br />
+                        <a href="#">Restore wallet</a>
                     </Form>
             </Container>
     }

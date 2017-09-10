@@ -10,7 +10,7 @@ import BoughtItem from "../../../lib/BoughtItem";
 import {AppFrameState} from "../../../reducers/state";
 import WorkerProxy from "../../../WorkerProxy";
 import {PaymentChannel} from "machinomy/lib/channel";
-import { Container, Grid, List, Image, Header, Button } from 'semantic-ui-react'
+import { Container, Grid, List, Image, Header, Button, Divider} from 'semantic-ui-react'
 
 
 const style = require("../../../styles/ynos.css");
@@ -167,7 +167,7 @@ export class MyWallet extends React.Component<WalletPageProps, WalletPageState> 
     }
 
     renderPage (address: any) {
-        return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder} ${style.containerIndent}`} >
+        return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`} >
             {/*<List className={style.welcomeAccountInfo}>
                 <List.Item>
                     <Image avatar src={require('../../../styles/images/avatar.svg')} />
@@ -178,16 +178,12 @@ export class MyWallet extends React.Component<WalletPageProps, WalletPageState> 
                 </List.Item>
             </List>*/}
             <Header as='h1' className={style.welcomeHeader}>You are ready</Header>
-            <p>
-                <Image src={require('../../../styles/images/welcome.svg')} size="tiny" centered />
-            </p>
+            <Image src={require('../../../styles/images/welcome.svg')} size="tiny" centered />
             <p>
                 We got something <br />
                 special for you to start
             </p>
-            <p className={style.buttonNav}>
-                <Button primary content="Explore" />
-            </p>
+            <Button primary content="Explore" className={style.buttonNav} />
         </Container>
     }
 

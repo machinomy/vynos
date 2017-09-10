@@ -9,7 +9,7 @@ import {AppFrameState} from "../../../reducers/state";
 import Textfield from '@react-mdc/textfield'
 import Typography from '@react-mdc/typography'
 import classnames = require('classnames')
-import { Container, Form, Input, Header, Button } from 'semantic-ui-react'
+import { Container, Form, Input, Header, Button, Divider } from 'semantic-ui-react'
 import Logo from '../Header';
 const style = require("../../../styles/ynos.css");
 
@@ -74,20 +74,18 @@ export class Authentication extends React.Component<UnlockPageProps, UnlockPageS
 
     render () {
         return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
-            <p className={style.signInLogo}>
-                <Logo />
-            </p>
+            <Logo />
+            <Divider hidden />
             <Form onSubmit={this.handleSubmit} className={style.authForm}>
                 <Form.Group widths='equal'>
                     <Form.Field className={style.authFormField}>
                         <input type="password" placeholder='Password' onChange={this.handlePasswordChange} />
                     </Form.Field>
                 </Form.Group>
-                <p className={style.buttonNav}>
-                    <Button type='submit' content={this.buttonLabel()} primary />
-                    <br />
-                    <a href="#">Forgot password?</a>
-                </p>
+                <Divider hidden />
+                <Button type='submit' content={this.buttonLabel()} primary className={style.buttonNav} />
+                <br />
+                <a href="#">Forgot password?</a>
             </Form>
         </Container>
     }

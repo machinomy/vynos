@@ -1,23 +1,30 @@
-import {Reducer} from "redux";
-
 export interface MenuState {
-    topmenu: { currentMenuItem: string }
+    topmenu: {
+        currentMenuItem: string,
+        submenuShowState: string
+    }
 }
 
 export interface MenuAction {
-    type: 'CHANGE_CURRENT_MENU_ITEM';
+    type: any;
     menuItem?: string
+    className?: string
 }
 
-
 const initialState:MenuState = {
-    topmenu: { currentMenuItem: 'Wallet' }
+    topmenu: {
+        currentMenuItem: 'Wallet',
+        submenuShowState: ''
+    }
 };
 
 export const topmenu = (state = initialState, action:MenuAction) => {
-    if (action.type === 'CHANGE_CURRENT_MENU_ITEM') {
-        return state = Object.assign({}, state, {topmenu: {currentMenuItem: action.menuItem}});
-    } else {
-        return state;
+    switch(action.type) {
+        case 'SET_CURRENT_MENU_ITEM':
+            return state = Object.assign({}, state, {topmenu: Object.assign({}, state.topmenu, {currentMenuItem: action.menuItem})});
+        case 'SET_SUBMENU_SHOW_STATE':
+            return state = Object.assign({}, state, {topmenu: Object.assign({}, state.topmenu, {submenuShowState: action.className})})
+        default:
+            return state;
     }
 };
