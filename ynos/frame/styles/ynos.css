@@ -2,30 +2,6 @@
 @import './global.css';
 @import './hamburgers.css';
 
-
-
-input {
-    border: 0 !important;
-    border-radius: 0 !important;
-    border-bottom: 1px solid rgba(34,36,38,.15) !important;
-    box-shadow: none !important;
-    padding: 5px 0 !important;
-    font-family: 'Source Sans Pro', sans-serif !important;
-    font-weight: 400 !important;
-    font-size: 16px !important;
-    text-transform: capitalize !important;
-}
-
-textarea {
-    text-align: center !important;
-    padding: 10px 35px !important;
-    background-color: rgba(0, 174, 239, 0.1) !important;
-    font-family: 'Source Sans Pro', sans-serif !important;
-    font-weight: 400 !important;
-    font-size: 16px !important;
-    border: 0 !important;
-}
-
 .init-terms-motivation {
     text-align: center;
     margin-top: 20px;
@@ -43,10 +19,6 @@ textarea {
     position: absolute;
 }
 
-/*p.sign-in-logo {*/
-    /*padding: 45px 0 0;*/
-/*}*/
-
 .flex-container  {
     display: flex !important;
     height: 100% !important;
@@ -56,7 +28,6 @@ textarea {
     align-items: center; /* align items in Cross Axis */
     align-content: center; /* Extra space in Cross Axis */
 }
-
 
 .flex-container * {
     margin: 0;
@@ -77,21 +48,7 @@ a.read-terms {
     text-align: center;
 }
 
- button.button-nav {
-    width: 156px;
-    height: 36px;
-    background-color: #00AEEF !important;
-    color: #fff !important;
-    font-size: 14px !important;
-    font-family: 'Source Sans Pro', sans-serif !important;
-    font-weight: 400 !important;
-    text-transform: uppercase !important;
-    margin: 0 !important;
-}
 
-h1.encryption-header {
-    margin-top: -15px !important;
-}
 
 h1.mnemonic-header {
     margin-top: 0 !important;
@@ -108,10 +65,6 @@ h1.welcome-header {
     font-family: 'Alegreya Sans', sans-serif !important;
     font-size: 26px !important;
     font-weight: 400 !important;
-}
-
-.encryption-form {
-    padding: 0 25px;
 }
 
 .mnemonic-form,
@@ -134,7 +87,7 @@ h1.welcome-header {
 }
 
 div.terms-text > p {
-    font-size: 12px;
+    font-size: 12px !important;
 }
 
 #menu-item-fluid {
@@ -180,7 +133,6 @@ Icon Fonts
 }
 
 .vynos-arrow-back {
-    height: 0;
     padding-right: 20px;
 }
 
@@ -189,15 +141,19 @@ Icon Fonts
 }
 
 .vynos-arrow-back:before {
-    line-height: 0;
     content: "\61";
     color: #bbb8b8;
     font-size: 22px;
+    vertical-align: middle;
 }
 
 .vynos-info:before {
     content: "\62";
+    vertical-align: middle;
+    font-size: 14px;
+    padding-right: 5px;
 }
+
 .vynos-lock:before {
     content: "\63";
     font-size: 21px;
@@ -226,9 +182,9 @@ Top menu
 .menu-into-one-item-fluid {
     display: flex !important;
     align-items: center !important;
-    font-family: 'Alegreya Sans', sans-serif;
+    font-family: 'Alegreya Sans', sans-serif !important;
     font-weight: 500 !important;
-    font-size: 22px;
+    font-size: 22px !important;
     width: 100%;
     color: #333 !important;
     background-color: #fafafa !important;
@@ -344,3 +300,49 @@ Transaction page
     color: #00AEEF;
 }
 
+
+/******************************
+Encryption page
+******************************/
+form.encryption-form {
+    padding: 0 25px;
+}
+
+form.encryption-form > div {
+    text-align: left;
+}
+
+.pass-len-text {
+    color: #707070;
+    font-size: 12px !important;
+}
+
+/******************************
+Buttons
+******************************/
+button.button-nav {
+    width: 156px;
+    height: 36px;
+    background-color: #00AEEF !important;
+    color: #fff !important;
+    font-size: 14px !important;
+    font-family: 'Source Sans Pro', sans-serif !important;
+    font-weight: 400 !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+}
+
+.clear-indent {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.error-text {
+    font-size: 12px !important;
+    color: #D04071 !important;
+}
+
+.input-error {
+    color: #D04071 !important;
+    border-bottom: 1px solid #D04071 !important;
+}

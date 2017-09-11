@@ -7,7 +7,13 @@ import {connect} from "react-redux";
 import actions from "../../../../actions";
 import { Container, Form, Input, Header, Button, Divider } from 'semantic-ui-react'
 import Logo from '../../Header';
+
 const style = require("../../../../styles/ynos.css");
+
+const   PASSWORD_CONFIRMATION_HINT_TEXT     = 'Should match the password',
+        MINIMUM_PASSWORD_LENGTH             = 8,
+        PASSWORD_HINT_TEXT                  = `At least ${MINIMUM_PASSWORD_LENGTH} characters`;
+
 
 export interface PasswordSubpageState {
     password: null | string,
@@ -15,10 +21,6 @@ export interface PasswordSubpageState {
     passwordError: null | string,
     passwordConfirmationError: null | string
 }
-
-const PASSWORD_CONFIRMATION_HINT_TEXT = 'Same as password';
-const MINIMUM_PASSWORD_LENGTH = 0; // FIXME ACHTUNG MUST BE 8
-const PASSWORD_HINT_TEXT = `At least ${MINIMUM_PASSWORD_LENGTH} characters`;
 
 export interface PasswordSubpageStateProps {
     workerProxy: WorkerProxy
@@ -62,10 +64,10 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
         return !(passwordError || passwordConfirmationError)
     }
 
-    handleSubmit (ev: FormEvent<HTMLFormElement>) {
-        ev.preventDefault()
+    handleSubmit (e: FormEvent<HTMLFormElement>) {
+        e.preventDefault()
         if (this.isValid() && this.state.password) {
-            this.props.genKeyring(this.props.workerProxy, this.state.password)
+            return this.props.genKeyring(this.props.workerProxy, this.state.password)
         }
     }
 
@@ -88,9 +90,10 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
     }
 
     renderError () {
-        let error = this.state.passwordError || this.state.passwordConfirmationError
-        if (error) {
-            return <p>{error}</p>
+        if (this.state.passwordConfirmationError) {
+            return <span className={style.errorText}><i className={style.vynosInfo}></i> {this.state.passwordConfirmationError}</span>;
+        } else if (this.state.passwordError) {
+            return <span className={style.errorText}><i className={style.vynosInfo}></i> {this.state.passwordError}</span>;
         } else {
             return null
         }
@@ -103,16 +106,17 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
                     <Header as='h1' className={style.encryptionHeader}>Encrypt your new wallet</Header>
                     <Form onSubmit={this.handleSubmit} className={style.encryptionForm}>
                         <Form.Group widths='equal'>
-                            <Form.Field>
+                            <Form.Field className={style.clearIndent}>
                                 <input type="password" placeholder='Password' onChange={this.handleChangePassword} />
+                                <span className={style.passLenText}>At least {MINIMUM_PASSWORD_LENGTH} characters</span>
                             </Form.Field>
-                            <Form.Field>
-                                <input type="password" placeholder='Password Confirmation' onChange={this.handleChangePasswordConfirmation} />
+                            <Form.Field className={style.clearIndent}>
+                                <input type="password" placeholder='Password Confirmation'
+                                       className={this.renderError() ? style.inputError : ''}
+                                       onChange={this.handleChangePasswordConfirmation} />
+                                {this.renderError()}
                             </Form.Field>
                         </Form.Group>
-                        <p>
-                            {this.renderError()}
-                        </p>
                         <Divider hidden />
                         <Button type='submit' content="Create wallet" primary className={style.buttonNav} />
                         <br />
