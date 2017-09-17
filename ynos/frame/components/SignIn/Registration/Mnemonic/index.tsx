@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {CSSProperties, FormEvent} from "react";
+import {FormEvent} from "react";
 import {AppFrameState} from "../../../../reducers/state";
 import WorkerProxy from "../../../../WorkerProxy";
 import Logo from '../../Header';

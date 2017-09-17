@@ -13,6 +13,7 @@ import Sender from "machinomy/lib/sender";
 import BoughtItem from "../lib/BoughtItem";
 
 import {topmenu} from './menu';
+import {welcome} from './welcome';
 
 export interface InitPageState {
   didAcceptTerms: boolean
@@ -94,5 +95,6 @@ export const rootReducers: Reducer<any> = redux.combineReducers({
     temp: tempReducer,
     shared: sharedReducer,
     runtime: runtimeReducer,
-    menu: topmenu
+    menu: topmenu,
+    welcomePopup: welcome
 });

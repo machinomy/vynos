@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Menu, Dropdown, Button, Image } from 'semantic-ui-react'
-import {MenuState} from '../reducers/menu';
+//import {MenuState} from '../reducers/menu';
 const style = require("../styles/ynos.css");
 
 
@@ -15,8 +15,8 @@ class Account extends React.Component<any, any> {
         const { dispatch, children, currentMenuItem, submenuShowState} = this.props;
 
         return <div>
-            <Menu className={style.clearBorder}>
-                <Menu.Menu className={style.menuIntoOneItemFluid}>
+            <Menu className={`${style.clearBorder} ${currentMenuItem.toLowerCase() === 'wallet' ?  style.clearIndent : ''}`}>
+                <Menu.Menu className={`${style.menuIntoOneItemFluid} ${currentMenuItem.toLowerCase() === 'wallet' ? style.clearShadow : ''}`}>
                     <Button icon className={style.btnLock}>
                         <i className={style.vynosLock}></i>
                     </Button>

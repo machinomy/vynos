@@ -6,7 +6,11 @@ const style = require("../../../../../styles/ynos.css");
 const TextTerms: React.SFC<any> = (props) => {
     return <div>
         <Menu className={style.clearBorder}>
-            <Menu.Item link className={style.menuIntoOneItemFluid} onClick={() => props.history.goBack()}><i className={style.vynosArrowBack}></i>Terms of Use</Menu.Item>
+            <Menu.Item
+                link className={style.menuIntoOneItemFluid}
+                onClick={() => props.history.goBack()}>
+                    <i className={style.vynosArrowBack}></i>Terms of Use
+            </Menu.Item>
         </Menu>
         <Container className={style.termsText}>
             <p>The following describes the terms of use that Literate Payments, LLC (“LP,” “we,” “our,” or “us”) require all our visitors to follow when using this Site and purchasing Publisher Services (as defined below) through the Literate Payments Service. In these Terms of Use, the phrase “this Site” refers to our web site located at www.literatepayments.com, and the phrase “Literate Payments Service” ("LP Service") refers to the service offered at this Site that enables users to pay for Publisher Services (as defined below).</p>

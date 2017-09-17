@@ -6,13 +6,11 @@ import WorkerProxy from "../../../../WorkerProxy";
 import {connect} from "react-redux";
 import actions from "../../../../actions";
 import { Container, Form, Input, Header, Button, Divider } from 'semantic-ui-react'
+import { Link } from 'react-router-dom';
 import Logo from '../../Header';
-
+import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../../../../fileWithConstants';
 const style = require("../../../../styles/ynos.css");
 
-const   PASSWORD_CONFIRMATION_HINT_TEXT     = 'Should match the password',
-        MINIMUM_PASSWORD_LENGTH             = 8,
-        PASSWORD_HINT_TEXT                  = `At least ${MINIMUM_PASSWORD_LENGTH} characters`;
 
 
 export interface PasswordSubpageState {
@@ -120,7 +118,7 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
                         <Divider hidden />
                         <Button type='submit' content="Create wallet" primary className={style.buttonNav} />
                         <br />
-                        <a href="#">Restore wallet</a>
+                        <Link to="/restore">Restore wallet</Link>
                     </Form>
             </Container>
     }
