@@ -1,16 +1,13 @@
 import * as React from "react";
 import {connect} from "react-redux";
-//import LargeLogoLayout from "../components/large_logo_layout";
 import {ChangeEvent, CSSProperties, FormEvent} from "react";
 import _ = require("lodash")
 import WorkerProxy from "../../../WorkerProxy";
 import {AppFrameState} from "../../../reducers/state";
-//import Button from '@react-mdc/button'
-import Textfield from '@react-mdc/textfield'
-import Typography from '@react-mdc/typography'
-import classnames = require('classnames')
 import { Container, Form, Input, Header, Button, Divider } from 'semantic-ui-react'
 import Logo from '../Header';
+import { Redirect } from 'react-router-dom'
+
 const style = require("../../../styles/ynos.css");
 
 export interface UnlockPageStateProps {
@@ -55,8 +52,7 @@ export class Authentication extends React.Component<UnlockPageProps, UnlockPageS
                 loading: true
             });
             let password = _.toString(this.state.password);
-            this.props.workerProxy.doUnlock(password).then()
-            window.location.reload()
+            this.props.workerProxy.doUnlock(password).then(() => <Redirect to="/dashboard" />)
         }
     }
 

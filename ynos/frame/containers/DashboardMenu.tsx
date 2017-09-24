@@ -2,16 +2,13 @@ import * as React from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Menu, Dropdown, Button, Image } from 'semantic-ui-react'
-//import {MenuState} from '../reducers/menu';
+
 const style = require("../styles/ynos.css");
 
 
-
-class Account extends React.Component<any, any> {
+class DashboardMenu extends React.Component<any, any> {
 
     render() {
-        console.log(this.props);
-        console.log('-------------------------')
         const { dispatch, children, currentMenuItem, submenuShowState} = this.props;
 
         return <div>
@@ -45,13 +42,13 @@ class Account extends React.Component<any, any> {
                             }
                         } >
                         <Dropdown.Menu className={style.submenuFluid}>
-                            <Dropdown.Item as={Link} to='/frame.html' onClick={() => dispatch({type:"SET_CURRENT_MENU_ITEM", menuItem: "Wallet"})}>Wallet</Dropdown.Item>
+                            <Dropdown.Item as={Link} to='/dashboard' onClick={() => dispatch({type:"SET_CURRENT_MENU_ITEM", menuItem: "Wallet"})}>Wallet</Dropdown.Item>
                             <Dropdown.Divider />
-                            <Dropdown.Item as={Link} to='/channels' onClick={() => dispatch({type:"SET_CURRENT_MENU_ITEM", menuItem: "Channels"})}>Channels</Dropdown.Item>
+                            <Dropdown.Item as={Link} to='/dashboard/channels' onClick={() => dispatch({type:"SET_CURRENT_MENU_ITEM", menuItem: "Channels"})}>Channels</Dropdown.Item>
                             <Dropdown.Divider />
-                            <Dropdown.Item as={Link} to='/preferences' onClick={() => dispatch({type:"SET_CURRENT_MENU_ITEM", menuItem: "Preferences"})}>Preferences</Dropdown.Item>
+                            <Dropdown.Item as={Link} to='/dashboard/preferences' onClick={() => dispatch({type:"SET_CURRENT_MENU_ITEM", menuItem: "Preferences"})}>Preferences</Dropdown.Item>
                             <Dropdown.Divider />
-                            <Dropdown.Item as={Link} to='/network' onClick={() => dispatch({type:"SET_CURRENT_MENU_ITEM", menuItem: "Network"})}>Network</Dropdown.Item>
+                            <Dropdown.Item as={Link} to='/dashboard/network' onClick={() => dispatch({type:"SET_CURRENT_MENU_ITEM", menuItem: "Network"})}>Network</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu.Menu>
@@ -68,4 +65,4 @@ const mapStateToProps = (state:any):any => (
     }
 );
 
-export default connect(mapStateToProps)(Account);
+export default connect(mapStateToProps)(DashboardMenu);

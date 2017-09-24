@@ -18,7 +18,7 @@ const Channels: React.SFC<ChannelsProps> = (props) => {
                     <List.Content floated='right'>
                         <span className={style.channelBalance}>0.0030</span>
                     </List.Content>
-                    <Image avatar src={require('../../../styles/images/service.png')} size="mini" />
+                    <Image avatar src={"/" + require('../../../styles/images/service.png')} size="mini" />
                     <List.Content className={style.listContent}>
                         <List.Header as='a' className={style.listHeader}>The Outline <span className={style.lifetimeDate}>10 July</span></List.Header>
                         <List.Description className={style.listDesc}>In Stevens Point, <br/> Wisconsin, the questions</List.Description>
@@ -28,7 +28,7 @@ const Channels: React.SFC<ChannelsProps> = (props) => {
                     <List.Content floated='right'>
                         <span className={style.channelBalance}>0.0030</span>
                     </List.Content>
-                    <Image avatar src={require('../../../styles/images/service.png')} size="mini" />
+                    <Image avatar src={"/" + require('../../../styles/images/service.png')} size="mini" />
                     <List.Content className={style.listContent}>
                         <List.Header as='a' className={style.listHeader}>The Outline <span className={style.lifetimeDate}>10 July</span></List.Header>
                         <List.Description className={style.listDesc}>In Stevens Point, <br/> Wisconsin, the questions</List.Description>
@@ -38,7 +38,7 @@ const Channels: React.SFC<ChannelsProps> = (props) => {
                     <List.Content floated='right'>
                         <span className={style.channelBalance}>0.0030</span>
                     </List.Content>
-                    <Image avatar src={require('../../../styles/images/service.png')} size="mini" />
+                    <Image avatar src={"/" + require('../../../styles/images/service.png')} size="mini" />
                     <List.Content className={style.listContent}>
                         <List.Header as='a' className={style.listHeader}>The Outline <span className={style.lifetimeDate}>10 July</span></List.Header>
                         <List.Description className={style.listDesc}>In Stevens Point, <br/> Wisconsin, the questions</List.Description>
@@ -48,7 +48,7 @@ const Channels: React.SFC<ChannelsProps> = (props) => {
                     <List.Content floated='right'>
                         <span className={style.channelBalance}>0.0030</span>
                     </List.Content>
-                    <Image avatar src={require('../../../styles/images/service.png')} size="mini" />
+                    <Image avatar src={"/" + require('../../../styles/images/service.png')} size="mini" />
                     <List.Content className={style.listContent}>
                         <List.Header as='a' className={style.listHeader}>The Outline <span className={style.lifetimeDate}>10 July</span></List.Header>
                         <List.Description className={style.listDesc}>In Stevens Point, <br/> Wisconsin, the questions</List.Description>
@@ -58,7 +58,7 @@ const Channels: React.SFC<ChannelsProps> = (props) => {
                     <List.Content floated='right'>
                         <span className={style.channelBalance}>0.0030</span>
                     </List.Content>
-                    <Image avatar src={require('../../../styles/images/service.png')} size="mini" />
+                    <Image avatar src={"/" + require('../../../styles/images/service.png')} size="mini" />
                     <List.Content className={style.listContent}>
                         <List.Header as='a' className={style.listHeader}>The Outline <span className={style.lifetimeDate}>10 July</span></List.Header>
                         <List.Description className={style.listDesc}>In Stevens Point, <br/> Wisconsin, the questions</List.Description>
@@ -68,7 +68,7 @@ const Channels: React.SFC<ChannelsProps> = (props) => {
                     <List.Content floated='right'>
                         <span className={style.channelBalance}>0.0030</span>
                     </List.Content>
-                    <Image avatar src={require('../../../styles/images/service.png')} size="mini" />
+                    <Image avatar src={"/" + require('../../../styles/images/service.png')} size="mini" />
                     <List.Content className={style.listContent}>
                         <List.Header as='a' className={style.listHeader}>The Outline <span className={style.lifetimeDate}>10 July</span></List.Header>
                         <List.Description className={style.listDesc}>In Stevens Point, <br/> Wisconsin, the questions</List.Description>
@@ -78,7 +78,7 @@ const Channels: React.SFC<ChannelsProps> = (props) => {
                     <List.Content floated='right'>
                         <span className={style.channelBalance}>0.0030</span>
                     </List.Content>
-                    <Image avatar src={require('../../../styles/images/service.png')} size="mini" />
+                    <Image avatar src={"/" + require('../../../styles/images/service.png')} size="mini" />
                     <List.Content className={style.listContent}>
                         <List.Header as='a' className={style.listHeader}>The Outline <span className={style.lifetimeDate}>10 July</span></List.Header>
                         <List.Description className={style.listDesc}>In Stevens Point, <br/> Wisconsin, the questions</List.Description>
@@ -88,7 +88,7 @@ const Channels: React.SFC<ChannelsProps> = (props) => {
                     <List.Content floated='right'>
                         <span className={style.channelBalance}>0.0030</span>
                     </List.Content>
-                    <Image avatar src={require('../../../styles/images/service.png')} size="mini" />
+                    <Image avatar src={"/" + require('../../../styles/images/service.png')} size="mini" />
                     <List.Content className={style.listContent}>
                         <List.Header as='a' className={style.listHeader}>The Outline <span className={style.lifetimeDate}>10 July</span></List.Header>
                         <List.Description className={style.listDesc}>In Stevens Point, <br/> Wisconsin, the questions</List.Description>

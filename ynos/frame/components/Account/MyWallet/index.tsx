@@ -37,17 +37,9 @@ export class MyWallet extends React.Component<any, any> {
 
     constructor (props: any) {
         super(props);
-        // if (!this.props.wallet) throw Error("Improbable error: props.wallet is not defined");
-        this.state = {
-            address: null,
-            balance: '-',
-            channels: []
-        };
         
-        //const dispatch = this.props;   
         console.log(this.props);
         console.log('-----------------------------------------');
-        //welcomePopup
     }
 
     render () {
@@ -163,7 +155,6 @@ export class MyWallet extends React.Component<any, any> {
                         We got something <br />
                         special for you to start
                     </p>
-                    <br/>
                     <Button primary content="Explore" className={style.buttonNav}
                         onClick={() => dispatch({type:"SET_WELCOME_POPUP_STATE", className: ""})}
                      />
