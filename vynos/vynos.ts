@@ -1,4 +1,4 @@
-import {DevWindow, YnosWindow} from "./YnosWindow";
+import {DevWindow, VynosWindow} from "./YnosWindow";
 import {Duplex} from "readable-stream";
 import FrameStream from "./lib/FrameStream";
 import StreamProvider from "./lib/StreamProvider";
@@ -16,7 +16,7 @@ import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import Promise = require('bluebird')
 import Payment from "machinomy/lib/Payment";
 
-let _window = (<DevWindow & YnosWindow>window);
+let _window = (<DevWindow & VynosWindow>window);
 
 function buildFrame(script: HTMLScriptElement, frame?: HTMLIFrameElement): HTMLIFrameElement {
   if (!frame) {

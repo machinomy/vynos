@@ -4,8 +4,8 @@ export interface DevWindow extends Window {
   RPC_URL: string
 }
 
-export interface YnosWindow extends Window {
+export interface VynosWindow extends Window {
     ynos: Vynos
 }
 
-declare var window: DevWindow & YnosWindow;
+declare var window: DevWindow & VynosWindow;
