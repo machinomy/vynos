@@ -213,7 +213,7 @@ class YnosImpl implements Vynos {
     return new Promise<void>((resolve, reject) => {
       try {
         this.frame = buildFrame(this.currentScript, frame);
-        this.stream = new FrameStream("ynos").toFrame(this.frame);
+        this.stream = new FrameStream("vynos").toFrame(this.frame);
         this.client = new YnosClient(this.stream)
         if (!this.frame.parentElement) {
           document.body.appendChild(this.frame);
@@ -232,7 +232,7 @@ class YnosImpl implements Vynos {
   }
 }
 
-let ynosPresent = _window.ynos && _window.ynos instanceof YnosImpl;
+let ynosPresent = _window.vynos && _window.vynos instanceof YnosImpl;
 if (!ynosPresent) {
-  _window.ynos = new YnosImpl(document.currentScript as HTMLScriptElement)
+  _window.vynos = new YnosImpl(document.currentScript as HTMLScriptElement)
 }

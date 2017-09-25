@@ -5,7 +5,7 @@ export interface DevWindow extends Window {
 }
 
 export interface VynosWindow extends Window {
-    ynos: Vynos
+    vynos: Vynos
 }
 
 declare var window: DevWindow & VynosWindow;

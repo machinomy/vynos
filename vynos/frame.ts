@@ -4,7 +4,7 @@ import PostStream from "./lib/PostStream";
 import WorkerProxy from "./frame/WorkerProxy";
 import renderApplication from "./frame/renderApplication";
 
-let windowStream = new FrameStream("ynos").toParent()
+let windowStream = new FrameStream("vynos").toParent()
 
 window.addEventListener("load", () => {
   initServiceWorkerClient((serviceWorker, onUnload) => {

@@ -14,7 +14,7 @@ function updateRecentPaymentChannel(channel: PaymentChannel) {
 }
 
 window.addEventListener("load", function () {
-  let ynos = _window.ynos
+  let ynos = _window.vynos
 
   ynos.initFrame().then(() => {
     return ynos.initAccount()
