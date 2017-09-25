@@ -1,10 +1,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {CSSProperties, FormEvent} from "react";
+import {FormEvent} from "react";
 import {AppFrameState} from "../../../../reducers/state";
 import WorkerProxy from "../../../../WorkerProxy";
 import Logo from '../../Header';
-import { Container, Button, Form, Header } from 'semantic-ui-react'
+import { Container, Button, Form, Header, Divider } from 'semantic-ui-react'
 const style = require("../../../../styles/ynos.css");
 
 export interface MnemonicSubpageProps {
@@ -21,9 +21,8 @@ export class Mnemonic extends React.Component<MnemonicSubpageProps, {}> {
 
     render () {
         return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
-                    <p className={style.signInLogo}>
-                        <Logo />
-                    </p>
+                    <Logo />
+                    <Divider hidden />
                     <Header as='h1' className={style.mnemonicHeader}>
                         Remember these words
                         <Header.Subheader>
@@ -33,9 +32,8 @@ export class Mnemonic extends React.Component<MnemonicSubpageProps, {}> {
                     </Header>
                     <Form onSubmit={this.handleSubmit.bind(this)} className={style.mnemonicForm}>
                         <Form.Field control='textarea' rows='2' value={this.props.mnemonic} readOnly autoHeight />
-                        <p className={style.buttonNav}>
-                            <Button type='submit' content="Done" primary />
-                        </p>
+                        <Divider hidden />
+                        <Button type='submit' content="Done" primary className={style.buttonNav} />
                     </Form>
             </Container>
     }

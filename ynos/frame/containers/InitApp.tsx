@@ -5,11 +5,9 @@ import _ = require('lodash')
 
 import SignUp from '../components/SignIn/Registration';
 import SignIn from '../components/SignIn/Authentication';
-import MyWallet from '../components/Account/MyWallet';
-import Transaction from '../components/Account/Transaction';
-import Refill from '../components/Account/Refill';
-import Restoration from '../components/SignIn/Registration/Restoration';
-import Account from '../containers/Account';
+
+
+import { Redirect } from 'react-router-dom'
 
 export interface InitAppProps {
     isInitPageExpected: boolean
@@ -23,19 +21,10 @@ const InitApp: React.SFC<InitAppProps> = (props) => {
     } else if (props.isUnlockPageExpected) {
         return <SignIn />
     } else if (props.isWalletPageExpected) {
-
-        let scriptQuery = window.location.href.replace(/.*\?/, '')
-        let query = _.chain(scriptQuery).replace('?', '').split('&').map(_.ary(_.partial(_.split, _, '='), 1)).fromPairs().value()
-        let hideWallet = query.hideWallet
-        if (hideWallet) {
-            return <p></p>
-        } else {
-            return <Account>
-                <MyWallet />
-            </Account>
-        }
+        return <Redirect to="/dashboard" />
+    } else {
+        return <p>Waiting...</p>
     }
-    return <p>Waiting...</p>
 }
 
 function mapStateToProps(state: AppFrameState): InitAppProps {

@@ -3,9 +3,8 @@ import {connect, Dispatch} from "react-redux";
 import {AppFrameState} from "../../../../reducers/state";
 import actions from "../../../../actions";
 import { Link } from 'react-router-dom';
-import { Button, Container  } from 'semantic-ui-react'
+import { Button, Container, Divider  } from 'semantic-ui-react'
 import Logo from '../../Header';
-const TERMS_OF_USE_ADDRESS = 'https://example.com';
 const style = require("../../../../styles/ynos.css");
 
 export interface TermsSubpageStateProps {
@@ -21,20 +20,17 @@ type TermsSubpageProps = TermsSubpageDispatchProps & TermsSubpageStateProps
 
 const Terms: React.SFC<TermsSubpageProps> = (props) => {
     return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
-                <p className={style.signInLogo}>
-                    <Logo />
-                </p>
+                <Logo />
+                <Divider hidden />
                 <p>
                     Ready to unlock a true value<br/>
                     of quality content<br/>
                     through <em>real</em> micropayments?
                 </p>
-                <p className={style.readTerms}>
-                    <Link to="/terms">Read Terms of Use</Link>
-                </p>
-                <p className={style.buttonNav}>
-                    <Button onClick={props.didAcceptTerms} content="Accept" primary />
-                </p>
+                <Divider hidden />
+                <Link to="/terms" className={style.readTerms}>Read Terms of Use</Link>
+                <Divider hidden />
+                <Button onClick={props.didAcceptTerms} content="Accept" primary className={style.buttonNav} />
         </Container>
 };
 
