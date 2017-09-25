@@ -7,7 +7,7 @@ import {EndFunction} from "../../lib/StreamServer";
 import Tx = require('ethereumjs-tx')
 import {Buffer} from "buffer";
 import Web3 = require("web3")
-import {DevWindow} from "../../../ynos/YnosWindow";
+import {DevWindow} from "../..//YnosWindow";
 import ethUtil = require('ethereumjs-util')
 import sigUtil = require('eth-sig-util')
 

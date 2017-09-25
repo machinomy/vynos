@@ -80,7 +80,7 @@ function webpackConfig (entry) {
                 },
                 {
                     test: /\.css$/i,
-                    exclude: [path.resolve(__dirname, "ynos"), path.resolve(__dirname, "harness")],
+                    exclude: [path.resolve(__dirname, "vynos"), path.resolve(__dirname, "harness")],
                     use: [
                         {
                             loader: 'style-loader'
@@ -139,28 +139,28 @@ function webpackConfig (entry) {
     return config
 }
 
-const YNOS_LIVE = webpackConfig({
-    ynos: [
+const VYNOS_LIVE = webpackConfig({
+    vynos: [
         `webpack-dev-server/client?http://localhost:${process.env.HARNESS_PORT}`,
         'webpack/hot/only-dev-server',
         'react-hot-loader/patch',
-        path.resolve(__dirname, "ynos/ynos.ts"),
+        path.resolve(__dirname, "vynos/vynos.ts"),
     ],
     frame: [
         `webpack-dev-server/client?http://localhost:${process.env.FRAME_PORT}`,
         'webpack/hot/only-dev-server',
         'react-hot-loader/patch',
-        path.resolve(__dirname, "ynos/frame.ts")
+        path.resolve(__dirname, "vynos/frame.ts")
     ],
     worker: [
-        path.resolve(__dirname, "ynos/worker.ts")
+        path.resolve(__dirname, "vynos/worker.ts")
     ]
 });
 
-const YNOS = webpackConfig({
-    ynos: path.resolve(__dirname, "ynos/ynos.ts"),
-    frame: path.resolve(__dirname, "ynos/frame.ts"),
-    worker: path.resolve(__dirname, "ynos/worker.ts")
+const VYNOS = webpackConfig({
+    vynos: path.resolve(__dirname, "vynos/vynos.ts"),
+    frame: path.resolve(__dirname, "vynos/frame.ts"),
+    worker: path.resolve(__dirname, "vynos/worker.ts")
 });
 
 const HARNESS = webpackConfig({
@@ -169,5 +169,5 @@ const HARNESS = webpackConfig({
 
 
 module.exports.HARNESS = HARNESS;
-module.exports.YNOS_LIVE = YNOS_LIVE;
-module.exports.YNOS = YNOS;
+module.exports.VYNOS_LIVE = VYNOS_LIVE;
+module.exports.VYNOS = VYNOS;

@@ -20,7 +20,7 @@
     ]
   },
   "include": [
-    "ynos",
+    "vynos",
     "node_modules/*/index.d.ts"
   ]
 }

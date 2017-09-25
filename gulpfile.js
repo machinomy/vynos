@@ -5,8 +5,8 @@ const   path                        = require("path"),
         gutil                       = require("gulp-util"),
         webpack                     = require("webpack"),
         WebpackDevServer            = require('webpack-dev-server'),
-        YNOS                        = require('./webpack').YNOS,
-        YNOS_LIVE                   = require('./webpack').YNOS_LIVE,
+        YNOS                        = require('./webpack').VYNOS,
+        YNOS_LIVE                   = require('./webpack').VYNOS_LIVE,
         HARNESS                     = require('./webpack').HARNESS;
 
 require('dotenv').config({ path: '.env' });
@@ -36,7 +36,7 @@ gulp.task("build:harness", ["build"], callback => {
 // Serve Vynos, Frame at http://localhost:9999/webpack-dev-server
 gulp.task("serve", () => {
   new WebpackDevServer(webpack(YNOS_LIVE), {
-    contentBase: 'ynos/',
+    contentBase: 'vynos/',
     hot: true,
     historyApiFallback: true,
     quiet: false,
@@ -59,7 +59,7 @@ gulp.task("serve", () => {
 
 gulp.task("serve:built", () => {
   new WebpackDevServer(webpack(YNOS), {
-    contentBase: 'ynos/',
+    contentBase: 'vynos/',
     hot: true,
     historyApiFallback: true,
     quiet: false,

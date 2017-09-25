@@ -1,4 +1,4 @@
-import {YnosWindow} from "../ynos/YnosWindow";
+import {YnosWindow} from "../vynos/YnosWindow";
 import {PaymentChannel} from "machinomy/lib/channel";
 
 let _window = (window as YnosWindow);
