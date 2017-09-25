@@ -12,7 +12,7 @@ const   path                        = require("path"),
 require('dotenv').config({ path: '.env' });
 
 
-// Build Ynos, Frame
+// Build Vynos, Frame
 gulp.task("build", callback => {
   webpack(YNOS).run(function(err, stats) {
     if(err) throw new gutil.PluginError('build', err);
@@ -33,7 +33,7 @@ gulp.task("build:harness", ["build"], callback => {
   });
 });
 
-// Serve Ynos, Frame at http://localhost:9999/webpack-dev-server
+// Serve Vynos, Frame at http://localhost:9999/webpack-dev-server
 gulp.task("serve", () => {
   new WebpackDevServer(webpack(YNOS_LIVE), {
     contentBase: 'ynos/',

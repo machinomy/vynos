@@ -39,7 +39,7 @@ function buildFrame(script: HTMLScriptElement, frame?: HTMLIFrameElement): HTMLI
   return frame;
 }
 
-export interface Ynos {
+export interface Vynos {
   getAccount: () => Promise<string>
   openChannel: (receiverAccount: string, channelValue: BigNumber.BigNumber) => Promise<PaymentChannel>
   depositToChannel: (ch: PaymentChannel) => Promise<PaymentChannel>
@@ -153,7 +153,7 @@ class YnosClient {
   }
 }
 
-class YnosImpl implements Ynos {
+class YnosImpl implements Vynos {
   frame: HTMLIFrameElement;
   stream: Duplex;
   client: YnosClient
