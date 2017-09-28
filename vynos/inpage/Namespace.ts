@@ -1,8 +1,8 @@
 import VynosClient from './VynosClient'
 import Promise = require('bluebird')
-import Frame from "./Frame";
-import FrameStream from "../lib/FrameStream";
-import isReady from "../lib/isReady";
+import Frame from './Frame'
+import FrameStream from '../lib/FrameStream'
+import isReady from '../lib/isReady'
 
 export default class Namespace {
   scriptAddress: string
@@ -14,9 +14,9 @@ export default class Namespace {
     this.window = window
   }
 
+  // Initialize frame container for the Wallet.
+  // Optional to use.
   init (frameElement?: HTMLIFrameElement): Promise<VynosClient> {
-    console.log('Namespace.init')
-
     this.client = new Promise((resolve, reject) => {
       isReady(() => {
         let frame = new Frame(this.scriptAddress, frameElement)
