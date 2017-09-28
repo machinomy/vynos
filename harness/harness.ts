@@ -29,6 +29,13 @@ window.addEventListener("load", function () {
     console.log(wallet)
   })
 
+  let displayButton = document.getElementById('display')
+  if (displayButton) {
+    displayButton.onclick = () => {
+      vynos.display()
+    }
+  }
+
   /*
   ynos.initFrame().then(() => {
     return ynos.initAccount()
