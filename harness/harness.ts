@@ -19,6 +19,11 @@ function updateRecentPaymentChannel(channel: PaymentChannel) {
 window.addEventListener("load", function () {
   let vynos = _window.vynos
 
+  let customFrame = document.getElementById('custom_frame')
+  if (customFrame) {
+    vynos.init(customFrame as HTMLIFrameElement)
+  }
+
   vynos.ready().then(wallet => {
     console.log('ffffffffffffffffffffffffffffffff')
     console.log(wallet)
