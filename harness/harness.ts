@@ -1,8 +1,10 @@
 import {VynosWindow} from "../vynos/window";
 import {PaymentChannel} from "machinomy/lib/channel";
+import {inspect} from "util";
 
 let _window = (window as VynosWindow);
 
+/*
 let recentPaymentChannel: PaymentChannel|null = null
 
 function updateRecentPaymentChannel(channel: PaymentChannel) {
@@ -12,10 +14,22 @@ function updateRecentPaymentChannel(channel: PaymentChannel) {
     code.textContent = JSON.stringify(channel.toJSON())
   }
 }
+*/
 
 window.addEventListener("load", function () {
-  let ynos = _window.vynos
+  let vynos = _window.vynos
 
+  vynos.ready().then(wallet => {
+    console.log('ffffffffffffffffffffffffffffffff')
+    console.log(wallet)
+  })
+
+  vynos.ready().then(wallet => {
+    console.log('ffffffffffffffffffffffffffffffff')
+    console.log(wallet)
+  })
+
+  /*
   ynos.initFrame().then(() => {
     return ynos.initAccount()
   }).then(() => {
@@ -137,5 +151,6 @@ window.addEventListener("load", function () {
       })
     }
   }
+  */
 })
 

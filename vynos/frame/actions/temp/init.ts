@@ -1,7 +1,7 @@
 import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
 import {TempState} from "../../reducers/state";
 
-const actionCreator = actionCreatorFactory("frame/init");
+const actionCreator = actionCreatorFactory("frame/instance");
 
 export const didAcceptTerms: ActionCreator<boolean> = actionCreator<boolean>("didAcceptTerms");
 export function didAcceptTermsHandler(state: TempState, accepted: boolean): TempState {
@@ -15,17 +15,17 @@ export function didReceiveMnemonicHandler(state: TempState, mnemonic: string): T
 
 
 /*
-export const acceptTerms: ActionCreator<Date> = actionCreator<Date>("init/acceptTerms");
+export const acceptTerms: ActionCreator<Date> = actionCreator<Date>("instance/acceptTerms");
 export function acceptTermsHandler(state: InitState, date: Date): InitState {
   return { ...state, didAcceptTerms: date.toISOString() };
 }
 
-export const setKeyring = actionCreator<string>("init/setKeyring");
+export const setKeyring = actionCreator<string>("instance/setKeyring");
 export function setKeyringHandler(state: InitState, keyring: string): InitState {
   return { ...state, keyring: keyring };
 }
 
-export const didStoreSeed = actionCreator<Date>("init/didStoreSeed");
+export const didStoreSeed = actionCreator<Date>("instance/didStoreSeed");
 export function didStoreSeedHandler(state: InitState, date: Date): InitState {
   return { ...state, didStoreSeed: date.toISOString() };
 }
@@ -34,7 +34,7 @@ export type GenerateKeyringArguments = {
   mnemonic: string;
   password: string;
 }
-export const generateKeyringCreator = actionCreator.async<GenerateKeyringArguments, undefined>("init/generateKeyringCreator");
+export const generateKeyringCreator = actionCreator.async<GenerateKeyringArguments, undefined>("instance/generateKeyringCreator");
 export const generateKeyring = bindThunkAction(generateKeyringCreator,
   async (args, dispatch) => {
     let mnemonic = args.mnemonic;

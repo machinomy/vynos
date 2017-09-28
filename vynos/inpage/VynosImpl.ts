@@ -63,6 +63,8 @@ export default class VynosImpl implements Vynos {
   }
 
   initFrame (frame?: HTMLIFrameElement): Promise<void> {
+    return Promise.reject('foo')
+    /*
     if (this.frame) return Promise.resolve();
 
     return new Promise<void>((resolve, reject) => {
@@ -79,6 +81,7 @@ export default class VynosImpl implements Vynos {
         reject(e);
       }
     });
+    */
   }
 
   getWeb3(): Promise<Web3> {
