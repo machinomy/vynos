@@ -14,8 +14,8 @@ import Web3 = require("web3")
 import BigNumber from "bignumber.js";
 import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import Promise = require('bluebird')
-import Payment from "machinomy/lib/Payment";
 import Vynos from './lib/Vynos'
+import VynosPayInChannelResponse from './lib/VynosPayInChannelResponse'
 
 let _window = (<DevWindow & VynosWindow>window);
 
@@ -38,11 +38,6 @@ function buildFrame(script: HTMLScriptElement, frame?: HTMLIFrameElement): HTMLI
   frame.src = currentScriptAddress.replace('vynos.bundle.js', 'frame.html')
   frame.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin allow-popups allow-forms");
   return frame;
-}
-
-export type YnosPayInChannelResponse = {
-  channel: PaymentChannel
-  payment: Payment
 }
 
 function isPaymentChannel(pc: PaymentChannel|PaymentChannelJSON): pc is PaymentChannel {
@@ -107,8 +102,7 @@ class YnosClient {
     })
   }
 
-
-  payInChannel (channel: PaymentChannel | PaymentChannelJSON, amount: number, override?: boolean): Promise<YnosPayInChannelResponse> {
+  payInChannel (channel: PaymentChannel | PaymentChannelJSON, amount: number, override?: boolean): Promise<VynosPayInChannelResponse> {
     let request: PayInChannelRequest = {
       id: randomId(),
       method: PayInChannelRequest.method,
@@ -179,7 +173,7 @@ class YnosImpl implements Vynos {
     throw new Error("Not Implemented")
   }
 
-  payInChannel (ch: PaymentChannel, amount: number, override?: boolean): Promise<YnosPayInChannelResponse> {
+  payInChannel (ch: PaymentChannel, amount: number, override?: boolean): Promise<VynosPayInChannelResponse> {
     if (!this.client) return Promise.reject(new Error("Do initFrame first"))
 
     return this.client.payInChannel(ch, amount, override)

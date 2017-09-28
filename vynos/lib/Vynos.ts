@@ -1,6 +1,6 @@
 import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import Promise = require('bluebird')
-import YnosPayInChannelResponse from "./YnosPayInChannelResponse";
+import YnosPayInChannelResponse from "./VynosPayInChannelResponse";
 import Web3 = require("web3")
 
 export default interface Vynos {
