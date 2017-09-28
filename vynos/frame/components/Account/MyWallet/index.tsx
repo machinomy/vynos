@@ -37,7 +37,7 @@ export class MyWallet extends React.Component<any, any> {
 
     constructor (props: any) {
         super(props);
-        
+
         console.log(this.props);
         console.log('-----------------------------------------');
     }

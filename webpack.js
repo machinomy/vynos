@@ -119,7 +119,8 @@ function webpackConfig (entry) {
         node: {
             fs: 'empty',
             net: 'empty',
-            tls: 'empty'
+            tls: 'empty',
+            module: 'empty'
         }
     };
 

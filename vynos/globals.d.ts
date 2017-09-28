@@ -57,7 +57,6 @@ interface NodeRequireFunction {
 interface NodeRequire extends NodeRequireFunction {
   resolve(id: string): string;
   cache: any;
-  extensions: any;
   main: NodeModule | undefined;
 }
 
