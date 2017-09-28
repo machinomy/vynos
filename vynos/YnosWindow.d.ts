@@ -1,4 +1,4 @@
-import {Vynos} from "./vynos";
+import Vynos from './lib/Vynos'
 
 export interface DevWindow extends Window {
   RPC_URL: string

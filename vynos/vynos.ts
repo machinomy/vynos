@@ -15,6 +15,7 @@ import BigNumber from "bignumber.js";
 import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import Promise = require('bluebird')
 import Payment from "machinomy/lib/Payment";
+import Vynos from './lib/Vynos'
 
 let _window = (<DevWindow & VynosWindow>window);
 
@@ -37,19 +38,6 @@ function buildFrame(script: HTMLScriptElement, frame?: HTMLIFrameElement): HTMLI
   frame.src = currentScriptAddress.replace('vynos.bundle.js', 'frame.html')
   frame.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin allow-popups allow-forms");
   return frame;
-}
-
-export interface Vynos {
-  getAccount: () => Promise<string>
-  openChannel: (receiverAccount: string, channelValue: BigNumber.BigNumber) => Promise<PaymentChannel>
-  depositToChannel: (ch: PaymentChannel) => Promise<PaymentChannel>
-  closeChannel: (ch: PaymentChannel) => Promise<PaymentChannel>;
-  listChannels: () => Promise<Array<PaymentChannel>>;
-  makePayment: () => void // web3.eth.sendTransaction
-  payInChannel: (ch: PaymentChannel, amount: number, override?: boolean) => Promise<YnosPayInChannelResponse> // FIXME What about lifecycle events? Amount is bignumber, actually.
-  initAccount: () => Promise<void>
-  initFrame: (frame?: HTMLIFrameElement) => Promise<void>
-  getWeb3(): Promise<Web3>
 }
 
 export type YnosPayInChannelResponse = {
