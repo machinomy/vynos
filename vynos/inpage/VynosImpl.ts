@@ -62,28 +62,6 @@ export default class VynosImpl implements Vynos {
     return this.client.initAccount()
   }
 
-  initFrame (frame?: HTMLIFrameElement): Promise<void> {
-    return Promise.reject('foo')
-    /*
-    if (this.frame) return Promise.resolve();
-
-    return new Promise<void>((resolve, reject) => {
-      try {
-        let f = new Frame(this.currentScript, frame)
-        this.frame = f.build()
-        this.stream = new FrameStream("vynos").toFrame(this.frame);
-        this.client = new VynosClient(this.stream)
-        if (!this.frame.parentElement) {
-          document.body.appendChild(this.frame);
-        }
-        resolve();
-      } catch (e) {
-        reject(e);
-      }
-    });
-    */
-  }
-
   getWeb3(): Promise<Web3> {
     if (!this.client) return Promise.reject(new Error("Do initFrame first"));
 

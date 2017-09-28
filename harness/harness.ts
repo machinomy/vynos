@@ -24,11 +24,6 @@ window.addEventListener("load", function () {
     console.log(wallet)
   })
 
-  vynos.ready().then(wallet => {
-    console.log('ffffffffffffffffffffffffffffffff')
-    console.log(wallet)
-  })
-
   /*
   ynos.initFrame().then(() => {
     return ynos.initAccount()

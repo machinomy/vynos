@@ -12,6 +12,5 @@ export default interface Vynos {
   makePayment: () => void // web3.eth.sendTransaction
   payInChannel: (ch: PaymentChannel, amount: number, override?: boolean) => Promise<YnosPayInChannelResponse> // FIXME What about lifecycle events? Amount is bignumber, actually.
   initAccount: () => Promise<void>
-  initFrame: (frame?: HTMLIFrameElement) => Promise<void>
   getWeb3(): Promise<Web3>
 }
