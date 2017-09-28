@@ -1,9 +1,9 @@
-import {DevWindow, VynosWindow} from "./YnosWindow";
-import VynosImpl from './inpage/VynosImpl'
+import {DevWindow, VynosWindow} from './window'
+import VynosNamespace from './inpage/VynosImpl'
 
-let _window = (<DevWindow & VynosWindow>window);
+let global = window as DevWindow & VynosWindow
 
-let ynosPresent = _window.vynos && _window.vynos instanceof VynosImpl;
-if (!ynosPresent) {
-  _window.vynos = new VynosImpl(document.currentScript as HTMLScriptElement)
+let isVynosPresent = global.vynos && global.vynos instanceof VynosNamespace;
+if (!isVynosPresent) {
+  global.vynos = new VynosNamespace(document.currentScript as HTMLScriptElement)
 }

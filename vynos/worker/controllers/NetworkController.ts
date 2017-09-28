@@ -9,7 +9,7 @@ import {Buffer} from "buffer";
 import Web3 = require("web3")
 import ethUtil = require('ethereumjs-util')
 import sigUtil = require('eth-sig-util')
-import {DevWindow} from "../../YnosWindow";
+import {DevWindow} from "../../window";
 
 export type ApproveTransactionCallback = (error: any, isApproved: true) => void
 
