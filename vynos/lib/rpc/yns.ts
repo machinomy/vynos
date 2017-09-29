@@ -2,6 +2,7 @@ import {JSONRPC, RequestPayload, ResponsePayload} from "../Payload"
 import {SharedState} from "../../worker/State";
 import {PaymentChannelJSON} from "machinomy/lib/channel";
 import Payment from "machinomy/lib/Payment";
+import VynosBuyResponse from "../VynosBuyResponse";
 
 export class InitAccountRequest implements RequestPayload {
   id: number;
@@ -154,6 +155,23 @@ export class PayInChannelRequest implements RequestPayload {
 
 export interface PayInChannelResponse extends ResponsePayload {
   result: [PaymentChannelJSON, Payment]
+}
+
+export class BuyRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof BuyRequest.method;
+  params: [string, string, number, string];
+
+  static method = "yns_buyRequest"
+
+  static match(payload: RequestPayload): payload is BuyRequest {
+    return payload.method === BuyRequest.method
+  }
+}
+
+export interface BuyResponse extends ResponsePayload {
+  result: [VynosBuyResponse]
 }
 
 export class ListChannelsRequest implements RequestPayload {

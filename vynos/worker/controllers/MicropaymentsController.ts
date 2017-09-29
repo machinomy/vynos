@@ -6,6 +6,9 @@ import { PaymentChannel } from "machinomy/lib/channel";
 import Promise = require('bluebird')
 import * as BigNumber from 'bignumber.js'
 import Payment from "machinomy/lib/Payment";
+import {BuyResponse} from "../../lib/rpc/yns";
+import {PaymentRequired} from "machinomy/lib/transport";
+import VynosBuyResponse from "../../lib/VynosBuyResponse";
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -142,6 +145,34 @@ export default class MicropaymentsController {
         })
       } else {
         return Promise.reject(new Error('No channel present, really'))
+      }
+    })
+  }
+
+  _buyUsingExistingChannel(paymentChannel: PaymentChannel, paymentRequired: PaymentRequired): Promise<VynosBuyResponse> {
+    return Payment.fromPaymentChannel(this.client.web3, paymentChannel, paymentRequired.price).then(payment => {
+      let nextPaymentChannel = PaymentChannel.fromPayment(payment)
+      return this.client.storage.channels.saveOrUpdate(nextPaymentChannel).then(() => {
+        return this.client.transport.requestToken(paymentRequired.gateway, payment)
+      }).then(token => {
+        return {
+          channel: nextPaymentChannel,
+          token: token
+        }
+      })
+    })
+  }
+
+  buy (title: string, receiver: string, amount: number, gateway: string): Promise<VynosBuyResponse> {
+    let paymentRequired = new PaymentRequired(receiver, amount, gateway)
+    return this.client.findOpenChannel(paymentRequired).then(paymentChannel => {
+      if (paymentChannel) {
+        return this._buyUsingExistingChannel(paymentChannel, paymentRequired)
+      } else {
+        let value = paymentRequired.price * 10 // FIXME Total value of the channel
+        return this.client.contract.buildPaymentChannel(this.account, paymentRequired.receiver, value).then((paymentChannel: PaymentChannel) => {
+          return this._buyUsingExistingChannel(paymentChannel, paymentRequired)
+        })
       }
     })
   }

@@ -2,6 +2,7 @@ import StreamProvider from './../lib/StreamProvider'
 import { Duplex } from 'readable-stream'
 import {AccountsRequest, AccountsResponse} from '../lib/rpc/eth'
 import {
+  BuyRequest, BuyResponse,
   CloseChannelRequest, CloseChannelResponse, InitAccountRequest, InitAccountResponse, ListChannelsRequest,
   ListChannelsResponse,
   OpenChannelRequest,
@@ -13,6 +14,7 @@ import Web3 = require("web3")
 import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import VynosPayInChannelResponse from "../lib/VynosPayInChannelResponse";
 import Vynos from '../lib/Vynos'
+import VynosBuyResponse from "../lib/VynosBuyResponse";
 
 function isPaymentChannel(pc: PaymentChannel|PaymentChannelJSON): pc is PaymentChannel {
   return !!((pc as PaymentChannel).toJSON)
@@ -102,6 +104,18 @@ export default class VynosClient implements Vynos {
         channel: paymentChannel,
         payment: payment
       }
+    })
+  }
+
+  buy (title: string, receiver: string, amount: number, gateway: string): Promise<VynosBuyResponse> {
+    let request: BuyRequest = {
+      id: randomId(),
+      method: BuyRequest.method,
+      jsonrpc: JSONRPC,
+      params: [title, receiver, amount, gateway]
+    }
+    return this.provider.ask(request).then((response: BuyResponse) => {
+      return response.result[0]
     })
   }
 

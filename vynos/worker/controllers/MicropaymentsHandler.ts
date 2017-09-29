@@ -2,6 +2,7 @@ import MicropaymentsController from "./MicropaymentsController";
 import {RequestPayload} from "../../lib/Payload";
 import {EndFunction} from "../../lib/StreamServer";
 import {
+  BuyRequest, BuyResponse,
   CloseChannelRequest, CloseChannelResponse, ListChannelsRequest, ListChannelsResponse, OpenChannelRequest,
   OpenChannelResponse,
   PayInChannelRequest, PayInChannelResponse
@@ -66,7 +67,23 @@ export default class MicropaymentsHandler {
         result: channels.map(pc => pc.toJSON())
       }
       end(null, response)
-    })
+    }).catch(end)
+  }
+
+  buy(message: BuyRequest, next: Function, end: EndFunction) {
+    let title = message.params[0]
+    let receiver = message.params[1]
+    let amount = message.params[2]
+    let gateway = message.params[3]
+
+    this.controller.buy(title, receiver, amount, gateway).then(vynosBuyResponse => {
+      let response: BuyResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: [vynosBuyResponse]
+      }
+      end(null, response)
+    }).catch(end)
   }
 
   handler (message: RequestPayload, next: Function, end: EndFunction) {
@@ -78,6 +95,8 @@ export default class MicropaymentsHandler {
       this.payInChannel(message, next, end)
     } else if (ListChannelsRequest.match(message)) {
       this.listChannels(message, next, end)
+    } else if (BuyRequest.match(message)) {
+      this.buy(message, next, end)
     } else {
       next()
     }
