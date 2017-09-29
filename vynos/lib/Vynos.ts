@@ -4,6 +4,7 @@ import YnosPayInChannelResponse from "./VynosPayInChannelResponse";
 import Web3 = require("web3")
 
 export default interface Vynos {
+  provider: Web3.Provider
   getAccount: () => Promise<string>
   openChannel: (receiverAccount: string, channelValue: BigNumber.BigNumber) => Promise<PaymentChannel>
   depositToChannel: (ch: PaymentChannel) => Promise<PaymentChannel>

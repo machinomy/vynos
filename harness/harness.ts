@@ -1,6 +1,8 @@
 import {VynosWindow} from "../vynos/window";
 import {PaymentChannel} from "machinomy/lib/channel";
 import {inspect} from "util";
+import Namespace from "../vynos/inpage/Namespace";
+import Web3 = require("web3");
 
 let _window = (window as VynosWindow);
 
@@ -24,9 +26,16 @@ window.addEventListener("load", function () {
     vynos.init(customFrame as HTMLIFrameElement)
   }
 
-  vynos.ready().then(wallet => {
+  vynos.ready().then(instance => {
     console.log('ffffffffffffffffffffffffffffffff')
-    console.log(wallet)
+    console.log(instance)
+
+    let provider = instance.provider
+    let web3 = new Web3(provider)
+    web3.eth.getAccounts((err, accounts) => {
+      console.log(err)
+      console.log(accounts)
+    })
   })
 
   let displayButton = document.getElementById('display')

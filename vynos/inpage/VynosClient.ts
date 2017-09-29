@@ -28,17 +28,16 @@ export default class VynosClient implements Vynos {
     throw new Error("Not Implemented")
   }
 
-
-  streamProvider: StreamProvider
+  provider: StreamProvider
 
   constructor (stream: Duplex) {
-    this.streamProvider = new StreamProvider("VynosClient")
-    this.streamProvider.pipe(stream).pipe(this.streamProvider)
+    this.provider = new StreamProvider("VynosClient")
+    this.provider.pipe(stream).pipe(this.provider)
   }
 
   getAccount(): Promise<string> {
     let request = new AccountsRequest()
-    return this.streamProvider.ask(request).then((response: AccountsResponse) => {
+    return this.provider.ask(request).then((response: AccountsResponse) => {
       return response.result[0]
     })
   }
@@ -50,13 +49,13 @@ export default class VynosClient implements Vynos {
       jsonrpc: JSONRPC,
       params: []
     }
-    return this.streamProvider.ask(request).then((response: InitAccountResponse) => {
+    return this.provider.ask(request).then((response: InitAccountResponse) => {
       return;
     })
   }
 
   getWeb3(): Promise<Web3> {
-    return Promise.resolve(new Web3(this.streamProvider))
+    return Promise.resolve(new Web3(this.provider))
   }
 
   openChannel (receiverAccount: string, channelValue: BigNumber.BigNumber): Promise<PaymentChannel> {
@@ -66,7 +65,7 @@ export default class VynosClient implements Vynos {
       jsonrpc: JSONRPC,
       params: [receiverAccount, channelValue.toString()]
     }
-    return this.streamProvider.ask(request).then((response: OpenChannelResponse) => {
+    return this.provider.ask(request).then((response: OpenChannelResponse) => {
       return PaymentChannel.fromDocument(response.result[0])
     })
   }
@@ -81,7 +80,7 @@ export default class VynosClient implements Vynos {
     if (isPaymentChannel(channel)) {
       request.params = [channel.toJSON()]
     }
-    return this.streamProvider.ask(request).then((response: CloseChannelResponse) => {
+    return this.provider.ask(request).then((response: CloseChannelResponse) => {
       return PaymentChannel.fromDocument(response.result[0])
     })
   }
@@ -96,7 +95,7 @@ export default class VynosClient implements Vynos {
     if (isPaymentChannel(channel)) {
       request.params = [channel.toJSON(), amount, override as boolean]
     }
-    return this.streamProvider.ask(request).then((response: PayInChannelResponse) => {
+    return this.provider.ask(request).then((response: PayInChannelResponse) => {
       let paymentChannel = PaymentChannel.fromDocument(response.result[0])
       let payment = response.result[1]
       return {
@@ -113,7 +112,7 @@ export default class VynosClient implements Vynos {
       jsonrpc: JSONRPC,
       params: []
     }
-    return this.streamProvider.ask(request).then((response: ListChannelsResponse) => {
+    return this.provider.ask(request).then((response: ListChannelsResponse) => {
       return response.result.map(pc => PaymentChannel.fromDocument(pc))
     })
   }
