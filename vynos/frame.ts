@@ -15,12 +15,10 @@ window.addEventListener("load", () => {
       target: serviceWorker
     })
 
-    windowStream.pipe(workerStream)
-    workerStream.pipe(windowStream)
+    windowStream.pipe(workerStream).pipe(windowStream)
 
     let workerProxy = new WorkerProxy()
-    workerStream.pipe(workerProxy.stream)
-    workerProxy.stream.pipe(workerStream)
+    workerStream.pipe(workerProxy.stream).pipe(workerStream)
 
     renderApplication(document, workerProxy)
 
