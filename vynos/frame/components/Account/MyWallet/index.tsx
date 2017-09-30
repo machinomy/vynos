@@ -24,36 +24,56 @@ export interface WalletPageProps {
     wallet?: Wallet;
     web3?: Web3;
     bought?: any;
+    welcomePopup: string
 }
 
 export interface WalletPageState {
     address: string|null;
     balance: string;
-    channels: Array<PaymentChannel>;
 }
 
-export class MyWallet extends React.Component<any, any> {
+export class MyWallet extends React.Component<WalletPageProps, WalletPageState> {
     updateBalanceTimer: any;
 
     constructor (props: any) {
         super(props);
-
+        this.state = {
+          address: null,
+          balance: '0'
+        }
         console.log(this.props);
         console.log('-----------------------------------------');
     }
 
+    componentDidMount () {
+      if (this.props.web3) {
+        let web3 = this.props.web3
+        web3.eth.getAccounts((err, accounts) => {
+          let address = accounts[0]
+          setInterval(() => {
+            web3.eth.getBalance(address, (err, balance) => {
+              this.setState({
+                balance: web3.fromWei(balance, 'ether').toString()
+              })
+            })
+          }, 500)
+          console.log(address)
+          this.setState({address: address})
+        })
+      }
+    }
+
     render () {
-        const {dispatch, welcomePopup} = this.props;
+        const {welcomePopup} = this.props;
         return <div>
             <List className={style.accountInfo}>
                 <List.Item>
                     <Image src={require('../../../styles/images/avatar.svg')} className={style.accountAvatar} />
                     <List.Content>
-                        <List.Header as='a' className={style.walletAddress}>0x453535375735353</List.Header>
+                        <List.Header as='a' className={style.walletAddress}>{this.state.address}</List.Header>
                         <List.Description>
-                            <span className={style.ethBalance}>1.345</span>
-                            <span className={style.ethBalance}>1.345</span>
-                            <span className={style.balance}>$125.34</span></List.Description>
+                            <span className={style.ethBalance}>{this.state.balance}</span>
+                        </List.Description>
                     </List.Content>
                 </List.Item>
             </List>
@@ -155,16 +175,14 @@ export class MyWallet extends React.Component<any, any> {
                         We got something <br />
                         special for you to start
                     </p>
-                    <Button primary content="Explore" className={style.buttonNav}
-                        onClick={() => dispatch({type:"SET_WELCOME_POPUP_STATE", className: ""})}
-                     />
+                    <Button primary content="Explore" className={style.buttonNav}/>
                 </Container>
             </div>
         </div>
     }
 }
 
-function mapStateToProps (state: any): any {
+function mapStateToProps (state: any): WalletPageProps {
     let workerProxy = state.temp.workerProxy!
     return {
         workerProxy: workerProxy,
