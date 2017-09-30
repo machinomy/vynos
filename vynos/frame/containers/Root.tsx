@@ -1,7 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {AppFrameState} from "../reducers/state";
-import _ = require('lodash')
 
 import SignUp from '../components/SignIn/Registration';
 import SignIn from '../components/SignIn/Authentication';
@@ -9,25 +8,25 @@ import SignIn from '../components/SignIn/Authentication';
 
 import { Redirect } from 'react-router-dom'
 
-export interface InitAppProps {
+export interface RootProps {
     isInitPageExpected: boolean
     isWalletPageExpected: boolean
     isUnlockPageExpected: boolean
 }
 
-const InitApp: React.SFC<InitAppProps> = (props) => {
+const Root: React.SFC<RootProps> = (props) => {
     if (props.isInitPageExpected) {
-        return <SignUp />
+        return <Redirect to="/sign_up" />
     } else if (props.isUnlockPageExpected) {
         return <SignIn />
     } else if (props.isWalletPageExpected) {
         return <Redirect to="/dashboard" />
     } else {
-        return <p>Waiting...</p>
+        return <Redirect to="/" />
     }
 }
 
-function mapStateToProps(state: AppFrameState): InitAppProps {
+function mapStateToProps(state: AppFrameState): RootProps {
     return {
         isInitPageExpected: !(state.shared.didInit),
         isWalletPageExpected: !!(state.shared.didInit && state.temp.workerProxy && !state.shared.isLocked),
@@ -35,4 +34,4 @@ function mapStateToProps(state: AppFrameState): InitAppProps {
     }
 }
 
-export default connect<InitAppProps, undefined, any>(mapStateToProps)(InitApp)
+export default connect<RootProps, undefined, any>(mapStateToProps)(Root)
