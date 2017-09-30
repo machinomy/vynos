@@ -2,19 +2,18 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {AppFrameState} from "../reducers/state";
 
-import SignUp from '../components/SignIn/Registration';
 import SignIn from '../components/SignIn/Authentication';
 
 
 import { Redirect } from 'react-router-dom'
 
-export interface RootProps {
+export interface RootRouteProps {
     isInitPageExpected: boolean
     isWalletPageExpected: boolean
     isUnlockPageExpected: boolean
 }
 
-const Root: React.SFC<RootProps> = (props) => {
+const RootRoute = (props: RootRouteProps) => {
     if (props.isInitPageExpected) {
         return <Redirect to="/sign_up" />
     } else if (props.isUnlockPageExpected) {
@@ -26,7 +25,7 @@ const Root: React.SFC<RootProps> = (props) => {
     }
 }
 
-function mapStateToProps(state: AppFrameState): RootProps {
+function mapStateToProps(state: AppFrameState): RootRouteProps {
     return {
         isInitPageExpected: !(state.shared.didInit),
         isWalletPageExpected: !!(state.shared.didInit && state.temp.workerProxy && !state.shared.isLocked),
@@ -34,4 +33,4 @@ function mapStateToProps(state: AppFrameState): RootProps {
     }
 }
 
-export default connect<RootProps, undefined, any>(mapStateToProps)(Root)
+export default connect<RootRouteProps, undefined, any>(mapStateToProps)(RootRoute)

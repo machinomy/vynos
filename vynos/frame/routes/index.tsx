@@ -3,7 +3,7 @@ import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
 /** containers */
 import DashboardMenu from '../containers/DashboardMenu'
-import Root from '../containers/Root'
+import RootRoute from './RootRoute'
 
 /** components */
 import Channels from '../components/Account/Channels'
@@ -18,7 +18,7 @@ import SignUp from '../components/SignIn/Registration';
 export default (
   <Router>
     <Switch>
-      <Route exact path="/" component={Root} />
+      <Route exact path="/" component={RootRoute} />
       <Route path="/sign_up" component={SignUp} />
 
       <Route path="/terms" component={TextTerms} />
