@@ -128,10 +128,12 @@ function webpackConfig (entry) {
   };
 
   if (process.env.NODE_ENV === 'production') {
+    /*
     config.plugins = config.plugins.concat(
-      new webpack.optimize.UglifyJsPlugin()
+      new UglifyJSPlugin()
     );
     config.output.path = DIST_PATH;
+    */
   }
 
   return config
