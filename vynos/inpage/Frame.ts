@@ -20,7 +20,7 @@ export default class Frame {
       this.element.width = '320px'
       this.element.style.marginTop = '-500px';
       this.element.style.opacity = '0'
-      this.element.style.transition = 'margin-top 1s, opacity 1s'
+      this.element.style.transition = 'margin-top 0.7s, opacity 1s'
     }
     this.element.src = this.vynosScriptAddress.replace('vynos.bundle.js', 'frame.html')
     this.element.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin allow-popups allow-forms");

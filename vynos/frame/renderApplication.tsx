@@ -5,13 +5,20 @@ import {Provider} from 'react-redux'
 import configureStore from './store/configureStore'
 import routes from './routes'
 
+import 'semantic-ui-css/semantic.min.css'; // FIXME
+
 const MOUNT_POINT_ID = 'mount-point'
 
 async function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
     const frameState = await workerProxy.getSharedState();
     const store = configureStore(workerProxy, frameState);
 
-    DOM.render(<Provider store={store}>{routes}</Provider>, mountPoint)
+    const application =
+      <Provider store={store}>
+        {routes}
+      </Provider>
+
+    DOM.render(application, mountPoint)
 }
 
 export default function renderApplication (document: HTMLDocument, workerProxy: WorkerProxy) {

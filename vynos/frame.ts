@@ -1,8 +1,8 @@
-import {initServiceWorkerClient} from "./lib/serviceWorkerClient"
-import FrameStream from "./lib/FrameStream";
-import PostStream from "./lib/PostStream";
-import WorkerProxy from "./frame/WorkerProxy";
-import renderApplication from "./frame/renderApplication";
+import {initServiceWorkerClient} from './lib/serviceWorkerClient'
+import FrameStream from './lib/FrameStream'
+import PostStream from './lib/PostStream'
+import WorkerProxy from './frame/WorkerProxy'
+import renderApplication from './frame/renderApplication'
 
 let windowStream = new FrameStream("vynos").toParent()
 
