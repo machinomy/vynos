@@ -1,42 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="9432 2491 257 101">
-  <defs>
-    <style>
-      .cls-1, .cls-2, .cls-3, .cls-4 {
-        fill: #d04071;
-      }
-
-      .cls-1 {
-        font-size: 40px;
-        font-family: SegoeUI, Segoe UI;
-      }
-
-      .cls-2 {
-        opacity: 0.314;
-      }
-
-      .cls-3 {
-        opacity: 0.647;
-      }
-
-      .cls-4 {
-        opacity: 0.98;
-      }
-    </style>
-  </defs>
-  <g id="Group_94" data-name="Group 94" transform="translate(7960 2436)">
-    <g id="Group_93" data-name="Group 93">
-      <text id="vynos" class="cls-1" transform="translate(1472 103)"><tspan x="77.719" y="43">vynos</tspan></text>
-      <g id="Spinner-2" transform="translate(1550.48 35)">
-        <g id="Group_1" data-name="Group 1">
-          <rect id="Rectangle_1" data-name="Rectangle 1" class="cls-2" width="6" height="20" rx="3" transform="translate(47 20)"/>
-        </g>
-        <g id="Group_2" data-name="Group 2" transform="translate(118.301 31.699) rotate(120)">
-          <rect id="Rectangle_2" data-name="Rectangle 2" class="cls-3" width="6" height="20" rx="3" transform="translate(47 20)"/>
-        </g>
-        <g id="Group_3" data-name="Group 3" transform="translate(31.699 118.301) rotate(-120)">
-          <rect id="Rectangle_3" data-name="Rectangle 3" class="cls-4" width="6" height="20" rx="3" transform="translate(47 20)"/>
-        </g>
-      </g>
-    </g>
-  </g>
-</svg>
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+                    <style type="text/css">
+                    .st0{fill:#D04071;}
+                    </style>
+                    <g transform="rotate(0 50 50)">
+                        <path class="st0" d="M100,40L100,40c3.3,0,6,2.7,6,6v28c0,3.3-2.7,6-6,6l0,0c-3.3,0-6-2.7-6-6V46C94,42.7,96.7,40,100,40z	">
+                    </path>
+                    </g>
+                    <g transform="rotate(120 50 50)">
+                        <path class="st0" d="M68.3-78.3L68.3-78.3c3.3,0,6,2.7,6,6v28c0,3.3-2.7,6-6,6l0,0c-3.3,0-6-2.7-6-6l0-28
+                            C62.3-75.6,65-78.3,68.3-78.3z	">
+                        </path>
+                    </g>
+                    <g transform="rotate(240 50 50)">
+                        <path class="st0" d="M-18.3,8.3L-18.3,8.3c3.3,0,6,2.7,6,6l0,28c0,3.3-2.7,6-6,6l0,0c-3.3,0-6-2.7-6-6l0-28
+                        C-24.3,11-21.6,8.3-18.3,8.3z	">
+                        </path>
+                    </g>
+                </svg>

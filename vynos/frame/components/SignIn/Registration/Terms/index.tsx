@@ -41,7 +41,9 @@ function mapStateToProps(state: AppFrameState): TermsSubpageStateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<AppFrameState>): TermsSubpageDispatchProps {
     return {
-        didAcceptTerms: () => dispatch(actions.temp.init.didAcceptTerms(true))
+        didAcceptTerms: () => {
+          dispatch(actions.temp.init.didAcceptTerms(true))
+        }
     }
 }
 
