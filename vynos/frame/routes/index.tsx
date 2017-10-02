@@ -17,6 +17,7 @@ import MyWallet from '../components/Account/MyWallet'
 
 import Terms from '../components/Terms'
 import SignUp from '../components/SignUp'
+import Restore from '../components/Restore'
 
 export interface RoutesProps {
   history: History
@@ -27,7 +28,7 @@ const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
     <Switch>
       <Route path="/sign_up" component={SignUp}/>
       <Route path="/terms" component={Terms}/>
-      <Route path="/restore" component={Restoring}/>
+      <Route path="/restore" component={Restore}/>
 
       <Route path="/" component={RootRoutes}/>
       <Switch>

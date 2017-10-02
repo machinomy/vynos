@@ -26,6 +26,8 @@ const Terms: React.SFC<TermsSubpageProps> = (props) => {
     <Link to="/terms" className={style.readTerms}>Read Terms of Use</Link>
     <Divider hidden />
     <Button onClick={props.didAcceptTerms} content="Accept" primary className={style.buttonNav} />
+    <br />
+    <Link to="/restore">Restore wallet</Link>
   </Container>
 };
 

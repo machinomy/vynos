@@ -19,7 +19,6 @@ export class Mnemonic extends React.Component<MnemonicSubpageProps, {}> {
   }
 
   render () {
-    console.log('Mnemonic Render')
     return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
       <Logo />
       <Divider hidden />
@@ -31,7 +30,7 @@ export class Mnemonic extends React.Component<MnemonicSubpageProps, {}> {
         </Header.Subheader>
       </Header>
       <Form onSubmit={this.handleSubmit.bind(this)} className={style.mnemonicForm}>
-        <Form.Field control='textarea' rows='3' value={this.props.mnemonic} readOnly />
+        <Form.Field control='textarea' rows='3' value={this.props.mnemonic} readOnly className={style.mnemonicTextarea} />
         <Divider hidden />
         <Button type='submit' content="Done" primary className={style.buttonNav} />
       </Form>

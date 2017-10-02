@@ -72,6 +72,22 @@ h1.welcome-header {
     width: 300px;
 }
 
+.mnemonic-textarea > textarea {
+  text-align: center !important;
+  padding: 10px 35px !important;
+  background-color: rgba(0, 174, 239, 0.1) !important;
+  border: 0 !important;
+}
+
+.mnemonic-input > textarea {
+  border: 0 !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid rgba(34,36,38,.15) !important;
+  box-shadow: none !important;
+  padding: 10px 0 !important;
+  text-transform: capitalize !important;
+}
+
 .auth-form-field {
     padding-bottom: 45px !important;
 }
@@ -433,8 +449,9 @@ button.button-nav {
 }
 
 .clear-indent {
-    margin: 0 !important;
-    padding: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left;
 }
 
 .error-text {

@@ -23,10 +23,3 @@ input {
     padding: 10px 0 !important;
     text-transform: capitalize !important;
 }
-
-textarea {
-    text-align: center !important;
-    padding: 10px 35px !important;
-    background-color: rgba(0, 174, 239, 0.1) !important;
-    border: 0 !important;
-}
