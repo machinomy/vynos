@@ -12,7 +12,7 @@ import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_
 
 const style = require('../../styles/ynos.css')
 
-export interface PasswordSubpageState {
+export interface PasswordState {
   password: null | string,
   passwordConfirmation: null | string,
   passwordError: null | string,
@@ -29,7 +29,7 @@ export interface PasswordSubpageDispatchProps {
 
 export type PasswordSubpageProps = PasswordSubpageStateProps & PasswordSubpageDispatchProps
 
-export class Encryption extends React.Component<PasswordSubpageProps, PasswordSubpageState> {
+export class Encryption extends React.Component<PasswordSubpageProps, PasswordState> {
   constructor (props: PasswordSubpageProps) {
     super(props);
     this.state = {
@@ -86,12 +86,12 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
     })
   }
 
-  renderPasswordConfirmationHint () {
-    if (this.state.passwordConfirmationError) {
-      return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.passwordConfirmationError}</span>;
-    } else {
-      return <span className={style.errorText}>&nbsp;</span>;
-    }
+  renderPasswordInput () {
+    let className = this.state.passwordError ? style.inputError : ''
+    return <input type="password"
+                  placeholder="Password"
+                  className={className}
+                  onChange={this.handleChangePassword} />
   }
 
   renderPasswordHint () {
@@ -102,20 +102,20 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
     }
   }
 
-  renderPasswordInput () {
-    let className = this.state.passwordError ? style.inputError : ''
-    return <input type="password"
-                  placeholder="Password"
-                  className={className}
-                  onChange={this.handleChangePassword} />
-  }
-
   renderPasswordConfirmationInput () {
     let className = this.state.passwordConfirmationError ? style.inputError : ''
     return  <input type="password"
                    placeholder="Password Confirmation"
                    className={className}
                    onChange={this.handleChangePasswordConfirmation} />
+  }
+
+  renderPasswordConfirmationHint () {
+    if (this.state.passwordConfirmationError) {
+      return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.passwordConfirmationError}</span>;
+    } else {
+      return <span className={style.errorText}>&nbsp;</span>;
+    }
   }
 
   render () {
