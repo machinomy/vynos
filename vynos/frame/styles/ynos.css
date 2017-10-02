@@ -69,7 +69,7 @@ h1.welcome-header {
 
 .mnemonic-form,
 .auth-form {
-    width: 90%;
+    width: 300px;
 }
 
 .auth-form-field {
@@ -195,7 +195,7 @@ div.terms-text > p {
     right: 0 !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    width: 100% !important; 
+    width: 100% !important;
     height: 100% !important;
     background: #fff !important;
     display: none;
@@ -404,11 +404,12 @@ Transaction page
 Encryption page
 ******************************/
 form.encryption-form {
-    padding: 0 25px;
+  width: 300px;
 }
 
-form.encryption-form > div {
+form.encryption-form > div.equal.width.fields {
     text-align: left;
+    flex-direction: column;
 }
 
 .pass-len-text {
@@ -437,8 +438,12 @@ button.button-nav {
 }
 
 .error-text {
-    font-size: 12px !important;
-    color: #D04071 !important;
+    font-size: 12px;
+    color: #D04071;
+}
+
+.error-text *{
+  color: #D04071;
 }
 
 .input-error {

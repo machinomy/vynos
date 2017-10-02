@@ -2,8 +2,19 @@ import VynosClient from './VynosClient'
 import Promise = require('bluebird')
 import Frame from './Frame'
 import FrameStream from '../lib/FrameStream'
-import isReady from '../lib/isReady'
-import Vynos from "../lib/Vynos";
+import Vynos from '../lib/Vynos'
+
+// DOM and Window is ready.
+export function isReady(callback: () => void) {
+  var state = document.readyState
+  if (state === 'complete' || state === 'interactive') {
+    return setTimeout(callback, 0)
+  }
+
+  document.addEventListener('DOMContentLoaded', function onLoad () {
+    callback()
+  })
+}
 
 export default class Namespace {
   scriptAddress: string
@@ -19,7 +30,7 @@ export default class Namespace {
   // Initialize frame container for the Wallet.
   // Optional to use.
   init (frameElement?: HTMLIFrameElement, frame?: Frame): Promise<Vynos> {
-    this.client = new Promise((resolve, reject) => {
+    this.client = new Promise(resolve => {
       isReady(() => {
         this.frame = frame ? frame : new Frame(this.scriptAddress, frameElement)
         this.frame.attach(this.window.document)

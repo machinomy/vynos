@@ -4,6 +4,7 @@ import {INITIAL_SHARED_STATE, INITIAL_STATE, SharedState} from "../../worker/Sta
 import WorkerProxy from "../WorkerProxy";
 import { reducerWithInitialState } from "typescript-fsa-reducers";
 import actions from "../actions";
+import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
 
 
 ///////////////////////////////////////////////////////////////// astate
@@ -14,6 +15,7 @@ import BoughtItem from "../lib/BoughtItem";
 
 import {topmenu} from './menu';
 import {welcome} from './welcome';
+import {History} from "history";
 
 export interface InitPageState {
   didAcceptTerms: boolean
@@ -31,27 +33,27 @@ export interface AppFrameState {
 }
 
 export interface InitState {
-    keyring: string|null;
-    didAcceptTerms: string|null;
-    didStoreSeed: string|null;
-    bought?: Array<BoughtItem>
+  keyring: string|null;
+  didAcceptTerms: string|null;
+  didStoreSeed: string|null;
+  bought?: Array<BoughtItem>
 }
 
 export interface BackgroundState {
-    wallet?: Wallet;
-    web3?: Web3;
-    machinomyClient?: Sender;
+  wallet?: Wallet;
+  web3?: Web3;
+  machinomyClient?: Sender;
 }
 
 export interface RuntimeState {
-    walletPresent: boolean;
-    mnemonic?: string;
-    background: BackgroundState
+  walletPresent: boolean;
+  mnemonic?: string;
+  background: BackgroundState
 }
 
 export interface State {
-    init: InitState;
-    runtime: RuntimeState;
+  init: InitState;
+  runtime: RuntimeState;
 }
 
 
@@ -67,34 +69,38 @@ export const INITIAL_FRAME_STATE: AppFrameState = {
 
 
 const INITIAL_AR_STATE: State = {
-    init: {
-        keyring: null,
-        didAcceptTerms: null,
-        didStoreSeed: null,
-    },
-    runtime: {
-        walletPresent: false,
-        background: {}
-    },
+  init: {
+    keyring: null,
+    didAcceptTerms: null,
+    didStoreSeed: null,
+  },
+  runtime: {
+    walletPresent: false,
+    background: {}
+  },
 };
 
 
 const tempReducer = reducerWithInitialState(INITIAL_FRAME_STATE.temp)
-    .case(actions.temp.setWorkerProxy, actions.temp.setWorkerProxyHandler)
-    .case(actions.temp.init.didAcceptTerms, actions.temp.init.didAcceptTermsHandler)
-    .case(actions.temp.init.didReceiveMnemonic, actions.temp.init.didReceiveMnemonicHandler)
+  .case(actions.temp.setWorkerProxy, actions.temp.setWorkerProxyHandler)
+  .case(actions.temp.init.didAcceptTerms, actions.temp.init.didAcceptTermsHandler)
+  .case(actions.temp.init.didReceiveMnemonic, actions.temp.init.didReceiveMnemonicHandler)
 
 const sharedReducer = reducerWithInitialState(INITIAL_FRAME_STATE.shared)
-    .case(actions.shared.setSharedState, actions.shared.setSharedStateHandler)
+  .case(actions.shared.setSharedState, actions.shared.setSharedStateHandler)
 
 const runtimeReducer = reducerWithInitialState(INITIAL_AR_STATE.runtime)
-    .case(actions.runtime.setMnemonic, actions.runtime.setMnemonicHandler);
+  .case(actions.runtime.setMnemonic, actions.runtime.setMnemonicHandler);
 
 
-export const rootReducers: Reducer<any> = redux.combineReducers({
+export function rootReducers(history: History): Reducer<any> {
+  return redux.combineReducers({
+    router: routerReducer,
     temp: tempReducer,
     shared: sharedReducer,
     runtime: runtimeReducer,
+
     menu: topmenu,
     welcomePopup: welcome
-});
+  });
+}

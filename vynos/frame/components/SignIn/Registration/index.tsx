@@ -1,10 +1,8 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {AppFrameState} from "../../../reducers/state";
-import Terms from './Terms';
 import Encryption from './Encryption';
 import Mnemonic from './Mnemonic';
-import 'semantic-ui-css/semantic.min.css';
 
 export interface Registration {
     needAcceptTerms: boolean
@@ -13,7 +11,7 @@ export interface Registration {
 
 const Registration: React.SFC<Registration> = (props) => {
     if (props.needAcceptTerms) {
-        return <Terms />
+      return <p>Terms</p>
     } else if (props.needSetPassword) {
         return <Encryption />
     } else {
