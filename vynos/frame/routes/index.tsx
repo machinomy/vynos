@@ -30,7 +30,7 @@ const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
       <Route path="/terms" component={Terms}/>
       <Route path="/restore" component={Restore}/>
 
-      <Route path="/" component={RootRoutes}/>
+      <Route exact path="/" component={RootRoutes}/>
       <Switch>
         <DashboardMenu>
           <Route exact path="/dashboard" component={MyWallet}/>
