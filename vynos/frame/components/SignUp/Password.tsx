@@ -52,7 +52,7 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
       })
     }
     let passwordConfirmationError = this.state.passwordConfirmationError;
-    if (this.state.passwordConfirmation !== this.state.password) {
+    if (this.state.passwordConfirmation !== this.state.password && this.state.passwordConfirmation) {
       passwordConfirmationError = PASSWORD_CONFIRMATION_HINT_TEXT;
       this.setState({
         passwordConfirmationError: passwordConfirmationError
@@ -86,14 +86,36 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
     })
   }
 
-  renderError () {
+  renderPasswordConfirmationHint () {
     if (this.state.passwordConfirmationError) {
       return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.passwordConfirmationError}</span>;
-    } else if (this.state.passwordError) {
+    } else {
+      return <span className={style.errorText}>&nbsp;</span>;
+    }
+  }
+
+  renderPasswordHint () {
+    if (this.state.passwordError) {
       return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.passwordError}</span>;
     } else {
-      return null
+      return <span className={style.passLenText}>At least {MINIMUM_PASSWORD_LENGTH} characters</span>
     }
+  }
+
+  renderPasswordInput () {
+    let className = this.state.passwordError ? style.inputError : ''
+    return <input type="password"
+                  placeholder="Password"
+                  className={className}
+                  onChange={this.handleChangePassword} />
+  }
+
+  renderPasswordConfirmationInput () {
+    let className = this.state.passwordConfirmationError ? style.inputError : ''
+    return  <input type="password"
+                   placeholder="Password Confirmation"
+                   className={className}
+                   onChange={this.handleChangePasswordConfirmation} />
   }
 
   render () {
@@ -104,14 +126,12 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSu
       <Form onSubmit={this.handleSubmit} className={style.encryptionForm}>
         <div className='equal width fields' style={{flexDirection: 'column', textAlign: 'left'}}>
           <Form.Field className={style.clearIndent}>
-            <input type="password" placeholder='Password' onChange={this.handleChangePassword} />
-            <span className={style.passLenText}>At least {MINIMUM_PASSWORD_LENGTH} characters</span>
+            {this.renderPasswordInput()}
+            {this.renderPasswordHint()}
           </Form.Field>
           <Form.Field className={style.clearIndent}>
-            <input type="password" placeholder='Password Confirmation'
-                   className={this.renderError() ? style.inputError : ''}
-                   onChange={this.handleChangePasswordConfirmation} />
-            {this.renderError()}
+            {this.renderPasswordConfirmationInput()}
+            {this.renderPasswordConfirmationHint()}
           </Form.Field>
         </div>
         <Divider hidden />
