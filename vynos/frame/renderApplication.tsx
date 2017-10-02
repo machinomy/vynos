@@ -1,24 +1,35 @@
 import * as React from 'react'
 import * as DOM from 'react-dom'
 import WorkerProxy from './WorkerProxy'
-import {Provider} from 'react-redux'
-import configureStore from './store/configureStore'
-import routes from './routes'
+import {Provider, Store} from 'react-redux'
+import Routes from './routes'
 
-import 'semantic-ui-css/semantic.min.css'; // FIXME
+import 'semantic-ui-css/semantic.min.css';
+import {routerMiddleware} from "react-router-redux";
+import {createLogger} from "redux-logger";
+import * as redux from "redux";
+import {AppFrameState, INITIAL_FRAME_STATE, rootReducers} from "./reducers/state";
+import RemoteStore from "./lib/RemoteStore";
+import {setWorkerProxy} from "./actions/temp";
+import createHashHistory from 'history/createHashHistory';
 
 const MOUNT_POINT_ID = 'mount-point'
 
 async function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
-    const frameState = await workerProxy.getSharedState();
-    const store = configureStore(workerProxy, frameState);
+  const frameState = await workerProxy.getSharedState();
+  const history = createHashHistory()
+  const middleware = redux.applyMiddleware(createLogger(), routerMiddleware(history))
+  let store: Store<AppFrameState> = redux.createStore(rootReducers(history), INITIAL_FRAME_STATE, middleware)
+  let remoteStore = new RemoteStore(workerProxy, frameState)
+  remoteStore.wireToLocal(store)
+  store.dispatch(setWorkerProxy(workerProxy))
 
-    const application =
-      <Provider store={store}>
-        {routes}
-      </Provider>
+  const application =
+    <Provider store={store}>
+      <Routes history={history} />
+    </Provider>
 
-    DOM.render(application, mountPoint)
+  DOM.render(application, mountPoint)
 }
 
 export default function renderApplication (document: HTMLDocument, workerProxy: WorkerProxy) {

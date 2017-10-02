@@ -85,7 +85,8 @@ export default class WorkerProxy extends EventEmitter {
       method: DidStoreMnemonicRequest.method,
       params: []
     }
-    return this.stream.ask(request).then((response: DidStoreMnemonicResponse) => {
+    return this.stream.ask(request).then(() => {
+      console.log('WorkerProxy.didStoreMnemonic')
       return;
     })
   }

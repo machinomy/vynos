@@ -51,6 +51,7 @@ export default class BackgroundHandler {
         jsonrpc: message.jsonrpc,
         result: null
       }
+      console.log('BackgroundHandler.didStoreMnemonic')
       end(null, response)
     }).catch(end)
   }

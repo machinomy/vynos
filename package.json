@@ -45,6 +45,7 @@
   "dependencies": {
     "@types/react-custom-scrollbars": "^4.0.1",
     "@types/react-router-dom": "^4.0.8",
+    "@types/react-router-redux": "^5.0.8",
     "@types/react-transition-group": "^2.0.6",
     "bip39": "^2.3.1",
     "bluebird": "^3.5.0",
@@ -70,6 +71,7 @@
     "react-image": "^1.0.1",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.2",
+    "react-router-redux": "^5.0.0-alpha.6",
     "react-router-transition": "^1.1.0",
     "react-tap-event-plugin": "^2.0.1",
     "react-transition-group": "^2.2.1",

@@ -47,6 +47,7 @@ export default class RemoteStore implements Store<SharedState> {
 
   wireToLocal(store: Store<AppFrameState>) {
     this.subscribe(() => {
+      console.log('GOT NEW STATE')
       store.dispatch(setSharedState({sharedState: this.getState(), store: store}))
     })
     store.dispatch(setSharedState({sharedState: this.getState(), store: store}))

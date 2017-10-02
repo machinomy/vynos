@@ -7,27 +7,34 @@ import Encryption from './Encryption';
 import Mnemonic from './Mnemonic';
 */
 import {Redirect} from "react-router";
-import TermsComponent from './Terms'
+import Terms from './Terms'
+import Password from './Password'
+import Mnemonic from './Mnemonic'
 
 export interface Registration {
   needAcceptTerms: boolean
   needSetPassword: boolean
+  didGenerateMnemonic: boolean
 }
 
 const Registration: React.SFC<Registration> = (props) => {
+  console.log('REGISTRATION')
   if (props.needAcceptTerms) {
-    return <TermsComponent />
+    return <Terms />
   } else if (props.needSetPassword) {
-    return <p>Encryption</p>
+    return <Password />
+  } else if (props.didGenerateMnemonic) {
+    return <Mnemonic />
   } else {
-    return <p>Mnemonic</p>
+    return <Redirect to="/" />
   }
 }
 
 function mapStateToProps(state: AppFrameState): Registration {
   return {
-    needAcceptTerms: !state.temp.initPage.didAcceptTerms,
-    needSetPassword: !state.temp.initPage.mnemonic,
+    needAcceptTerms: !state.temp.initPage.didAcceptTerms && !state.shared.didInit,
+    needSetPassword: !state.temp.initPage.mnemonic && !state.shared.didInit,
+    didGenerateMnemonic: !!state.temp.initPage.mnemonic && !state.shared.didInit
   }
 }
 
