@@ -7,12 +7,12 @@ import Logo from './Logo'
 import { Container, Button, Form, Header, Divider } from 'semantic-ui-react'
 const style = require('../../styles/ynos.css')
 
-export interface MnemonicSubpageProps {
+export interface MnemonicProps {
   mnemonic: string,
   workerProxy: WorkerProxy
 }
 
-export class Mnemonic extends React.Component<MnemonicSubpageProps, {}> {
+export class Mnemonic extends React.Component<MnemonicProps, {}> {
   handleSubmit (ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     this.props.workerProxy.didStoreMnemonic()
@@ -38,11 +38,11 @@ export class Mnemonic extends React.Component<MnemonicSubpageProps, {}> {
   }
 }
 
-function mapStateToProps (state: AppFrameState): MnemonicSubpageProps {
+function mapStateToProps (state: AppFrameState): MnemonicProps {
   return {
     mnemonic: state.temp.initPage.mnemonic!,
     workerProxy: state.temp.workerProxy!
   }
 }
 
-export default connect<MnemonicSubpageProps, undefined, any>(mapStateToProps)(Mnemonic)
+export default connect<MnemonicProps, undefined, any>(mapStateToProps)(Mnemonic)
