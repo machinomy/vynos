@@ -1,13 +1,14 @@
 import * as React from 'react'
 import {connect} from 'react-redux'
 import { Container, Menu, Form, Button, Divider } from 'semantic-ui-react'
-const style = require('../../styles/ynos.css')
+const style = require('../styles/ynos.css')
 
-import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../../fileWithConstants'
-import WorkerProxy from '../../WorkerProxy'
+import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../fileWithConstants'
+import WorkerProxy from '../WorkerProxy'
 import {RouterProps} from 'react-router'
-import {AppFrameState} from "../../reducers/state";
+import {AppFrameState} from "../reducers/state";
 import {ChangeEvent, FormEvent} from "react";
+import bip39 = require('bip39')
 
 export interface RestoreStateProps {
   workerProxy: WorkerProxy
@@ -17,6 +18,7 @@ type RestoreProps = RestoreStateProps & RouterProps
 
 export interface RestoreState {
   seed?: string
+  seedError?: string
   password?: string
   passwordConfirmation?: string
   passwordError?: string
@@ -50,6 +52,7 @@ class Restore extends React.Component<RestoreProps, RestoreState> {
         passwordError: passwordError
       })
     }
+
     let passwordConfirmationError = this.state.passwordConfirmationError;
     if (this.state.passwordConfirmation !== this.state.password && this.state.passwordConfirmation) {
       passwordConfirmationError = PASSWORD_CONFIRMATION_HINT_TEXT;
@@ -57,34 +60,63 @@ class Restore extends React.Component<RestoreProps, RestoreState> {
         passwordConfirmationError: passwordConfirmationError
       })
     }
-    return !(passwordError || passwordConfirmationError)
+
+    let seedError = this.state.seedError
+    if (this.state.seed && !bip39.validateMnemonic(this.state.seed)) {
+      seedError = 'Probably mistyped seed phrase'
+      this.setState({
+        seedError: seedError
+      })
+    }
+
+    return !(passwordError || passwordConfirmationError || seedError)
   }
 
   handleChangeSeed (ev: ChangeEvent<EventTarget>) {
     let value = (ev.target as HTMLInputElement).value
-    this.setState({
-      seed: value,
-      passwordError: undefined,
-      passwordConfirmationError: undefined
+    this.setValue({
+      seed: value
     })
   }
 
   handleChangePassword (ev: ChangeEvent<EventTarget>) {
     let value = (ev.target as HTMLInputElement).value
-    this.setState({
-      password: value,
-      passwordError: undefined,
-      passwordConfirmationError: undefined
+    this.setValue({
+      password: value
     })
   }
 
   handleChangePasswordConfirmation (ev: ChangeEvent<EventTarget>) {
     let value = (ev.target as HTMLInputElement).value
-    this.setState({
-      passwordConfirmation: value,
-      passwordError: undefined,
-      passwordConfirmationError: undefined
+    this.setValue({
+      passwordConfirmation: value
     })
+  }
+
+  setValue(state: RestoreState) {
+    let base = {
+      passwordError: undefined,
+      passwordConfirmationError: undefined,
+      seedError: undefined
+    }
+    let next = Object.assign(base, state)
+    this.setState(next)
+  }
+
+  renderSeedInput () {
+    let className = style.mnemonicInput + ' ' + (this.state.seedError ? style.inputError : '')
+    return <textarea placeholder="Seed Phrase"
+                     className={className}
+                     rows={3}
+                     onChange={this.handleChangeSeed.bind(this)} />
+  }
+
+  renderSeedHint () {
+    if (this.state.seedError) {
+      return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.seedError}</span>;
+    } else {
+      return <span className={style.passLenText} />
+    }
   }
 
   renderPasswordInput () {
@@ -128,12 +160,10 @@ class Restore extends React.Component<RestoreProps, RestoreState> {
       </Menu>
       <Container textAlign="center">
         <Form className={style.encryptionForm} onSubmit={this.handleSubmit.bind(this)}>
-          <Form.Field control='textarea'
-                      rows='3'
-                      placeholder='Seed Phrase'
-                      className={style.mnemonicInput}
-                      onChange={this.handleChangeSeed.bind(this)}
-          />
+          <Form.Field className={style.clearIndent}>
+            {this.renderSeedInput()}
+            {this.renderSeedHint()}
+          </Form.Field>
           <Form.Field className={style.clearIndent}>
             {this.renderPasswordInput()}
             {this.renderPasswordHint()}
