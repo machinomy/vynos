@@ -6,6 +6,7 @@ import {isSharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/Share
 import {
   DidStoreMnemonicRequest, DidStoreMnemonicResponse,
   GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, LockWalletRequest,
+  RestoreWalletRequest, RestoreWalletResponse,
   UnlockWalletRequest,
   UnlockWalletResponse
 } from "../lib/rpc/yns";
@@ -62,6 +63,18 @@ export default class WorkerProxy extends EventEmitter {
       params: [password]
     }
     return this.stream.ask(request).then((response: GenKeyringResponse) => {
+      return response.result
+    })
+  }
+
+  restoreWallet (password: string, mnemonic: string): Promise<string> {
+    let request: RestoreWalletRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: RestoreWalletRequest.method,
+      params: [password, mnemonic]
+    }
+    return this.stream.ask(request).then((response: RestoreWalletResponse) => {
       return response.result
     })
   }

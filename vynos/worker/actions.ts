@@ -18,7 +18,21 @@ export function setWalletHandler(state: State, wallet: Wallet|undefined): State 
 // Background
 export const setKeyring = actionCreator<string>("background/setKeyring")
 export function setKeyringHandler(state: State, keyring: string): State {
-  return { ...state, background: { ...state.background, keyring: keyring } }
+  return { ...state,
+    background: { ...state.background, keyring: keyring }
+  }
+}
+
+export type RestoreWalletParam = {
+  keyring: string,
+  wallet: Wallet
+}
+export const restoreWallet = actionCreator<RestoreWalletParam>("background+runtime/restoreWallet")
+export function restoreWalletHandler (state: State, param: RestoreWalletParam): State {
+  return { ...state,
+    background: { ...state.background, didInit: true, keyring: param.keyring },
+    runtime: { ...state.runtime, wallet: param.wallet }
+  }
 }
 
 export const setDidStoreMnemonic = actionCreator<boolean>("background/setDidStoreMnemonic")

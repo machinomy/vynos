@@ -6,7 +6,7 @@ import {
   GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, InitAccountRequest,
   InitAccountResponse,
   LockWalletRequest,
-  LockWalletResponse,
+  LockWalletResponse, RestoreWalletRequest,
   UnlockWalletRequest,
   UnlockWalletResponse
 } from "../../lib/rpc/yns";
@@ -35,6 +35,19 @@ export default class BackgroundHandler {
   genKeyring(message: GenKeyringRequest, next: Function, end: EndFunction) {
     let password: string = message.params[0]
     this.controller.genKeyring(password).then((mnemonic: string) => {
+      let response: GenKeyringResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: mnemonic
+      }
+      end(null, response)
+    }).catch(end)
+  }
+
+  restoreWallet(message: RestoreWalletRequest, next: Function, end: EndFunction) {
+    let password: string = message.params[0]
+    let mnemonic: string = message.params[1]
+    this.controller.restoreWallet(password, mnemonic).then(() => {
       let response: GenKeyringResponse = {
         id: message.id,
         jsonrpc: message.jsonrpc,
@@ -95,6 +108,8 @@ export default class BackgroundHandler {
       this.getSharedState(message, next, end)
     } else if (GenKeyringRequest.match(message)) {
       this.genKeyring(message, next, end)
+    } else if (RestoreWalletRequest.match(message)) {
+      this.restoreWallet(message, next, end)
     } else if (DidStoreMnemonicRequest.match(message)) {
       this.didStoreMnemonic(message, next, end)
     } else if (UnlockWalletRequest.match(message)) {

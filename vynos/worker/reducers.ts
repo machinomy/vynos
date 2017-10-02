@@ -6,5 +6,6 @@ const reducers: ReducerBuilder<State, State> = reducerWithInitialState(INITIAL_S
   .case(actions.setWallet, actions.setWalletHandler)
   .case(actions.setKeyring, actions.setKeyringHandler)
   .case(actions.setDidStoreMnemonic, actions.setDidStoreMnemonicHandler)
+  .case(actions.restoreWallet, actions.restoreWalletHandler)
 
 export default reducers

@@ -11,6 +11,7 @@ import Wallet = require("ethereumjs-wallet")
 import { persistStore, autoRehydrate } from 'redux-persist';
 import localForage = require("localforage")
 import {EventEmitter} from "events";
+import {isNumber} from "util";
 
 const STATE_UPDATED_EVENT = "stateUpdated"
 
@@ -69,13 +70,25 @@ export default class BackgroundController {
 
   genKeyring(password: string): Promise<string> {
     let mnemonic = bip39.generateMnemonic()
-    let wallet = hdkey.fromMasterSeed(mnemonic).getWallet()
-    this.store.dispatch(actions.setWallet(wallet))
-    let privateKey = wallet.getPrivateKey()
-    let keyring = new Keyring(privateKey)
+    let keyring = this._generateKeyring(password, mnemonic)
     return Keyring.serialize(keyring, password).then(serialized => {
       this.store.dispatch(actions.setKeyring(serialized))
       return mnemonic
+    })
+  }
+
+  _generateKeyring (password: string, mnemonic: string): Keyring {
+    let wallet = hdkey.fromMasterSeed(mnemonic).getWallet()
+    this.store.dispatch(actions.setWallet(wallet))
+    let privateKey = wallet.getPrivateKey()
+    return new Keyring(privateKey)
+  }
+
+  restoreWallet (password: string, mnemonic: string): Promise<void> {
+    let keyring = this._generateKeyring(password, mnemonic)
+    let wallet = keyring.wallet
+    return Keyring.serialize(keyring, password).then(serialized => {
+      this.store.dispatch(actions.restoreWallet({ keyring: serialized, wallet: wallet }))
     })
   }
 

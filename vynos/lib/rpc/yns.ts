@@ -72,6 +72,25 @@ export interface GenKeyringResponse extends ResponsePayload {
   result: string
 }
 
+// RestoreWalletRequest
+
+export class RestoreWalletRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof RestoreWalletRequest.method;
+  params: [string, string];
+
+  static method = "yns_restoreWallet"
+
+  static match(payload: RequestPayload): payload is RestoreWalletRequest {
+    return payload.method === RestoreWalletRequest.method
+  }
+}
+
+export interface RestoreWalletResponse extends ResponsePayload {
+  result: string
+}
+
 export class UnlockWalletRequest implements RequestPayload {
   id: number;
   jsonrpc: typeof JSONRPC;

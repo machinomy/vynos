@@ -85,7 +85,6 @@ h1.welcome-header {
   border-bottom: 1px solid rgba(34,36,38,.15) !important;
   box-shadow: none !important;
   padding: 10px 0 !important;
-  text-transform: capitalize !important;
 }
 
 .auth-form-field {
