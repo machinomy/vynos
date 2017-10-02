@@ -1,11 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {AppFrameState} from "../../reducers/state";
-/*
-import Terms from './Terms';
-import Encryption from './Encryption';
-import Mnemonic from './Mnemonic';
-*/
 import {Redirect} from "react-router";
 import Terms from './Terms'
 import Password from './Password'
@@ -18,7 +13,6 @@ export interface Registration {
 }
 
 const Registration: React.SFC<Registration> = (props) => {
-  console.log('REGISTRATION')
   if (props.needAcceptTerms) {
     return <Terms />
   } else if (props.needSetPassword) {
