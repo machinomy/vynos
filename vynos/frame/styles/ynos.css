@@ -146,7 +146,6 @@ div.terms-text > p {
   width: 100% !important;
   border: 0 !important;
   padding: 0 50px !important;
-  margin: 0 !important;
   box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
   border-radius: 0 !important;
   padding-bottom: 20px !important;
@@ -302,7 +301,6 @@ Top menu
   width: 100%;
   color: #333 !important;
   background-color: #fafafa !important;
-  box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
   border-radius: 0;
   position: relative;
   height: 4rem;
@@ -310,7 +308,6 @@ Top menu
 
 .menu-into-one-item-fluid:hover {
   background: #fafafa !important;
-  box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
 }
 
 .menu-into-one-item-fluid:before,

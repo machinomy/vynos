@@ -6,6 +6,7 @@ import SignIn from '../components/SignIn/Authentication';
 
 
 import { Redirect } from 'react-router-dom'
+import {isUnlockPageExpected} from "./filters";
 
 export interface RootRouteProps {
     isInitPageExpected: boolean
@@ -19,7 +20,7 @@ const RootRoute = (props: RootRouteProps) => {
     } else if (props.isUnlockPageExpected) {
         return <SignIn />
     } else if (props.isWalletPageExpected) {
-        return <Redirect to="/dashboard" />
+        return <Redirect to="/wallet" />
     } else {
         return <Redirect to="/" />
     }
@@ -29,7 +30,7 @@ function mapStateToProps(state: FrameState): RootRouteProps {
     return {
         isInitPageExpected: !(state.shared.didInit),
         isWalletPageExpected: !!(state.shared.didInit && state.temp.workerProxy && !state.shared.isLocked),
-        isUnlockPageExpected: !!(state.shared.didInit && state.temp.workerProxy && state.shared.isLocked)
+        isUnlockPageExpected: isUnlockPageExpected(state)
     }
 }
 
