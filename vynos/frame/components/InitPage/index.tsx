@@ -12,7 +12,7 @@ export interface Registration {
   didGenerateMnemonic: boolean
 }
 
-const Registration: React.SFC<Registration> = (props) => {
+const InitPage: React.SFC<Registration> = (props) => {
   if (props.needAcceptTerms) {
     return <Terms />
   } else if (props.needSetPassword) {
@@ -32,4 +32,4 @@ function mapStateToProps(state: AppFrameState): Registration {
   }
 }
 
-export default connect<Registration, undefined, any>(mapStateToProps)(Registration)
+export default connect<Registration, undefined, any>(mapStateToProps)(InitPage)
