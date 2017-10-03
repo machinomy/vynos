@@ -101,7 +101,7 @@ Wallet page
 .account-info {
   text-align: left;
   background-color: #fafafa;
-  box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 7px 10px -5px rgba(0,0,0,0.1);
   padding: 10px !important;
   width: 100%;
 }
@@ -146,7 +146,7 @@ div.terms-text > p {
   width: 100% !important;
   border: 0 !important;
   padding: 0 50px !important;
-  box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 7px 10px -5px rgba(0,0,0,0.1) !important;
   border-radius: 0 !important;
   padding-bottom: 20px !important;
   background-color: #FAFAFA !important;
