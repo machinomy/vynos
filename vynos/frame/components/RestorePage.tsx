@@ -3,20 +3,20 @@ import {connect} from 'react-redux'
 import { Container, Menu, Form, Button, Divider } from 'semantic-ui-react'
 const style = require('../styles/ynos.css')
 
-import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../fileWithConstants'
+import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../constants'
 import WorkerProxy from '../WorkerProxy'
 import {RouterProps} from 'react-router'
 import {AppFrameState} from "../reducers/state";
 import {ChangeEvent, FormEvent} from "react";
 import bip39 = require('bip39')
 
-export interface RestoreStateProps {
+export interface RestorePageStateProps {
   workerProxy: WorkerProxy
 }
 
-type RestoreProps = RestoreStateProps & RouterProps
+type RestorePageProps = RestorePageStateProps & RouterProps
 
-export interface RestoreState {
+export interface RestorePageState {
   seed?: string
   seedError?: string
   password?: string
@@ -25,8 +25,8 @@ export interface RestoreState {
   passwordConfirmationError?: string
 }
 
-class Restore extends React.Component<RestoreProps, RestoreState> {
-  constructor (props: RestoreProps) {
+class RestorePage extends React.Component<RestorePageProps, RestorePageState> {
+  constructor (props: RestorePageProps) {
     super(props)
     this.state = {}
   }
@@ -93,7 +93,7 @@ class Restore extends React.Component<RestoreProps, RestoreState> {
     })
   }
 
-  setValue(state: RestoreState) {
+  setValue(state: RestorePageState) {
     let base = {
       passwordError: undefined,
       passwordConfirmationError: undefined,
@@ -180,10 +180,10 @@ class Restore extends React.Component<RestoreProps, RestoreState> {
   }
 }
 
-function mapStateToProps (state: AppFrameState): RestoreStateProps {
+function mapStateToProps (state: AppFrameState): RestorePageStateProps {
   return {
     workerProxy: state.temp.workerProxy!
   }
 }
 
-export default connect<RestoreStateProps, undefined, any>(mapStateToProps)(Restore)
+export default connect<RestorePageStateProps, undefined, any>(mapStateToProps)(RestorePage)

@@ -1,23 +1,18 @@
-import * as React from "react";
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory'
-import { History } from 'history'
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
+import * as React from 'react'
+import {Switch, Route} from 'react-router-dom'
+import {History} from 'history'
+import {ConnectedRouter} from 'react-router-redux'
 
-/** containers */
 import ApplicationMenu from '../containers/ApplicationMenu'
 import RootRoutes from './RootRoutes'
-
-/** components */
 import Channels from '../components/Account/Channels'
 import Preferences from '../components/Account/Preferences'
 import Network from '../components/Account/Network'
-import Restoring from '../components/SignIn/Registration/Restoration'
 import MyWallet from '../components/Account/MyWallet'
 
 import Terms from '../components/Terms'
 import InitPage from '../components/InitPage'
-import Restore from '../components/Restore'
+import Restore from '../components/RestorePage'
 
 export interface RoutesProps {
   history: History
@@ -26,7 +21,7 @@ export interface RoutesProps {
 const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
   return <ConnectedRouter history={props.history}>
     <Switch>
-      <Route path="/sign_up" component={InitPage}/>
+      <Route path="/init" component={InitPage}/>
       <Route path="/terms" component={Terms}/>
       <Route path="/restore" component={Restore}/>
 

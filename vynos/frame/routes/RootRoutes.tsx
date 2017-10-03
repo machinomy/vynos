@@ -15,7 +15,7 @@ export interface RootRouteProps {
 
 const RootRoute = (props: RootRouteProps) => {
     if (props.isInitPageExpected) {
-        return <Redirect to="/sign_up" />
+        return <Redirect to="/init" />
     } else if (props.isUnlockPageExpected) {
         return <SignIn />
     } else if (props.isWalletPageExpected) {

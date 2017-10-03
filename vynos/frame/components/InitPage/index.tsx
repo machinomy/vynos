@@ -6,13 +6,13 @@ import Terms from './Terms'
 import Password from './Password'
 import Mnemonic from './Mnemonic'
 
-export interface Registration {
+export interface InitPageProps {
   needAcceptTerms: boolean
   needSetPassword: boolean
   didGenerateMnemonic: boolean
 }
 
-const InitPage: React.SFC<Registration> = (props) => {
+const InitPage: React.SFC<InitPageProps> = (props) => {
   if (props.needAcceptTerms) {
     return <Terms />
   } else if (props.needSetPassword) {
@@ -24,7 +24,7 @@ const InitPage: React.SFC<Registration> = (props) => {
   }
 }
 
-function mapStateToProps(state: AppFrameState): Registration {
+function mapStateToProps(state: AppFrameState): InitPageProps {
   return {
     needAcceptTerms: !state.temp.initPage.didAcceptTerms && !state.shared.didInit,
     needSetPassword: !state.temp.initPage.mnemonic && !state.shared.didInit,
@@ -32,4 +32,4 @@ function mapStateToProps(state: AppFrameState): Registration {
   }
 }
 
-export default connect<Registration, undefined, any>(mapStateToProps)(InitPage)
+export default connect<InitPageProps, undefined, any>(mapStateToProps)(InitPage)

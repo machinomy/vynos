@@ -8,7 +8,7 @@ import actions from '../../actions'
 import {Button, Container, Divider, Form, Header, GridRow} from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 import Logo from './Logo'
-import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../../fileWithConstants';
+import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../../constants';
 
 const style = require('../../styles/ynos.css')
 
