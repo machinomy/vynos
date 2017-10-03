@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {FormEvent} from "react";
-import {FrameState} from "../../reducers/state";
+import {FrameState} from "../../state/FrameState";
 import WorkerProxy from "../../WorkerProxy";
 import Logo from './Logo'
 import { Container, Button, Form, Header, Divider } from 'semantic-ui-react'

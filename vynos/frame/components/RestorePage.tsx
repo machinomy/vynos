@@ -6,7 +6,7 @@ const style = require('../styles/ynos.css')
 import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../constants'
 import WorkerProxy from '../WorkerProxy'
 import {RouterProps} from 'react-router'
-import {FrameState} from "../reducers/state";
+import {FrameState} from "../state/FrameState";
 import {ChangeEvent, FormEvent} from "react";
 import bip39 = require('bip39')
 

@@ -1,5 +1,5 @@
 import actionCreatorFactory, {ActionCreator} from "typescript-fsa";
-import {TempState} from "../../reducers/state";
+import {TempState} from "../../state/FrameState";
 
 const actionCreator = actionCreatorFactory("frame/instance");
 

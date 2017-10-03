@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect, Dispatch} from "react-redux";
-import {FrameState} from "../../reducers/state";
+import {FrameState} from "../../state/FrameState";
 import actions from "../../actions";
 import { Link } from 'react-router-dom';
 import { Button, Container, Divider  } from 'semantic-ui-react'

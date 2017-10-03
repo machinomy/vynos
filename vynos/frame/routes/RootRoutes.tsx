@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {FrameState} from "../reducers/state";
+import {FrameState} from "../state/FrameState";
 
 import SignIn from '../components/SignIn/Authentication';
 

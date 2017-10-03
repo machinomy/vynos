@@ -8,10 +8,11 @@ import 'semantic-ui-css/semantic.min.css';
 import {routerMiddleware} from "react-router-redux";
 import {createLogger} from "redux-logger";
 import * as redux from "redux";
-import {FrameState, INITIAL_FRAME_STATE, rootReducers} from "./reducers/state";
+import {FrameState, INITIAL_FRAME_STATE} from "./state/FrameState";
 import RemoteStore from "./lib/RemoteStore";
 import {setWorkerProxy} from "./actions/temp";
 import createHashHistory from 'history/createHashHistory';
+import reducers from './state/reducers'
 
 const MOUNT_POINT_ID = 'mount-point'
 
@@ -19,7 +20,7 @@ async function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerPr
   const frameState = await workerProxy.getSharedState();
   const history = createHashHistory()
   const middleware = redux.applyMiddleware(createLogger(), routerMiddleware(history))
-  let store: Store<FrameState> = redux.createStore(rootReducers(history), INITIAL_FRAME_STATE, middleware)
+  let store: Store<FrameState> = redux.createStore(reducers, INITIAL_FRAME_STATE, middleware)
   let remoteStore = new RemoteStore(workerProxy, frameState)
   remoteStore.wireToLocal(store)
   store.dispatch(setWorkerProxy(workerProxy))

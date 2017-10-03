@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {ChangeEvent, CSSProperties, FormEvent} from "react";
 import _ = require("lodash")
 import WorkerProxy from "../../../WorkerProxy";
-import {FrameState} from "../../../reducers/state";
+import {FrameState} from "../../../state/FrameState";
 import { Container, Form, Input, Header, Button, Divider } from 'semantic-ui-react'
 import Logo from '../Header';
 import { Redirect } from 'react-router-dom'
