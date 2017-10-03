@@ -64,7 +64,6 @@ export default class BackgroundHandler {
         jsonrpc: message.jsonrpc,
         result: null
       }
-      console.log('BackgroundHandler.didStoreMnemonic')
       end(null, response)
     }).catch(end)
   }
@@ -78,7 +77,19 @@ export default class BackgroundHandler {
         result: null
       }
       end(null, response)
-    }).catch(end)
+    }).catch(err => {
+      if (err.message == 'Incorrect password') {
+        let response: UnlockWalletResponse = {
+          id: message.id,
+          jsonrpc: message.jsonrpc,
+          result: null,
+          error: err.message
+        }
+        end(null, response)
+      } else {
+        end(err)
+      }
+    })
   }
 
   lockWallet(message: LockWalletRequest, next: Function, end: EndFunction) {

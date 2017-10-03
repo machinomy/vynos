@@ -16,6 +16,7 @@ export interface RequestPayload extends Payload {
 
 export interface ResponsePayload extends Payload {
   result: any
+  error?: string
 }
 
 const EXTRA_DIGITS = 3

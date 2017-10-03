@@ -43,15 +43,15 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  doUnlock(password: string): Promise<void> {
+  doUnlock(password: string): Promise<string | undefined> {
     let request: UnlockWalletRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
       method: UnlockWalletRequest.method,
       params: [password]
     }
-    return this.stream.ask(request).then(() => {
-      return;
+    return this.stream.ask(request).then((response: UnlockWalletResponse) => {
+      return response.error
     })
   }
 
@@ -99,7 +99,6 @@ export default class WorkerProxy extends EventEmitter {
       params: []
     }
     return this.stream.ask(request).then(() => {
-      console.log('WorkerProxy.didStoreMnemonic')
       return;
     })
   }

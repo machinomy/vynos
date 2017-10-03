@@ -106,6 +106,7 @@ export class UnlockWalletRequest implements RequestPayload {
 
 export interface UnlockWalletResponse extends ResponsePayload {
   result: null
+  error?: string
 }
 
 export class LockWalletRequest implements RequestPayload {

@@ -53,7 +53,7 @@ export default class StreamProvider extends Duplex implements Web3.Provider {
 
   _write<A extends ResponsePayload>(payload: A, encoding: string, next: Function) {
     let id = payload.id
-    let isResult = !!payload.result
+    let isResult = !!payload.result || !!payload.error
     if (isResult) {
       let callback = this._callbacks.get(id.toString())
       if (callback) {
