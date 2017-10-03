@@ -1,4 +1,4 @@
-import {SharedState} from "../../worker/State";
+import {SharedState} from "../../worker/WorkerState";
 import {ResponsePayload} from "../Payload";
 
 export const SharedStateBroadcastType = "worker/broadcast/SharedState"

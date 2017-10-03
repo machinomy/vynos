@@ -13,13 +13,13 @@ export interface SharedState {
   isLocked: boolean
 }
 
-export interface BackgroundState {
+export interface PersistentState {
   didInit: boolean,
   keyring?: string
 }
 
-export interface State {
-  background: BackgroundState,
+export interface WorkerState {
+  persistent: PersistentState,
   runtime: RuntimeState,
 }
 
@@ -28,16 +28,16 @@ export const INITIAL_SHARED_STATE: SharedState = {
   isLocked: true
 }
 
-export const INITIAL_STATE: State = {
-  background: {
+export const INITIAL_STATE: WorkerState = {
+  persistent: {
     didInit: false
   },
   runtime: {},
 }
 
-export function buildSharedState(state: State): SharedState {
+export function buildSharedState(state: WorkerState): SharedState {
   return {
-    didInit: state.background.didInit,
+    didInit: state.persistent.didInit,
     isLocked: !state.runtime.wallet
   }
 }

@@ -1,5 +1,5 @@
 import {JSONRPC, RequestPayload, ResponsePayload} from "../Payload"
-import {SharedState} from "../../worker/State";
+import {SharedState} from "../../worker/WorkerState";
 import {PaymentChannelJSON} from "machinomy/lib/channel";
 import Payment from "machinomy/lib/Payment";
 import VynosBuyResponse from "../VynosBuyResponse";

@@ -1,6 +1,6 @@
 import StreamProvider from "../lib/StreamProvider";
 import {EventEmitter} from "events";
-import {SharedState} from "../worker/State";
+import {SharedState} from "../worker/WorkerState";
 import {JSONRPC, randomId} from "../lib/Payload";
 import {isSharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
 import {

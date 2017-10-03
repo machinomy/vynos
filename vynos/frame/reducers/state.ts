@@ -1,6 +1,6 @@
 import * as redux from "redux";
 import {Reducer} from "redux";
-import {INITIAL_SHARED_STATE, INITIAL_STATE, SharedState} from "../../worker/State";
+import {INITIAL_SHARED_STATE, INITIAL_STATE, SharedState} from "../../worker/WorkerState";
 import WorkerProxy from "../WorkerProxy";
 import { reducerWithInitialState } from "typescript-fsa-reducers";
 import actions from "../actions";

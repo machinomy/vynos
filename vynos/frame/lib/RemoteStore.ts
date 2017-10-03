@@ -1,5 +1,5 @@
 import {Store} from "react-redux";
-import {SharedState} from "../../worker/State";
+import {SharedState} from "../../worker/WorkerState";
 import WorkerProxy from "../WorkerProxy";
 import {EventEmitter} from "events";
 import {SharedStateBroadcastType, SharedStateBroadcast} from "../../lib/rpc/SharedStateBroadcast";

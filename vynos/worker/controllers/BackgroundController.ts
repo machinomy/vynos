@@ -1,6 +1,6 @@
 import * as redux from "redux";
 import reducers from "../reducers";
-import {buildSharedState, INITIAL_STATE, SharedState, State} from "../State";
+import {buildSharedState, INITIAL_STATE, SharedState, WorkerState} from "../WorkerState";
 import {Store} from "redux";
 import * as actions from "../actions";
 import bip39 =require("bip39")
@@ -16,13 +16,13 @@ import {isNumber} from "util";
 const STATE_UPDATED_EVENT = "stateUpdated"
 
 export default class BackgroundController {
-  store: Store<State>
+  store: Store<WorkerState>
   events: EventEmitter
   hydrated: boolean
 
   constructor() {
     let middleware = redux.compose(redux.applyMiddleware(createLogger()), autoRehydrate())
-    this.store = redux.createStore(reducers, INITIAL_STATE, middleware) as Store<State>
+    this.store = redux.createStore(reducers, INITIAL_STATE, middleware) as Store<WorkerState>
     this.events = new EventEmitter()
     this.hydrated = false
     localForage.config({driver: localForage.INDEXEDDB})
@@ -60,7 +60,7 @@ export default class BackgroundController {
     return this.getState().then(buildSharedState)
   }
 
-  getState(): Promise<State> {
+  getState(): Promise<WorkerState> {
     return new Promise(resolve => {
       this.awaitHydrated(() => {
         resolve(this.store.getState())
@@ -129,7 +129,7 @@ export default class BackgroundController {
 
   unlockWallet(password: string): Promise<void> {
     return this.getState().then(state => {
-      let keyring = state.background.keyring
+      let keyring = state.persistent.keyring
       if (keyring) {
         return Promise.resolve(Keyring.deserialize(keyring, password))
       } else {
