@@ -4,10 +4,8 @@ import {INITIAL_SHARED_STATE, INITIAL_STATE, SharedState} from "../../worker/Sta
 import WorkerProxy from "../WorkerProxy";
 import { reducerWithInitialState } from "typescript-fsa-reducers";
 import actions from "../actions";
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
+import {routerReducer} from 'react-router-redux'
 
-
-///////////////////////////////////////////////////////////////// astate
 import Wallet from "ethereumjs-wallet";
 import Web3 = require("web3")
 import Sender from "machinomy/lib/sender";

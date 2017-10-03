@@ -11,14 +11,14 @@ export interface MenuAction {
     className?: string
 }
 
-const initialState:MenuState = {
+const initialState: MenuState = {
     topmenu: {
         currentMenuItem: 'Wallet',
         submenuShowState: ''
     }
 };
 
-export const topmenu = (state = initialState, action:MenuAction) => {
+export const topmenu = (state = initialState, action: MenuAction) => {
     switch(action.type) {
         case 'SET_CURRENT_MENU_ITEM':
             return state = Object.assign({}, state, {topmenu: Object.assign({}, state.topmenu, {currentMenuItem: action.menuItem})});

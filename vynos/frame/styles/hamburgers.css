@@ -30,8 +30,7 @@
 
 .hamburger-inner {
   display: block;
-  top: 50%;
-  margin-top: -2px; }
+  top: 50%;  }
   .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
     width: 40px;
     height: 4px;

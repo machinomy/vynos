@@ -278,7 +278,8 @@ Top menu
   order: -1 !important;
 }
 
-.btn-lock {
+.ui.icon.button.btn-lock {
+  /*
   position: absolute !important;
   right: 0 !important;
   z-index: 2 !important;
@@ -287,6 +288,9 @@ Top menu
   background: none !important;
   color: rgba(0, 0, 0, 0.4) !important;
   padding: 15px 10px 0 0 !important;
+  */
+  order: 2;
+  background: transparent;
 }
 
 .menu-into-one-item-fluid {
