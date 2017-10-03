@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ChangeEvent, FormEvent} from 'react'
 import {Dispatch} from 'redux'
-import {AppFrameState} from '../../reducers/state'
+import {FrameState} from '../../reducers/state'
 import WorkerProxy from '../../WorkerProxy'
 import {connect} from 'react-redux'
 import actions from '../../actions'
@@ -143,13 +143,13 @@ export class Encryption extends React.Component<PasswordSubpageProps, PasswordSt
   }
 }
 
-function mapStateToProps(state: AppFrameState): PasswordSubpageStateProps {
+function mapStateToProps(state: FrameState): PasswordSubpageStateProps {
   return {
     workerProxy: state.temp.workerProxy!
   }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<AppFrameState>): PasswordSubpageDispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<FrameState>): PasswordSubpageDispatchProps {
   return {
     genKeyring: (workerProxy, password) => {
       workerProxy.genKeyring(password).then(mnemonic => {

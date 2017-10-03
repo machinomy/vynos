@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {FormEvent} from "react";
-import {AppFrameState} from "../../reducers/state";
+import {FrameState} from "../../reducers/state";
 import WorkerProxy from "../../WorkerProxy";
 import Logo from './Logo'
 import { Container, Button, Form, Header, Divider } from 'semantic-ui-react'
@@ -38,7 +38,7 @@ export class Mnemonic extends React.Component<MnemonicProps, {}> {
   }
 }
 
-function mapStateToProps (state: AppFrameState): MnemonicProps {
+function mapStateToProps (state: FrameState): MnemonicProps {
   return {
     mnemonic: state.temp.initPage.mnemonic!,
     workerProxy: state.temp.workerProxy!

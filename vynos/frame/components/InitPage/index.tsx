@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {AppFrameState} from "../../reducers/state";
+import {FrameState} from "../../reducers/state";
 import {Redirect} from "react-router";
 import Terms from './Terms'
 import Password from './Password'
@@ -24,7 +24,7 @@ const InitPage: React.SFC<InitPageProps> = (props) => {
   }
 }
 
-function mapStateToProps(state: AppFrameState): InitPageProps {
+function mapStateToProps(state: FrameState): InitPageProps {
   return {
     needAcceptTerms: !state.temp.initPage.didAcceptTerms && !state.shared.didInit,
     needSetPassword: !state.temp.initPage.mnemonic && !state.shared.didInit,

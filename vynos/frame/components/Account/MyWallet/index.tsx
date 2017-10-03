@@ -9,7 +9,7 @@ import browser from '../../../lib/browser'
 import {Dispatch} from "redux";
 import actions from "../../../actions";
 import BoughtItem from "../../../lib/BoughtItem";
-import {AppFrameState} from "../../../reducers/state";
+import {FrameState} from "../../../reducers/state";
 import WorkerProxy from "../../../WorkerProxy";
 import {PaymentChannel} from "machinomy/lib/channel";
 

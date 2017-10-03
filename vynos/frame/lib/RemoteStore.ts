@@ -4,7 +4,7 @@ import WorkerProxy from "../WorkerProxy";
 import {EventEmitter} from "events";
 import {SharedStateBroadcastType, SharedStateBroadcast} from "../../lib/rpc/SharedStateBroadcast";
 import {Action, Dispatch, Reducer, Unsubscribe} from "redux";
-import {AppFrameState} from "../reducers/state";
+import {FrameState} from "../reducers/state";
 import {setSharedState} from "../actions/shared";
 
 export default class RemoteStore implements Store<SharedState> {
@@ -45,7 +45,7 @@ export default class RemoteStore implements Store<SharedState> {
     // Do Nothing
   }
 
-  wireToLocal(store: Store<AppFrameState>) {
+  wireToLocal(store: Store<FrameState>) {
     this.subscribe(() => {
       store.dispatch(setSharedState({sharedState: this.getState(), store: store}))
     })

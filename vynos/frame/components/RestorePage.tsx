@@ -6,7 +6,7 @@ const style = require('../styles/ynos.css')
 import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../constants'
 import WorkerProxy from '../WorkerProxy'
 import {RouterProps} from 'react-router'
-import {AppFrameState} from "../reducers/state";
+import {FrameState} from "../reducers/state";
 import {ChangeEvent, FormEvent} from "react";
 import bip39 = require('bip39')
 
@@ -180,7 +180,7 @@ class RestorePage extends React.Component<RestorePageProps, RestorePageState> {
   }
 }
 
-function mapStateToProps (state: AppFrameState): RestorePageStateProps {
+function mapStateToProps (state: FrameState): RestorePageStateProps {
   return {
     workerProxy: state.temp.workerProxy!
   }

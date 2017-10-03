@@ -25,7 +25,7 @@ export interface TempState {
   initPage: InitPageState
 }
 
-export interface AppFrameState {
+export interface FrameState {
   temp: TempState
   shared: SharedState
 }
@@ -55,7 +55,7 @@ export interface State {
 }
 
 
-export const INITIAL_FRAME_STATE: AppFrameState = {
+export const INITIAL_FRAME_STATE: FrameState = {
   temp: {
     initPage: {
       didAcceptTerms: false,

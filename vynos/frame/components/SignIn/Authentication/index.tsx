@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {ChangeEvent, CSSProperties, FormEvent} from "react";
 import _ = require("lodash")
 import WorkerProxy from "../../../WorkerProxy";
-import {AppFrameState} from "../../../reducers/state";
+import {FrameState} from "../../../reducers/state";
 import { Container, Form, Input, Header, Button, Divider } from 'semantic-ui-react'
 import Logo from '../Header';
 import { Redirect } from 'react-router-dom'
@@ -88,7 +88,7 @@ export class Authentication extends React.Component<UnlockPageProps, UnlockPageS
 }
 
 
-function mapStateToProps (state: AppFrameState): UnlockPageStateProps {
+function mapStateToProps (state: FrameState): UnlockPageStateProps {
     return {
         workerProxy: state.temp.workerProxy!
     }

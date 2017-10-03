@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {AppFrameState} from "../reducers/state";
+import {FrameState} from "../reducers/state";
 
 import SignIn from '../components/SignIn/Authentication';
 
@@ -25,7 +25,7 @@ const RootRoute = (props: RootRouteProps) => {
     }
 }
 
-function mapStateToProps(state: AppFrameState): RootRouteProps {
+function mapStateToProps(state: FrameState): RootRouteProps {
     return {
         isInitPageExpected: !(state.shared.didInit),
         isWalletPageExpected: !!(state.shared.didInit && state.temp.workerProxy && !state.shared.isLocked),
