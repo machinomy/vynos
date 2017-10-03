@@ -4,10 +4,6 @@ export interface RuntimeState {
   wallet?: Wallet
 }
 
-export interface PageState {
-  name: string
-}
-
 export interface SharedState {
   didInit: boolean
   isLocked: boolean
