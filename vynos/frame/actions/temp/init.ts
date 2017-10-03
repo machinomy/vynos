@@ -25,11 +25,6 @@ export function setKeyringHandler(state: InitState, keyring: string): InitState 
   return { ...state, keyring: keyring };
 }
 
-export const didStoreSeed = actionCreator<Date>("instance/didStoreSeed");
-export function didStoreSeedHandler(state: InitState, date: Date): InitState {
-  return { ...state, didStoreSeed: date.toISOString() };
-}
-
 export type GenerateKeyringArguments = {
   mnemonic: string;
   password: string;
