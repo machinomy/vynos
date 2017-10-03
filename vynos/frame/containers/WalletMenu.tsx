@@ -5,6 +5,8 @@ import {isUnlockPageExpected} from "../routes/filters";
 import {connect} from "react-redux";
 import {FrameState} from "../state/FrameState";
 import WalletMenuItem from './WalletMenu/WalletMenuItem'
+import WorkerProxy from "../WorkerProxy";
+import {setWorkerProxy} from "../actions/temp";
 
 const style = require("../styles/ynos.css");
 
@@ -16,6 +18,7 @@ export interface WalletMenuState {
 
 export interface WalletMenuStateProps {
   isUnlockPageExpected: boolean
+  workerProxy: WorkerProxy
 }
 
 export type WalletMenuProps = WalletMenuStateProps & { children: Element[] } & RouterProps
@@ -32,7 +35,7 @@ export class WalletMenu extends React.Component<WalletMenuProps, WalletMenuState
   }
 
   handleLockButton () {
-    console.log('handleLockButton')
+    this.props.workerProxy.doLock()
   }
 
   handleOpenDropdown () {
@@ -123,7 +126,8 @@ export class WalletMenu extends React.Component<WalletMenuProps, WalletMenuState
 
 function mapStateToProps(state: FrameState): WalletMenuStateProps {
   return {
-    isUnlockPageExpected: isUnlockPageExpected(state)
+    isUnlockPageExpected: isUnlockPageExpected(state),
+    workerProxy: state.temp.workerProxy!
   }
 }
 
