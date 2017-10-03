@@ -5,7 +5,7 @@ import { History } from 'history'
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux'
 
 /** containers */
-import DashboardMenu from '../containers/DashboardMenu'
+import ApplicationMenu from '../containers/ApplicationMenu'
 import RootRoutes from './RootRoutes'
 
 /** components */
@@ -32,15 +32,15 @@ const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
 
       <Route exact path="/" component={RootRoutes}/>
       <Switch>
-        <DashboardMenu>
+        <ApplicationMenu>
           <Route exact path="/dashboard" component={MyWallet}/>
           <Route path="/dashboard/channels" component={Channels}/>
           <Route path="/dashboard/preferences" component={Preferences}/>
           <Route path="/dashboard/network" component={Network}/>
-        </DashboardMenu>
+        </ApplicationMenu>
       </Switch>
 
-      <Route component={RootRoutes}/>
+      <Route component={RootRoutes} />
     </Switch>
   </ConnectedRouter>
 }
