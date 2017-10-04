@@ -98,12 +98,23 @@ h1.welcome-header {
 /******************************
 Wallet page
 ******************************/
-.account-info {
+.wallet-header {
   text-align: left;
   background-color: #fafafa;
   box-shadow: 0 7px 10px -5px rgba(0,0,0,0.1);
   padding: 10px !important;
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.wallet-account {
+  flex: 1 0 100px;
+  width: 100px;
 }
 
 .wallet-address {
@@ -111,17 +122,22 @@ Wallet page
   font-weight: 400 !important;
   font-size: 26px !important;
   color: #333 !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 0.3ex 0;
+  cursor: pointer;
 }
 
 .account-avatar {
   width: 50px !important;
+  flex: 0 0 50px;
+  margin-right: 10px;
 }
 
 .eth-balance,
 .balance {
   font-size: 14px !important;
   font-weight: 600 !important;
-  padding: 10px 10px 0 0 !important;
   display: inline-block;
 }
 

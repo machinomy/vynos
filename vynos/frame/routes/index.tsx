@@ -8,7 +8,7 @@ import RootRoutes from './RootRoutes'
 import Channels from '../components/Account/Channels'
 import Preferences from '../components/Account/Preferences'
 import Network from '../components/Account/Network'
-import Wallet from '../components/Account/Wallet'
+import Wallet from '../components/WalletPage'
 
 import Terms from '../components/TermsPage'
 import InitPage from '../components/InitPage'
