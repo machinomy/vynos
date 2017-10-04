@@ -3,11 +3,11 @@ import {connect} from 'react-redux'
 import {ChangeEvent, FormEvent} from 'react'
 import _ = require('lodash')
 import WorkerProxy from '../WorkerProxy';
-import { Container, Form, Input, Header, Button, Divider } from 'semantic-ui-react'
+import { Container, Form, Button, Divider } from 'semantic-ui-react'
 import Logo from './InitPage/Logo'
 import {FrameState} from "../state/FrameState";
 
-const style = require("../../../styles/ynos.css");
+const style = require("../styles/ynos.css");
 
 export interface UnlockPageStateProps {
   workerProxy: WorkerProxy
