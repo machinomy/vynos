@@ -8,7 +8,7 @@ import RootRoutes from './RootRoutes'
 import Channels from '../components/Account/Channels'
 import Preferences from '../components/Account/Preferences'
 import Network from '../components/Account/Network'
-import MyWallet from '../components/Account/MyWallet'
+import Wallet from '../components/Account/Wallet'
 
 import Terms from '../components/Terms'
 import InitPage from '../components/InitPage'
@@ -29,7 +29,7 @@ const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
       <Route exact path="/" component={RootRoutes}/>
       <Switch>
         <WalletMenu>
-          <Route exact path="/wallet" component={MyWallet}/>
+          <Route exact path="/wallet" component={Wallet}/>
           <Route path="/wallet/channels" component={Channels}/>
           <Route path="/wallet/preferences" component={Preferences}/>
           <Route path="/wallet/network" component={Network}/>

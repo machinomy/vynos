@@ -32,7 +32,7 @@ export interface WalletPageState {
     balance: string;
 }
 
-export class MyWallet extends React.Component<WalletPageProps, WalletPageState> {
+export class WalletPage extends React.Component<WalletPageProps, WalletPageState> {
     updateBalanceTimer: any;
 
     constructor (props: any) {
@@ -193,4 +193,4 @@ function mapStateToProps (state: any): WalletPageProps {
     }
 }
 
-export default connect<any, undefined, any>(mapStateToProps)(MyWallet)
+export default connect<any, undefined, any>(mapStateToProps)(WalletPage)
