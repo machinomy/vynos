@@ -1,8 +1,8 @@
-import * as React from "react";
-import {connect} from "react-redux";
-import {FrameState} from "../state/FrameState";
+import * as React from 'react'
+import {connect} from 'react-redux'
+import {FrameState} from "../state/FrameState"
 
-import SignIn from '../components/SignIn/Authentication';
+import SignIn from '../components/UnlockPage'
 
 
 import { Redirect } from 'react-router-dom'

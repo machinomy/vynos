@@ -1,12 +1,11 @@
-import * as React from "react";
-import {connect} from "react-redux";
-import {ChangeEvent, CSSProperties, FormEvent} from "react";
-import _ = require("lodash")
-import WorkerProxy from "../../../WorkerProxy";
-import {FrameState} from "../../../state/FrameState";
+import * as React from 'react'
+import {connect} from 'react-redux'
+import {ChangeEvent, FormEvent} from 'react'
+import _ = require('lodash')
+import WorkerProxy from '../WorkerProxy';
 import { Container, Form, Input, Header, Button, Divider } from 'semantic-ui-react'
-import Logo from '../Header';
-import { Redirect } from 'react-router-dom'
+import Logo from './InitPage/Logo'
+import {FrameState} from "../state/FrameState";
 
 const style = require("../../../styles/ynos.css");
 
@@ -22,9 +21,7 @@ export type UnlockPageState = {
   loading: boolean
 };
 
-const ERROR_MESSAGE = "Incorrect password";
-
-export class Authentication extends React.Component<UnlockPageProps, UnlockPageState> {
+export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState> {
   constructor (props: UnlockPageProps) {
     super(props);
     this.state = {
@@ -105,4 +102,4 @@ function mapStateToProps (state: FrameState): UnlockPageStateProps {
   }
 }
 
-export default connect<UnlockPageProps, undefined, any>(mapStateToProps)(Authentication)
+export default connect<UnlockPageProps, undefined, any>(mapStateToProps)(UnlockPage)

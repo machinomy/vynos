@@ -10,7 +10,7 @@ import Preferences from '../components/Account/Preferences'
 import Network from '../components/Account/Network'
 import Wallet from '../components/Account/Wallet'
 
-import Terms from '../components/Terms'
+import Terms from '../components/TermsPage'
 import InitPage from '../components/InitPage'
 import Restore from '../components/RestorePage'
 import WalletMenu from '../containers/WalletMenu'

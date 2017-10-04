@@ -3,7 +3,7 @@ import { Container, Menu } from 'semantic-ui-react'
 import {RouterProps} from "react-router"
 const style = require("../styles/ynos.css");
 
-const Terms: React.SFC<RouterProps> = (props) => {
+const TermsPage: React.SFC<RouterProps> = (props) => {
   return <div>
     <Menu className={style.clearBorder}>
       <Menu.Item
@@ -19,4 +19,4 @@ const Terms: React.SFC<RouterProps> = (props) => {
   </div>
 }
 
-export default Terms
+export default TermsPage
