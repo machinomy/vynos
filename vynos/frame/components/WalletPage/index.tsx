@@ -5,6 +5,7 @@ import {FrameState} from '../../state/FrameState'
 import WorkerProxy from '../../WorkerProxy'
 
 import { Container, List, Image, Header, Button } from 'semantic-ui-react'
+import AddressSubpage from "./AddressSubpage";
 
 const style = require('../../styles/ynos.css')
 
@@ -14,18 +15,20 @@ export interface WalletPageProps {
 }
 
 export interface WalletPageState {
-  address: string|null;
-  balance: string;
+  address: string|null
+  balance: string
+  isDetailsDisplayed: boolean
 }
 
 export class WalletPage extends React.Component<WalletPageProps, WalletPageState> {
-  // updateBalanceTimer: any;
+  updateBalanceTimer: any;
 
   constructor (props: any) {
     super(props);
     this.state = {
       address: null,
-      balance: '0'
+      balance: '0',
+      isDetailsDisplayed: false
     }
   }
 
@@ -40,22 +43,43 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
       let web3 = this.props.web3
       web3.eth.getAccounts((err, accounts) => {
         let address = accounts[0]
-        setInterval(() => {
+        this.updateBalanceTimer = setInterval(() => {
           web3.eth.getBalance(address, (err, balance) => {
             this.setState({
               balance: web3.fromWei(balance, 'ether').toString()
             })
           })
         }, 500)
-        console.log(address)
         this.setState({address: address})
       })
     }
   }
 
+  componentWillUnmount () {
+    clearInterval(this.updateBalanceTimer)
+  }
+
+  renderChildren () {
+    if (this.state.isDetailsDisplayed) {
+      return <AddressSubpage address={this.state.address} />
+    } else {
+      return <p>Transactions</p>
+    }
+  }
+
+  displayDetails () {
+    let next = true
+    if (this.state.isDetailsDisplayed) {
+      next = false
+    }
+    this.setState({
+      isDetailsDisplayed: next
+    })
+  }
+
   render () {
     return <div>
-      <div className={style.walletHeader}>
+      <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
         {this.renderBlockie()}
         <div className={style.walletAccount}>
           <div className={style.walletAddress}>
@@ -66,8 +90,8 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
           </div>
         </div>
       </div>
-      <div className={style.wrap}>
-        List of Transactions
+      <div className={style.wrap} >
+        {this.renderChildren()}
       </div>
     </div>
   }

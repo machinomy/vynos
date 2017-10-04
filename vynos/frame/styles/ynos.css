@@ -101,7 +101,7 @@ Wallet page
 .wallet-header {
   text-align: left;
   background-color: #fafafa;
-  box-shadow: 0 7px 10px -5px rgba(0,0,0,0.1);
+  /* box-shadow: 0 7px 10px -5px rgba(0,0,0,0.1); */
   padding: 10px !important;
   width: 100%;
   display: flex;
@@ -110,6 +110,7 @@ Wallet page
   justify-content: flex-start;
   align-items: flex-start;
   align-content: flex-start;
+  cursor: pointer;
 }
 
 .wallet-account {
@@ -125,7 +126,27 @@ Wallet page
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 0.3ex 0;
-  cursor: pointer;
+}
+
+.wallet-address-subpage {
+  background-color: #fafafa;
+}
+
+.wallet-address-subpage .wallet-address-subpage-buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}
+
+.wallet-address-subpage .wallet-address-subpage-buttons div {
+  width: 50%;
+  text-align: center;
+}
+
+.wallet-address-subpage-paragraph {
+  text-align: center;
+  font-size: smaller;
 }
 
 .account-avatar {
@@ -453,7 +474,7 @@ form.encryption-form > div.equal.width.fields {
 Buttons
 ******************************/
 button.button-nav {
-  width: 156px;
+  min-width: 140px;
   height: 36px;
   background-color: #00AEEF !important;
   color: #fff !important;
