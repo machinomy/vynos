@@ -320,6 +320,12 @@
   version "8.0.31"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.31.tgz#d9af61093cf4bfc9f066ca34de0175012cfb0ce9"
 
+"@types/qr-image@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@types/qr-image/-/qr-image-3.2.0.tgz#d3d5e45735923a7229a076c7fc90bab9f0dc620b"
+  dependencies:
+    "@types/node" "*"
+
 "@types/react-copy-to-clipboard@^4.2.3":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/@types/react-copy-to-clipboard/-/react-copy-to-clipboard-4.2.3.tgz#9da09521fc0f7768f9ad9781d9768f1cde81e5bd"
@@ -5613,6 +5619,10 @@ punycode@^1.2.4, punycode@^1.4.1:
 q@^1.1.2:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.0.tgz#dd01bac9d06d30e6f219aecb8253ee9ebdc308f1"
+
+qr-image@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/qr-image/-/qr-image-3.2.0.tgz#9fa8295beae50c4a149cf9f909a1db464a8672e8"
 
 qs@2.2.4:
   version "2.2.4"

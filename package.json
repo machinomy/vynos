@@ -43,6 +43,7 @@
     "webpack-package-loaders-plugin": "^3.0.0"
   },
   "dependencies": {
+    "@types/qr-image": "^3.2.0",
     "@types/react-copy-to-clipboard": "^4.2.3",
     "@types/react-custom-scrollbars": "^4.0.1",
     "@types/react-router-dom": "^4.0.8",
@@ -65,6 +66,7 @@
     "machinomy": "^1.0.0-alpha.40",
     "material-components-web": "^0.14.0",
     "mux-demux": "^3.7.9",
+    "qr-image": "^3.2.0",
     "react": "^15.4.2",
     "react-copy-to-clipboard": "^5.0.1",
     "react-custom-scrollbars": "^4.1.2",

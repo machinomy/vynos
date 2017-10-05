@@ -60,8 +60,8 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
   }
 
   renderChildren () {
-    if (this.state.isDetailsDisplayed) {
-      return <AddressSubpage address={this.state.address} />
+    if (this.state.isDetailsDisplayed && this.state.address) {
+      return <AddressSubpage address={this.state.address}/>
     } else {
       return <p>Transactions</p>
     }

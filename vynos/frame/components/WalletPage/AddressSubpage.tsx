@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { Container, Menu, Form, Button, Divider } from 'semantic-ui-react'
-import CopyToClipboard = require('react-copy-to-clipboard')
+import * as qr from 'qr-image'
 
 const style = require('../../styles/ynos.css')
 
 export interface AddressSubpageProps {
-  address: string | null
+  address: string
 }
 
 export interface AddressSubpageState {
@@ -38,11 +38,13 @@ export default class AddressSubpage extends React.Component<AddressSubpageProps,
     }, 1200)
   }
 
-  render () {
-    if (!this.props.address) {
-      return <p>Loading...</p>
-    }
+  renderQR () {
+    let pngBuffer = qr.imageSync(this.props.address, {type: 'png', margin: 1}) as Buffer
+    let dataURI = 'data:image/png;base64,' + pngBuffer.toString('base64')
+    return <img className='react-qr' src={dataURI} />
+  }
 
+  render () {
     return <div className={style.walletAddressSubpage}>
       <div className={style.walletAddressSubpageButtons}>
         <div className={style.walletAddressSubpageButtonsSingle}>
@@ -59,16 +61,10 @@ export default class AddressSubpage extends React.Component<AddressSubpageProps,
       <p className={style.walletAddressSubpageParagraph}>
         <a href={etherscanLink(this.props.address)} target="_blank">View on Etherscan</a>
       </p>
-      <p className={style.walletAddressSubpageParagraph}>
-        <CopyToClipboard text={this.props.address} onCopy={this.didCopy.bind(this)}>
-          <Button type="submit"
-                  content={this.state.copyToClipboardText}
-                  primary
-                  className={style.buttonNav} />
-        </CopyToClipboard>
-      </p>
       <Divider hidden />
-      <p>QR</p>
+      <p className={style.walletAddressSubpageParagraph}>
+        {this.renderQR()}
+      </p>
     </div>
   }
 }

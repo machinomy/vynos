@@ -3,7 +3,7 @@
 @font-face {
     font-family: "vynos";
     src:url("./fonts/vynos.eot");
-    src:url("./fonts//vynos.eot?#iefix") format("embedded-opentype"),
+    src:url("./fonts/vynos.eot?#iefix") format("embedded-opentype"),
     url("./fonts/vynos.woff") format("woff"),
     url("./fonts/vynos.ttf") format("truetype"),
     url("./fonts/vynos.svg#vynos") format("svg");
