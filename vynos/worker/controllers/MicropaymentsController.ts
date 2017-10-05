@@ -58,6 +58,7 @@ export default class MicropaymentsController {
   }
 
   buy (title: string, receiver: string, amount: number, gateway: string): Promise<VynosBuyResponse> {
+    console.log('insideBuy')
     return new Promise((resolve, reject) => {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
