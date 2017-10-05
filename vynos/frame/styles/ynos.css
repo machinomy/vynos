@@ -48,10 +48,17 @@ a.read-terms {
   text-align: center;
 }
 
-.application-menu {
+.wallet-menu-container {
+  display: flex;
+  flex-flow: column;
+  height: 100%
+}
+
+.wallet-menu {
   border: 0 !important;
   box-shadow: none !important;
   margin: 0;
+  flex: 0 0 4rem;
 }
 
 
@@ -113,6 +120,20 @@ Wallet page
   cursor: pointer;
 }
 
+.wallet-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1 100%;
+}
+
+.wallet-page .wallet-header {
+  flex: 0 0 70px;
+}
+
+.wallet-page .wrap {
+  flex: 1 100%;
+}
+
 .wallet-account {
   flex: 1 0 100px;
   width: 100px;
@@ -130,6 +151,7 @@ Wallet page
 
 .wallet-address-subpage {
   background-color: #fafafa;
+  height: 100%;
 }
 
 .wallet-address-subpage .wallet-address-subpage-buttons {

@@ -78,7 +78,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
   }
 
   render () {
-    return <div>
+    return <div className={style.walletPage}>
       <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
         {this.renderBlockie()}
         <div className={style.walletAccount}>

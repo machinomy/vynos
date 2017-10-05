@@ -89,8 +89,8 @@ export class WalletMenu extends React.Component<WalletMenuProps, WalletMenuState
     if (this.props.isUnlockPageExpected) {
       return <Redirect to='/' />
     } else {
-      return <div>
-        <Menu style={{margin: 0}} className={style.applicationMenu}>
+      return <div className={style.walletMenuContainer}>
+        <Menu style={{margin: 0}} className={style.walletMenu}>
           <Menu.Menu className={style.menuIntoOneItemFluid}>
             <Button icon
                     className={style.btnLock}
