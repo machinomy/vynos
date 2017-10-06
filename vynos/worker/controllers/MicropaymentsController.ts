@@ -6,23 +6,26 @@ import { PaymentChannel } from "machinomy/lib/channel";
 import Promise = require('bluebird')
 import * as BigNumber from 'bignumber.js'
 import Payment from "machinomy/lib/Payment";
-import {BuyResponse} from "../../lib/rpc/yns";
 import {PaymentRequired} from "machinomy/lib/transport";
 import VynosBuyResponse from "../../lib/VynosBuyResponse";
 import ZeroClientProvider = require("web3-provider-engine/zero")
 import {ProviderOpts} from "web3-provider-engine";
 import ProviderOptions from "./ProviderOptions";
 import Web3 = require("web3")
+import TransactionService from "../../lib/TransactionService";
+import Transaction from "../../lib/Transaction";
 
 export default class MicropaymentsController {
   network: NetworkController
   background: BackgroundController
   account: string
   client: Sender
+  transactions: TransactionService
 
-  constructor(network: NetworkController, background: BackgroundController) {
+  constructor(network: NetworkController, background: BackgroundController, transactions: TransactionService) {
     this.network = network
     this.background = background
+    this.transactions = transactions
     this.background.awaitUnlock(() => {
       this.background.getAccounts().then(accounts => {
         this.account = accounts[0]
@@ -160,12 +163,13 @@ export default class MicropaymentsController {
     })
   }
 
-  _buyUsingExistingChannel(paymentChannel: PaymentChannel, paymentRequired: PaymentRequired): Promise<VynosBuyResponse> {
+  _buyUsingExistingChannel(title: string, paymentChannel: PaymentChannel, paymentRequired: PaymentRequired): Promise<VynosBuyResponse> {
     return Payment.fromPaymentChannel(this.client.web3, paymentChannel, paymentRequired.price).then(payment => {
       let nextPaymentChannel = PaymentChannel.fromPayment(payment)
       return this.client.storage.channels.saveOrUpdate(nextPaymentChannel).then(() => {
         return this.client.transport.requestToken(paymentRequired.gateway, payment)
       }).then(token => {
+        this.transactions.addTransaction(new Transaction(title))
         return {
           channel: nextPaymentChannel,
           token: token
@@ -178,11 +182,11 @@ export default class MicropaymentsController {
     let paymentRequired = new PaymentRequired(receiver, amount, gateway)
     return this.client.findOpenChannel(paymentRequired).then(paymentChannel => {
       if (paymentChannel) {
-        return this._buyUsingExistingChannel(paymentChannel, paymentRequired)
+        return this._buyUsingExistingChannel(title, paymentChannel, paymentRequired)
       } else {
         let value = paymentRequired.price * 10 // FIXME Total value of the channel
         return this.client.contract.buildPaymentChannel(this.account, paymentRequired.receiver, value).then((paymentChannel: PaymentChannel) => {
-          return this._buyUsingExistingChannel(paymentChannel, paymentRequired)
+          return this._buyUsingExistingChannel(title, paymentChannel, paymentRequired)
         })
       }
     })
