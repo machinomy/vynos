@@ -9,6 +9,10 @@ import Payment from "machinomy/lib/Payment";
 import {BuyResponse} from "../../lib/rpc/yns";
 import {PaymentRequired} from "machinomy/lib/transport";
 import VynosBuyResponse from "../../lib/VynosBuyResponse";
+import ZeroClientProvider = require("web3-provider-engine/zero")
+import {ProviderOpts} from "web3-provider-engine";
+import ProviderOptions from "./ProviderOptions";
+import Web3 = require("web3")
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -22,9 +26,16 @@ export default class MicropaymentsController {
     this.background.awaitUnlock(() => {
       this.background.getAccounts().then(accounts => {
         this.account = accounts[0]
-        this.client = buildMachinomyClient(this.network.web3, this.account)
+        let provider = ZeroClientProvider(this.providerOpts(network.rpcUrl))
+        let web3 = new Web3(provider)
+        this.client = buildMachinomyClient(web3, this.account)
       })
     })
+  }
+
+  providerOpts(rpcUrl: string): ProviderOpts {
+    let providerOptions = new ProviderOptions(this.background, rpcUrl)
+    return providerOptions.approving()
   }
 
   openChannel(receiver: string, amount: number): Promise<PaymentChannel> {
