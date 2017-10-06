@@ -43,6 +43,8 @@
     "webpack-package-loaders-plugin": "^3.0.0"
   },
   "dependencies": {
+    "@types/bluebird": "^3.5.14",
+    "@types/lodash": "^4.14.77",
     "@types/qr-image": "^3.2.0",
     "@types/react-copy-to-clipboard": "^4.2.3",
     "@types/react-custom-scrollbars": "^4.0.1",
@@ -64,7 +66,7 @@
     "localforage": "^1.5.0",
     "localforage-observable": "^1.3.1",
     "lodash": "^4.17.4",
-    "machinomy": "https://github.com/machinomy/machinomy#master",
+    "machinomy": "^1.0.0-alpha.41",
     "material-components-web": "^0.14.0",
     "mux-demux": "^3.7.9",
     "qr-image": "^3.2.0",
@@ -86,6 +88,7 @@
     "redux-persist": "^4.8.0",
     "redux-thunk": "^2.2.0",
     "semantic-ui-react": "^0.71.5",
+    "types-web3-provider-engine": "^0.0.2",
     "typescript-fsa": "^2.3.1",
     "typescript-fsa-reducers": "^0.4.4",
     "typescript-fsa-redux-thunk": "xdave/typescript-fsa-redux-thunk",

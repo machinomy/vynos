@@ -1,13 +1,8 @@
 import NetworkController from "./NetworkController";
 import BackgroundController from "./BackgroundController";
-import {buildMachinomyClient} from "../../lib/micropayments";
-import Sender from "machinomy/lib/sender";
 import { PaymentChannel } from "machinomy/lib/channel";
 import Promise = require('bluebird')
-import * as BigNumber from 'bignumber.js'
 import Payment from "machinomy/lib/Payment";
-import {BuyResponse} from "../../lib/rpc/yns";
-import {PaymentRequired} from "machinomy/lib/transport";
 import VynosBuyResponse from "../../lib/VynosBuyResponse";
 import Machinomy from 'machinomy'
 import ZeroClientProvider = require("web3-provider-engine/zero")
@@ -15,15 +10,14 @@ import {ProviderOpts} from "web3-provider-engine";
 import ProviderOptions from "./ProviderOptions";
 import Web3 = require("web3")
 import TransactionService from "../../lib/TransactionService";
-import Transaction from "../../lib/Transaction";
 
 export default class MicropaymentsController {
   network: NetworkController
   background: BackgroundController
   account: string
-  client: Sender
   machinomy: Machinomy
   transactions: TransactionService
+  web3: Web3
 
   constructor(network: NetworkController, background: BackgroundController, transactions: TransactionService) {
     this.network = network
@@ -33,8 +27,7 @@ export default class MicropaymentsController {
       this.background.getAccounts().then(accounts => {
         this.account = accounts[0]
         let provider = ZeroClientProvider(this.providerOpts(network.rpcUrl))
-        let web3 = new Web3(provider)
-        this.client = buildMachinomyClient(web3, this.account)
+        this.web3 = new Web3(provider)
       })
     })
   }

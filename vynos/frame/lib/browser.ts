@@ -1,6 +1,6 @@
 // @flow
 
-import Promise from "bluebird";
+import Promise = require("bluebird")
 
 export default {
   tabs: {
@@ -19,10 +19,6 @@ export default {
     }
   },
   runtime: {
-    sendMessage: (message: Object): Promise<Object> => {
-      const promisified = Promise.promisify(chrome.runtime.sendMessage);
-      return promisified(message, () => {});
-    },
     connect: (params: {name: string}) => {
       return chrome.runtime.connect(params)
     },
