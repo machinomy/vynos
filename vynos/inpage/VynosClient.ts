@@ -72,18 +72,19 @@ export default class VynosClient implements Vynos {
     })
   }
 
-  closeChannel(channel: PaymentChannel | PaymentChannelJSON): Promise<PaymentChannel> {
+  closeChannel(channel: string): Promise<string> {
     let request: CloseChannelRequest = {
       id: randomId(),
       method: CloseChannelRequest.method,
       jsonrpc: JSONRPC,
       params: [channel]
     }
-    if (isPaymentChannel(channel)) {
-      request.params = [channel.toJSON()]
-    }
+    // if (isPaymentChannel(channel)) {
+    //   request.params = [channel.toJSON()]
+    // }
     return this.provider.ask(request).then((response: CloseChannelResponse) => {
-      return PaymentChannel.fromDocument(response.result[0])
+      // return PaymentChannel.fromDocument(response.result[0])
+      return response.result[0]
     })
   }
 

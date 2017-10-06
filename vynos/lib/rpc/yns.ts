@@ -147,7 +147,7 @@ export class CloseChannelRequest implements RequestPayload {
   id: number;
   jsonrpc: typeof JSONRPC;
   method: typeof CloseChannelRequest.method;
-  params: [PaymentChannelJSON];
+  params: [string];
 
   static method = "yns_closeChannel"
 
@@ -157,7 +157,7 @@ export class CloseChannelRequest implements RequestPayload {
 }
 
 export interface CloseChannelResponse extends ResponsePayload {
-  result: [PaymentChannelJSON] //
+  result: [string] //
 }
 
 export class PayInChannelRequest implements RequestPayload {

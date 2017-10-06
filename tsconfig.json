@@ -11,8 +11,13 @@
     "emitDecoratorMetadata": true,
     "jsx": "react",
     "target": "es5",
-    "module":"commonjs",
-    "lib": ["dom", "dom.iterable", "es2015", "es2015.iterable"],
+    "module": "commonjs",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es2015",
+      "es2015.iterable"
+    ],
     "declarationDir": "dist/types",
     "typeRoots": [
       "node_modules/@types",
@@ -22,5 +27,13 @@
   "include": [
     "vynos",
     "node_modules/*/index.d.ts"
+  ],
+  "exclude": [
+    "node_modules/homedir/index.d.ts",
+    "node_modules/@types/jasmine/index.d.ts"
+  ],
+  "typeRoots": [
+    "node_modules/@types",
+    "types"
   ]
 }

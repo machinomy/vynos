@@ -32,12 +32,13 @@ export default class MicropaymentsHandler {
   }
 
   closeChannel(message: CloseChannelRequest, next: Function, end: EndFunction) {
-    let channel = PaymentChannel.fromDocument(message.params[0])
+    // let channel = PaymentChannel.fromDocument(message.params[0])
+    let channel = message.params[0]
     this.controller.closeChannel(channel).then(channel => {
       let response: CloseChannelResponse = {
         id: message.id,
         jsonrpc: message.jsonrpc,
-        result: [channel.toJSON()]
+        result: [channel]
       }
       end(null, response)
     }).catch(end)
