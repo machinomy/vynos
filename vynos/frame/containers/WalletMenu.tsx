@@ -27,7 +27,6 @@ export class WalletMenu extends React.Component<WalletMenuProps, WalletMenuState
 
   constructor (props: WalletMenuProps) {
     super(props)
-    console.log(props)
     this.state = {
       isOpen: false,
       currentName: 'Wallet'
