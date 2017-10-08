@@ -12,7 +12,7 @@ export interface RootRouteProps {
   isUnlockPageExpected: boolean
 }
 
-const RootComponent = (props: RootRouteProps) => {
+const RootContainer = (props: RootRouteProps) => {
   if (props.isInitPageExpected) {
     return <p>Redirect to="/init"</p>
   } else if (props.isUnlockPageExpected) {
@@ -32,4 +32,4 @@ function mapStateToProps(state: FrameState): RootRouteProps {
   }
 }
 
-export default connect<RootRouteProps, undefined, any>(mapStateToProps)(RootComponent)
+export default connect<RootRouteProps, undefined, any>(mapStateToProps)(RootContainer)

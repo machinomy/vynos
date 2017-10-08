@@ -6,7 +6,7 @@ import {FrameState} from "../state/FrameState";
 import WalletMenuItem from './WalletMenu/WalletMenuItem'
 import WorkerProxy from "../WorkerProxy";
 import {setWorkerProxy} from "../actions/temp";
-import {isUnlockPageExpected} from "../components/RootComponent";
+import {isUnlockPageExpected} from "./RootContainer";
 
 const style = require("../styles/ynos.css");
 
