@@ -5,7 +5,6 @@ const style = require('../styles/ynos.css')
 
 import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../constants'
 import WorkerProxy from '../WorkerProxy'
-import {RouterProps} from 'react-router'
 import {FrameState} from "../state/FrameState";
 import {ChangeEvent, FormEvent} from "react";
 import bip39 = require('bip39')
@@ -14,7 +13,9 @@ export interface RestorePageStateProps {
   workerProxy: WorkerProxy
 }
 
-type RestorePageProps = RestorePageStateProps & RouterProps
+export interface RestorePageProps extends RestorePageStateProps {
+  goBack: () => void
+}
 
 export interface RestorePageState {
   seed?: string
@@ -32,14 +33,14 @@ class RestorePage extends React.Component<RestorePageProps, RestorePageState> {
   }
 
   goBack () {
-    this.props.history.goBack()
+    this.props.goBack()
   }
 
   handleSubmit (ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     if (this.isValid() && this.state.password && this.state.seed) {
       this.props.workerProxy.restoreWallet(this.state.password, this.state.seed).then(() => {
-        this.props.history.push('/')
+        this.goBack()
       })
     }
   }
@@ -182,7 +183,7 @@ class RestorePage extends React.Component<RestorePageProps, RestorePageState> {
 
 function mapStateToProps (state: FrameState): RestorePageStateProps {
   return {
-    workerProxy: state.temp.workerProxy!
+    workerProxy: state.temp.workerProxy
   }
 }
 

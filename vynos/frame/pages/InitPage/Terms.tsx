@@ -4,7 +4,8 @@ import {FrameState} from "../../state/FrameState";
 import actions from "../../actions";
 import { Button, Container, Divider  } from 'semantic-ui-react'
 import Logo from './Logo';
-import TermsTextPage from "../TermsTextPage";
+import TermsTextPage from '../TermsTextPage'
+import RestorePage from '../RestorePage'
 const style = require('../../styles/ynos.css')
 
 export interface TermsSubpageDispatchProps {
@@ -45,9 +46,18 @@ export class Terms extends React.Component<TermsSubpageProps, TermsState> {
     })
   }
 
+  doneDisplayRestorePage () {
+    this.setState({
+      displayRestore: false
+    })
+  }
+
   render () {
     if (this.state.displayTermsText)
-      return <TermsTextPage goBack={this.doneDisplayTermsText.bind(this)}/>
+      return <TermsTextPage goBack={this.doneDisplayTermsText.bind(this)} />
+
+    if (this.state.displayRestore)
+      return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)} />
 
     return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
       <Logo />
