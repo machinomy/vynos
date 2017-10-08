@@ -141,11 +141,13 @@ function webpackConfig (entry) {
 
 const VYNOS_LIVE = webpackConfig({
   vynos: [
+    'react-hot-loader/patch',
     `webpack-dev-server/client?http://localhost:${process.env.HARNESS_PORT}`,
     'webpack/hot/only-dev-server',
     path.resolve(__dirname, "vynos/vynos.ts"),
   ],
   frame: [
+    'react-hot-loader/patch',
     `webpack-dev-server/client?http://localhost:${process.env.FRAME_PORT}`,
     'webpack/hot/only-dev-server',
     path.resolve(__dirname, "vynos/frame.ts")

@@ -8,7 +8,7 @@ export interface InitPageState {
 }
 
 export interface TempState {
-  workerProxy?: WorkerProxy
+  workerProxy: WorkerProxy
   initPage: InitPageState
 }
 
@@ -18,15 +18,18 @@ export interface FrameState {
   router: RouterState
 }
 
-export const INITIAL_FRAME_STATE: FrameState = {
-  temp: {
-    initPage: {
-      didAcceptTerms: false,
-      mnemonic: null
-    }
-  },
-  router: {
-    location: null
-  },
-  shared: INITIAL_SHARED_STATE
+export function initialState(workerProxy: WorkerProxy): FrameState {
+  return {
+    temp: {
+      initPage: {
+        didAcceptTerms: false,
+        mnemonic: null
+      },
+      workerProxy: workerProxy
+    },
+    router: {
+      location: null
+    },
+    shared: INITIAL_SHARED_STATE
+  }
 }

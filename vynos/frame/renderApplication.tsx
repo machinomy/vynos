@@ -7,12 +7,10 @@ import 'semantic-ui-css/semantic.min.css';
 import {routerMiddleware} from "react-router-redux";
 import {createLogger} from "redux-logger";
 import * as redux from "redux";
-import {FrameState, INITIAL_FRAME_STATE} from "./state/FrameState";
+import {FrameState, initialState} from "./state/FrameState";
 import RemoteStore from "./lib/RemoteStore";
-import {setWorkerProxy} from "./actions/temp";
 import createHashHistory from 'history/createHashHistory';
 import reducers from './state/reducers'
-import RootComponent from "./containers/RootContainer";
 import {AppContainer} from "react-hot-loader";
 
 const MOUNT_POINT_ID = 'mount-point'
@@ -21,14 +19,13 @@ async function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerPr
   const frameState = await workerProxy.getSharedState();
   const history = createHashHistory()
   const middleware = redux.applyMiddleware(createLogger(), routerMiddleware(history))
-  let store: Store<FrameState> = redux.createStore(reducers, INITIAL_FRAME_STATE, middleware)
+  let store: Store<FrameState> = redux.createStore(reducers(workerProxy), initialState(workerProxy), middleware)
   let remoteStore = new RemoteStore(workerProxy, frameState)
   remoteStore.wireToLocal(store)
-  store.dispatch(setWorkerProxy(workerProxy))
 
   function reload () {
-    let RootContainer = require('./containers/RootContainer').default
-    let application = React.createElement(RootContainer)
+    let RootContainer = require('./pages/RootContainer').default
+    let application = React.createElement(RootContainer, {})
     let container = React.createElement(AppContainer, undefined, application)
     let provider = React.createElement(Provider, { store: store }, container)
     DOM.render(provider, mountPoint)

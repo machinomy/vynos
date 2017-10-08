@@ -13,6 +13,7 @@ h1, h2 {
 
 a {
     color: #00AEEF !important;
+    cursor: pointer;
 }
 
 input {

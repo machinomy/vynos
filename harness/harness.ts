@@ -30,7 +30,6 @@ window.addEventListener("load", function () {
     let provider = instance.provider
     let web3 = new Web3(provider)
     web3.eth.getAccounts((err, accounts) => {
-      console.log(err)
       console.log(accounts)
     })
   })

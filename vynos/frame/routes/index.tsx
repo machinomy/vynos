@@ -11,7 +11,7 @@ import Wallet from '../components/WalletPage'
 import Terms from '../components/TermsPage'
 import InitPage from '../components/InitPage'
 import Restore from '../components/RestorePage'
-import WalletMenu from '../containers/WalletMenu'
+import WalletMenu from '../pages/WalletMenu'
 import ApprovePage from "../components/WalletPage/ApprovePage";
 
 export interface RoutesProps {
