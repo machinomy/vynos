@@ -5,7 +5,6 @@ import {FrameState, INITIAL_FRAME_STATE} from "./FrameState";
 import actions from '../actions'
 import {routerReducer} from 'react-router-redux'
 import {topmenu} from './menu'
-import {welcome} from './welcome'
 
 const tempReducer = reducerWithInitialState(INITIAL_FRAME_STATE.temp)
   .case(actions.temp.setWorkerProxy, actions.temp.setWorkerProxyHandler)
@@ -21,7 +20,6 @@ const reducers: Reducer<FrameState> = redux.combineReducers({
   shared: sharedReducer,
 
   menu: topmenu,
-  welcomePopup: welcome
 });
 
 export default reducers
