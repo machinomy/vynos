@@ -27,9 +27,6 @@ window.addEventListener("load", function () {
   }
 
   vynos.ready().then(instance => {
-    console.log('ffffffffffffffffffffffffffffffff')
-    console.log(instance)
-
     let provider = instance.provider
     let web3 = new Web3(provider)
     web3.eth.getAccounts((err, accounts) => {

@@ -2,7 +2,6 @@ import * as React from 'react'
 import * as DOM from 'react-dom'
 import WorkerProxy from './WorkerProxy'
 import {Provider, Store} from 'react-redux'
-import Routes from './routes'
 
 import 'semantic-ui-css/semantic.min.css';
 import {routerMiddleware} from "react-router-redux";
@@ -13,6 +12,7 @@ import RemoteStore from "./lib/RemoteStore";
 import {setWorkerProxy} from "./actions/temp";
 import createHashHistory from 'history/createHashHistory';
 import reducers from './state/reducers'
+import RootComponent from "./components/RootComponent";
 
 const MOUNT_POINT_ID = 'mount-point'
 
@@ -27,7 +27,7 @@ async function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerPr
 
   const application =
     <Provider store={store}>
-      <Routes history={history} />
+      <RootComponent />
     </Provider>
 
   DOM.render(application, mountPoint)

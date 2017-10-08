@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Menu, Dropdown, Button, Image } from 'semantic-ui-react'
 import {Redirect, RouterProps} from "react-router";
-import {isUnlockPageExpected} from "../routes/filters";
 import {connect} from "react-redux";
 import {FrameState} from "../state/FrameState";
 import WalletMenuItem from './WalletMenu/WalletMenuItem'
 import WorkerProxy from "../WorkerProxy";
 import {setWorkerProxy} from "../actions/temp";
+import {isUnlockPageExpected} from "../components/RootComponent";
 
 const style = require("../styles/ynos.css");
 

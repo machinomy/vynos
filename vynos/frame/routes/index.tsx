@@ -3,7 +3,6 @@ import {Switch, Route} from 'react-router-dom'
 import {History} from 'history'
 import {ConnectedRouter} from 'react-router-redux'
 
-import RootRoutes from './RootRoutes'
 import Channels from '../components/Account/Channels'
 import Preferences from '../components/Account/Preferences'
 import Network from '../components/Account/Network'
@@ -28,7 +27,6 @@ const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
 
       <Route path="/approve" component={ApprovePage} />
 
-      <Route exact path="/" component={RootRoutes}/>
       <Switch>
         <WalletMenu>
           <Route exact path="/wallet" component={Wallet}/>
@@ -38,7 +36,6 @@ const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
         </WalletMenu>
       </Switch>
 
-      <Route component={RootRoutes} />
     </Switch>
   </ConnectedRouter>
 }

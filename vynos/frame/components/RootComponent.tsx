@@ -1,12 +1,10 @@
 import * as React from 'react'
 import {connect} from 'react-redux'
-import {FrameState} from "../state/FrameState"
+import {FrameState} from '../state/FrameState'
 
-import SignIn from '../components/UnlockPage'
-
-
-import { Redirect } from 'react-router-dom'
-import {isUnlockPageExpected} from "./filters";
+export function isUnlockPageExpected(state: FrameState): boolean {
+  return !!(state.shared.didInit && state.temp.workerProxy && state.shared.isLocked)
+}
 
 export interface RootRouteProps {
   isInitPageExpected: boolean
@@ -14,15 +12,15 @@ export interface RootRouteProps {
   isUnlockPageExpected: boolean
 }
 
-const RootRoute = (props: RootRouteProps) => {
+const RootComponent = (props: RootRouteProps) => {
   if (props.isInitPageExpected) {
-    return <Redirect to="/init" />
+    return <p>Redirect to="/init"</p>
   } else if (props.isUnlockPageExpected) {
-    return <SignIn/>
+    return <p>SignIn</p>
   } else if (props.isWalletPageExpected) {
-    return <Redirect to="/wallet" />
+    return <p>Redirect to="/wallet" </p>
   } else {
-    return <Redirect to="/" />
+    return <p>Redirect to="/"</p>
   }
 }
 
@@ -34,4 +32,4 @@ function mapStateToProps(state: FrameState): RootRouteProps {
   }
 }
 
-export default connect<RootRouteProps, undefined, any>(mapStateToProps)(RootRoute)
+export default connect<RootRouteProps, undefined, any>(mapStateToProps)(RootComponent)
