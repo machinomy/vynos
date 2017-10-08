@@ -13,6 +13,7 @@ import {setWorkerProxy} from "./actions/temp";
 import createHashHistory from 'history/createHashHistory';
 import reducers from './state/reducers'
 import RootComponent from "./components/RootComponent";
+import {AppContainer} from "react-hot-loader";
 
 const MOUNT_POINT_ID = 'mount-point'
 
@@ -25,12 +26,22 @@ async function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerPr
   remoteStore.wireToLocal(store)
   store.dispatch(setWorkerProxy(workerProxy))
 
-  const application =
-    <Provider store={store}>
-      <RootComponent />
-    </Provider>
+  function reload () {
+    let RootComponent = require('./components/RootComponent').default
+    let application = React.createElement(RootComponent)
+    let container = React.createElement(AppContainer, undefined, application)
+    let provider = React.createElement(Provider, { store: store }, container)
+    DOM.render(provider, mountPoint)
+  }
 
-  DOM.render(application, mountPoint)
+  reload()
+
+  let hotReload = (module as HotModule).hot
+  if (hotReload) {
+    hotReload.accept("./vynos/frame/components/RootComponent.tsx", () => {
+      reload()
+    })
+  }
 }
 
 export default function renderApplication (document: HTMLDocument, workerProxy: WorkerProxy) {

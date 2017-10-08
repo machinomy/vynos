@@ -7,8 +7,8 @@ const path                = require("path"),
 require('dotenv').config({ path: '.env' });
 
 
-const   CONTRACT_ADDRESS    = process.env.CONTRACT_ADDRESS,
-  RPC_URL             = process.env.RPC_URL;
+const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS,
+  RPC_URL = process.env.RPC_URL;
 
 
 function webpackConfig (entry) {
