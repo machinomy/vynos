@@ -31,7 +31,7 @@ export class RootContainer extends React.Component<RootContainerProps, any> {
 
 function mapStateToProps(state: FrameState): RootStateProps {
   return {
-    isInitPageExpected: !(state.shared.didInit),
+    isInitPageExpected: !state.shared.didInit,
     isWalletPageExpected: state.shared.didInit && !state.shared.isLocked,
     isUnlockPageExpected: isUnlockPageExpected(state)
   }
