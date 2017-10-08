@@ -2,8 +2,8 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {FrameState} from "../../state/FrameState";
 import Terms from './Terms'
-/*
 import Password from './Password'
+/*
 import Mnemonic from './Mnemonic'
  */
 
@@ -17,7 +17,7 @@ const InitPage: React.SFC<InitPageProps> = (props) => {
   if (props.needAcceptTerms) {
     return <Terms />
   } else if (props.needSetPassword) {
-    return <p>Password</p>
+    return <Password />
   } else if (props.didGenerateMnemonic) {
     return <p>Mnemonic</p>
   } else {
