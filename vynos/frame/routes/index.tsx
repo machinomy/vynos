@@ -3,7 +3,6 @@ import {Switch, Route} from 'react-router-dom'
 import {History} from 'history'
 import {ConnectedRouter} from 'react-router-redux'
 
-import ApplicationMenu from '../containers/ApplicationMenu'
 import RootRoutes from './RootRoutes'
 import Channels from '../components/Account/Channels'
 import Preferences from '../components/Account/Preferences'
@@ -14,6 +13,7 @@ import Terms from '../components/TermsPage'
 import InitPage from '../components/InitPage'
 import Restore from '../components/RestorePage'
 import WalletMenu from '../containers/WalletMenu'
+import ApprovePage from "../components/WalletPage/ApprovePage";
 
 export interface RoutesProps {
   history: History
@@ -26,13 +26,15 @@ const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
       <Route path="/terms" component={Terms}/>
       <Route path="/restore" component={Restore}/>
 
+      <Route path="/approve" component={ApprovePage} />
+
       <Route exact path="/" component={RootRoutes}/>
       <Switch>
         <WalletMenu>
           <Route exact path="/wallet" component={Wallet}/>
           <Route path="/wallet/channels" component={Channels}/>
           <Route path="/wallet/preferences" component={Preferences}/>
-          <Route path="/wallet/network" component={Network}/>
+          <Route path="/wallet/network" component={Network} />
         </WalletMenu>
       </Switch>
 

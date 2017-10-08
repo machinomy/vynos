@@ -9,7 +9,7 @@ import ZeroClientProvider = require("web3-provider-engine/zero")
 import {ProviderOpts} from "web3-provider-engine";
 import ProviderOptions from "./ProviderOptions";
 import Web3 = require("web3")
-import TransactionService from "../../lib/TransactionService";
+import TransactionService from "../TransactionService";
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -33,7 +33,7 @@ export default class MicropaymentsController {
   }
 
   providerOpts(rpcUrl: string): ProviderOpts {
-    let providerOptions = new ProviderOptions(this.background, rpcUrl)
+    let providerOptions = new ProviderOptions(this.background, this.transactions, rpcUrl)
     return providerOptions.approving()
   }
 

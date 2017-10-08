@@ -1,6 +1,7 @@
 import actionCreatorFactory, {ActionCreator} from 'typescript-fsa'
 import {WorkerState} from './WorkerState';
 import Wallet from 'ethereumjs-wallet'
+import Transaction from "../lib/Transaction";
 
 const actionCreator = actionCreatorFactory("worker");
 
@@ -37,6 +38,14 @@ export function setDidStoreMnemonicHandler(state: WorkerState): WorkerState {
   return {
     ...state,
     persistent: { ...state.persistent, didInit: true }
+  }
+}
+
+export const setTransactionPending = actionCreator<boolean>('persistent/setTransactionPending')
+export function setTransactionPendingHandler(state: WorkerState, pending: boolean): WorkerState {
+  return {
+    ...state,
+    runtime: { ...state.runtime, isTransactionPending: pending }
   }
 }
 

@@ -6,18 +6,19 @@ import {Payload} from "../../lib/Payload";
 import {EndFunction} from "../../lib/StreamServer";
 import Web3 = require("web3")
 import ProviderOptions from "./ProviderOptions";
-
-export type ApproveTransactionCallback = (error: any, isApproved: true) => void
+import TransactionService from "../TransactionService";
 
 export default class NetworkController {
   background: BackgroundController
   provider: Engine
   web3: Web3
+  transactions: TransactionService
   rpcUrl: string
 
-  constructor (backgroundController: BackgroundController, rpcUrl: string) {
+  constructor (backgroundController: BackgroundController, transactions: TransactionService, rpcUrl: string) {
     this.rpcUrl = rpcUrl
     this.background = backgroundController
+    this.transactions = transactions
     this.provider = ZeroClientProvider(this.providerOpts(rpcUrl))
     this.web3 = new Web3(this.provider)
 
@@ -35,7 +36,7 @@ export default class NetworkController {
   }
 
   providerOpts(rpcUrl: string): ProviderOpts {
-    let providerOptions = new ProviderOptions(this.background, rpcUrl)
+    let providerOptions = new ProviderOptions(this.background, this.transactions, rpcUrl)
     return providerOptions.walled()
   }
 }

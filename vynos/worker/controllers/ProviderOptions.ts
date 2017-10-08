@@ -1,16 +1,22 @@
 import BackgroundController from "./BackgroundController";
 import {ProviderOpts} from "web3-provider-engine";
-import {ApproveTransactionCallback} from "./NetworkController";
 import ethUtil = require('ethereumjs-util')
 import sigUtil = require('eth-sig-util')
 import Tx = require('ethereumjs-tx')
+import TransactionService from "../TransactionService";
+import Transaction from "../../lib/Transaction";
+import {randomId} from "../../lib/Payload";
+
+export type ApproveTransactionCallback = (error: any, isApproved?: boolean) => void
 
 export default class ProviderOptions {
   background: BackgroundController
   rpcUrl: string
+  transactions: TransactionService
 
-  constructor (background: BackgroundController, rpcUrl: string) {
+  constructor (background: BackgroundController, transactions: TransactionService, rpcUrl: string) {
     this.background = background
+    this.transactions = transactions
     this.rpcUrl = rpcUrl
   }
 
@@ -23,8 +29,10 @@ export default class ProviderOptions {
   }
 
   approveTransaction(txParams: any, callback: ApproveTransactionCallback) {
-    this.background
-    callback(null, true)
+    let transaction = new Transaction(randomId().toString(), JSON.stringify(txParams))
+    this.transactions.approveTransaction(transaction).then(result => {
+      callback(null, result)
+    }).catch(callback)
   }
 
   approveTransactionAlways(txParams: any, callback: ApproveTransactionCallback) {

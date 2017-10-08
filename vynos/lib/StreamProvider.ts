@@ -23,6 +23,10 @@ export default class StreamProvider extends Duplex implements Web3.Provider {
     })
   }
 
+  send<A extends Payload>(payload: A) {
+    throw new Error(`Vynos Web3 provider does not support synchronous methods, please use asynchronous style`)
+  }
+
   ask<A extends Payload, B>(payload: A, timeout: number = 0): Promise<B> {
     let id = payload.id
     let result = new Promise<B>((resolve, reject) => {
