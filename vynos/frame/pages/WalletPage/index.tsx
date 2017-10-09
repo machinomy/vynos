@@ -33,14 +33,9 @@ export class WalletPage extends React.Component<WalletPageStateProps, any> {
   }
 
   render () {
-    if (this.props.isTransactionPending) {
-      this.consoleLogPendingTxs()
-      return <p>Pending</p>
-    } else {
-      return <WalletMenu>
-        {this.renderSubpage()}
-      </WalletMenu>
-    }
+    return <WalletMenu>
+      {this.renderSubpage()}
+    </WalletMenu>
   }
 }
 
