@@ -8,7 +8,6 @@ import Preferences from '../components/Account/Preferences'
 import Network from '../components/Account/Network'
 import Wallet from '../components/WalletPage'
 
-import Terms from '../components/TermsPage'
 import ApprovePage from "../components/WalletPage/ApprovePage";
 
 export interface RoutesProps {
@@ -18,7 +17,6 @@ export interface RoutesProps {
 const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
   return <ConnectedRouter history={props.history}>
     <Switch>
-      <Route path="/terms" component={Terms}/>
       <Route path="/approve" component={ApprovePage} />
 
       <Switch>

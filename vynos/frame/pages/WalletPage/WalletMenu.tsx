@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Menu, Dropdown, Button, Image } from 'semantic-ui-react'
 import {connect} from "react-redux";
-import WalletMenuItem from "../WalletMenu/WalletMenuItem";
+import WalletMenuItem from "./WalletMenuItem";
 import {FrameState} from "../../redux/FrameState";
 
 const style = require('../../styles/ynos.css')
