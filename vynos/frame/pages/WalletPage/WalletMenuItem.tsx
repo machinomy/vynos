@@ -3,7 +3,8 @@ import {Dropdown} from 'semantic-ui-react'
 
 export interface WalletMenuItemProps {
   name: string
-  onChange: (name: string) => void
+  href: string
+  onChange: (href: string, name: string) => void
 }
 
 export default class WalletMenuItem extends React.Component<WalletMenuItemProps, {}> {
@@ -12,11 +13,11 @@ export default class WalletMenuItem extends React.Component<WalletMenuItemProps,
   }
 
   handleClick () {
-    this.props.onChange(this.props.name)
+    this.props.onChange(this.props.href, this.props.name)
   }
 
   render () {
-    return <Dropdown.Item as='a' onClick={this.handleClick.bind(this)}>
+    return <Dropdown.Item to={this.props.href} onClick={this.handleClick.bind(this)}>
       {this.props.name}
     </Dropdown.Item>
   }

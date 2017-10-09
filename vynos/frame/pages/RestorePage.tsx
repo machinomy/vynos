@@ -5,7 +5,7 @@ const style = require('../styles/ynos.css')
 
 import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../constants'
 import WorkerProxy from '../WorkerProxy'
-import {FrameState} from "../state/FrameState";
+import {FrameState} from "../redux/FrameState";
 import {ChangeEvent, FormEvent} from "react";
 import bip39 = require('bip39')
 

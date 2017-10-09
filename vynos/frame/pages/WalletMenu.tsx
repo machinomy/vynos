@@ -2,7 +2,7 @@ import * as React from "react";
 import { Menu, Dropdown, Button, Image } from 'semantic-ui-react'
 import {Redirect, RouterProps} from "react-router";
 import {connect} from "react-redux";
-import {FrameState} from "../state/FrameState";
+import {FrameState} from "../redux/FrameState";
 import WalletMenuItem from './WalletMenu/WalletMenuItem'
 import WorkerProxy from "../WorkerProxy";
 import {isUnlockPageExpected} from "./RootContainer";
@@ -20,7 +20,7 @@ export interface WalletMenuStateProps {
   workerProxy: WorkerProxy
 }
 
-export type WalletMenuProps = WalletMenuStateProps & { children: Element[] } & RouterProps
+export type WalletMenuProps = WalletMenuStateProps
 
 export class WalletMenu extends React.Component<WalletMenuProps, WalletMenuState> {
 

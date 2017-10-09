@@ -1,3 +1,3 @@
-import {FrameState} from '../state/FrameState'
+import {FrameState} from '../redux/FrameState'
 
 

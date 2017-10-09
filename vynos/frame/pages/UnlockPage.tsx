@@ -5,7 +5,7 @@ import _ = require('lodash')
 import WorkerProxy from '../WorkerProxy';
 import { Container, Form, Button, Divider } from 'semantic-ui-react'
 import Logo from '../components/Logo'
-import {FrameState} from "../state/FrameState";
+import {FrameState} from "../redux/FrameState";
 import RestorePage from "./RestorePage";
 
 const style = require("../styles/ynos.css");

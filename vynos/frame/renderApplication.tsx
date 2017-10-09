@@ -7,10 +7,10 @@ import 'semantic-ui-css/semantic.min.css';
 import {routerMiddleware} from "react-router-redux";
 import {createLogger} from "redux-logger";
 import * as redux from "redux";
-import {FrameState, initialState} from "./state/FrameState";
+import {FrameState, initialState} from "./redux/FrameState";
 import RemoteStore from "./lib/RemoteStore";
 import createHashHistory from 'history/createHashHistory';
-import reducers from './state/reducers'
+import reducers from './redux/reducers'
 import {AppContainer} from "react-hot-loader";
 
 const MOUNT_POINT_ID = 'mount-point'

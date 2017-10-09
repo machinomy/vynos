@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {FrameState} from "../../state/FrameState";
+import {FrameState} from "../../redux/FrameState";
 import Terms from './Terms'
 import Password from './Password'
 import Mnemonic from './Mnemonic'

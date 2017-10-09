@@ -1,8 +1,9 @@
 import * as React from 'react'
 import {connect} from 'react-redux'
-import {FrameState} from '../state/FrameState'
+import {FrameState} from '../redux/FrameState'
 import InitPage from './InitPage'
 import UnlockPage from "./UnlockPage";
+import WalletPage from './WalletPage';
 
 export function isUnlockPageExpected(state: FrameState): boolean {
   return !!(state.shared.didInit && state.temp.workerProxy && state.shared.isLocked)
@@ -20,7 +21,7 @@ export class RootContainer extends React.Component<RootContainerProps, any> {
     if (this.props.isUnlockExpected) {
       return <UnlockPage />
     } else if (this.props.isWalletExpected) {
-      return <p>Redirect to="/wallet" </p>
+      return <WalletPage />
     } else {
       return <InitPage />
     }

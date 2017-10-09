@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect, Dispatch} from "react-redux";
-import {FrameState} from "../../state/FrameState";
+import {FrameState} from "../../redux/FrameState";
 import actions from "../../actions";
 import { Button, Container, Divider  } from 'semantic-ui-react'
 import TermsTextPage from '../TermsTextPage'
@@ -80,7 +80,7 @@ export class Terms extends React.Component<TermsSubpageProps, TermsState> {
 function mapDispatchToProps(dispatch: Dispatch<FrameState>): TermsSubpageDispatchProps {
   return {
     didAcceptTerms: () => {
-      dispatch(actions.temp.init.didAcceptTerms(true))
+      dispatch(actions.didAcceptTerms(true))
     }
   }
 }
