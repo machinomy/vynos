@@ -47,6 +47,12 @@ export default class Namespace {
     })
   }
 
+  hide (): void {
+    this.ready().then(() => {
+      this.frame.hide()
+    })
+  }
+
   ready (): Promise<Vynos> {
     if (this.client) {
       return this.client
