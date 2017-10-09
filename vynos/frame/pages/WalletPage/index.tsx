@@ -2,6 +2,7 @@ import * as React from 'react'
 import WalletMenu, {nameByPath} from './WalletMenu'
 import {FrameState} from '../../redux/FrameState'
 import {connect} from 'react-redux'
+import DashboardSubpage from "./DashboardSubpage";
 
 export interface WalletPageStateProps {
   path: string
@@ -18,7 +19,7 @@ export class WalletPage extends React.Component<any, any> {
       case 'Network':
         return <p>Network</p>
       default:
-        return <p>Dashboard</p>
+        return <DashboardSubpage />
     }
   }
 

@@ -23,8 +23,6 @@ export type WalletMenuProps = WalletMenuStateProps
 
 export function nameByPath (path: string): string {
   switch (path) {
-    case '/wallet/dashboard':
-      return 'Dashboard'
     case '/wallet/channels':
       return 'Channels'
     case '/wallet/preferences':
@@ -32,7 +30,7 @@ export function nameByPath (path: string): string {
     case '/wallet/network':
       return 'Network'
     default:
-      return 'Dashboard'
+      return 'Wallet'
   }
 }
 
@@ -113,7 +111,7 @@ export class WalletMenu extends React.Component<WalletMenuProps, WalletMenuState
                     onOpen={this.handleOpenDropdown.bind(this)}
                     onClose={this.handleCloseDropdown.bind(this)} >
             <Dropdown.Menu className={style.submenuFluid}>
-              <WalletMenuItem name='Dashboard' href='/wallet/dashboard' onChange={this.handleChangeItem.bind(this)} />
+              <WalletMenuItem name='Wallet' href='/wallet/dashboard' onChange={this.handleChangeItem.bind(this)} />
               <Dropdown.Divider />
               <WalletMenuItem name='Channels' href='/wallet/channels' onChange={this.handleChangeItem.bind(this)} />
               <Dropdown.Divider />
