@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect, Dispatch} from "react-redux";
 import {FrameState} from "../../redux/FrameState";
-import actions from "../../actions";
+import actions from "../../redux/actions";
 import { Button, Container, Divider  } from 'semantic-ui-react'
 import TermsTextPage from '../TermsTextPage'
 import RestorePage from '../RestorePage'

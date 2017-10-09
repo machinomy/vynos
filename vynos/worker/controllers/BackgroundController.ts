@@ -56,6 +56,10 @@ export default class BackgroundController {
     tryCall()
   }
 
+  rememberPage(path: string) {
+    this.store.dispatch(actions.rememberPage(path))
+  }
+
   getSharedState(): Promise<SharedState> {
     return this.getState().then(buildSharedState)
   }

@@ -6,7 +6,7 @@ import {isSharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/Share
 import {
   DidStoreMnemonicRequest, DidStoreMnemonicResponse,
   GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, LockWalletRequest,
-  RestoreWalletRequest, RestoreWalletResponse,
+  RestoreWalletRequest, RestoreWalletResponse, RememberPageRequest,
   UnlockWalletRequest,
   UnlockWalletResponse
 } from "../lib/rpc/yns";
@@ -15,12 +15,12 @@ import Web3 = require("web3")
 import Promise = require('bluebird')
 
 export default class WorkerProxy extends EventEmitter {
-  stream: StreamProvider
+  provider: StreamProvider
 
   constructor() {
     super()
-    this.stream = new StreamProvider("WorkerProxy")
-    this.stream.listen(SharedStateBroadcastType, data => {
+    this.provider = new StreamProvider("WorkerProxy")
+    this.provider.listen(SharedStateBroadcastType, data => {
       if (isSharedStateBroadcast(data)) {
         this.emit(SharedStateBroadcastType, data)
       }
@@ -28,7 +28,7 @@ export default class WorkerProxy extends EventEmitter {
   }
 
   getWeb3(): Web3 {
-    return new Web3(this.stream)
+    return new Web3(this.provider)
   }
 
   doLock(): Promise<void> {
@@ -38,7 +38,7 @@ export default class WorkerProxy extends EventEmitter {
       method: LockWalletRequest.method,
       params: []
     }
-    return this.stream.ask(request).then(() => {
+    return this.provider.ask(request).then(() => {
       return;
     })
   }
@@ -50,7 +50,7 @@ export default class WorkerProxy extends EventEmitter {
       method: UnlockWalletRequest.method,
       params: [password]
     }
-    return this.stream.ask(request).then((response: UnlockWalletResponse) => {
+    return this.provider.ask(request).then((response: UnlockWalletResponse) => {
       return response.error
     })
   }
@@ -62,7 +62,7 @@ export default class WorkerProxy extends EventEmitter {
       method: GenKeyringRequest.method,
       params: [password]
     }
-    return this.stream.ask(request).then((response: GenKeyringResponse) => {
+    return this.provider.ask(request).then((response: GenKeyringResponse) => {
       return response.result
     })
   }
@@ -74,7 +74,7 @@ export default class WorkerProxy extends EventEmitter {
       method: RestoreWalletRequest.method,
       params: [password, mnemonic]
     }
-    return this.stream.ask(request).then((response: RestoreWalletResponse) => {
+    return this.provider.ask(request).then((response: RestoreWalletResponse) => {
       return response.result
     })
   }
@@ -86,7 +86,7 @@ export default class WorkerProxy extends EventEmitter {
       method: GetSharedStateRequest.method,
       params: []
     }
-    return this.stream.ask(request).then((response: GetSharedStateResponse) => {
+    return this.provider.ask(request).then((response: GetSharedStateResponse) => {
       return response.result
     })
   }
@@ -98,8 +98,20 @@ export default class WorkerProxy extends EventEmitter {
       method: DidStoreMnemonicRequest.method,
       params: []
     }
-    return this.stream.ask(request).then(() => {
+    return this.provider.ask(request).then(() => {
       return;
+    })
+  }
+
+  rememberPage(path: string): void {
+    let request: RememberPageRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: RememberPageRequest.method,
+      params: [path]
+    }
+    this.provider.ask(request).then(() => {
+      // Do Nothing
     })
   }
 

@@ -9,7 +9,6 @@ import Network from '../components/Account/Network'
 import Wallet from '../components/WalletPage'
 
 import Terms from '../components/TermsPage'
-import WalletMenu from '../pages/WalletMenu'
 import ApprovePage from "../components/WalletPage/ApprovePage";
 
 export interface RoutesProps {
@@ -23,12 +22,10 @@ const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
       <Route path="/approve" component={ApprovePage} />
 
       <Switch>
-        <WalletMenu>
           <Route exact path="/wallet" component={Wallet}/>
           <Route path="/wallet/channels" component={Channels}/>
           <Route path="/wallet/preferences" component={Preferences}/>
           <Route path="/wallet/network" component={Network} />
-        </WalletMenu>
       </Switch>
 
     </Switch>

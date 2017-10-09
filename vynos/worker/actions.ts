@@ -41,7 +41,7 @@ export function setDidStoreMnemonicHandler(state: WorkerState): WorkerState {
   }
 }
 
-export const setTransactionPending = actionCreator<boolean>('persistent/setTransactionPending')
+export const setTransactionPending = actionCreator<boolean>('runtime/setTransactionPending')
 export function setTransactionPendingHandler(state: WorkerState, pending: boolean): WorkerState {
   return {
     ...state,
@@ -49,3 +49,10 @@ export function setTransactionPendingHandler(state: WorkerState, pending: boolea
   }
 }
 
+export const rememberPage = actionCreator<string>('persistent/rememberPage')
+export function rememberPageHandler(state: WorkerState, path: string): WorkerState {
+  return {
+    ...state,
+    persistent: { ...state.persistent, rememberPath: path }
+  }
+}

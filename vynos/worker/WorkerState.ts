@@ -9,11 +9,13 @@ export interface SharedState {
   didInit: boolean
   isLocked: boolean
   isTransactionPending: boolean
+  rememberPath: string
 }
 
 export interface PersistentState {
   didInit: boolean,
-  keyring?: string
+  keyring?: string,
+  rememberPath: string
 }
 
 export interface WorkerState {
@@ -24,12 +26,14 @@ export interface WorkerState {
 export const INITIAL_SHARED_STATE: SharedState = {
   didInit: false,
   isLocked: true,
-  isTransactionPending: false
+  isTransactionPending: false,
+  rememberPath: '/'
 }
 
 export const INITIAL_STATE: WorkerState = {
   persistent: {
-    didInit: false
+    didInit: false,
+    rememberPath: '/'
   },
   runtime: {
     isTransactionPending: false
@@ -40,6 +44,7 @@ export function buildSharedState(state: WorkerState): SharedState {
   return {
     didInit: state.persistent.didInit,
     isLocked: !state.runtime.wallet,
-    isTransactionPending: state.runtime.isTransactionPending
+    isTransactionPending: state.runtime.isTransactionPending,
+    rememberPath: state.persistent.rememberPath
   }
 }

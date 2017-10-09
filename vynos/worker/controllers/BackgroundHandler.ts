@@ -6,9 +6,9 @@ import {
   GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, InitAccountRequest,
   InitAccountResponse,
   LockWalletRequest,
-  LockWalletResponse, RestoreWalletRequest,
+  LockWalletResponse, RestoreWalletRequest, RememberPageRequest,
   UnlockWalletRequest,
-  UnlockWalletResponse
+  UnlockWalletResponse, RememberPageResponse
 } from "../../lib/rpc/yns";
 import {Writable} from "readable-stream";
 import {SharedStateBroadcast, SharedStateBroadcastType} from "../../lib/rpc/SharedStateBroadcast";
@@ -114,6 +114,17 @@ export default class BackgroundHandler {
     })
   }
 
+  rememberPage(message: RememberPageRequest, next: Function, end: EndFunction) {
+    let path = message.params[0]
+    this.controller.rememberPage(path)
+    let response: RememberPageResponse = {
+      id: message.id,
+      jsonrpc: message.jsonrpc,
+      result: null
+    }
+    end(null, response)
+  }
+
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (GetSharedStateRequest.match(message)) {
       this.getSharedState(message, next, end)
@@ -129,6 +140,8 @@ export default class BackgroundHandler {
       this.lockWallet(message, next, end)
     } else if (InitAccountRequest.match(message)) {
       this.initAccount(message, next, end)
+    } else if (RememberPageRequest.match(message)) {
+      this.rememberPage(message, next, end)
     } else {
       next()
     }

@@ -18,19 +18,19 @@ window.addEventListener("load", () => {
     windowStream.pipe(workerStream).pipe(windowStream)
 
     let workerProxy = new WorkerProxy()
-    workerStream.pipe(workerProxy.stream).pipe(workerStream)
+    workerStream.pipe(workerProxy.provider).pipe(workerStream)
 
     renderApplication(document, workerProxy)
 
     onUnload(() => {
       windowStream.unpipe(workerStream)
       workerStream.unpipe(windowStream)
-      workerStream.unpipe(workerProxy.stream)
-      workerProxy.stream.unpipe(workerStream)
+      workerStream.unpipe(workerProxy.provider)
+      workerProxy.provider.unpipe(workerStream)
 
       windowStream.end()
       workerStream.end()
-      workerProxy.stream.end()
+      workerProxy.provider.end()
     })
   })
 });

@@ -8,5 +8,6 @@ const reducers: ReducerBuilder<WorkerState, WorkerState> = reducerWithInitialSta
   .case(actions.setDidStoreMnemonic, actions.setDidStoreMnemonicHandler)
   .case(actions.restoreWallet, actions.restoreWalletHandler)
   .case(actions.setTransactionPending, actions.setTransactionPendingHandler)
+  .case(actions.rememberPage, actions.rememberPageHandler)
 
 export default reducers

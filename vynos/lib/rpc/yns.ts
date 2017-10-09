@@ -55,6 +55,23 @@ export interface DidStoreMnemonicResponse extends ResponsePayload {
   result: null
 }
 
+export class RememberPageRequest implements RequestPayload {
+  id: number
+  jsonrpc: typeof JSONRPC
+  method: typeof RememberPageRequest.method
+  params: [string]
+
+  static method: string = "yns_rememberPage"
+
+  static match(payload: RequestPayload): payload is RememberPageRequest {
+    return payload.method === RememberPageRequest.method
+  }
+}
+
+export interface RememberPageResponse extends ResponsePayload {
+  result: null
+}
+
 export class GenKeyringRequest implements RequestPayload {
   id: number;
   jsonrpc: typeof JSONRPC;
