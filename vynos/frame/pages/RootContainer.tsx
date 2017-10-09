@@ -9,32 +9,28 @@ export function isUnlockPageExpected(state: FrameState): boolean {
 }
 
 export interface RootStateProps {
-  isInitPageExpected: boolean
-  isWalletPageExpected: boolean
-  isUnlockPageExpected: boolean
+  isWalletExpected: boolean
+  isUnlockExpected: boolean
 }
 
 export type RootContainerProps = RootStateProps
 
 export class RootContainer extends React.Component<RootContainerProps, any> {
   render () {
-    if (this.props.isInitPageExpected) {
-      return <InitPage />
-    } else if (this.props.isUnlockPageExpected) {
+    if (this.props.isUnlockExpected) {
       return <UnlockPage />
-    } else if (this.props.isWalletPageExpected) {
+    } else if (this.props.isWalletExpected) {
       return <p>Redirect to="/wallet" </p>
     } else {
-      return <p>Redirect to="/"</p>
+      return <InitPage />
     }
   }
 }
 
 function mapStateToProps(state: FrameState): RootStateProps {
   return {
-    isInitPageExpected: !state.shared.didInit,
-    isWalletPageExpected: state.shared.didInit && !state.shared.isLocked,
-    isUnlockPageExpected: state.shared.didInit && state.shared.isLocked
+    isUnlockExpected: state.shared.didInit && state.shared.isLocked,
+    isWalletExpected: state.shared.didInit && !state.shared.isLocked
   }
 }
 

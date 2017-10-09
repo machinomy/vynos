@@ -9,8 +9,6 @@ import Network from '../components/Account/Network'
 import Wallet from '../components/WalletPage'
 
 import Terms from '../components/TermsPage'
-import InitPage from '../components/InitPage'
-import Restore from '../components/RestorePage'
 import WalletMenu from '../pages/WalletMenu'
 import ApprovePage from "../components/WalletPage/ApprovePage";
 
@@ -21,10 +19,7 @@ export interface RoutesProps {
 const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
   return <ConnectedRouter history={props.history}>
     <Switch>
-      <Route path="/init" component={InitPage}/>
       <Route path="/terms" component={Terms}/>
-      <Route path="/restore" component={Restore}/>
-
       <Route path="/approve" component={ApprovePage} />
 
       <Switch>
