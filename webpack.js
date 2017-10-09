@@ -63,9 +63,6 @@ function webpackConfig (entry) {
               },
             },
             {
-              loader: "sass-loader" // compiles Sass to CSS
-            },
-            {
               loader: 'postcss-loader',
               options: {
                 plugins: () => ([
