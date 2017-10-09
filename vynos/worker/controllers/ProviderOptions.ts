@@ -30,9 +30,12 @@ export default class ProviderOptions {
 
   approveTransaction(txParams: any, callback: ApproveTransactionCallback) {
     let transaction = new Transaction(randomId().toString(), JSON.stringify(txParams))
+    // FIXME callback(null, true)
+    /*
     this.transactions.approveTransaction(transaction).then(result => {
       callback(null, result)
     }).catch(callback)
+     */
   }
 
   approveTransactionAlways(txParams: any, callback: ApproveTransactionCallback) {
