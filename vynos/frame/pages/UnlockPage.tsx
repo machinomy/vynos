@@ -4,34 +4,34 @@ import {ChangeEvent, FormEvent} from 'react'
 import _ = require('lodash')
 import WorkerProxy from '../WorkerProxy';
 import { Container, Form, Button, Divider } from 'semantic-ui-react'
-import Logo from './Logo'
+import Logo from '../components/Logo'
 import {FrameState} from "../state/FrameState";
+import RestorePage from "./RestorePage";
 
 const style = require("../styles/ynos.css");
 
-export interface UnlockPageStateProps {
+export interface UnlockPageProps {
   workerProxy: WorkerProxy
 }
 
-export type UnlockPageProps = UnlockPageStateProps;
-
 export type UnlockPageState = {
-  password: string|null;
-  passwordError: string|null;
+  password: string
+  passwordError: string|null
   loading: boolean
+  displayRestore: boolean
 };
 
 export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState> {
   constructor (props: UnlockPageProps) {
     super(props);
     this.state = {
-      password: null,
+      password: '',
       passwordError: null,
-      loading: false
+      loading: false,
+      displayRestore: false
     };
     this.handleChangePassword = this.handleChangePassword.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleForgotPassword = this.handleForgotPassword.bind(this);
   }
 
   handleChangePassword (event: ChangeEvent<HTMLInputElement>) {
@@ -57,10 +57,6 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
     })
   }
 
-  handleForgotPassword () {
-    alert('Not Yet Implemented')
-  }
-
   renderPasswordInput () {
     let className = this.state.passwordError ? style.inputError : ''
     return <input type="password"
@@ -77,7 +73,22 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
     }
   }
 
+  doDisplayRestore () {
+    this.setState({
+      displayRestore: true
+    })
+  }
+
+  doneDisplayRestorePage () {
+    this.setState({
+      displayRestore: false
+    })
+  }
+
   render () {
+    if (this.state.displayRestore)
+      return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)} />
+
     return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
       <Logo />
       <Divider hidden />
@@ -89,16 +100,15 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
         <Divider hidden />
         <Button type='submit' content='Unlock' primary className={style.buttonNav} />
         <br />
-        <a href="#">Forgot password?</a>
+        <a onClick={this.doDisplayRestore.bind(this)}>Restore wallet</a>
       </Form>
     </Container>
   }
 }
 
-
-function mapStateToProps (state: FrameState): UnlockPageStateProps {
+function mapStateToProps (state: FrameState): UnlockPageProps {
   return {
-    workerProxy: state.temp.workerProxy!
+    workerProxy: state.temp.workerProxy
   }
 }
 
