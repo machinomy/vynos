@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Image } from 'semantic-ui-react'
 
-const logoImage = require('../../styles/images/sign-in_logo.svg')
+const logoImage = require('../styles/images/sign-in_logo.svg')
 
 const VYNOS_STYLE = {
   font: "400 40px 'Alegreya Sans', sans-serif",

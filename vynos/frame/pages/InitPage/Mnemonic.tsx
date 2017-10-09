@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import {FormEvent} from "react";
 import {FrameState} from "../../state/FrameState";
 import WorkerProxy from "../../WorkerProxy";
-import Logo from './Logo'
 import { Container, Button, Form, Header, Divider } from 'semantic-ui-react'
+import Logo from '../../components/Logo'
 const style = require('../../styles/ynos.css')
 
 export interface MnemonicStateProps {

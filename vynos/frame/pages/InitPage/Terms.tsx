@@ -3,9 +3,9 @@ import {connect, Dispatch} from "react-redux";
 import {FrameState} from "../../state/FrameState";
 import actions from "../../actions";
 import { Button, Container, Divider  } from 'semantic-ui-react'
-import Logo from './Logo';
 import TermsTextPage from '../TermsTextPage'
 import RestorePage from '../RestorePage'
+import Logo from "../../components/Logo";
 const style = require('../../styles/ynos.css')
 
 export interface TermsSubpageDispatchProps {
