@@ -21,7 +21,7 @@ export class RootContainer extends React.Component<RootContainerProps, any> {
     if (this.props.isUnlockExpected) {
       return <UnlockPage />
     } else if (this.props.isWalletExpected) {
-      return <WalletPage />
+      return <WalletPage/>
     } else {
       return <InitPage />
     }

@@ -1,19 +1,19 @@
-export enum State {
+export enum TransactionState {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
   REJECTED = 'REJECTED'
 }
 
-function buildState(name: string): Promise<State> {
+function buildState(name: string): TransactionState {
   switch (name) {
-    case State.PENDING:
-      return Promise.resolve(State.PENDING)
-    case State.APPROVED:
-      return Promise.resolve(State.APPROVED)
-    case State.REJECTED:
-      return Promise.resolve(State.REJECTED)
+    case TransactionState.PENDING:
+      return TransactionState.PENDING
+    case TransactionState.APPROVED:
+      return TransactionState.APPROVED
+    case TransactionState.REJECTED:
+      return TransactionState.REJECTED
     default:
-      return Promise.reject(new Error(`Can not deserialize state from ${name}`))
+      throw new Error(`Can not deserialize state from ${name}`)
   }
 }
 
@@ -26,20 +26,19 @@ export interface TransactionJSON {
 export default class Transaction {
   id: string
   title: string
-  state: State
+  state: TransactionState
 
-  constructor (id: string, title: string, state?: State) {
+  constructor (id: string, title: string, state?: TransactionState) {
     this.id = id
     this.title = title
-    this.state = state || State.PENDING
+    this.state = state || TransactionState.PENDING
   }
 
-  static fromJSON (json: TransactionJSON): Promise<Transaction> {
+  static fromJSON (json: TransactionJSON): Transaction {
     let id = json.id
     let title = json.title
-    return buildState(json.state).then(state => {
-      return new Transaction(id, title, state)
-    })
+    let state = buildState(json.state)
+    return new Transaction(id, title, state)
   }
 
   toString () {

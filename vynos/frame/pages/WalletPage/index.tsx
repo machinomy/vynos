@@ -3,13 +3,15 @@ import WalletMenu, {nameByPath} from './WalletMenu'
 import {FrameState} from '../../redux/FrameState'
 import {connect} from 'react-redux'
 import DashboardSubpage from "./DashboardSubpage";
+import TransactionStorage from "../../../lib/TransactionStorage";
 
 export interface WalletPageStateProps {
   path: string
   name: string
+  isTransactionPending: boolean
 }
 
-export class WalletPage extends React.Component<any, any> {
+export class WalletPage extends React.Component<WalletPageStateProps, any> {
   renderSubpage () {
     switch (this.props.name) {
       case 'Channels':
@@ -23,17 +25,30 @@ export class WalletPage extends React.Component<any, any> {
     }
   }
 
+  consoleLogPendingTxs () {
+    let storage = new TransactionStorage()
+    storage.allPending().then(allpending => {
+      console.log(allpending)
+    })
+  }
+
   render () {
-    return <WalletMenu>
-      {this.renderSubpage()}
-    </WalletMenu>
+    if (this.props.isTransactionPending) {
+      this.consoleLogPendingTxs()
+      return <p>Pending</p>
+    } else {
+      return <WalletMenu>
+        {this.renderSubpage()}
+      </WalletMenu>
+    }
   }
 }
 
 function mapStateToProps(state: FrameState): WalletPageStateProps {
   return {
     path: state.shared.rememberPath,
-    name: nameByPath(state.shared.rememberPath)
+    name: nameByPath(state.shared.rememberPath),
+    isTransactionPending: state.shared.isTransactionPending
   }
 }
 
