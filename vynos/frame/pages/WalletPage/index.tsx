@@ -3,6 +3,7 @@ import WalletMenu, {nameByPath} from './WalletMenu'
 import {FrameState} from '../../redux/FrameState'
 import {connect} from 'react-redux'
 import DashboardSubpage from "./DashboardSubpage";
+import Channels from "../../components/Account/Channels/index"
 import TransactionStorage from "../../../lib/TransactionStorage";
 
 export interface WalletPageStateProps {
@@ -15,7 +16,7 @@ export class WalletPage extends React.Component<WalletPageStateProps, any> {
   renderSubpage () {
     switch (this.props.name) {
       case 'Channels':
-        return <p>Channels</p>
+        return <Channels />
       case 'Preferences':
         return <p>Preferences</p>
       case 'Network':
