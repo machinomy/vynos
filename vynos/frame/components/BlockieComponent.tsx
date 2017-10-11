@@ -39,6 +39,8 @@ export interface BlockieComponentProps {
   backgroundColor?: string
   spotColor?: string
   style?: any
+  classDiv?: any
+  classCanvas?: any
 }
 
 export default class BlockieComponent extends React.Component<BlockieComponentProps, {}> {
@@ -118,8 +120,8 @@ export default class BlockieComponent extends React.Component<BlockieComponentPr
   }
 
   render () {
-    return <div style={this.props.style}>
-      <canvas ref="canvas" width={this.canvasSize} height={this.canvasSize} />
+    return <div style={this.props.style} className={this.props.classDiv}>
+      <canvas ref="canvas" width={this.canvasSize} height={this.canvasSize} className={this.props.classCanvas} />
     </div>
   }
 }
