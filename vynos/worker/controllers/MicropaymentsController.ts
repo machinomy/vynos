@@ -66,8 +66,8 @@ export default class MicropaymentsController {
     })
   }
 
-  buy (title: string, receiver: string, amount: number, gateway: string): Promise<VynosBuyResponse> {
-    console.log('insideBuy')
+  buy (title: string, receiver: string, amount: number, gateway: string, metaSite: object): Promise<VynosBuyResponse> {
+    console.log('insideBuy');
     return new Promise((resolve, reject) => {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
@@ -76,14 +76,15 @@ export default class MicropaymentsController {
           return machinomy.buy({
             receiver: receiver,
             price: amount,
-            gateway: gateway
-          })
-        }).then(response => {
-          let transaction = transactions.micropayment(title, receiver, amount)
-          return this.transactions.addTransaction(transaction).then(() => {
-            return response
-          })
-        }).then(resolve).catch(reject)
+            gateway: gateway,
+            metaSite: metaSite
+          }).then(response => {
+            let transaction = transactions.micropayment(title, receiver, amount)
+            return this.transactions.addTransaction(transaction).then(() => {
+              return response
+            })
+          }).then(resolve).catch(reject)
+        })
       })
     })
   }
