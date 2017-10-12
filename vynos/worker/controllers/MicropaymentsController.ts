@@ -10,8 +10,7 @@ import {ProviderOpts} from "web3-provider-engine";
 import ProviderOptions from "./ProviderOptions";
 import Web3 = require("web3")
 import TransactionService from "../TransactionService";
-import { Meta } from "../../lib/storages/channel_meta_database"
-import * as storage from '../../lib/storage'
+import {ChannelMeta, default as ChannelMetaStorage} from "../../lib/storage/ChannelMetaStorage"
 import * as transactions from '../../lib/transactions'
 
 export default class MicropaymentsController {
@@ -20,12 +19,14 @@ export default class MicropaymentsController {
   account: string
   machinomy: Machinomy
   transactions: TransactionService
+  channels: ChannelMetaStorage
   web3: Web3
 
   constructor(network: NetworkController, background: BackgroundController, transactions: TransactionService) {
     this.network = network
     this.background = background
     this.transactions = transactions
+    this.channels = new ChannelMetaStorage()
     this.background.awaitUnlock(() => {
       this.background.getAccounts().then(accounts => {
         this.account = accounts[0]
@@ -68,7 +69,7 @@ export default class MicropaymentsController {
     })
   }
 
-  buy(title: string, receiver: string, amount: number, gateway: string, metaSite: Meta): Promise<VynosBuyResponse> {
+  buy(title: string, receiver: string, amount: number, gateway: string, metaSite: ChannelMeta): Promise<VynosBuyResponse> {
     console.log('insideBuy');
     return new Promise((resolve, reject) => {
       this.background.awaitUnlock(() => {
@@ -84,17 +85,17 @@ export default class MicropaymentsController {
             return this.transactions.addTransaction(transaction).then(() => {
               return response
             })
-          }).then((res: VynosBuyResponse)=>{
-            let s = storage.build(this.web3, 'vynos', 'sender', false, 'nedb')
-            s.channelMeta.insertIfNotExists({
-              channelId: res.channelId.toString(),
+          }).then(response =>{
+            return this.channels.insertIfNotExists({
+              channelId: response.channelId.toString(),
               title: metaSite.title,
               desc: metaSite.desc,
               host: metaSite.host,
               icon: metaSite.icon
-            });
-            resolve(res)
-          }).catch(reject)
+            }).then(() => {
+              return response
+            })
+          }).then(resolve).catch(reject)
         })
       })
     })

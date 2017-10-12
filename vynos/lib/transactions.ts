@@ -1,4 +1,4 @@
-import Transaction from "./Transaction";
+import Transaction from "./TransactionMeta";
 import {randomId} from "./Payload";
 import TransactionKind from "./TransactionKind";
 import TransactionState from "./TransactionState";

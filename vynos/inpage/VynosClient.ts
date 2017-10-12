@@ -15,7 +15,7 @@ import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import VynosPayInChannelResponse from "../lib/VynosPayInChannelResponse";
 import Vynos from '../lib/Vynos'
 import VynosBuyResponse from "../lib/VynosBuyResponse";
-import { Meta } from "../lib/storages/channel_meta_database"
+import { ChannelMeta } from "../lib/storage/ChannelMetaStorage"
 
 function isPaymentChannel(pc: PaymentChannel|PaymentChannelJSON): pc is PaymentChannel {
   return !!((pc as PaymentChannel).toJSON)
@@ -109,7 +109,7 @@ export default class VynosClient implements Vynos {
     })
   }
 
-  buy (title: string, receiver: string, amount: number, gateway: string, metaSite: Meta): Promise<VynosBuyResponse> {
+  buy (title: string, receiver: string, amount: number, gateway: string, metaSite: ChannelMeta): Promise<VynosBuyResponse> {
     let request: BuyRequest = {
       id: randomId(),
       method: BuyRequest.method,

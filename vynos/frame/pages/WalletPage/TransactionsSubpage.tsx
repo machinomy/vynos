@@ -1,6 +1,6 @@
 import * as React from 'react'
-import TransactionStorage from '../../../lib/TransactionStorage'
-import Transaction from "../../../lib/Transaction";
+import TransactionStorage from '../../../lib/storage/TransactionMetaStorage'
+import Transaction from "../../../lib/TransactionMeta";
 import { Container, Grid, List, Image, Header, Button, Divider} from 'semantic-ui-react'
 import Scrollbars from "react-custom-scrollbars"
 import Web3 = require('web3')

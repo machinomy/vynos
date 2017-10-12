@@ -1,7 +1,6 @@
-import {randomId} from './Payload'
 import TransactionKind from "./TransactionKind";
 
-export default interface Transaction {
+export default interface TransactionMeta {
   id: string
   title: string
   description?: string
@@ -11,8 +10,4 @@ export default interface Transaction {
   fee?: number
   kind: TransactionKind
   state: string
-}
-
-export namespace Transaction {
-
 }

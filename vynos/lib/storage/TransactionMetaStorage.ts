@@ -1,16 +1,16 @@
 import Datastore = require('nedb')
 import Promise = require('bluebird')
-import Transaction from "./Transaction";
-import TransactionState from "./TransactionState";
+import TransactionMeta from "../TransactionMeta";
+import TransactionState from "../TransactionState";
 
-export default class TransactionStorage {
+export default class TransactionMetaStorage {
   datastore: Datastore
 
   constructor () {
     this.datastore = new Datastore({filename: 'transactions', autoload: true})
   }
 
-  add(transaction: Transaction): Promise<void> {
+  add(transaction: TransactionMeta): Promise<void> {
     return new Promise((resolve, reject) => {
       this.datastore.insert(transaction, err => {
         if (err) {
@@ -22,9 +22,9 @@ export default class TransactionStorage {
     })
   }
 
-  byId(id: string): Promise<Transaction|null> {
+  byId(id: string): Promise<TransactionMeta|null> {
     return new Promise((resolve, reject) => {
-      this.datastore.findOne<Transaction>({id: id}, (err, transaction) => {
+      this.datastore.findOne<TransactionMeta>({id: id}, (err, transaction) => {
         if (err) {
           reject(err)
         } else {
@@ -34,10 +34,10 @@ export default class TransactionStorage {
     })
   }
 
-  pending(): Promise<Array<Transaction>> {
+  pending(): Promise<Array<TransactionMeta>> {
     let query = { state: TransactionState.PENDING.toString() }
     return new Promise((resolve, reject) => {
-      this.datastore.find<Transaction>(query, (err, transactions) => {
+      this.datastore.find<TransactionMeta>(query, (err, transactions) => {
         if (err) {
           reject(err)
         } else {
@@ -47,15 +47,15 @@ export default class TransactionStorage {
     })
   }
 
-  all(): Promise<Array<Transaction>> {
+  all(): Promise<Array<TransactionMeta>> {
     return this.find({}).then(transactions => {
       return transactions
     })
   }
 
-  protected find(query: any): Promise<Array<Transaction>> {
+  protected find(query: any): Promise<Array<TransactionMeta>> {
     return new Promise((resolve, reject) => {
-      this.datastore.find<Transaction>(query, (err, transactions) => {
+      this.datastore.find<TransactionMeta>(query, (err, transactions) => {
         if (err) {
           reject(err)
         } else {
