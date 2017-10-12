@@ -44,6 +44,7 @@
   "dependencies": {
     "@types/bluebird": "^3.5.14",
     "@types/lodash": "^4.14.77",
+    "@types/moment": "^2.13.0",
     "@types/qr-image": "^3.2.0",
     "@types/react-copy-to-clipboard": "^4.2.3",
     "@types/react-custom-scrollbars": "^4.0.1",
@@ -67,6 +68,7 @@
     "lodash": "^4.17.4",
     "machinomy": "^1.0.0-alpha.41",
     "material-components-web": "^0.14.0",
+    "moment": "^2.19.1",
     "mux-demux": "^3.7.9",
     "nedb": "^1.8.0",
     "qr-image": "^3.2.0",

@@ -3,6 +3,8 @@ import TransactionStorage from '../../../lib/TransactionStorage'
 import Transaction from "../../../lib/Transaction";
 import { Container, Grid, List, Image, Header, Button, Divider} from 'semantic-ui-react'
 import Scrollbars from "react-custom-scrollbars"
+import Web3 = require('web3')
+import {formatAmount, formatDate} from "../../../lib/formatting";
 
 const style = require('../../styles/ynos.css')
 
@@ -34,12 +36,12 @@ export default class TransactionsSubpage extends React.Component<TransactionsSub
   renderTransaction (transaction: Transaction) {
     let iconSrc = require('../../styles/images/service.png')
     let icon = <Image avatar src={iconSrc} size="mini" />
-    let amount = transaction.amount
-    let date = transaction.time
+    let { value, denomination } = formatAmount(transaction.amount)
+    let date = formatDate(transaction.time)
 
     return <List.Item className={style.listItem} key={transaction.id}>
       <List.Content floated='right'>
-        <span className={style.channelBalance}>{amount}</span>
+        <span className={style.channelBalance}>{value} {denomination}</span>
       </List.Content>
       {icon}
       <List.Content className={style.listContent}>

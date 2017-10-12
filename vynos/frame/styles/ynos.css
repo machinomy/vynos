@@ -184,7 +184,6 @@ Wallet page
   display: inline-block;
 }
 
-.channel-balance:after,
 .eth-balance:after {
   content: "Ξ";
 }
@@ -264,8 +263,8 @@ div.terms-text > p {
   overflow: hidden;
 }
 
-.scrollbar-container .list-wrap > div:last-child {
-  padding-bottom: 40px !important;
+.scrollbar-container .list-wrap > div:first-child {
+  padding-top: 16px !important;
 }
 
 .wrap {
