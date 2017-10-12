@@ -1,6 +1,7 @@
 import Datastore = require('nedb')
-import Transaction, {TransactionJSON, TransactionState} from "./Transaction";
 import Promise = require('bluebird')
+import Transaction from "./Transaction";
+import TransactionState from "./TransactionState";
 
 export default class TransactionStorage {
   datastore: Datastore
@@ -11,7 +12,7 @@ export default class TransactionStorage {
 
   add(transaction: Transaction): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.datastore.insert(transaction.toJSON(), err => {
+      this.datastore.insert(transaction, err => {
         if (err) {
           reject(err)
         } else {
@@ -23,28 +24,41 @@ export default class TransactionStorage {
 
   byId(id: string): Promise<Transaction|null> {
     return new Promise((resolve, reject) => {
-      this.datastore.findOne<TransactionJSON>({id: id}, (err, doc) => {
+      this.datastore.findOne<Transaction>({id: id}, (err, transaction) => {
         if (err) {
           reject(err)
         } else {
-          if (doc) {
-            resolve(Transaction.fromJSON(doc))
-          } else {
-            resolve(null)
-          }
+          resolve(transaction)
         }
       })
     })
   }
 
-  allPending(): Promise<Array<Transaction>> {
+  pending(): Promise<Array<Transaction>> {
     let query = { state: TransactionState.PENDING.toString() }
     return new Promise((resolve, reject) => {
-      this.datastore.find<TransactionJSON>(query, (err, docs) => {
+      this.datastore.find<Transaction>(query, (err, transactions) => {
         if (err) {
           reject(err)
         } else {
-          let transactions = docs.map(d => Transaction.fromJSON(d))
+          resolve(transactions)
+        }
+      })
+    })
+  }
+
+  all(): Promise<Array<Transaction>> {
+    return this.find({}).then(transactions => {
+      return transactions
+    })
+  }
+
+  protected find(query: any): Promise<Array<Transaction>> {
+    return new Promise((resolve, reject) => {
+      this.datastore.find<Transaction>(query, (err, transactions) => {
+        if (err) {
+          reject(err)
+        } else {
           resolve(transactions)
         }
       })

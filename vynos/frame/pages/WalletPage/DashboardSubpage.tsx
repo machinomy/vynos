@@ -6,6 +6,7 @@ import WorkerProxy from '../../WorkerProxy'
 
 import { Container, List, Image, Header, Button } from 'semantic-ui-react'
 import AddressSubpage from "./AddressSubpage";
+import TransactionsSubpage from "./TransactionsSubpage";
 
 const style = require('../../styles/ynos.css')
 
@@ -63,7 +64,7 @@ export class DashboardSubpage extends React.Component<WalletPageProps, WalletPag
     if (this.state.isDetailsDisplayed && this.state.address) {
       return <AddressSubpage address={this.state.address}/>
     } else {
-      return <p>Transactions</p>
+      return <TransactionsSubpage />
     }
   }
 

@@ -184,7 +184,6 @@ Wallet page
   display: inline-block;
 }
 
-.channel-balance:after,
 .eth-balance:after {
   content: "Ξ";
 }
@@ -238,6 +237,7 @@ div.terms-text > p {
 
 .list-content {
   padding-left: 15px !important;
+  width: 185px;
 }
 
 .scrollbar-container .list-wrap .list-item .list-content .list-header {
@@ -258,8 +258,13 @@ div.terms-text > p {
   font-size: 14px !important;
 }
 
-.scrollbar-container .list-wrap > div:last-child {
-  padding-bottom: 40px !important;
+.list-desc {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.scrollbar-container .list-wrap > div:first-child {
+  padding-top: 16px !important;
 }
 
 .wrap {
@@ -468,7 +473,7 @@ label:after {
 }
 
 /******************************
-Transaction page
+TransactionImpl page
 ******************************/
 .key-highlight {
   color: #00AEEF;

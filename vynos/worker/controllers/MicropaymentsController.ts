@@ -12,6 +12,7 @@ import Web3 = require("web3")
 import TransactionService from "../TransactionService";
 import { Meta } from "../../lib/storages/channel_meta_database"
 import * as storage from '../../lib/storage'
+import * as transactions from '../../lib/transactions'
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -73,12 +74,17 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.network.web3, { engine: 'nedb', databaseFile: 'vynos' })
-          machinomy.buy({
+          let machinomy = new Machinomy(account, this.network.web3, {engine: 'nedb', databaseFile: 'vynos'})
+          return machinomy.buy({
             receiver: receiver,
             price: amount,
             gateway: gateway
-          }).then((res: VynosBuyResponse) => {
+          }).then(response => {
+            let transaction = transactions.micropayment(title, receiver, amount)
+            return this.transactions.addTransaction(transaction).then(() => {
+              return response
+            })
+          }).then((res: VynosBuyResponse)=>{
             let s = storage.build(this.web3, 'vynos', 'sender', false, 'nedb')
             s.channelMeta.insertIfNotExists({
               channelId: res.channelId.toString(),
@@ -87,10 +93,8 @@ export default class MicropaymentsController {
               host: metaSite.host,
               icon: metaSite.icon
             });
-            resolve(res);
-          }).catch((e: Error) => {
-            console.log(e)
-          })
+            resolve(res)
+          }).catch(reject)
         })
       })
     })
