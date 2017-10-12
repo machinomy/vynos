@@ -3,8 +3,7 @@ import Datastore = require('nedb')
 
 export interface ChannelMeta {
   channelId: string,
-  title?: string,
-  desc?: string,
+  title: string,
   host: string,
   icon?: string
 }

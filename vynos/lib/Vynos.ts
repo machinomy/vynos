@@ -3,6 +3,7 @@ import Promise = require('bluebird')
 import YnosPayInChannelResponse from "./VynosPayInChannelResponse";
 import Web3 = require("web3")
 import VynosBuyResponse from './VynosBuyResponse'
+import PurchaseMeta from "./PurchaseMeta";
 
 export default interface Vynos {
   provider: Web3.Provider
@@ -15,5 +16,5 @@ export default interface Vynos {
   payInChannel: (ch: PaymentChannel, amount: number, override?: boolean) => Promise<YnosPayInChannelResponse> // FIXME What about lifecycle events? Amount is bignumber, actually.
   initAccount: () => Promise<void>
   getWeb3(): Promise<Web3>
-  buy: (title: string, receiver: string, amount: number, gateway: string, metaSite: object) => Promise<VynosBuyResponse>
+  buy: (receiver: string, amount: number, gateway: string, meta?: PurchaseMeta) => Promise<VynosBuyResponse>
 }

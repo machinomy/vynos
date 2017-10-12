@@ -16,6 +16,7 @@ import VynosPayInChannelResponse from "../lib/VynosPayInChannelResponse";
 import Vynos from '../lib/Vynos'
 import VynosBuyResponse from "../lib/VynosBuyResponse";
 import { ChannelMeta } from "../lib/storage/ChannelMetaStorage"
+import PurchaseMeta, {purchaseMetaFromDocument} from "../lib/PurchaseMeta";
 
 function isPaymentChannel(pc: PaymentChannel|PaymentChannelJSON): pc is PaymentChannel {
   return !!((pc as PaymentChannel).toJSON)
@@ -109,12 +110,13 @@ export default class VynosClient implements Vynos {
     })
   }
 
-  buy (title: string, receiver: string, amount: number, gateway: string, metaSite: ChannelMeta): Promise<VynosBuyResponse> {
+  buy (receiver: string, amount: number, gateway: string, purchase?: PurchaseMeta): Promise<VynosBuyResponse> {
+    let _purchase = purchase || purchaseMetaFromDocument(document)
     let request: BuyRequest = {
       id: randomId(),
       method: BuyRequest.method,
       jsonrpc: JSONRPC,
-      params: [title, receiver, amount, gateway, metaSite]
+      params: [receiver, amount, gateway, _purchase]
     }
     return this.provider.ask(request).then((response: BuyResponse) => {
       return response.result[0]

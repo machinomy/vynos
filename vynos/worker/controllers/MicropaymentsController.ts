@@ -12,6 +12,7 @@ import Web3 = require("web3")
 import TransactionService from "../TransactionService";
 import {ChannelMeta, default as ChannelMetaStorage} from "../../lib/storage/ChannelMetaStorage"
 import * as transactions from '../../lib/transactions'
+import PurchaseMeta from "../../lib/PurchaseMeta";
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -69,8 +70,7 @@ export default class MicropaymentsController {
     })
   }
 
-  buy(title: string, receiver: string, amount: number, gateway: string, metaSite: ChannelMeta): Promise<VynosBuyResponse> {
-    console.log('insideBuy');
+  buy(receiver: string, amount: number, gateway: string, purchaseMeta: PurchaseMeta): Promise<VynosBuyResponse> {
     return new Promise((resolve, reject) => {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
@@ -81,17 +81,16 @@ export default class MicropaymentsController {
             price: amount,
             gateway: gateway
           }).then(response => {
-            let transaction = transactions.micropayment(title, receiver, amount)
+            let transaction = transactions.micropayment(purchaseMeta, receiver, amount)
             return this.transactions.addTransaction(transaction).then(() => {
               return response
             })
           }).then(response =>{
             return this.channels.insertIfNotExists({
               channelId: response.channelId.toString(),
-              title: metaSite.title,
-              desc: metaSite.desc,
-              host: metaSite.host,
-              icon: metaSite.icon
+              title: purchaseMeta.siteName,
+              host: purchaseMeta.origin,
+              icon: purchaseMeta.icon
             }).then(() => {
               return response
             })

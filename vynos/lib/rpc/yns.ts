@@ -4,6 +4,7 @@ import {PaymentChannelJSON} from "machinomy/lib/channel";
 import Payment from "machinomy/lib/Payment";
 import VynosBuyResponse from "../VynosBuyResponse";
 import { ChannelMeta } from '../storage/ChannelMetaStorage'
+import PurchaseMeta from "../PurchaseMeta";
 
 export class InitAccountRequest implements RequestPayload {
   id: number;
@@ -199,7 +200,7 @@ export class BuyRequest implements RequestPayload {
   id: number;
   jsonrpc: typeof JSONRPC;
   method: typeof BuyRequest.method;
-  params: [string, string, number, string, ChannelMeta];
+  params: [string, number, string, PurchaseMeta];
 
   static method = "yns_buyRequest"
 
