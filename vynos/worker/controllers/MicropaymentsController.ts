@@ -10,6 +10,8 @@ import {ProviderOpts} from "web3-provider-engine";
 import ProviderOptions from "./ProviderOptions";
 import Web3 = require("web3")
 import TransactionService from "../TransactionService";
+import { Meta } from "../../lib/storages/channel_meta_database"
+import * as storage from '../../lib/storage'
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -65,7 +67,7 @@ export default class MicropaymentsController {
     })
   }
 
-  buy (title: string, receiver: string, amount: number, gateway: string, metaSite: object): Promise<VynosBuyResponse> {
+  buy(title: string, receiver: string, amount: number, gateway: string, metaSite: Meta): Promise<VynosBuyResponse> {
     console.log('insideBuy');
     return new Promise((resolve, reject) => {
       this.background.awaitUnlock(() => {
@@ -75,10 +77,17 @@ export default class MicropaymentsController {
           machinomy.buy({
             receiver: receiver,
             price: amount,
-            gateway: gateway,
-            metaSite: metaSite
-          }).then((res: VynosBuyResponse)=>{
-            resolve(res)
+            gateway: gateway
+          }).then((res: VynosBuyResponse) => {
+            let s = storage.build(this.web3, 'vynos', 'sender', false, 'nedb')
+            s.channelMeta.insertIfNotExists({
+              channelId: res.channelId.toString(),
+              title: metaSite.title,
+              desc: metaSite.desc,
+              host: metaSite.host,
+              icon: metaSite.icon
+            });
+            resolve(res);
           }).catch((e: Error) => {
             console.log(e)
           })

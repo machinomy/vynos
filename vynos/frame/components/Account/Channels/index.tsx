@@ -3,7 +3,7 @@ import {Container, Grid, List, Image, Header, Button, Divider} from 'semantic-ui
 import Scrollbars from "react-custom-scrollbars"
 import Web3 = require("web3")
 import Machinomy from 'machinomy'
-import * as storage from 'machinomy/lib/storage'
+import * as storage from '../../../../lib/storage'
 import BlockieComponent from "../../BlockieComponent";
 
 const style = require("../../../styles/ynos.css");
@@ -16,12 +16,12 @@ export interface State {
 }
 
 export default class Channels extends React.Component<Props, State> {
-  public assocBalanceByChannelId: any
+  public balanceByChannelId: any
 
   constructor() {
     super();
     this.state = {channels: []};
-    this.assocBalanceByChannelId = {};
+    this.balanceByChannelId = {};
   }
 
   componentDidMount() {
@@ -30,12 +30,12 @@ export default class Channels extends React.Component<Props, State> {
       if (!accounts || !accounts[0]) return;
       let machinomy = new Machinomy(accounts[0], web3, {engine: 'nedb', databaseFile: 'vynos'})
       machinomy.channels().then(channels => {
-        var arrChannelsIds = channels.map((channel: any) => {
-          this.assocBalanceByChannelId[channel.channelId.toString()] = channel.value - channel.spent;
+        let channelsIds = channels.map((channel: any) => {
+          this.balanceByChannelId[channel.channelId.toString()] = channel.value - channel.spent;
           return channel.channelId.toString()
         });
         let s = storage.build(web3, 'vynos', 'sender', false, 'nedb');
-        s.channelMeta.findByIds(arrChannelsIds).then((metaChannels: any) => {
+        s.channelMeta.findByIds(channelsIds).then((metaChannels: any) => {
           console.log(metaChannels);
           this.setState({channels: metaChannels})
         })
@@ -54,7 +54,7 @@ export default class Channels extends React.Component<Props, State> {
             {this.state.channels.map((channel: any) =>
               <List.Item className={style.listItem} key={channel.channelId}>
                 <List.Content floated='right'>
-                  <span className={style.channelBalance}>{this.assocBalanceByChannelId[channel.channelId]}</span>
+                  <span className={style.channelBalance}>{this.balanceByChannelId[channel.channelId]}</span>
                 </List.Content>
                 {channel.icon && <Image avatar src={channel.icon} size="mini"/> ||
                 <BlockieComponent classDiv={"ui mini avatar image"} classCanvas={"ui mini avatar image"} size={35} scale={2} seed={channel.host}/>}
