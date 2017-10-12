@@ -27,7 +27,7 @@ export class WalletPage extends React.Component<WalletPageStateProps, any> {
 
   consoleLogPendingTxs () {
     let storage = new TransactionStorage()
-    storage.allPending().then(allpending => {
+    storage.pending().then(allpending => {
       console.log(allpending)
     })
   }

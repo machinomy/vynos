@@ -10,6 +10,7 @@ import {ProviderOpts} from "web3-provider-engine";
 import ProviderOptions from "./ProviderOptions";
 import Web3 = require("web3")
 import TransactionService from "../TransactionService";
+import * as transactions from '../../lib/transactions'
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -71,17 +72,18 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.network.web3, { engine: 'nedb', databaseFile: 'vynos' })
-          machinomy.buy({
+          let machinomy = new Machinomy(account, this.network.web3, {engine: 'nedb', databaseFile: 'vynos'})
+          return machinomy.buy({
             receiver: receiver,
             price: amount,
             gateway: gateway
-          }).then((res: VynosBuyResponse)=>{
-            resolve(res)
-          }).catch((e: Error) => {
-            console.log(e)
           })
-        })
+        }).then(response => {
+          let transaction = transactions.micropayment(title, receiver, amount)
+          return this.transactions.addTransaction(transaction).then(() => {
+            return response
+          })
+        }).then(resolve).catch(reject)
       })
     })
   }

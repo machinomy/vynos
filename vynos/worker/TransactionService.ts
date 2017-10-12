@@ -1,9 +1,10 @@
-import Transaction, {TransactionState} from "../lib/Transaction";
 import Promise = require('bluebird')
 import TransactionStorage from "../lib/TransactionStorage";
 import {WorkerState} from "./WorkerState";
 import {Store} from "redux";
-import * as actions from "./actions"
+import * as actions from './actions'
+import Transaction from '../lib/Transaction'
+import TransactionState from "../lib/TransactionState";
 
 export default class TransactionService {
   storage: TransactionStorage
@@ -12,6 +13,10 @@ export default class TransactionService {
   constructor (store: Store<WorkerState>) {
     this.storage = new TransactionStorage()
     this.store = store
+  }
+
+  addTransaction (transaction: Transaction): Promise<void> {
+    return this.storage.add(transaction)
   }
 
   approveTransaction(transaction: Transaction): Promise<boolean> {

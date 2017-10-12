@@ -238,6 +238,7 @@ div.terms-text > p {
 
 .list-content {
   padding-left: 15px !important;
+  width: 185px;
 }
 
 .scrollbar-container .list-wrap .list-item .list-content .list-header {
@@ -256,6 +257,11 @@ div.terms-text > p {
 .list-desc,
 .channel-balance {
   font-size: 14px !important;
+}
+
+.list-desc {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .scrollbar-container .list-wrap > div:last-child {
@@ -468,7 +474,7 @@ label:after {
 }
 
 /******************************
-Transaction page
+TransactionImpl page
 ******************************/
 .key-highlight {
   color: #00AEEF;

@@ -4,8 +4,8 @@ import ethUtil = require('ethereumjs-util')
 import sigUtil = require('eth-sig-util')
 import Tx = require('ethereumjs-tx')
 import TransactionService from "../TransactionService";
-import Transaction from "../../lib/Transaction";
 import {randomId} from "../../lib/Payload";
+import * as transactions from "../../lib/transactions";
 
 export type ApproveTransactionCallback = (error: any, isApproved?: boolean) => void
 
@@ -29,7 +29,7 @@ export default class ProviderOptions {
   }
 
   approveTransaction(txParams: any, callback: ApproveTransactionCallback) {
-    let transaction = new Transaction(randomId().toString(), JSON.stringify(txParams))
+    let transaction = transactions.ethereum(randomId().toString(), JSON.stringify(txParams), 42, 42)
     callback(null, true) // FIXME
     /*
     this.transactions.approveTransaction(transaction).then(result => {
