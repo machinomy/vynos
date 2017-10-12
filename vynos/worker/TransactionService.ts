@@ -1,9 +1,9 @@
 import Promise = require('bluebird')
-import TransactionStorage from "../lib/TransactionStorage";
+import TransactionStorage from "../lib/storage/TransactionMetaStorage";
 import {WorkerState} from "./WorkerState";
 import {Store} from "redux";
 import * as actions from './actions'
-import Transaction from '../lib/Transaction'
+import Transaction from '../lib/TransactionMeta'
 import TransactionState from "../lib/TransactionState";
 
 export default class TransactionService {

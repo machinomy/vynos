@@ -1,10 +1,10 @@
 import * as React from "react";
-import {Container, Grid, List, Image, Header, Button, Divider} from 'semantic-ui-react'
+import {List, Image} from 'semantic-ui-react'
 import Scrollbars from "react-custom-scrollbars"
 import Web3 = require("web3")
 import Machinomy from 'machinomy'
-import * as storage from '../../../../lib/storage'
 import BlockieComponent from "../../BlockieComponent";
+import ChannelMetaStorage from "../../../../lib/storage/ChannelMetaStorage";
 
 const style = require("../../../styles/ynos.css");
 
@@ -16,12 +16,14 @@ export interface State {
 }
 
 export default class Channels extends React.Component<Props, State> {
-  public balanceByChannelId: any
+  balanceByChannelId: any
+  channelMetaStorage: ChannelMetaStorage
 
-  constructor() {
-    super();
-    this.state = {channels: []};
-    this.balanceByChannelId = {};
+  constructor(props: Props) {
+    super(props)
+    this.state = {channels: []}
+    this.balanceByChannelId = {}
+    this.channelMetaStorage = new ChannelMetaStorage()
   }
 
   componentDidMount() {
@@ -30,14 +32,14 @@ export default class Channels extends React.Component<Props, State> {
       if (!accounts || !accounts[0]) return;
       let machinomy = new Machinomy(accounts[0], web3, {engine: 'nedb', databaseFile: 'vynos'})
       machinomy.channels().then(channels => {
-        let channelsIds = channels.map((channel: any) => {
+        let channelIds = channels.map((channel: any) => {
           this.balanceByChannelId[channel.channelId.toString()] = channel.value - channel.spent;
           return channel.channelId.toString()
         });
-        let s = storage.build(web3, 'vynos', 'sender', false, 'nedb');
-        s.channelMeta.findByIds(channelsIds).then((metaChannels: any) => {
-          console.log(metaChannels);
-          this.setState({channels: metaChannels})
+        this.channelMetaStorage.findByIds(channelIds).then((metaChannels: any) => {
+          this.setState({
+            channels: metaChannels
+          })
         })
       });
     });

@@ -1,7 +1,7 @@
 import actionCreatorFactory, {ActionCreator} from 'typescript-fsa'
 import {WorkerState} from './WorkerState';
 import Wallet from 'ethereumjs-wallet'
-import Transaction from "../lib/Transaction";
+import Transaction from "../lib/TransactionMeta";
 
 const actionCreator = actionCreatorFactory("worker");
 

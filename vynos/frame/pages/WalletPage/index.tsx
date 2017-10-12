@@ -4,7 +4,7 @@ import {FrameState} from '../../redux/FrameState'
 import {connect} from 'react-redux'
 import DashboardSubpage from "./DashboardSubpage";
 import Channels from "../../components/Account/Channels/index"
-import TransactionStorage from "../../../lib/TransactionStorage";
+import TransactionStorage from "../../../lib/storage/TransactionMetaStorage";
 
 export interface WalletPageStateProps {
   path: string
@@ -14,6 +14,7 @@ export interface WalletPageStateProps {
 
 export class WalletPage extends React.Component<WalletPageStateProps, any> {
   renderSubpage () {
+    console.log('WalletPage.renderSubpage', this.props.name)
     switch (this.props.name) {
       case 'Channels':
         return <Channels />

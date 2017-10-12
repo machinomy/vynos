@@ -72,13 +72,12 @@ export default class MicropaymentsHandler {
   }
 
   buy(message: BuyRequest, next: Function, end: EndFunction) {
-    let title = message.params[0]
-    let receiver = message.params[1]
-    let amount = message.params[2]
-    let gateway = message.params[3]
-    let metaSite = message.params[4]
+    let receiver = message.params[0]
+    let amount = message.params[1]
+    let gateway = message.params[2]
+    let purchaseMeta = message.params[3]
 
-    this.controller.buy(title, receiver, amount, gateway, metaSite).then(vynosBuyResponse => {
+    this.controller.buy(receiver, amount, gateway, purchaseMeta).then(vynosBuyResponse => {
       let response: BuyResponse = {
         id: message.id,
         jsonrpc: message.jsonrpc,
