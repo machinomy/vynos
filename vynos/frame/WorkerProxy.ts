@@ -16,6 +16,7 @@ import Promise = require('bluebird')
 
 export default class WorkerProxy extends EventEmitter {
   provider: StreamProvider
+  web3: Web3
 
   constructor() {
     super()
@@ -25,6 +26,7 @@ export default class WorkerProxy extends EventEmitter {
         this.emit(SharedStateBroadcastType, data)
       }
     })
+    this.web3 = new Web3(this.provider)
   }
 
   getWeb3(): Web3 {

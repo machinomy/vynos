@@ -4,19 +4,18 @@ import {FrameState} from '../../redux/FrameState'
 import {connect} from 'react-redux'
 import DashboardSubpage from "./DashboardSubpage";
 import Channels from "../../components/Account/Channels/index"
-import TransactionStorage from "../../../lib/storage/TransactionMetaStorage";
+import TransactionStorage from "../../../lib/storage/TransactionMetaStorage"
 
 export interface WalletPageStateProps {
   path: string
   name: string
-  isTransactionPending: boolean
 }
 
 export class WalletPage extends React.Component<WalletPageStateProps, any> {
   renderSubpage () {
     console.log('WalletPage.renderSubpage', this.props.name)
     switch (this.props.name) {
-      case 'Channels':
+      case 'ChannelsSubpage':
         return <Channels />
       case 'Preferences':
         return <p>Preferences</p>
@@ -44,8 +43,7 @@ export class WalletPage extends React.Component<WalletPageStateProps, any> {
 function mapStateToProps(state: FrameState): WalletPageStateProps {
   return {
     path: state.shared.rememberPath,
-    name: nameByPath(state.shared.rememberPath),
-    isTransactionPending: state.shared.isTransactionPending
+    name: nameByPath(state.shared.rememberPath)
   }
 }
 

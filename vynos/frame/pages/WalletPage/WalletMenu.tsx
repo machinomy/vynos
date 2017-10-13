@@ -24,7 +24,7 @@ export type WalletMenuProps = WalletMenuStateProps
 export function nameByPath (path: string): string {
   switch (path) {
     case '/wallet/channels':
-      return 'Channels'
+      return 'ChannelsSubpage'
     case '/wallet/preferences':
       return 'Preferences'
     case '/wallet/network':

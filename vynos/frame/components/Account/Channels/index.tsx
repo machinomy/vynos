@@ -5,29 +5,34 @@ import Web3 = require("web3")
 import Machinomy from 'machinomy'
 import BlockieComponent from "../../BlockieComponent";
 import ChannelMetaStorage from "../../../../lib/storage/ChannelMetaStorage";
+import {connect} from 'react-redux'
+import {FrameState} from "../../../redux/FrameState";
 
 const style = require("../../../styles/ynos.css");
 
-export interface Props {
+export interface ChannelsSubpageProps {
+  web3: Web3
 }
 
-export interface State {
+export interface ChannelsSubpageState {
   channels: any
 }
 
-export default class Channels extends React.Component<Props, State> {
+export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, ChannelsSubpageState> {
   balanceByChannelId: any
   channelMetaStorage: ChannelMetaStorage
 
-  constructor(props: Props) {
+  constructor(props: ChannelsSubpageProps) {
     super(props)
-    this.state = {channels: []}
+    this.state = {
+      channels: []
+    }
     this.balanceByChannelId = {}
     this.channelMetaStorage = new ChannelMetaStorage()
   }
 
   componentDidMount() {
-    let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+    let web3 = this.props.web3
     web3.eth.getAccounts((err, accounts) => {
       if (!accounts || !accounts[0]) return;
       let machinomy = new Machinomy(accounts[0], web3, {engine: 'nedb', databaseFile: 'vynos'})
@@ -73,3 +78,11 @@ export default class Channels extends React.Component<Props, State> {
     </div>
   };
 }
+
+function mapStateToProps(state: FrameState): ChannelsSubpageProps {
+  return {
+    web3: state.temp.workerProxy.web3
+  }
+}
+
+export default connect(mapStateToProps)(ChannelsSubpage)

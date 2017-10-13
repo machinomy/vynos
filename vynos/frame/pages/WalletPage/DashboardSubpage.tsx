@@ -2,26 +2,24 @@ import * as React from 'react'
 import {connect} from 'react-redux'
 import Web3 = require('web3')
 import {FrameState} from '../../redux/FrameState'
-import WorkerProxy from '../../WorkerProxy'
 
-import { Container, List, Image, Header, Button } from 'semantic-ui-react'
+import {Image} from 'semantic-ui-react'
 import AddressSubpage from "./AddressSubpage";
 import TransactionsSubpage from "./TransactionsSubpage";
 
 const style = require('../../styles/ynos.css')
 
-export interface WalletPageProps {
-  workerProxy: WorkerProxy
-  web3: Web3;
+export interface DashboardSubpageProps {
+  web3: Web3
 }
 
-export interface WalletPageState {
+export interface DashboardSubpageState {
   address: string|null
   balance: string
   isDetailsDisplayed: boolean
 }
 
-export class DashboardSubpage extends React.Component<WalletPageProps, WalletPageState> {
+export class DashboardSubpage extends React.Component<DashboardSubpageProps, DashboardSubpageState> {
   updateBalanceTimer: any;
 
   constructor (props: any) {
@@ -98,11 +96,9 @@ export class DashboardSubpage extends React.Component<WalletPageProps, WalletPag
   }
 }
 
-function mapStateToProps (state: FrameState): WalletPageProps {
-  let workerProxy = state.temp.workerProxy!
+function mapStateToProps (state: FrameState): DashboardSubpageProps {
   return {
-    workerProxy: workerProxy,
-    web3: workerProxy.getWeb3()
+    web3: state.temp.workerProxy.web3
   }
 }
 
