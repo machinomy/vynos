@@ -15,7 +15,7 @@ export class WalletPage extends React.Component<WalletPageStateProps, any> {
   renderSubpage () {
     console.log('WalletPage.renderSubpage', this.props.name)
     switch (this.props.name) {
-      case 'ChannelsSubpage':
+      case 'Channels':
         return <Channels />
       case 'Preferences':
         return <p>Preferences</p>

@@ -2,7 +2,6 @@ import * as React from 'react'
 import TransactionStorage from '../../../lib/storage/TransactionMetaStorage'
 import Transaction from "../../../lib/TransactionMeta";
 import { Container, Grid, List, Image, Header, Button, Divider} from 'semantic-ui-react'
-import Scrollbars from "react-custom-scrollbars"
 import Web3 = require('web3')
 import {formatAmount, formatDate} from "../../../lib/formatting";
 
@@ -53,15 +52,14 @@ export default class TransactionsSubpage extends React.Component<TransactionsSub
 
   render () {
     let rows = this.state.transactions.map((t: Transaction) => this.renderTransaction(t))
+    let className = style.listWrap + ' ' + style.scrollbarContainer
 
-    return <Scrollbars
-      renderTrackHorizontal={props => <div {...props} />}
-      renderView={props => <div {...props} className={style.scrollbarView}/>}>
-      <div className={style.scrollbarContainer}>
-        <List className={style.listWrap} divided verticalAlign='middle'>
-          {rows}
-        </List>
-      </div>
-    </Scrollbars>
+    if (rows.length) {
+      return <List className={className} divided verticalAlign='middle'>
+        {rows}
+      </List>
+    } else {
+      return <p></p>
+    }
   }
 }

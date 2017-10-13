@@ -51,31 +51,23 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
   }
 
   render() {
-    return <div className={style.wrap}>
-      <Scrollbars
-        renderTrackHorizontal={props => <div {...props} />}
-        renderView={props => <div {...props} className={style.scrollbarView}/>}
-        style={{'width': '100%', 'height': '375px'}}>
-        <div className={style.scrollbarContainer}>
-          <List className={style.listWrap} divided verticalAlign='middle'>
-            {this.state.channels.map((channel: any) =>
-              <List.Item className={style.listItem} key={channel.channelId}>
-                <List.Content floated='right'>
-                  <span className={style.channelBalance}>{this.balanceByChannelId[channel.channelId]}</span>
-                </List.Content>
-                {channel.icon && <Image avatar src={channel.icon} size="mini"/> ||
-                <BlockieComponent classDiv={"ui mini avatar image"} classCanvas={"ui mini avatar image"} size={35} scale={2} seed={channel.host}/>}
-                <List.Content className={style.listContent}>
-                  <List.Header as='a' className={style.listHeader}>{channel.title}
-                  </List.Header>
-                  <List.Description className={style.listDesc}>{channel.desc}</List.Description>
-                </List.Content>
-              </List.Item>
-            )}
-          </List>
-        </div>
-      </Scrollbars>
-    </div>
+    let className = style.listWrap + ' ' + style.scrollbarContainer
+    return <List className={className} divided verticalAlign='middle'>
+      {this.state.channels.map((channel: any) =>
+        <List.Item className={style.listItem} key={channel.channelId}>
+          <List.Content floated='right'>
+            <span className={style.channelBalance}>{this.balanceByChannelId[channel.channelId]}</span>
+          </List.Content>
+          {channel.icon && <Image avatar src={channel.icon} size="mini"/> ||
+          <BlockieComponent classDiv={"ui mini avatar image"} classCanvas={"ui mini avatar image"} size={35} scale={2} seed={channel.host}/>}
+          <List.Content className={style.listContent}>
+            <List.Header as='a' className={style.listHeader}>{channel.title}
+            </List.Header>
+            <List.Description className={style.listDesc}>{channel.desc}</List.Description>
+          </List.Content>
+        </List.Item>
+      )}
+    </List>
   };
 }
 

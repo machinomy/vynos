@@ -152,6 +152,7 @@ Wallet page
 .wallet-address-subpage {
   background-color: #fafafa;
   height: 100%;
+  flex: 1 1 100%;
 }
 
 .wallet-address-subpage .wallet-address-subpage-buttons {
@@ -222,17 +223,17 @@ div.terms-text > p {
   background: initial !important;
 }
 
+.scrollbar-container {
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+}
+
 .scrollbar-container .list-item {
   padding: 0 20px 15px 15px !important;
 }
 
-.scrollbar-container .list-wrap > div:nth-child(n+2) {
+.scrollbar-container.list-wrap > div:nth-child(n+2) {
   padding-top: 15px !important;
-}
-
-.scrollbar-view {
-  overflow-y: scroll !important;
-  overflow-x: hidden !important;
 }
 
 .list-content {
@@ -240,12 +241,12 @@ div.terms-text > p {
   width: 185px;
 }
 
-.scrollbar-container .list-wrap .list-item .list-content .list-header {
+.scrollbar-container.list-wrap .list-item .list-content .list-header {
   color: #333 !important;
   font-weight: 600 !important;
 }
 
-.scrollbar-container .list-wrap .list-item .list-content .list-header:hover {
+.scrollbar-container.list-wrap .list-item .list-content .list-header:hover {
   color: #333 !important;
 }
 
@@ -263,12 +264,13 @@ div.terms-text > p {
   overflow: hidden;
 }
 
-.scrollbar-container .list-wrap > div:first-child {
+.scrollbar-container.list-wrap > div:first-child {
   padding-top: 16px !important;
 }
 
 .wrap {
   position: relative;
+  display: flex;
 }
 
 .wrap > #welcome {
