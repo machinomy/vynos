@@ -252,6 +252,7 @@ div.terms-text > p {
 
 .lifetime-date {
   color: #757575 !important;
+  white-space: nowrap;
 }
 
 .list-desc,
