@@ -539,3 +539,35 @@ button.button-nav {
   color: #D04071 !important;
   border-bottom: 1px solid #D04071 !important;
 }
+
+/******************************
+Channels page
+******************************/
+#active-channel {
+  background-color: #29ABE2;
+}
+
+#active-channel * {
+  color: #fff !important;
+}
+
+#buttons-active-channel {
+  display: block !important;
+  margin-top: 10px;
+}
+
+#buttons-active-channel a {
+  margin-right: 10px;
+}
+
+#closed-channel {
+  background-color: rgba(225, 225, 225, 0.5) !important;
+}
+
+#closed-channel * {
+  color: rgba(51, 51, 51, 0.5) !important;
+}
+
+#closed-channel a {
+  color: #00AEEF !important;
+}
