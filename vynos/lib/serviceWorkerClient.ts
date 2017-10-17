@@ -3,13 +3,13 @@ export interface ServiceWorkerClient {
   unload: () => void
 }
 
-function activateServiceWorker(client: ServiceWorkerClient, serviceWorker: ServiceWorker) {
+function activate(client: ServiceWorkerClient, serviceWorker: ServiceWorker) {
   if (serviceWorker.state === 'activated') {
     client.load(serviceWorker)
   }
 }
 
-function installServiceWorker(client: ServiceWorkerClient, registration: ServiceWorkerRegistration) {
+function install(client: ServiceWorkerClient, registration: ServiceWorkerRegistration) {
   registration.onupdatefound = () => {
     registration.update().then(() => {
       registration.unregister().then(() => {
@@ -25,16 +25,17 @@ function installServiceWorker(client: ServiceWorkerClient, registration: Service
       client.unload()
       register(client)
     }
-    activateServiceWorker(client, serviceWorker)
+    activate(client, serviceWorker)
   }
-  activateServiceWorker(client, serviceWorker)
+
+  activate(client, serviceWorker)
 }
 
 export function register(client: ServiceWorkerClient) {
   if ("serviceWorker" in navigator) {
     let scriptUrl = window.location.href.replace('frame.html', 'worker.bundle.js')
     navigator.serviceWorker.register(scriptUrl, {scope: "./"}).then(registration => {
-      installServiceWorker(client, registration)
+      install(client, registration)
     }).catch(error => {
       console.error(error)
     })
