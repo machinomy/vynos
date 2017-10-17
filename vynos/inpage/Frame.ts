@@ -39,6 +39,7 @@ export default class Frame {
       this.containerElement.style.right = '110px'
       this.containerElement.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT).toString() + 'px'
       this.containerElement.style.width = FRAME_WIDTH + 'px'
+      this.containerElement.style.zIndex = '9999999';
 
       this.hide()
 

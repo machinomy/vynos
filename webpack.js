@@ -1,8 +1,8 @@
 const path                = require("path"),
   webpack                 = require("webpack"),
   DIST_PATH               = path.resolve(__dirname, "dist"),
-  PackageLoadersPlugin    = require('webpack-package-loaders-plugin');
-
+  PackageLoadersPlugin    = require('webpack-package-loaders-plugin'),
+  UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 require('dotenv').config({ path: '.env' });
 
@@ -125,12 +125,18 @@ function webpackConfig (entry) {
   };
 
   if (process.env.NODE_ENV === 'production') {
-    /*
     config.plugins = config.plugins.concat(
-      new UglifyJSPlugin()
+      new UglifyJSPlugin({
+        parallel: true,
+        uglifyOptions: {
+          output: {
+            comments: false,
+            beautify: false
+          }
+        }
+      })
     );
-    config.output.path = DIST_PATH;
-    */
+    //config.output.path = DIST_PATH;
   }
 
   return config
