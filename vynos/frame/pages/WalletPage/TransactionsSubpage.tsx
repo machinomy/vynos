@@ -1,9 +1,9 @@
 import * as React from 'react'
 import TransactionStorage from '../../../lib/storage/TransactionMetaStorage'
 import Transaction from "../../../lib/TransactionMeta";
-import { Container, Grid, List, Image, Header, Button, Divider} from 'semantic-ui-react'
-import Web3 = require('web3')
+import {List, Image} from 'semantic-ui-react'
 import {formatAmount, formatDate} from "../../../lib/formatting";
+import BlockieComponent from "../../components/BlockieComponent";
 
 const style = require('../../styles/ynos.css')
 
@@ -13,7 +13,7 @@ export interface TransactionsSubpageState {
   transactions: Array<Transaction>
 }
 
-export default class TransactionsSubpage extends React.Component<TransactionsSubpageProps, any> {
+export default class TransactionsSubpage extends React.Component<TransactionsSubpageProps, TransactionsSubpageState> {
   transactionStorage: TransactionStorage
 
   constructor(props: TransactionsSubpageProps) {
@@ -27,14 +27,21 @@ export default class TransactionsSubpage extends React.Component<TransactionsSub
   componentDidMount () {
     this.transactionStorage.all().then(transactions => {
       this.setState({
-        transactions: transactions
+        transactions: transactions.reverse()
       })
     })
   }
 
+  transactionIcon (transaction: Transaction) {
+    if (transaction.icon) {
+      return <Image avatar src={transaction.icon} size="mini" />
+    } else {
+      return <BlockieComponent classDiv={"ui mini avatar image " + style.listItemAvatar} classCanvas={"ui mini avatar image"} size={35} scale={2} seed={transaction.id} />
+    }
+  }
+
   renderTransaction (transaction: Transaction) {
-    let iconSrc = require('../../styles/images/service.png')
-    let icon = <Image avatar src={iconSrc} size="mini" />
+    let icon = this.transactionIcon(transaction)
     let { value, denomination } = formatAmount(transaction.amount)
     let date = formatDate(transaction.time)
 

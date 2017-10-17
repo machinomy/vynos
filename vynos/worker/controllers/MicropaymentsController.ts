@@ -10,9 +10,9 @@ import {ProviderOpts} from "web3-provider-engine";
 import ProviderOptions from "./ProviderOptions";
 import Web3 = require("web3")
 import TransactionService from "../TransactionService";
-import {ChannelMeta, default as ChannelMetaStorage} from "../../lib/storage/ChannelMetaStorage"
 import * as transactions from '../../lib/transactions'
 import PurchaseMeta from "../../lib/PurchaseMeta";
+import ChannelMetaStorage from "../../lib/storage/ChannelMetaStorage";
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -90,7 +90,7 @@ export default class MicropaymentsController {
               channelId: response.channelId.toString(),
               title: purchaseMeta.siteName,
               host: purchaseMeta.origin,
-              icon: purchaseMeta.icon
+              icon: purchaseMeta.siteIcon
             }).then(() => {
               return response
             })

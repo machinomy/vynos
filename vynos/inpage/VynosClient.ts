@@ -15,7 +15,6 @@ import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import VynosPayInChannelResponse from "../lib/VynosPayInChannelResponse";
 import Vynos from '../lib/Vynos'
 import VynosBuyResponse from "../lib/VynosBuyResponse";
-import { ChannelMeta } from "../lib/storage/ChannelMetaStorage"
 import PurchaseMeta, {purchaseMetaFromDocument} from "../lib/PurchaseMeta";
 
 function isPaymentChannel(pc: PaymentChannel|PaymentChannelJSON): pc is PaymentChannel {

@@ -239,6 +239,11 @@ div.terms-text > p {
 .list-content {
   padding-left: 15px !important;
   width: 185px;
+  max-width: 185px !important;
+}
+
+.ui.mini.image.avatar.list-item-avatar {
+  width: 75px;
 }
 
 .scrollbar-container.list-wrap .list-item .list-content .list-header {
