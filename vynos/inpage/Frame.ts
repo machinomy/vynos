@@ -50,9 +50,9 @@ export default class Frame {
 
   attach (document: HTMLDocument) {
     if (this.containerElement && !this.containerElement.parentElement) {
-      document.body.appendChild(this.containerElement);
+      document.body.insertBefore(this.containerElement, document.body.firstChild)
     } else if (!this.element.parentElement) {
-      document.body.appendChild(this.element);
+      document.body.insertBefore(this.containerElement, document.body.firstChild)
     }
   }
 
