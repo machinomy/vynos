@@ -1,36 +1,47 @@
-import {initServiceWorkerClient} from './lib/serviceWorkerClient'
+import {register, ServiceWorkerClient} from './lib/serviceWorkerClient'
 import FrameStream from './lib/FrameStream'
 import PostStream from './lib/PostStream'
 import WorkerProxy from './frame/WorkerProxy'
 import renderApplication from './frame/renderApplication'
+import {Duplex} from 'readable-stream'
 
-let windowStream = new FrameStream("vynos").toParent()
+class Client implements ServiceWorkerClient {
+  workerStream: PostStream
+  windowStream: Duplex
+  workerProxy: WorkerProxy
 
-window.addEventListener("load", () => {
-  initServiceWorkerClient((serviceWorker, onUnload) => {
-    let workerStream = new PostStream({
+  constructor () {
+    this.workerProxy = new WorkerProxy()
+    this.windowStream = new FrameStream("vynos").toParent()
+  }
+
+  load (serviceWorker: ServiceWorker) {
+    console.log('Client.load')
+    this.workerStream = new PostStream({
       sourceName: "frame",
       targetName: "worker",
       source: navigator.serviceWorker,
       target: serviceWorker
     })
 
-    windowStream.pipe(workerStream).pipe(windowStream)
+    this.windowStream.pipe(this.workerStream).pipe(this.windowStream)
 
-    let workerProxy = new WorkerProxy()
-    workerStream.pipe(workerProxy.provider).pipe(workerStream)
+    this.workerStream.pipe(this.workerProxy.provider).pipe(this.workerStream)
 
-    renderApplication(document, workerProxy)
+    renderApplication(document, this.workerProxy)
+  }
 
-    onUnload(() => {
-      windowStream.unpipe(workerStream)
-      workerStream.unpipe(windowStream)
-      workerStream.unpipe(workerProxy.provider)
-      workerProxy.provider.unpipe(workerStream)
+  unload () {
+    console.log('Client.unload')
+    this.windowStream.unpipe(this.workerStream)
+    this.workerStream.unpipe(this.windowStream)
+    this.workerStream.unpipe(this.workerProxy.provider)
+    this.workerProxy.provider.unpipe(this.workerStream)
+    this.workerStream.end()
+  }
+}
 
-      windowStream.end()
-      workerStream.end()
-      workerProxy.provider.end()
-    })
-  })
-});
+window.addEventListener('load', () => {
+  let client = new Client()
+  register(client)
+})

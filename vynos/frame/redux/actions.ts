@@ -2,6 +2,7 @@ import actionCreatorFactory, {ActionCreator} from 'typescript-fsa'
 import {SharedState} from '../../worker/WorkerState'
 import {Store} from 'redux'
 import {FrameState, TempState} from './FrameState'
+import WorkerProxy from "../WorkerProxy";
 
 const actionCreator = actionCreatorFactory("frame");
 
@@ -24,3 +25,7 @@ export function didReceiveMnemonicHandler(state: TempState, mnemonic: string): T
   return { ...state, initPage: { ...state.initPage, mnemonic: mnemonic }}
 }
 
+export const setWorkerProxy: ActionCreator<WorkerProxy> = actionCreator<WorkerProxy>("temp/setWorkerProxy")
+export function setWorkerProxyHandler(state: TempState, workerProxy: WorkerProxy): TempState {
+  return { ...state, workerProxy: workerProxy }
+}
