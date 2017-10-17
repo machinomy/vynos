@@ -50,7 +50,8 @@ gulp.task("serve", () => {
       timings: false,
       chunks: false,
       chunkModules: false
-    }
+    },
+    compress: true
   }).listen(process.env.FRAME_PORT, 'localhost', function(err) {
     if(err) throw new gutil.PluginError('build:serve', err);
     gutil.log('webpack-dev-server', `http://localhost:${process.env.FRAME_PORT}/webpack-dev-server/index.html`);
@@ -85,7 +86,8 @@ gulp.task("serve:harness", ["serve"], () => {
     stats: {
       colors: true
     },
-    contentBase: 'harness/'
+    contentBase: 'harness/',
+    compress: true
   }).listen(process.env.HARNESS_PORT, 'localhost', function(err) {
     if(err) throw new gutil.PluginError('harness:serve', err);
     gutil.log('webpack-dev-server', `http://localhost:${process.env.HARNESS_PORT}/webpack-dev-server/index.html`);
