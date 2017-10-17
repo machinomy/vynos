@@ -10,9 +10,13 @@ class Client implements ServiceWorkerClient {
   windowStream: Duplex
   workerProxy: WorkerProxy
 
+  constructor () {
+    this.workerProxy = new WorkerProxy()
+    this.windowStream = new FrameStream("vynos").toParent()
+  }
+
   load (serviceWorker: ServiceWorker) {
     console.log('Client.load')
-    this.windowStream = new FrameStream("vynos").toParent()
     this.workerStream = new PostStream({
       sourceName: "frame",
       targetName: "worker",
@@ -22,7 +26,6 @@ class Client implements ServiceWorkerClient {
 
     this.windowStream.pipe(this.workerStream).pipe(this.windowStream)
 
-    this.workerProxy = new WorkerProxy()
     this.workerStream.pipe(this.workerProxy.provider).pipe(this.workerStream)
 
     renderApplication(document, this.workerProxy)
@@ -34,10 +37,7 @@ class Client implements ServiceWorkerClient {
     this.workerStream.unpipe(this.windowStream)
     this.workerStream.unpipe(this.workerProxy.provider)
     this.workerProxy.provider.unpipe(this.workerStream)
-
-    this.windowStream.end()
     this.workerStream.end()
-    this.workerProxy.provider.end()
   }
 }
 
