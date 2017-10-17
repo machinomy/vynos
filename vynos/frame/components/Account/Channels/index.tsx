@@ -1,6 +1,5 @@
 import * as React from "react";
 import {List, Image} from 'semantic-ui-react'
-import Scrollbars from "react-custom-scrollbars"
 import Web3 = require("web3")
 import Machinomy from 'machinomy'
 import BlockieComponent from "../../BlockieComponent";

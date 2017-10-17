@@ -16,10 +16,11 @@ import {AppContainer} from "react-hot-loader";
 const MOUNT_POINT_ID = 'mount-point'
 
 async function renderToMountPoint(mountPoint: HTMLElement, workerProxy: WorkerProxy) {
-  const frameState = await workerProxy.getSharedState();
   const history = createHashHistory()
   const middleware = redux.applyMiddleware(createLogger(), routerMiddleware(history))
   let store: Store<FrameState> = redux.createStore(reducers(workerProxy), initialState(workerProxy), middleware)
+
+  const frameState = await workerProxy.getSharedState();
   let remoteStore = new RemoteStore(workerProxy, frameState)
   remoteStore.wireToLocal(store)
 
