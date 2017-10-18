@@ -48,9 +48,13 @@ export default class TransactionMetaStorage {
   }
 
   all(): Promise<Array<TransactionMeta>> {
-    return this.find({}).then(transactions => {
-      return transactions
-    })
+    return new Promise((resolve, reject) => {
+      this.datastore.loadDatabase(() => {
+        this.find({}).then(transactions => {
+         return resolve(transactions);
+        })
+      });
+    });
   }
 
   protected find(query: any): Promise<Array<TransactionMeta>> {

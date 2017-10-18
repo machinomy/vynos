@@ -81,17 +81,17 @@ export default class MicropaymentsController {
             price: amount,
             gateway: gateway
           }).then(response => {
-            let transaction = transactions.micropayment(purchaseMeta, receiver, amount)
-            return this.transactions.addTransaction(transaction).then(() => {
-              return response
-            })
-          }).then(response =>{
             return this.channels.insertIfNotExists({
               channelId: response.channelId.toString(),
               title: purchaseMeta.siteName,
               host: purchaseMeta.origin,
               icon: purchaseMeta.siteIcon
             }).then(() => {
+              return response
+            })
+          }).then(response =>{
+            let transaction = transactions.micropayment(purchaseMeta, receiver, amount)
+            return this.transactions.addTransaction(transaction).then(() => {
               return response
             })
           }).then(resolve).catch(reject)

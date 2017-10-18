@@ -11,6 +11,7 @@ import {isUndefined} from "util";
 const style = require("../../../styles/ynos.css");
 
 export interface ChannelsSubpageProps {
+  lastUpdateDb: number,
   web3: Web3
 }
 
@@ -22,6 +23,7 @@ export interface ChannelsSubpageState {
 export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, ChannelsSubpageState> {
   channelMetaStorage: ChannelMetaStorage
   machinomy: Machinomy | null
+  localLastUpdateDb: number
 
   constructor(props: ChannelsSubpageProps) {
     super(props)
@@ -31,6 +33,7 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
     }
     this.channelMetaStorage = new ChannelMetaStorage()
     this.machinomy = null;
+    this.localLastUpdateDb = props.lastUpdateDb;
   }
 
   getMachinomy() {
@@ -49,6 +52,15 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
 
   componentDidMount() {
     this.updateListChannels({})
+  }
+
+  shouldComponentUpdate (nextProps: ChannelsSubpageProps) {
+    if(this.localLastUpdateDb < nextProps.lastUpdateDb){
+      this.localLastUpdateDb = nextProps.lastUpdateDb;
+      this.updateListChannels({});
+      return false;
+    }
+    return true;
   }
 
   closeChannelId(channel: any) {
@@ -135,7 +147,7 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
                 {channel.title}
               </List.Header>
               <List.Description className={style.listDesc}>{channel.desc}</List.Description>
-              <List.Description id={((isActiveChannel || channel.canClose) ? style.buttonsActiveChannel : '')}
+              <List.Description id={((isActiveChannel || (channel.state === 1 && channel.canClose)) ? style.buttonsActiveChannel : '')}
                                 style={{display: 'none'}}>
                 <a onClick={this.closeChannelId.bind(this, channel)}>CLOSE</a>
               </List.Description>
@@ -148,6 +160,7 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
 
 function mapStateToProps(state: FrameState): ChannelsSubpageProps {
   return {
+    lastUpdateDb: state.shared.lastUpdateDb,
     web3: state.temp.workerProxy.web3
   }
 }

@@ -3,6 +3,7 @@ import Wallet from "ethereumjs-wallet";
 export interface RuntimeState {
   wallet?: Wallet
   isTransactionPending: boolean
+  lastUpdateDb: number
 }
 
 export interface SharedState {
@@ -10,6 +11,7 @@ export interface SharedState {
   isLocked: boolean
   isTransactionPending: boolean
   rememberPath: string
+  lastUpdateDb: number
 }
 
 export interface PersistentState {
@@ -20,14 +22,15 @@ export interface PersistentState {
 
 export interface WorkerState {
   persistent: PersistentState,
-  runtime: RuntimeState,
+  runtime: RuntimeState
 }
 
 export const INITIAL_SHARED_STATE: SharedState = {
   didInit: false,
   isLocked: true,
   isTransactionPending: false,
-  rememberPath: '/'
+  rememberPath: '/',
+  lastUpdateDb: 0
 }
 
 export const INITIAL_STATE: WorkerState = {
@@ -36,8 +39,9 @@ export const INITIAL_STATE: WorkerState = {
     rememberPath: '/'
   },
   runtime: {
-    isTransactionPending: false
-  },
+    isTransactionPending: false,
+    lastUpdateDb: 0
+  }
 }
 
 export function buildSharedState(state: WorkerState): SharedState {
@@ -45,6 +49,7 @@ export function buildSharedState(state: WorkerState): SharedState {
     didInit: state.persistent.didInit,
     isLocked: !state.runtime.wallet,
     isTransactionPending: state.runtime.isTransactionPending,
-    rememberPath: state.persistent.rememberPath
+    rememberPath: state.persistent.rememberPath,
+    lastUpdateDb: state.runtime.lastUpdateDb
   }
 }

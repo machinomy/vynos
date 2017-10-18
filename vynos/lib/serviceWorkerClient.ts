@@ -18,7 +18,7 @@ function install(client: ServiceWorkerClient, registration: ServiceWorkerRegistr
     })
   }
 
-  let serviceWorker = registration.active!
+  let serviceWorker = (registration.active || registration.installing)!;
 
   serviceWorker.onstatechange = () => {
     if (serviceWorker.state === 'redundant') {

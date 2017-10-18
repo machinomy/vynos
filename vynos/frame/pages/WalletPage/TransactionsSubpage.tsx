@@ -4,32 +4,51 @@ import Transaction from "../../../lib/TransactionMeta";
 import {List, Image} from 'semantic-ui-react'
 import {formatAmount, formatDate} from "../../../lib/formatting";
 import BlockieComponent from "../../components/BlockieComponent";
+import {connect} from 'react-redux';
+import {FrameState} from "../../redux/FrameState";
 
 const style = require('../../styles/ynos.css')
 
-export interface TransactionsSubpageProps {}
+export interface TransactionsSubpageProps {
+  lastUpdateDb: number
+}
 
 export interface TransactionsSubpageState {
   transactions: Array<Transaction>
 }
 
-export default class TransactionsSubpage extends React.Component<TransactionsSubpageProps, TransactionsSubpageState> {
+export class TransactionsSubpage extends React.Component<TransactionsSubpageProps, TransactionsSubpageState> {
   transactionStorage: TransactionStorage
+  localLastUpdateDb: number
 
   constructor(props: TransactionsSubpageProps) {
     super(props)
     this.state = {
       transactions: []
     }
+    this.localLastUpdateDb = props.lastUpdateDb;
     this.transactionStorage = new TransactionStorage()
   }
 
   componentDidMount () {
+    this.updateTransactions();
+  }
+
+  updateTransactions (){
     this.transactionStorage.all().then(transactions => {
       this.setState({
         transactions: transactions.reverse()
       })
     })
+  }
+
+  shouldComponentUpdate (nextProps: TransactionsSubpageProps) {
+    if(this.localLastUpdateDb < nextProps.lastUpdateDb){
+      this.localLastUpdateDb = nextProps.lastUpdateDb;
+      this.updateTransactions();
+      return false;
+    }
+    return true;
   }
 
   transactionIcon (transaction: Transaction) {
@@ -70,3 +89,11 @@ export default class TransactionsSubpage extends React.Component<TransactionsSub
     }
   }
 }
+
+function mapStateToProps(state: FrameState): TransactionsSubpageProps {
+  return {
+    lastUpdateDb: state.shared.lastUpdateDb
+  }
+}
+
+export default connect(mapStateToProps)(TransactionsSubpage)

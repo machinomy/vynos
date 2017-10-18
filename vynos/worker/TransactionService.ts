@@ -16,7 +16,9 @@ export default class TransactionService {
   }
 
   addTransaction (transaction: Transaction): Promise<void> {
-    return this.storage.add(transaction)
+    return this.storage.add(transaction).then(()=>{
+      this.store.dispatch(actions.setLastUpdateDb(Date.now()));
+    })
   }
 
   approveTransaction(transaction: Transaction): Promise<boolean> {
