@@ -6,13 +6,11 @@ import {formatAmount, formatDate} from "../../../lib/formatting";
 import BlockieComponent from "../../components/BlockieComponent";
 import {connect} from 'react-redux';
 import {FrameState} from "../../redux/FrameState";
-import WorkerProxy from '../../WorkerProxy'
-import {SharedStateBroadcastType} from "../../../lib/rpc/SharedStateBroadcast";
 
 const style = require('../../styles/ynos.css')
 
 export interface TransactionsSubpageProps {
-  workerProxy: WorkerProxy
+  lastUpdateDb: number
 }
 
 export interface TransactionsSubpageState {
@@ -21,29 +19,19 @@ export interface TransactionsSubpageState {
 
 export class TransactionsSubpage extends React.Component<TransactionsSubpageProps, TransactionsSubpageState> {
   transactionStorage: TransactionStorage
-  mounted: boolean
-  lastUpdateDb: number
+  localLastUpdateDb: number
 
   constructor(props: TransactionsSubpageProps) {
     super(props)
     this.state = {
       transactions: []
     }
-    this.mounted = false;
+    this.localLastUpdateDb = props.lastUpdateDb;
     this.transactionStorage = new TransactionStorage()
-    this.lastUpdateDb = 0;
-    props.workerProxy.addListener(SharedStateBroadcastType, (data) => {
-      if(this.mounted && data.result.lastUpdateDb > this.lastUpdateDb) this.updateTransactions();
-    })
   }
 
   componentDidMount () {
-    this.mounted = true;
     this.updateTransactions();
-  }
-
-  componentWillUnmount () {
-    this.mounted = false;
   }
 
   updateTransactions (){
@@ -52,6 +40,15 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
         transactions: transactions.reverse()
       })
     })
+  }
+
+  shouldComponentUpdate (nextProps: TransactionsSubpageProps) {
+    if(this.localLastUpdateDb < nextProps.lastUpdateDb){
+      this.localLastUpdateDb = nextProps.lastUpdateDb;
+      this.updateTransactions();
+      return false;
+    }
+    return true;
   }
 
   transactionIcon (transaction: Transaction) {
@@ -94,9 +91,8 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
 }
 
 function mapStateToProps(state: FrameState): TransactionsSubpageProps {
-  let workerProxy = state.temp.workerProxy!
   return {
-    workerProxy: workerProxy
+    lastUpdateDb: state.shared.lastUpdateDb
   }
 }
 

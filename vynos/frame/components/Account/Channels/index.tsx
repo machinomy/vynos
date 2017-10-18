@@ -7,13 +7,11 @@ import ChannelMetaStorage from "../../../../lib/storage/ChannelMetaStorage";
 import {connect} from 'react-redux'
 import {FrameState} from "../../../redux/FrameState";
 import {isUndefined} from "util";
-import WorkerProxy from '../../../WorkerProxy'
-import {SharedStateBroadcastType} from "../../../../lib/rpc/SharedStateBroadcast";
 
 const style = require("../../../styles/ynos.css");
 
 export interface ChannelsSubpageProps {
-  workerProxy: WorkerProxy,
+  lastUpdateDb: number,
   web3: Web3
 }
 
@@ -25,9 +23,7 @@ export interface ChannelsSubpageState {
 export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, ChannelsSubpageState> {
   channelMetaStorage: ChannelMetaStorage
   machinomy: Machinomy | null
-  mounted: boolean
-  lastUpdateDb: number
-
+  localLastUpdateDb: number
 
   constructor(props: ChannelsSubpageProps) {
     super(props)
@@ -37,11 +33,7 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
     }
     this.channelMetaStorage = new ChannelMetaStorage()
     this.machinomy = null;
-    this.mounted = false;
-    this.lastUpdateDb = 0;
-    props.workerProxy.addListener(SharedStateBroadcastType, (data) => {
-      if(this.mounted && data.result.lastUpdateDb > this.lastUpdateDb) this.updateListChannels({});
-    })
+    this.localLastUpdateDb = props.lastUpdateDb;
   }
 
   getMachinomy() {
@@ -59,12 +51,16 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
   }
 
   componentDidMount() {
-    this.mounted = true;
     this.updateListChannels({})
   }
 
-  componentWillUnmount(){
-    this.mounted = false;
+  shouldComponentUpdate (nextProps: ChannelsSubpageProps) {
+    if(this.localLastUpdateDb < nextProps.lastUpdateDb){
+      this.localLastUpdateDb = nextProps.lastUpdateDb;
+      this.updateListChannels({});
+      return false;
+    }
+    return true;
   }
 
   closeChannelId(channel: any) {
@@ -163,9 +159,8 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
 }
 
 function mapStateToProps(state: FrameState): ChannelsSubpageProps {
-  let workerProxy = state.temp.workerProxy!
   return {
-    workerProxy: workerProxy,
+    lastUpdateDb: state.shared.lastUpdateDb,
     web3: state.temp.workerProxy.web3
   }
 }
