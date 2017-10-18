@@ -135,7 +135,7 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
                 {channel.title}
               </List.Header>
               <List.Description className={style.listDesc}>{channel.desc}</List.Description>
-              <List.Description id={((isActiveChannel || channel.canClose) ? style.buttonsActiveChannel : '')}
+              <List.Description id={((isActiveChannel || (channel.state === 1 && channel.canClose)) ? style.buttonsActiveChannel : '')}
                                 style={{display: 'none'}}>
                 <a onClick={this.closeChannelId.bind(this, channel)}>CLOSE</a>
               </List.Description>
