@@ -9,5 +9,6 @@ const reducers: ReducerBuilder<WorkerState, WorkerState> = reducerWithInitialSta
   .case(actions.restoreWallet, actions.restoreWalletHandler)
   .case(actions.setTransactionPending, actions.setTransactionPendingHandler)
   .case(actions.rememberPage, actions.rememberPageHandler)
+  .case(actions.setLastUpdateDb, actions.setLastUpdateDbHandler)
 
 export default reducers

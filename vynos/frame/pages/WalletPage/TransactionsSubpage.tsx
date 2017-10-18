@@ -4,27 +4,49 @@ import Transaction from "../../../lib/TransactionMeta";
 import {List, Image} from 'semantic-ui-react'
 import {formatAmount, formatDate} from "../../../lib/formatting";
 import BlockieComponent from "../../components/BlockieComponent";
+import {connect} from 'react-redux';
+import {FrameState} from "../../redux/FrameState";
+import WorkerProxy from '../../WorkerProxy'
+import {SharedStateBroadcastType} from "../../../lib/rpc/SharedStateBroadcast";
 
 const style = require('../../styles/ynos.css')
 
-export interface TransactionsSubpageProps {}
+export interface TransactionsSubpageProps {
+  workerProxy: WorkerProxy
+}
 
 export interface TransactionsSubpageState {
   transactions: Array<Transaction>
 }
 
-export default class TransactionsSubpage extends React.Component<TransactionsSubpageProps, TransactionsSubpageState> {
+export class TransactionsSubpage extends React.Component<TransactionsSubpageProps, TransactionsSubpageState> {
   transactionStorage: TransactionStorage
+  mounted: boolean
+  lastUpdateDb: number
 
   constructor(props: TransactionsSubpageProps) {
     super(props)
     this.state = {
       transactions: []
     }
+    this.mounted = false;
     this.transactionStorage = new TransactionStorage()
+    this.lastUpdateDb = 0;
+    props.workerProxy.addListener(SharedStateBroadcastType, (data) => {
+      if(this.mounted && data.result.lastUpdateDb > this.lastUpdateDb) this.updateTransactions();
+    })
   }
 
   componentDidMount () {
+    this.mounted = true;
+    this.updateTransactions();
+  }
+
+  componentWillUnmount () {
+    this.mounted = false;
+  }
+
+  updateTransactions (){
     this.transactionStorage.all().then(transactions => {
       this.setState({
         transactions: transactions.reverse()
@@ -70,3 +92,12 @@ export default class TransactionsSubpage extends React.Component<TransactionsSub
     }
   }
 }
+
+function mapStateToProps(state: FrameState): TransactionsSubpageProps {
+  let workerProxy = state.temp.workerProxy!
+  return {
+    workerProxy: workerProxy
+  }
+}
+
+export default connect(mapStateToProps)(TransactionsSubpage)

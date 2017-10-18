@@ -56,3 +56,11 @@ export function rememberPageHandler(state: WorkerState, path: string): WorkerSta
     persistent: { ...state.persistent, rememberPath: path }
   }
 }
+
+export const setLastUpdateDb = actionCreator<number>('runtime/setLastUpdateDb')
+export function setLastUpdateDbHandler(state: WorkerState, timestamp: number): WorkerState {
+  return {
+    ...state,
+    runtime: {...state.runtime, lastUpdateDb: timestamp}
+  }
+}
