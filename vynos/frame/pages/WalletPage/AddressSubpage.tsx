@@ -6,6 +6,7 @@ const style = require('../../styles/ynos.css')
 
 export interface AddressSubpageProps {
   address: string
+  showSend (): void
 }
 
 export interface AddressSubpageState {
@@ -51,7 +52,7 @@ export default class AddressSubpage extends React.Component<AddressSubpageProps,
           <Button type="submit" content="Refill" className={style.buttonNav} disabled />
         </div>
         <div className={style.walletAddressSubpageButtonsSingle}>
-          <Button type="submit" content="Send" className={style.buttonNav} disabled />
+          <Button type="submit" content="Send" className={style.buttonNav} onClick={this.props.showSend.bind(this)} />
         </div>
       </div>
       <Divider hidden />

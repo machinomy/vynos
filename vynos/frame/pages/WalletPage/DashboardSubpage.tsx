@@ -3,92 +3,51 @@ import {connect} from 'react-redux'
 import Web3 = require('web3')
 import {FrameState} from '../../redux/FrameState'
 
-import {Image} from 'semantic-ui-react'
 import AddressSubpage from "./AddressSubpage";
 import TransactionsSubpage from "./TransactionsSubpage";
+import WalletAccount from "../../components/WalletPage/WalletAccount"
 
 const style = require('../../styles/ynos.css')
 
 export interface DashboardSubpageProps {
-  web3: Web3
+  web3?: Web3
+  showSend(): void
 }
 
 export interface DashboardSubpageState {
-  address: string|null
-  balance: string
   isDetailsDisplayed: boolean
+  address: string
 }
 
 export class DashboardSubpage extends React.Component<DashboardSubpageProps, DashboardSubpageState> {
-  updateBalanceTimer: any;
 
   constructor (props: any) {
     super(props);
     this.state = {
-      address: null,
-      balance: '0',
-      isDetailsDisplayed: false
+      isDetailsDisplayed: false,
+      address: ""
     }
-  }
-
-  renderBlockie () {
-    return <div className={style.accountAvatar}>
-      <Image src={require('../../styles/images/avatar.svg')} />
-    </div>
-  }
-
-  componentDidMount () {
-    if (this.props.web3) {
-      let web3 = this.props.web3
-      web3.eth.getAccounts((err, accounts) => {
-        let address = accounts[0]
-        this.updateBalanceTimer = setInterval(() => {
-          web3.eth.getBalance(address, (err, balance) => {
-            this.setState({
-              balance: web3.fromWei(balance, 'ether').toString()
-            })
-          })
-        }, 500)
-        this.setState({address: address})
-      })
-    }
-  }
-
-  componentWillUnmount () {
-    clearInterval(this.updateBalanceTimer)
   }
 
   renderChildren () {
     if (this.state.isDetailsDisplayed && this.state.address) {
-      return <AddressSubpage address={this.state.address}/>
+      return <AddressSubpage address={this.state.address} showSend={this.props.showSend.bind(this)}/>
     } else {
       return <TransactionsSubpage />
     }
   }
 
-  displayDetails () {
-    let next = true
-    if (this.state.isDetailsDisplayed) {
-      next = false
-    }
-    this.setState({
-      isDetailsDisplayed: next
-    })
+  setAddress (address: string) {
+    this.setState({address: address});
+  }
+
+  setDetailsDisplayed (value: boolean){
+    this.setState({isDetailsDisplayed: value});
   }
 
   render () {
     return <div className={style.walletPage}>
-      <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
-        {this.renderBlockie()}
-        <div className={style.walletAccount}>
-          <div className={style.walletAddress}>
-            {this.state.address}
-          </div>
-          <div className={style.walletBalance}>
-            <span className={style.ethBalance}>{this.state.balance}</span>
-          </div>
-        </div>
-      </div>
+      <WalletAccount setAddress={this.setAddress.bind(this)} setDetailsDisplayed={this.setDetailsDisplayed.bind(this)} />
       <div className={style.wrap} >
         {this.renderChildren()}
       </div>
@@ -96,9 +55,10 @@ export class DashboardSubpage extends React.Component<DashboardSubpageProps, Das
   }
 }
 
-function mapStateToProps (state: FrameState): DashboardSubpageProps {
+function mapStateToProps (state: FrameState, ownProps: DashboardSubpageProps): DashboardSubpageProps {
   return {
-    web3: state.temp.workerProxy.web3
+    web3: state.temp.workerProxy.web3,
+    showSend: ownProps.showSend
   }
 }
 
