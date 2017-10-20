@@ -122,7 +122,7 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
 
   render() {
     let className = style.listWrap + ' ' + style.scrollbarContainer;
-    return <List className={className} divided verticalAlign='middle'>
+    return <List className={className} divided verticalAlign='middle' style={{margin: 0}}>
       {this.state.channels.map((channel: any) => {
         let isActiveChannel = (channel.channelId === this.state.activeChannel && channel.state === 0);
         let itemId = isActiveChannel ? style.activeChannel : (channel.state === 1 ? style.closedChannel : '');

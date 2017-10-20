@@ -11,7 +11,18 @@ export interface WalletPageStateProps {
   name: string
 }
 
-export class WalletPage extends React.Component<WalletPageStateProps, any> {
+export interface WalletPageState {
+  sendShown: boolean
+}
+
+
+export class WalletPage extends React.Component<WalletPageStateProps, WalletPageState> {
+
+  constructor (props: any) {
+    super(props);
+    this.state = {sendShown: false};
+  }
+
   renderSubpage () {
     console.log('WalletPage.renderSubpage', this.props.name)
     switch (this.props.name) {
@@ -25,6 +36,7 @@ export class WalletPage extends React.Component<WalletPageStateProps, any> {
         return <DashboardSubpage />
     }
   }
+
 
   consoleLogPendingTxs () {
     let storage = new TransactionStorage()
