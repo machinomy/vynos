@@ -59,7 +59,7 @@ export default class TransactionMetaStorage {
 
   protected find(query: any): Promise<Array<TransactionMeta>> {
     return new Promise((resolve, reject) => {
-      this.datastore.find<TransactionMeta>(query, (err, transactions) => {
+      this.datastore.find<TransactionMeta>(query).sort({time: 1}).exec((err, transactions) => {
         if (err) {
           reject(err)
         } else {

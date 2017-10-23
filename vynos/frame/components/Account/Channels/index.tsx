@@ -66,12 +66,14 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
   closeChannelId(channel: any) {
     this.getMachinomy().then((machinomy: Machinomy) => {
       machinomy.close(channel.channelId).then(() => {
-        let change: any = {};
-        change[channel.channelId] = {
-          state: channel.state === 0 ? 1 : 2
-        };
-        this.setActiveChannel(channel.channelId);
-        this.updateListChannels(change);
+        this.channelMetaStorage.setClosingTime(channel.channelId, Date.now()).then(() => {
+          let change: any = {};
+          change[channel.channelId] = {
+            state: channel.state === 0 ? 1 : 2
+          };
+          this.setActiveChannel(channel.channelId);
+          this.updateListChannels(change);
+        });
       });
     });
   }
