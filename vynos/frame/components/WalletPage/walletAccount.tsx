@@ -9,19 +9,21 @@ const style = require('../../styles/ynos.css')
 
 export interface WalletAccountProps {
   web3?: Web3
-  setAddress(address: string): void
-  setDetailsDisplayed(value: boolean): void
+  onChangeAddress?: (address: string) => void
+  onChangeDetailsDisplayed?: (value: boolean) => void
+  onChangeBalance?: (balance: number) => void
 }
 
 export interface WalletAccountState {
-  address: string|null
+  address: string | null
   balance: string
   isDetailsDisplayed: boolean
 }
 
 export class WalletAccount extends React.Component<WalletAccountProps, WalletAccountState> {
   updateBalanceTimer: any;
-  constructor (props: any) {
+
+  constructor(props: any) {
     super(props);
     this.state = {
       address: null,
@@ -30,13 +32,13 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     }
   }
 
-  renderBlockie () {
+  renderBlockie() {
     return <div className={style.accountAvatar}>
-      <Image src={require('../../styles/images/avatar.svg')} />
+      <Image src={require('../../styles/images/avatar.svg')}/>
     </div>
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (this.props.web3) {
       let web3 = this.props.web3
       web3.eth.getAccounts((err, accounts) => {
@@ -46,19 +48,20 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
             this.setState({
               balance: web3.fromWei(balance, 'ether').toString()
             })
+            if(this.props.onChangeBalance) this.props.onChangeBalance(parseFloat(this.state.balance));
           })
         }, 500)
         this.setState({address: address})
-        this.props.setAddress(address);
+        if(this.props.onChangeAddress) this.props.onChangeAddress(address);
       })
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     clearInterval(this.updateBalanceTimer)
   }
 
-  displayDetails () {
+  displayDetails() {
     let next = true
     if (this.state.isDetailsDisplayed) {
       next = false
@@ -66,29 +69,30 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     this.setState({
       isDetailsDisplayed: next
     })
-    this.props.setDetailsDisplayed(next);
+    if(this.props.onChangeDetailsDisplayed) this.props.onChangeDetailsDisplayed(next);
   }
 
-  render () {
+  render() {
     return <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
-        {this.renderBlockie()}
-        <div className={style.walletAccount}>
-          <div className={style.walletAddress}>
-            {this.state.address}
-          </div>
-          <div className={style.walletBalance}>
-            <span className={style.ethBalance}>{this.state.balance}</span>
-          </div>
+      {this.renderBlockie()}
+      <div className={style.walletAccount}>
+        <div className={style.walletAddress}>
+          {this.state.address}
+        </div>
+        <div className={style.walletBalance}>
+          <span className={style.ethBalance}>{this.state.balance}</span>
         </div>
       </div>
+    </div>
   }
 }
 
-function mapStateToProps (state: FrameState, ownProps: WalletAccountProps): WalletAccountProps {
+function mapStateToProps(state: FrameState, ownProps: WalletAccountProps): WalletAccountProps {
   return {
     web3: state.temp.workerProxy.web3,
-    setAddress: ownProps.setAddress,
-    setDetailsDisplayed: ownProps.setDetailsDisplayed
+    onChangeAddress: ownProps.onChangeAddress,
+    onChangeDetailsDisplayed: ownProps.onChangeDetailsDisplayed,
+    onChangeBalance: ownProps.onChangeBalance
   }
 }
 
