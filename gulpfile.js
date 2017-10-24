@@ -1,21 +1,21 @@
 'use strict';
 
-const   path                        = require("path"),
-        gulp                        = require("gulp"),
-        gutil                       = require("gulp-util"),
-        webpack                     = require("webpack"),
+const   gulp                        = require('gulp'),
+        gutil                       = require('gulp-util'),
+        webpack                     = require('webpack'),
         WebpackDevServer            = require('webpack-dev-server'),
-        YNOS                        = require('./webpack').VYNOS,
-        YNOS_LIVE                   = require('./webpack').VYNOS_LIVE,
-        YNOS_DEV                   = require('./webpack').VYNOS_DEV,
+        VYNOS                       = require('./webpack').VYNOS,
+        VYNOS_DEV                   = require('./webpack').VYNOS_DEV,
+        VYNOS_LIVE                  = require('./webpack').VYNOS_LIVE,
         HARNESS                     = require('./webpack').HARNESS;
+
 
 require('dotenv').config({ path: '.env' });
 
 
 // Build Vynos, Frame
 gulp.task("build", callback => {
-  webpack([YNOS, YNOS_DEV]).run(function(err, stats) {
+  webpack([VYNOS, VYNOS_DEV]).run(function(err, stats) {
     if(err) throw new gutil.PluginError('build', err);
     gutil.log('build', stats.toString({
       colors: true
@@ -36,7 +36,7 @@ gulp.task("build:harness", ["build"], callback => {
 
 // Serve Vynos, Frame at http://localhost:9999/webpack-dev-server
 gulp.task("serve", () => {
-  new WebpackDevServer(webpack(YNOS_LIVE), {
+  new WebpackDevServer(webpack(VYNOS_LIVE), {
     contentBase: 'vynos/',
     hot: true,
     historyApiFallback: true,
@@ -60,7 +60,7 @@ gulp.task("serve", () => {
 });
 
 gulp.task("serve:built", () => {
-  new WebpackDevServer(webpack([YNOS, YNOS_DEV]), {
+  new WebpackDevServer(webpack(VYNOS), {
     contentBase: 'vynos/',
     hot: true,
     historyApiFallback: true,

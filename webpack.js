@@ -3,6 +3,8 @@ const path = require("path"),
   DIST_PATH = path.resolve(__dirname, "dist"),
   PackageLoadersPlugin = require('webpack-package-loaders-plugin'),
   UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+  CopyWebpackPlugin = require('copy-webpack-plugin')
+
 
 require('dotenv').config({ path: '.env' });
 
@@ -11,24 +13,12 @@ const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS,
   RPC_URL = process.env.RPC_URL;
 
 
-function webpackConfig (entry, notUglify) {
-  let uglifyFunction = function () {};
-  if (process.env.NODE_ENV === 'production' && !notUglify) {
-    uglifyFunction = new UglifyJSPlugin({
-      parallel: true,
-      uglifyOptions: {
-        output: {
-          comments: false,
-          beautify: false
-        }
-      }
-    })
-  }
+function webpackConfig (entry, devSupplement) {
   let config = {
     entry: entry,
     devtool: "source-map",
     output: {
-      filename: notUglify ? "[name].dev.js" : "[name].js",
+      filename: devSupplement ? "[name].dev.js" : "[name].js",
       path: DIST_PATH
     },
     plugins: [
@@ -41,8 +31,7 @@ function webpackConfig (entry, notUglify) {
           "NODE_ENV": JSON.stringify(process.env.NODE_ENV || 'development') // This has effect on the react lib size
         }
       }),
-      new PackageLoadersPlugin(),
-      uglifyFunction
+      new PackageLoadersPlugin()
     ],
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".json"]
@@ -135,7 +124,22 @@ function webpackConfig (entry, notUglify) {
       tls: 'empty',
       module: 'empty'
     }
-  };
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    config.plugins.push(new UglifyJSPlugin({
+      parallel: true,
+      uglifyOptions: {
+        output: {
+          comments: false,
+          beautify: false
+        }
+      }
+    }))
+    config.plugins.push(new CopyWebpackPlugin([
+      path.resolve(__dirname,'vynos', 'frame.html')
+    ]))
+  }
 
   return config
 }
@@ -165,7 +169,9 @@ const VYNOS = webpackConfig({
 });
 
 const VYNOS_DEV = webpackConfig({
-  vynos: path.resolve(__dirname, "vynos/vynos.ts")
+  vynos: path.resolve(__dirname, "vynos/vynos.ts"),
+  frame: path.resolve(__dirname, "vynos/frame.ts"),
+  worker: path.resolve(__dirname, "vynos/worker.ts")
 }, true);
 
 const HARNESS = webpackConfig({
