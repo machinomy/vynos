@@ -2,10 +2,12 @@ import Promise = require('bluebird')
 import Datastore = require('nedb')
 
 export interface ChannelMeta {
-  channelId: string,
-  title: string,
-  host: string,
+  channelId: string
+  title: string
+  host: string
   icon?: string
+  openingTime?: number
+  closingTime?: number
 }
 
 /**
@@ -14,7 +16,7 @@ export interface ChannelMeta {
 export default class ChannelMetaStorage {
   datastore: Datastore
 
-  constructor () {
+  constructor() {
     this.datastore = new Datastore({filename: 'channelMetaStorage', autoload: true})
   }
 
@@ -28,6 +30,18 @@ export default class ChannelMetaStorage {
         }
       })
     })
+  }
+
+  setClosingTime(channelId: string, time: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.datastore.update({channelId: channelId}, {$set: {closingTime: time}}, {}, err => {
+        if(err){
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
   }
 
   insertIfNotExists(meta: ChannelMeta): Promise<void> {
@@ -52,10 +66,12 @@ export default class ChannelMetaStorage {
   }
 
   findByIds(ids: Array<string>): Promise<Array<ChannelMeta>> {
-    let orQuery = ids.map(id => { return { channelId: id } })
+    let orQuery = ids.map(id => {
+      return {channelId: id}
+    })
     let query = {$or: orQuery}
     return new Promise((resolve, reject) => {
-      this.datastore.find<ChannelMeta>(query, (err, metas) => {
+      this.datastore.find<ChannelMeta>(query).sort({closingTime: -1, openingTime: -1}).exec((err, metas) => {
         if (err) {
           reject(err)
         } else {

@@ -85,7 +85,8 @@ export default class MicropaymentsController {
               channelId: response.channelId.toString(),
               title: purchaseMeta.siteName,
               host: purchaseMeta.origin,
-              icon: purchaseMeta.siteIcon
+              icon: purchaseMeta.siteIcon,
+              openingTime: Date.now()
             }).then(() => {
               return response
             })

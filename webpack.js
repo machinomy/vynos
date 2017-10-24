@@ -1,7 +1,7 @@
-const path                = require("path"),
-  webpack                 = require("webpack"),
-  DIST_PATH               = path.resolve(__dirname, "dist"),
-  PackageLoadersPlugin    = require('webpack-package-loaders-plugin'),
+const path = require("path"),
+  webpack = require("webpack"),
+  DIST_PATH = path.resolve(__dirname, "dist"),
+  PackageLoadersPlugin = require('webpack-package-loaders-plugin'),
   UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 require('dotenv').config({ path: '.env' });
@@ -11,12 +11,24 @@ const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS,
   RPC_URL = process.env.RPC_URL;
 
 
-function webpackConfig (entry) {
+function webpackConfig (entry, notUglify) {
+  let uglifyFunction = function () {};
+  if (process.env.NODE_ENV === 'production' && !notUglify) {
+    uglifyFunction = new UglifyJSPlugin({
+      parallel: true,
+      uglifyOptions: {
+        output: {
+          comments: false,
+          beautify: false
+        }
+      }
+    })
+  }
   let config = {
     entry: entry,
     devtool: "source-map",
     output: {
-      filename: "[name].bundle.js",
+      filename: notUglify ? "[name].dev.js" : "[name].js",
       path: DIST_PATH
     },
     plugins: [
@@ -29,7 +41,8 @@ function webpackConfig (entry) {
           "NODE_ENV": JSON.stringify(process.env.NODE_ENV || 'development') // This has effect on the react lib size
         }
       }),
-      new PackageLoadersPlugin()
+      new PackageLoadersPlugin(),
+      uglifyFunction
     ],
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".json"]
@@ -124,21 +137,6 @@ function webpackConfig (entry) {
     }
   };
 
-  if (process.env.NODE_ENV === 'production') {
-    config.plugins = config.plugins.concat(
-      new UglifyJSPlugin({
-        parallel: true,
-        uglifyOptions: {
-          output: {
-            comments: false,
-            beautify: false
-          }
-        }
-      })
-    );
-    //config.output.path = DIST_PATH;
-  }
-
   return config
 }
 
@@ -166,6 +164,10 @@ const VYNOS = webpackConfig({
   worker: path.resolve(__dirname, "vynos/worker.ts")
 });
 
+const VYNOS_DEV = webpackConfig({
+  vynos: path.resolve(__dirname, "vynos/vynos.ts")
+}, true);
+
 const HARNESS = webpackConfig({
   harness: path.resolve(__dirname, "harness/harness.ts")
 });
@@ -174,3 +176,4 @@ const HARNESS = webpackConfig({
 module.exports.HARNESS = HARNESS;
 module.exports.VYNOS_LIVE = VYNOS_LIVE;
 module.exports.VYNOS = VYNOS;
+module.exports.VYNOS_DEV = VYNOS_DEV;
