@@ -57,7 +57,8 @@ export default class Frame {
 
       this.containerElement.style.transition = 'margin-top 0.7s, opacity 1s'
     }
-    this.element.src = this.vynosScriptAddress.replace('vynos.bundle.js', 'frame.html')
+    var script = location.href.match(/dev=true/) ? 'vynos.dev.js' : 'vynos.js';
+    this.element.src = this.vynosScriptAddress.replace(script, 'frame.html')
     this.element.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin allow-popups allow-forms");
   }
 

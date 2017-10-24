@@ -33,7 +33,7 @@ function install(client: ServiceWorkerClient, registration: ServiceWorkerRegistr
 
 export function register(client: ServiceWorkerClient) {
   if ("serviceWorker" in navigator) {
-    let scriptUrl = window.location.href.replace('frame.html', 'worker.bundle.js')
+    let scriptUrl = window.location.href.replace('frame.html', 'worker.js')
     navigator.serviceWorker.register(scriptUrl, {scope: "./"}).then(registration => {
       install(client, registration)
     }).catch(error => {

@@ -7,6 +7,7 @@ const   path                        = require("path"),
         WebpackDevServer            = require('webpack-dev-server'),
         YNOS                        = require('./webpack').VYNOS,
         YNOS_LIVE                   = require('./webpack').VYNOS_LIVE,
+        YNOS_DEV                   = require('./webpack').VYNOS_DEV,
         HARNESS                     = require('./webpack').HARNESS;
 
 require('dotenv').config({ path: '.env' });
@@ -14,7 +15,7 @@ require('dotenv').config({ path: '.env' });
 
 // Build Vynos, Frame
 gulp.task("build", callback => {
-  webpack(YNOS).run(function(err, stats) {
+  webpack([YNOS, YNOS_DEV]).run(function(err, stats) {
     if(err) throw new gutil.PluginError('build', err);
     gutil.log('build', stats.toString({
       colors: true
@@ -59,7 +60,7 @@ gulp.task("serve", () => {
 });
 
 gulp.task("serve:built", () => {
-  new WebpackDevServer(webpack(YNOS), {
+  new WebpackDevServer(webpack([YNOS, YNOS_DEV]), {
     contentBase: 'vynos/',
     hot: true,
     historyApiFallback: true,
