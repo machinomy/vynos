@@ -224,7 +224,7 @@ div.terms-text > p {
 }
 
 .scrollbar-container {
-  overflow-y: scroll !important;
+  overflow-y: auto !important;
   overflow-x: hidden !important;
 }
 
