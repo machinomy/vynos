@@ -70,7 +70,7 @@ export default class MicropaymentsController {
     })
   }
 
-  buy(receiver: string, amount: number, gateway: string, purchaseMeta: PurchaseMeta): Promise<VynosBuyResponse> {
+  buy(receiver: string, amount: number, gateway: string, meta: string, purchaseMeta: PurchaseMeta): Promise<VynosBuyResponse> {
     return new Promise((resolve, reject) => {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
@@ -79,7 +79,8 @@ export default class MicropaymentsController {
           return machinomy.buy({
             receiver: receiver,
             price: amount,
-            gateway: gateway
+            gateway: gateway,
+            meta: meta
           }).then(response => {
             return this.channels.insertIfNotExists({
               channelId: response.channelId.toString(),
