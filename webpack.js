@@ -126,7 +126,7 @@ function webpackConfig (entry, devSupplement) {
     }
   }
 
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' && !devSupplement) {
     config.plugins.push(new UglifyJSPlugin({
       parallel: true,
       uglifyOptions: {

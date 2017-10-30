@@ -45,7 +45,6 @@
   "dependencies": {
     "@types/bluebird": "^3.5.14",
     "@types/lodash": "^4.14.77",
-    "@types/moment": "^2.13.0",
     "@types/qr-image": "^3.2.0",
     "@types/react-copy-to-clipboard": "^4.2.3",
     "@types/react-custom-scrollbars": "^4.0.1",
@@ -57,7 +56,6 @@
     "browser-passworder": "^2.0.3",
     "buffer": "^5.0.6",
     "copy-webpack-plugin": "^4.2.0",
-    "dnode": "^1.2.2",
     "dotenv": "^4.0.0",
     "duplexify": "^3.5.0",
     "eth-sig-util": "^1.2.1",
