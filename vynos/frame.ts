@@ -16,7 +16,6 @@ class Client implements ServiceWorkerClient {
   }
 
   load (serviceWorker: ServiceWorker) {
-    console.log('Client.load')
     this.workerStream = new PostStream({
       sourceName: "frame",
       targetName: "worker",
@@ -32,7 +31,6 @@ class Client implements ServiceWorkerClient {
   }
 
   unload () {
-    console.log('Client.unload')
     this.windowStream.unpipe(this.workerStream)
     this.workerStream.unpipe(this.windowStream)
     this.workerStream.unpipe(this.workerProxy.provider)

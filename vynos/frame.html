@@ -70,6 +70,12 @@
             </h1>
         </div>
     </div>
-    <script src="/frame.js"></script>
+    <script>
+      var frameSrc = '/frame.js'
+      var src = window.location.href.match(/dev=true/) ? frameSrc.replace('.js', '.dev.js') : frameSrc;
+      var scriptTag = document.createElement('script')
+      scriptTag.setAttribute('src', src)
+      document.body.appendChild(scriptTag)
+    </script>
 </body>
 </html>
