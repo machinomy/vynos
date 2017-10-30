@@ -109,13 +109,13 @@ export default class VynosClient implements Vynos {
     })
   }
 
-  buy (receiver: string, amount: number, gateway: string, purchase?: PurchaseMeta): Promise<VynosBuyResponse> {
+  buy (receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta): Promise<VynosBuyResponse> {
     let _purchase = purchase || purchaseMetaFromDocument(document)
     let request: BuyRequest = {
       id: randomId(),
       method: BuyRequest.method,
       jsonrpc: JSONRPC,
-      params: [receiver, amount, gateway, _purchase]
+      params: [receiver, amount, gateway, meta, _purchase]
     }
     return this.provider.ask(request).then((response: BuyResponse) => {
       return response.result[0]
