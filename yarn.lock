@@ -300,8 +300,8 @@
   resolved "https://registry.yarnpkg.com/@types/expect/-/expect-1.20.2.tgz#d1326136f71c8b7a1986335498405529618ce846"
 
 "@types/express-serve-static-core@*":
-  version "4.0.55"
-  resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.0.55.tgz#f53868838a955f98b380819ec9134f5df7d9482f"
+  version "4.0.56"
+  resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.0.56.tgz#4ed556dcff9012cce6b016e214fdc5ef6e99db7d"
   dependencies:
     "@types/node" "*"
 
@@ -2650,6 +2650,7 @@ ethereum-common@0.0.18, ethereum-common@^0.0.18:
 
 "ethereumjs-abi@https://github.com/ethereumjs/ethereumjs-abi":
   version "0.6.4"
+  uid ee6ded67235a98f3ef4ae2a338aee70a9f68fe20
   resolved "https://github.com/ethereumjs/ethereumjs-abi#ee6ded67235a98f3ef4ae2a338aee70a9f68fe20"
   dependencies:
     bn.js "^4.10.0"
@@ -4652,9 +4653,9 @@ macaddress@^0.2.8:
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
 
-machinomy@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/machinomy/-/machinomy-1.2.0.tgz#48226ea88bf0912699247d0f72f6a4f2c753c16c"
+machinomy@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/machinomy/-/machinomy-1.2.1.tgz#f8b4b3fc0160da4dafd73a3a3db31a0ec3ad42ad"
   dependencies:
     "@machinomy/contracts" "^1.0.1"
     "@types/bignumber.js" "^4.0.2"
