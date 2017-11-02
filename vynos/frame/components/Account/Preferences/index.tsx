@@ -9,16 +9,16 @@ const Preferences: React.SFC<PreferencesProps> = (props) => {
         <Form>
             <Form.Group grouped>
                 <label>Channels</label>
-                <Form.Checkbox label='Ask to create' />
-                <Form.Checkbox label='Throttling' />
+                <Form.Checkbox label='Ask to create' disabled/>
+                <Form.Checkbox label='Throttling' disabled/>
             </Form.Group>
             <Form.Group grouped>
                 <label>Micropayments</label>
-                <Form.Checkbox label='Maximum micropayment' />
-                <Form.Checkbox label='Throttling' />
+                <Form.Input placeholder='Maximum micropayment' disabled/>
+                <Form.Checkbox label='Throttling' disabled/>
             </Form.Group>
             <p className={style.buttonNav}>
-                <Button type='submit' content="Save" primary />
+                <Button type='submit' content="Save" primary disabled/>
             </p>
         </Form>
     </Container>

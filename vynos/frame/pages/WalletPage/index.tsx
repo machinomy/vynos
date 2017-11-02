@@ -4,6 +4,8 @@ import {FrameState} from '../../redux/FrameState'
 import {connect} from 'react-redux'
 import DashboardSubpage from "./DashboardSubpage";
 import Channels from "../../components/Account/Channels/index"
+import Network from "../../components/Account/Network/index"
+import Preferences from "../../components/Account/Preferences/index"
 import TransactionStorage from "../../../lib/storage/TransactionMetaStorage"
 
 export interface WalletPageStateProps {
@@ -29,9 +31,9 @@ export class WalletPage extends React.Component<WalletPageStateProps, WalletPage
       case 'Channels':
         return <Channels />
       case 'Preferences':
-        return <p>Preferences</p>
+        return <Preferences />
       case 'Network':
-        return <p>Network</p>
+        return <Network />
       default:
         return <DashboardSubpage />
     }
