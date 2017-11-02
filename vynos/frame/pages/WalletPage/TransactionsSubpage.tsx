@@ -53,7 +53,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
 
   transactionIcon (transaction: Transaction) {
     if (transaction.icon) {
-      return <Image avatar src={transaction.icon} size="mini" />
+      return <div className={"ui mini image " + style.listItemAvatar}><Image src={transaction.icon} size="mini" /></div>
     } else {
       return <BlockieComponent classDiv={"ui mini avatar image " + style.listItemAvatar} classCanvas={"ui mini avatar image"} size={35} scale={2} seed={transaction.id} />
     }
