@@ -22,6 +22,7 @@ export function micropayment (purchaseMeta: PurchaseMeta, receiver: string, amou
     id: randomId().toString(),
     title: purchaseMeta.siteName,
     description: purchaseMeta.description,
+    icon: purchaseMeta.siteIcon,
     time: Date.now(),
     amount: amount,
     fee: 0,
