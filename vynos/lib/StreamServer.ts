@@ -25,7 +25,11 @@ export default class StreamServer extends Duplex {
   handle<A extends Payload>(payload: A) {
     const end = <A extends Payload>(error: null, response?: A) => {
       if (error) {
-        console.error(error)
+        this.push({
+          id: payload.id,
+          jsonrpc: payload.jsonrpc,
+          result:['error', error]
+        })
       } else {
         if (response) this.push(response)
       }
