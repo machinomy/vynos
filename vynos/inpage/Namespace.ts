@@ -47,6 +47,10 @@ export default class Namespace {
     })
   }
 
+  setContainerStyle (style: any): void {
+    this.frame.setContainerStyle(style)
+  }
+
   hide (): void {
     this.ready().then(() => {
       this.frame.hide()
