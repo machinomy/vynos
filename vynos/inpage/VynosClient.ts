@@ -118,7 +118,11 @@ export default class VynosClient implements Vynos {
       params: [receiver, amount, gateway, meta, _purchase]
     }
     return this.provider.ask(request).then((response: BuyResponse) => {
-      return response.result[0]
+      if(!response.result[0].channelId){
+        return Promise.reject(response.result[1])
+      }else {
+        return response.result[0]
+      }
     })
   }
 

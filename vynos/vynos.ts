@@ -28,3 +28,29 @@ if (!("serviceWorker" in navigator)) {
   document.getElementsByTagName('body')[0].appendChild(b);
   throw Error('Browser is not supported, please update your browser.');
 }
+
+global.showVynosNotification = function(text: string, time?: number) {
+  let vynos_notifications = document.getElementById('vynos_notifications');
+  if(!vynos_notifications) return;
+  let id = 'vynos_notifications_id:' + Date.now();
+  let notification = document.createElement('div');
+  notification.id = id;
+  notification.innerHTML = text;
+  notification.style.cursor = 'pointer';
+  notification.style.background = '#fff';
+  notification.style.border = '1px solid #f00';
+  notification.style.backgroundColor = '#fff';
+  notification.style.padding = '10px';
+  notification.style.margin = '10px 0';
+
+  notification.addEventListener('click', () => {
+    notification.remove();
+  });
+  vynos_notifications.appendChild(notification);
+  (function (id, _time) {
+    setTimeout(function () {
+      let notification = document.getElementById(id);
+      if(notification) notification.remove();
+    }, _time * 1000);
+  })(id, time || 3);
+}

@@ -9,6 +9,7 @@ export default class Frame {
   closeButton: HTMLDivElement
   style: HTMLStyleElement
   vynosScriptAddress: string
+  notifications: HTMLDivElement
 
   constructor (scriptAddress: string, frameElement?: HTMLIFrameElement) {
     this.vynosScriptAddress = scriptAddress
@@ -42,9 +43,14 @@ export default class Frame {
       this.style = document.createElement('style');
       this.style.appendChild(document.createTextNode(style));
 
+      this.notifications = document.createElement('div');
+      this.notifications.id = 'vynos_notifications';
+      this.notifications.style.marginTop = '25px';
+
       this.containerElement.appendChild(this.element)
       this.containerElement.appendChild(this.closeButton)
       this.containerElement.appendChild(this.style)
+      this.containerElement.appendChild(this.notifications)
 
       this.containerElement.style.position = 'fixed'
       this.containerElement.style.top = '0px'
@@ -55,7 +61,8 @@ export default class Frame {
 
       this.hide()
 
-      this.containerElement.style.transition = 'margin-top 0.7s, opacity 1s'
+      this.containerElement.style.transition = 'margin-top 0.7s'
+      this.element.style.transition = 'opacity 1s'
     }
     var frameSrc = this.vynosScriptAddress.replace(/vynos.js/, 'frame.html')
     this.element.src = window.location.href.match(/dev=true/) ? frameSrc + '?dev=true' : frameSrc
@@ -79,11 +86,11 @@ export default class Frame {
 
   display () {
     this.containerElement.style.marginTop = '0px'
-    this.containerElement.style.opacity = '1'
+    this.element.style.opacity = '1'
   }
 
   hide () {
     this.containerElement.style.marginTop = '-500px';
-    this.containerElement.style.opacity = '0'
+    this.element.style.opacity = '0'
   }
 }
