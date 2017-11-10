@@ -68,7 +68,7 @@ export class Terms extends React.Component<TermsSubpageProps, TermsState> {
         through <em>real</em> micropayments?
       </p>
       <Divider hidden />
-      <a className={style.readTerms} onClick={this.doDisplayTermsText.bind(this)}>Read Terms of Use</a>
+      <a className={style.readTerms} onClick={this.doDisplayTermsText.bind(this)} />
       <Divider hidden />
       <Button onClick={this.props.didAcceptTerms} content="Accept" primary className={style.buttonNav} />
       <br />
