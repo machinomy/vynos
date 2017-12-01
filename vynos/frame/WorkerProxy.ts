@@ -8,7 +8,8 @@ import {
   GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, LockWalletRequest,
   RestoreWalletRequest, RestoreWalletResponse, RememberPageRequest,
   UnlockWalletRequest,
-  UnlockWalletResponse
+  UnlockWalletResponse,
+  TransactonResolved
 } from "../lib/rpc/yns";
 import {Action} from "redux";
 import Web3 = require("web3")
@@ -115,6 +116,16 @@ export default class WorkerProxy extends EventEmitter {
     this.provider.ask(request).then(() => {
       // Do Nothing
     })
+  }
+
+  resolveTransaction(): void {
+    let request: TransactonResolved = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: TransactonResolved.method,
+      params: []
+    }
+    this.provider.ask(request).then(() => {})
   }
 
   dispatch<A extends Action>(action: A) {

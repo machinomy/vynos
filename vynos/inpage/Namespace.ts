@@ -35,6 +35,13 @@ export default class Namespace {
         this.frame = frame ? frame : new Frame(this.scriptAddress, frameElement)
         this.frame.attach(this.window.document)
         let stream = new FrameStream("vynos").toFrame(this.frame.element);
+        stream.on('data', (chunk: any) => {
+          if (chunk.id == 'worker/broadcast/SharedState') {
+            if (chunk.result.isTransactionPending) {
+              this.display()
+            }
+          }
+        })
         resolve(new VynosClient(stream))
       })
     })

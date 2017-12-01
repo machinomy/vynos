@@ -71,7 +71,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
       {icon}
       <List.Content className={style.listContent}>
         <List.Header className={style.listHeader}>{transaction.title} <span className={style.lifetimeDate}>{date}</span></List.Header>
-        <List.Description className={style.listDesc}>{transaction.description}</List.Description>
+        <List.Description className={style.listDesc}>{transaction.description}({transaction.state})</List.Description>
       </List.Content>
     </List.Item>
   }

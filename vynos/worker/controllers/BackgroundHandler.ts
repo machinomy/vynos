@@ -8,7 +8,7 @@ import {
   LockWalletRequest,
   LockWalletResponse, RestoreWalletRequest, RememberPageRequest,
   UnlockWalletRequest,
-  UnlockWalletResponse, RememberPageResponse
+  UnlockWalletResponse, RememberPageResponse, TransactonResolved
 } from "../../lib/rpc/yns";
 import {Writable} from "readable-stream";
 import {SharedStateBroadcast, SharedStateBroadcastType} from "../../lib/rpc/SharedStateBroadcast";
@@ -125,6 +125,11 @@ export default class BackgroundHandler {
     end(null, response)
   }
 
+  resolveTransaction(message: TransactonResolved, next: Function, end: EndFunction) {
+    this.controller.resolveTransaction()
+    end(null)
+  }
+
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (GetSharedStateRequest.match(message)) {
       this.getSharedState(message, next, end)
@@ -142,6 +147,8 @@ export default class BackgroundHandler {
       this.initAccount(message, next, end)
     } else if (RememberPageRequest.match(message)) {
       this.rememberPage(message, next, end)
+    } else if (TransactonResolved.match(message)) {
+      this.resolveTransaction(message, next, end)
     } else {
       next()
     }
