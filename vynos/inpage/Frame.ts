@@ -27,7 +27,7 @@ export default class Frame {
 
       this.closeButton = document.createElement('div')
       this.closeButton.id = 'vynos_frame_close_button';
-      this.closeButton.innerHTML = '<img id="vynos_frame_img_close_button" src="up-arrow.svg">'
+      this.closeButton.innerHTML = '<img id="vynos_frame_img_close_button" src="' + this.vynosScriptAddress.replace(/vynos(.|.dev.)js/, require('../frame/styles/images/up-arrow.svg')) +'">'
       this.closeButton.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT) + 'px'
       this.closeButton.style.cursor = 'pointer'
       this.closeButton.style.width = CLOSE_WIDTH + '%';
