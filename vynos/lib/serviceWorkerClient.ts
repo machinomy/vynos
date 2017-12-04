@@ -1,3 +1,5 @@
+import { BROWSER_NOT_SUPPORTED_TEXT } from '../frame/constants'
+
 export interface ServiceWorkerClient {
   load: (serviceWorker: ServiceWorker) => void
   unload: () => void
@@ -42,6 +44,6 @@ export function register(client: ServiceWorkerClient) {
       console.error(error)
     })
   } else {
-    throw new Error("Browser is not supported")
+    throw new Error(BROWSER_NOT_SUPPORTED_TEXT)
   }
 }

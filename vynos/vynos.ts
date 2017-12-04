@@ -1,5 +1,6 @@
-import {DevWindow, VynosWindow} from './window'
+import { DevWindow, VynosWindow } from './window'
 import Namespace from './inpage/Namespace'
+import { BROWSER_NOT_SUPPORTED_TEXT } from './frame/constants'
 
 let global = window as DevWindow & VynosWindow
 
@@ -9,7 +10,7 @@ if (!isVynosPresent) {
 }
 if (!("serviceWorker" in navigator)) {
   let b = document.createElement('div');
-  b.innerHTML = "Browser is not supported, please update your browser. " +
+  b.innerHTML = BROWSER_NOT_SUPPORTED_TEXT +
     "<img src='" + global.vynos.scriptAddress.replace(/vynos(.|.dev.)js/, require('./frame/styles/images/close-button.svg')) + "' " +
     "style='position: fixed;right:20px;top: 13px;;width: 17px'>";
   b.style.position = 'fixed';
@@ -26,7 +27,7 @@ if (!("serviceWorker" in navigator)) {
     b.remove();
   });
   document.getElementsByTagName('body')[0].appendChild(b);
-  throw Error('Browser is not supported, please update your browser.');
+  throw Error(BROWSER_NOT_SUPPORTED_TEXT);
 }
 
 global.showVynosNotification = function(text: string, time?: number) {
