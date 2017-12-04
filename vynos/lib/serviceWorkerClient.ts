@@ -42,6 +42,6 @@ export function register(client: ServiceWorkerClient) {
       console.error(error)
     })
   } else {
-    throw new Error("Browser is not supported")
+    throw new Error("Browser is not supported. Please open the page in Chrome on desktop")
   }
 }

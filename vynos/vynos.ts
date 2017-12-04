@@ -9,7 +9,7 @@ if (!isVynosPresent) {
 }
 if (!("serviceWorker" in navigator)) {
   let b = document.createElement('div');
-  b.innerHTML = "Browser is not supported, please update your browser. " +
+  b.innerHTML = "Browser is not supported. Please open the page in Chrome on desktop" +
     "<img src='" + global.vynos.scriptAddress.replace(/vynos(.|.dev.)js/, require('./frame/styles/images/close-button.svg')) + "' " +
     "style='position: fixed;right:20px;top: 13px;;width: 17px'>";
   b.style.position = 'fixed';
@@ -26,7 +26,7 @@ if (!("serviceWorker" in navigator)) {
     b.remove();
   });
   document.getElementsByTagName('body')[0].appendChild(b);
-  throw Error('Browser is not supported, please update your browser.');
+  throw Error('Browser is not supported. Please open the page in Chrome on desktop');
 }
 
 global.showVynosNotification = function(text: string, time?: number) {
