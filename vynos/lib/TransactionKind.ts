@@ -1,6 +1,7 @@
 enum TransactionKind {
   MICROPAYMENT = 'MICROPAYMENT',
-  ETHEREUM = 'ETHEREUM'
+  ETHEREUM = 'ETHEREUM',
+  SIGN = 'SIGN'
 }
 
 export default TransactionKind

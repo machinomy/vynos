@@ -51,12 +51,35 @@ export default class ProviderOptions {
     })
   }
 
-  signMessage(messageParams: any, callback: any) {
+  signMessage(messageParams: any, callback: any) {    
+    console.log(messageParams)
     this.background.getPrivateKey().then(privateKey => {
+      console.log('privateKey')
+      console.log(privateKey.toString('hex'))
       let message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
-      let msgSig = ethUtil.ecsign(message, privateKey)
-      let rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
-      callback(null, rawMsgSig)
+      
+      console.log(privateKey)
+      console.log(message)
+      // debugger
+      var data = ethUtil.sha3('1')
+      let msgSig = ethUtil.ecsign(data, privateKey)
+      console.log(msgSig)
+
+      const pubKey  = ethUtil.ecrecover(ethUtil.toBuffer('1'), msgSig.v, msgSig.r, msgSig.s);
+      // pubKey.toString()
+      console.log(pubKey.toString())
+
+      // let rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
+
+      callback(null, 'rawMsgSig')
+      // let transaction = transactions.signedData('rawMsgSig')
+      // this.transactions.approveTransaction(transaction).then(result => {
+      //   if (result) {
+      //     callback(null, rawMsgSig)
+      //   } else {
+      //     callback(new Error('Wynos: User rejected sign'))
+      //   }
+      // }).catch(callback)
     }).catch(error => {
       callback(error)
     })

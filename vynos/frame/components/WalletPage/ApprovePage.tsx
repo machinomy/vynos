@@ -4,8 +4,8 @@ import { Menu, Button, Container, Form, Divider } from 'semantic-ui-react'
 import WalletAccount from "../../components/WalletPage/WalletAccount"
 const style = require('../../styles/ynos.css')
 import WorkerProxy from '../../WorkerProxy'
-import {connect} from 'react-redux'
-import {FrameState} from '../../redux/FrameState'
+import { connect } from 'react-redux'
+import { FrameState } from '../../redux/FrameState'
 import Web3 = require('web3')
 
 export interface ApprovePageProps {
@@ -34,14 +34,14 @@ export class ApprovePage extends React.Component<any, any> {
   }
 
   update() {
-    this.storage.datastore.loadDatabase(()=>{
+    this.storage.datastore.loadDatabase(() => {
       this.storage.pending().then(pending => {
         let transaction = pending[0]
         if (transaction && transaction.description) {
           transaction.description = JSON.parse(transaction.description)
           let formatedAmount = this.web3.fromWei(this.state.transaction.amount, 'ether').toString()
           let formatedTotal = formatedAmount
-          this.setState({ 
+          this.setState({
             transaction,
             formatedAmount,
             formatedTotal,
@@ -51,7 +51,7 @@ export class ApprovePage extends React.Component<any, any> {
       })
     })
   }
-  
+
   approve() {
     this.storage.approve(this.state.transaction.id).then((result) => {
       this.props.workerProxy.resolveTransaction()
@@ -64,45 +64,62 @@ export class ApprovePage extends React.Component<any, any> {
     })
   }
 
+  renderTransaction() {
+    return <Form className={style.encryptionForm} >
+      <Form.Field className={style.clearIndent}>
+        <div>To: {this.state.transaction.description.to}</div>
+        <div>Amount: {this.state.formatedAmount}</div>
+        <Divider />
+        <div>
+          <div>Total: {this.state.formatedTotal}</div>
+          <div>{this.state.balanceError ? <span className={style.errorText}><i
+            className={style.vynosInfo} /> {this.state.balanceError}</span> : ''}</div>
+        </div>
+      </Form.Field>
+      <Divider hidden />
+    </Form>
+  }
+
+  renderSign() {
+    return <div>'ffff'</div>
+  }
+
   render() {
-    if (!this.state.transaction.id){
+    if (!this.state.transaction.id) {
       return null
     }
     let pending = null
     if (this.state.pendingCount > 1) {
       pending = <div>Pending transactions: {this.state.pendingCount}</div>
     }
+
+    let transactionData;
+    if (this.state.transaction.kind == 'SIGN') {
+      transactionData = this.renderSign()
+    } else {
+      transactionData = this.renderTransaction()
+    }
+
     return <div>
       <WalletAccount />
       <Container textAlign="center" style={{ marginTop: '10px' }}>
         {pending}
-        <Form className={style.encryptionForm} >
-          <Form.Field className={style.clearIndent}>
-            <div>To: {this.state.transaction.description.to}</div>
-            <div>Amount: {this.state.formatedAmount}</div>
-            <Divider />
-            <div>
-              <div>Total: {this.state.formatedTotal}</div>
-              <div>{this.state.balanceError ? <span className={style.errorText}><i
-                className={style.vynosInfo} /> {this.state.balanceError}</span> : ''}</div>
-            </div>
-          </Form.Field>
-          <Divider hidden />
-        </Form>
+        {transactionData}
         <div className="ui grid">
-            <div className="eight wide column">
-              <button className="positive ui fluid button" onClick={this.approve.bind(this)}>Approve</button>
-            </div>
-            <div className="eight wide column">
-              <button className="negative ui fluid button" onClick={this.reject.bind(this)}>Cancel</button>
-            </div>
+          <div className="eight wide column">
+            <button className="positive ui fluid button" onClick={this.approve.bind(this)}>Approve</button>
+          </div>
+          <div className="eight wide column">
+            <button className="negative ui fluid button" onClick={this.reject.bind(this)}>Cancel</button>
+          </div>
         </div>
       </Container>
     </div>
   }
 }
-  
-function mapStateToProps (state: FrameState): ApprovePageProps {
+
+
+function mapStateToProps(state: FrameState): ApprovePageProps {
   return {
     workerProxy: state.temp.workerProxy
   }

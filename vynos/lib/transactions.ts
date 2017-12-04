@@ -30,3 +30,16 @@ export function micropayment (purchaseMeta: PurchaseMeta, receiver: string, amou
     state: TransactionState.APPROVED
   }
 }
+
+export function signedData (description: string): Transaction {
+  return {
+    id: randomId().toString(),
+    title: 'Signed data',
+    description: description,
+    time: Date.now(),
+    amount: 0,
+    fee: 0,
+    kind: TransactionKind.SIGN,
+    state: TransactionState.PENDING
+  }
+}
