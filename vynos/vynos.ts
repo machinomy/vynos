@@ -23,6 +23,7 @@ if (!("serviceWorker" in navigator)) {
   b.style.lineHeight = '45px';
   b.style.fontSize = '18px';
   b.style.cursor = 'pointer';
+  b.style.zIndex = '9999999';
   b.addEventListener('click', () => {
     b.remove();
   });
@@ -43,7 +44,7 @@ global.showVynosNotification = function(text: string, time?: number) {
   notification.style.backgroundColor = '#fff';
   notification.style.padding = '10px';
   notification.style.margin = '10px 0';
-
+  notification.style.zIndex = '9999999';
   notification.addEventListener('click', () => {
     notification.remove();
   });
