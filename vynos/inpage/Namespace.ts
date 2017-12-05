@@ -3,6 +3,7 @@ import Promise = require('bluebird')
 import Frame from './Frame'
 import FrameStream from '../lib/FrameStream'
 import Vynos from '../lib/Vynos'
+import { BROWSER_NOT_SUPPORTED_TEXT } from '../frame/constants'
 
 // DOM and Window is ready.
 export function isReady(callback: () => void) {
@@ -64,10 +65,14 @@ export default class Namespace {
   }
 
   ready (): Promise<Vynos> {
-    if (this.client) {
-      return this.client
-    } else {
-      return this.init()
+    if ("serviceWorker" in navigator) {
+      if (this.client) {
+        return this.client
+      } else {
+        return this.init()
+      }
+    }else{
+      return Promise.reject(new Error(BROWSER_NOT_SUPPORTED_TEXT))
     }
   }
 }
