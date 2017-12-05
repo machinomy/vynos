@@ -5,7 +5,6 @@ import { Store } from "redux";
 import * as actions from './actions'
 import Transaction from '../lib/TransactionMeta'
 import TransactionState from "../lib/TransactionState";
-import { setTimeout } from 'timers';
 
 export default class TransactionService {
   storage: TransactionStorage
@@ -53,7 +52,7 @@ export default class TransactionService {
           if (found.state !== TransactionState.APPROVED && found.state !== TransactionState.REJECTED ) {
             return
           }
-          if(this.store.getState().runtime.isTransactionPending){
+          if (this.store.getState().runtime.isTransactionPending){
             resolved = true
           }
           this.checkPendingTrasactions()

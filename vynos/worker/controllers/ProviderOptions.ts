@@ -29,7 +29,9 @@ export default class ProviderOptions {
   }
 
   approveTransaction(txParams: any, callback: ApproveTransactionCallback) {
-    let transaction = transactions.ethereum(randomId().toString(), JSON.stringify(txParams), txParams.value, 0)
+    const description = 'Send to ' + txParams.to.slice(0, 8) + '..' + txParams.to.slice(-2)
+    const meta = JSON.stringify(txParams)
+    let transaction = transactions.ethereum(randomId().toString(), description, meta, txParams.value, 0)
     this.transactions.approveTransaction(transaction).then(result => {
       callback(null, result)
     }).catch(callback)
@@ -52,34 +54,25 @@ export default class ProviderOptions {
   }
 
   signMessage(messageParams: any, callback: any) {    
-    console.log(messageParams)
     this.background.getPrivateKey().then(privateKey => {
-      console.log('privateKey')
-      console.log(privateKey.toString('hex'))
+
       let message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
+      const messageBuffer = ethUtil.hashPersonalMessage(message)
+      const msgSig = ethUtil.ecsign(messageBuffer, privateKey)
+      const rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
       
-      console.log(privateKey)
-      console.log(message)
-      // debugger
-      var data = ethUtil.sha3('1')
-      let msgSig = ethUtil.ecsign(data, privateKey)
-      console.log(msgSig)
+      const hex = message.toString('hex')
+      const description = hex.slice(0, 8) + '..' + hex.slice(-2)
+      const meta = JSON.stringify(messageParams)
+      const transaction = transactions.signature(description, meta)
 
-      const pubKey  = ethUtil.ecrecover(ethUtil.toBuffer('1'), msgSig.v, msgSig.r, msgSig.s);
-      // pubKey.toString()
-      console.log(pubKey.toString())
-
-      // let rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
-
-      callback(null, 'rawMsgSig')
-      // let transaction = transactions.signedData('rawMsgSig')
-      // this.transactions.approveTransaction(transaction).then(result => {
-      //   if (result) {
-      //     callback(null, rawMsgSig)
-      //   } else {
-      //     callback(new Error('Wynos: User rejected sign'))
-      //   }
-      // }).catch(callback)
+      this.transactions.approveTransaction(transaction).then(result => {
+        if (result) {
+          callback(null, rawMsgSig)
+        } else {
+          callback(new Error('Wynos: User rejected sign'))
+        }
+      }).catch(callback)
     }).catch(error => {
       callback(error)
     })

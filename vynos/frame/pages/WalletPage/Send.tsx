@@ -113,7 +113,6 @@ export class Send extends React.Component<SendProps, SendState> {
   sendTransaction() {
     let web3 = this.props.web3!;
     let self = this;
-    console.error('defAc', web3.eth.defaultAccount);
     web3.eth.sendTransaction({
       from: this.address,
       to: this.to,

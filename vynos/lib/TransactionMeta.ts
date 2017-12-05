@@ -4,6 +4,7 @@ export default interface TransactionMeta {
   id: string
   title: string
   description?: string
+  meta?: string
   icon?: string
   time: number
   amount: number

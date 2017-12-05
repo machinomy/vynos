@@ -2,7 +2,6 @@ import Datastore = require('nedb')
 import Promise = require('bluebird')
 import TransactionMeta from "../TransactionMeta";
 import TransactionState from "../TransactionState";
-import { setTimeout } from 'timers';
 
 export default class TransactionMetaStorage {
   datastore: Datastore
@@ -45,6 +44,10 @@ export default class TransactionMetaStorage {
   approved(): Promise<Array<TransactionMeta>> {
     let query = { state: TransactionState.APPROVED.toString() }
     return this.find(query)
+  }
+
+  view(id :string) {
+    return this.update({ id }, { '$set': { state: 'VIEWED' } })
   }
 
   approve(id :string) {
