@@ -8,6 +8,8 @@ import { FrameState } from '../../redux/FrameState'
 import Web3 = require('web3')
 import * as actions from "../../redux/actions"
 import TransactionMeta from '../../../lib/TransactionMeta'
+import TransactionState from '../../../lib/TransactionState'
+import TransactionKind from '../../../lib/TransactionKind'
 
 const style = require('../../styles/ynos.css')
 
@@ -23,6 +25,7 @@ export interface ApprovePageState {
 
 export interface ApprovePageStateProps {
   workerProxy: WorkerProxy
+  isTransactionPending: number
 }
 export interface ApprovePageDispatchProps {
   setPending: (state: boolean) => void
@@ -52,12 +55,21 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
     this.update()
   }
 
+  componentWillReceiveProps() {
+    this.update()
+  }
+  
+  componentWillUnmount() {
+    if (this.state.transaction && this.state.transaction.state == TransactionState.PENDING) {
+      this.storage.view(this.state.transaction.id).then((result) => {})
+    }
+  }
+
   update() {
     this.storage.datastore.loadDatabase(() => {
       this.storage.pending().then(pending => {
         let transaction = pending[0]
         if (transaction && transaction.meta) {
-          this.storage.view(transaction.id).then((result) => {})
           let meta = JSON.parse(transaction.meta)
           let formatedAmount = this.web3.fromWei(transaction.amount, 'ether').toString()
           let formatedTotal = formatedAmount
@@ -79,12 +91,14 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
 
   approve(transaction: TransactionMeta) {
     this.storage.approve(transaction.id).then((result) => {
+      transaction.state = TransactionState.APPROVED
       this.props.workerProxy.resolveTransaction()
     })
   }
 
   reject(transaction: TransactionMeta) {
     this.storage.reject(transaction.id).then(() => {
+      transaction.state = TransactionState.REJECTED
       this.props.workerProxy.resolveTransaction()
     })
   }
@@ -125,7 +139,7 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
     }
 
     let transactionData;
-    if (this.state.transaction.kind == 'SIGN') {
+    if (this.state.transaction.kind == TransactionKind.SIGN) {
       transactionData = this.renderSign()
     } else {
       transactionData = this.renderTransaction()
@@ -151,6 +165,7 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
 
 function mapStateToProps(state: FrameState): ApprovePageStateProps {
   return {
+    isTransactionPending: state.shared.isTransactionPending,
     workerProxy: state.temp.workerProxy
   }
 }

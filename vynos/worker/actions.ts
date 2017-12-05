@@ -43,9 +43,13 @@ export function setDidStoreMnemonicHandler(state: WorkerState): WorkerState {
 
 export const setTransactionPending = actionCreator<boolean>('runtime/setTransactionPending')
 export function setTransactionPendingHandler(state: WorkerState, pending: boolean): WorkerState {
+  let pendingDate = 0
+  if (pending) {
+    pendingDate = Date.now()
+  }
   return {
     ...state,
-    runtime: { ...state.runtime, isTransactionPending: pending }
+    runtime: { ...state.runtime, isTransactionPending: pendingDate }
   }
 }
 

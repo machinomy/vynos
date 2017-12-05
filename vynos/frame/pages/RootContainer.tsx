@@ -37,7 +37,7 @@ function mapStateToProps(state: FrameState): RootStateProps {
   return {
     isUnlockExpected: state.shared.didInit && state.shared.isLocked,
     isWalletExpected: state.shared.didInit && !state.shared.isLocked,
-    isTransactionPending: state.shared.didInit && state.shared.isTransactionPending
+    isTransactionPending: state.shared.didInit && state.shared.isTransactionPending !== 0
   }
 }
 

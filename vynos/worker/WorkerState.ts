@@ -2,14 +2,14 @@ import Wallet from "ethereumjs-wallet";
 
 export interface RuntimeState {
   wallet?: Wallet
-  isTransactionPending: boolean
+  isTransactionPending: number
   lastUpdateDb: number
 }
 
 export interface SharedState {
   didInit: boolean
   isLocked: boolean
-  isTransactionPending: boolean
+  isTransactionPending: number
   rememberPath: string
   lastUpdateDb: number
 }
@@ -28,7 +28,7 @@ export interface WorkerState {
 export const INITIAL_SHARED_STATE: SharedState = {
   didInit: false,
   isLocked: true,
-  isTransactionPending: false,
+  isTransactionPending: 0,
   rememberPath: '/',
   lastUpdateDb: 0
 }
@@ -39,7 +39,7 @@ export const INITIAL_STATE: WorkerState = {
     rememberPath: '/'
   },
   runtime: {
-    isTransactionPending: false,
+    isTransactionPending: 0,
     lastUpdateDb: 0
   }
 }

@@ -17,7 +17,11 @@ export function setSharedStateHandler(state: SharedState, {sharedState, store}: 
 
 export const setPending: ActionCreator<boolean> = actionCreator<boolean>("shared/setPending");
 export function setPendingHandler(state: SharedState, isTransactionPending: boolean): SharedState {
-  return { ...state, isTransactionPending}
+  let pendingDate = 0
+  if (pending) {
+    pendingDate = Date.now()
+  }
+  return { ...state, isTransactionPending: pendingDate}
 }
 
 export const didAcceptTerms: ActionCreator<boolean> = actionCreator<boolean>("temp/didAcceptTerms");
