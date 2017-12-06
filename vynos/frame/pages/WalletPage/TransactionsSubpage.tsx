@@ -1,6 +1,7 @@
 import * as React from 'react'
 import TransactionStorage from '../../../lib/storage/TransactionMetaStorage'
 import Transaction from "../../../lib/TransactionMeta";
+import TransactionState from "../../../lib/TransactionState"
 import {List, Image} from 'semantic-ui-react'
 import {formatAmount, formatDate} from "../../../lib/formatting";
 import BlockieComponent from "../../components/BlockieComponent";
@@ -63,8 +64,14 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
     let icon = this.transactionIcon(transaction)
     let { value, denomination } = formatAmount(transaction.amount)
     let date = formatDate(transaction.time)
+    let styleListItem = style.listItem
+    let transactiontTitle = null
+    if (transaction.state === TransactionState.REJECTED || transaction.state === TransactionState.VIEWED) {
+      styleListItem += ' ' + style.rejectedItem
+      transactiontTitle = 'Transaction was rejected by user'
+    }
 
-    return <List.Item className={style.listItem} key={transaction.id}>
+    return <List.Item className={styleListItem} key={transaction.id} title={transactiontTitle}>
       <List.Content floated='right'>
         <span className={style.channelBalance}>{value} {denomination}</span>
       </List.Content>
@@ -72,7 +79,6 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
       <List.Content className={style.listContent}>
         <List.Header className={style.listHeader}>{transaction.title} <span className={style.lifetimeDate}>{date}</span></List.Header>
         <List.Description className={style.listDesc}>{transaction.description}</List.Description>
-        <List.Description className={style.listDesc}>({transaction.state})</List.Description>
       </List.Content>
     </List.Item>
   }

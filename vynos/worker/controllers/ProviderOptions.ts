@@ -8,6 +8,7 @@ import {randomId} from "../../lib/Payload";
 import * as transactions from "../../lib/transactions";
 
 export type ApproveTransactionCallback = (error: any, isApproved?: boolean) => void
+export type ApproveSignCallback = (error: any, rawMsgSig?: string) => void
 
 export default class ProviderOptions {
   background: BackgroundController
@@ -53,10 +54,9 @@ export default class ProviderOptions {
     })
   }
 
-  signMessage(messageParams: any, callback: any) {    
+  signMessage(messageParams: any, callback: ApproveSignCallback) {    
     this.background.getPrivateKey().then(privateKey => {
-
-      let message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
+      const message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
       const messageBuffer = ethUtil.hashPersonalMessage(message)
       const msgSig = ethUtil.ecsign(messageBuffer, privateKey)
       const rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
@@ -70,7 +70,7 @@ export default class ProviderOptions {
         if (result) {
           callback(null, rawMsgSig)
         } else {
-          callback(new Error('Wynos: User rejected sign'))
+          callback('Vynos: User rejected sign')
         }
       }).catch(callback)
     }).catch(error => {

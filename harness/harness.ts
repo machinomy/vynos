@@ -32,6 +32,7 @@ _window.send = async (value) => {
     console.log(err)
     console.log(txid)
   })
+
 }
 
 _window.sign = async () => {
@@ -39,11 +40,17 @@ _window.sign = async () => {
   let wallet = await vynos.ready()
   let web3 = new Web3(wallet.provider)
   let account = await wallet.getAccount()
-  console.log(account)
-  web3.eth.sign(account, '0x5bf66080c92b81173f470e25f9a12fc146278429', (err, res) => {
+  // console.log(account)
+  // console.log(web3.util.fromUtf8('foobla'))
+  web3.eth.sign(account, account, (err, res) => {
     console.log(err)
     console.log(res)
   })
+  // let web3s = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+  // web3s.eth.sign(account, '0x5bf66080c92b81173f470e25f9a12fc146278429', (err, res) => {
+  //   console.log(err)
+  //   console.log(res)
+  // })
 }
 
 window.addEventListener("load", function () {

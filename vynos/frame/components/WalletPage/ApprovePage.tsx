@@ -27,6 +27,7 @@ export interface ApprovePageStateProps {
   workerProxy: WorkerProxy
   isTransactionPending: number
 }
+
 export interface ApprovePageDispatchProps {
   setPending: (state: boolean) => void
 }
@@ -106,12 +107,10 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
   renderTransaction() {
     return <Form className={style.encryptionForm} >
       <Form.Field className={style.clearIndent}>
-        <div>To: {this.state.to}</div>
-        <div>Amount: {this.state.formatedAmount}</div>
+        <label>To:</label> <div className={style.listDesc}>{this.state.to}</div>
+        <label>Amount:</label> <div>{this.state.formatedAmount}</div>
         <Divider />
-        <div>
-          <div>Total: {this.state.formatedTotal}</div>
-        </div>
+        <label>Total:</label> <div>{this.state.formatedTotal}</div>
       </Form.Field>
       <Divider hidden />
     </Form>
