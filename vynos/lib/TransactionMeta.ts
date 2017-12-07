@@ -11,4 +11,7 @@ export default interface TransactionMeta {
   fee?: number
   kind: TransactionKind
   state: string
+  data?: string
+  from?: string
+  to?: string
 }

@@ -213,7 +213,7 @@ export class TransactonResolved implements RequestPayload {
   id: number;
   jsonrpc: typeof JSONRPC;
   method: typeof TransactonResolved.method;
-  params: any[];
+  params: never[];
 
   static method = "yns_transactionResolved"
 

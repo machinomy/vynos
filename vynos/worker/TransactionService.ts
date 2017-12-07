@@ -41,7 +41,7 @@ export default class TransactionService {
     let resolved = false
     this.store.dispatch(actions.setTransactionPending(true))
     return new Promise((resolve, reject) => {
-      this.store.subscribe(() => {
+      this.store.subscribe(() => { // FIX ME perfomance problem
         if (resolved) {
           return 
         }

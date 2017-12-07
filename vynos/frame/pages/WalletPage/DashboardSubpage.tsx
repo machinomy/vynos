@@ -21,7 +21,6 @@ export interface DashboardSubpageState {
 }
 
 export class DashboardSubpage extends React.Component<DashboardSubpageProps, DashboardSubpageState> {
-  active: boolean
   constructor (props: any) {
     super(props);
     this.state = {
@@ -51,18 +50,7 @@ export class DashboardSubpage extends React.Component<DashboardSubpageProps, Das
     this.setState({sendShown: true});
   }
 
-  componentDidMount(){
-    this.active = true
-  }
-
-  componentWillUnmount(){
-    this.active = false
-  }
-
   hideSend () {
-    if (!this.active) {
-      return
-    }
     this.setState({sendShown: false});
   }
 

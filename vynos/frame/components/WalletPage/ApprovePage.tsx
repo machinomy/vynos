@@ -5,22 +5,18 @@ import WalletAccount from "../../components/WalletPage/WalletAccount"
 import WorkerProxy from '../../WorkerProxy'
 import { connect, Dispatch } from 'react-redux'
 import { FrameState } from '../../redux/FrameState'
-import Web3 = require('web3')
 import * as actions from "../../redux/actions"
 import TransactionMeta from '../../../lib/TransactionMeta'
 import TransactionState from '../../../lib/TransactionState'
 import TransactionKind from '../../../lib/TransactionKind'
+import ApproveSignature from './ApproveSignature'
+import ApproveTransaction from './ApproveTransaction'
 
 const style = require('../../styles/ynos.css')
 
 export interface ApprovePageState {
   transaction?: TransactionMeta
-  formatedAmount: string
-  formatedTotal: string
   pendingCount: number,
-  from: string,
-  data: string,
-  to: string
 }
 
 export interface ApprovePageStateProps {
@@ -36,20 +32,13 @@ export type ApprovePageProps = ApprovePageStateProps & ApprovePageDispatchProps
 
 export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageState> {
   storage: TransactionStorage
-  web3: Web3
 
   constructor(props: ApprovePageProps) {
     super(props)
     this.state = {
-      formatedAmount: '',
-      formatedTotal: '',
-      pendingCount: 0,
-      from: '',
-      data: '',
-      to: ''
+      pendingCount: 0
     }
     this.storage = new TransactionStorage()
-    this.web3 = new Web3()
   }
 
   componentWillMount() {
@@ -70,18 +59,10 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
     this.storage.datastore.loadDatabase(() => {
       this.storage.pending().then(pending => {
         let transaction = pending[0]
-        if (transaction && transaction.meta) {
-          let meta = JSON.parse(transaction.meta)
-          let formatedAmount = this.web3.fromWei(transaction.amount, 'ether').toString()
-          let formatedTotal = formatedAmount
+        if (transaction) {
           this.setState({
             transaction,
-            formatedAmount,
-            formatedTotal,
             pendingCount: pending.length,
-            from: meta.from,
-            data: meta.data,
-            to: meta.to
           })
         } else {
           this.props.setPending(false)
@@ -104,30 +85,6 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
     })
   }
 
-  renderTransaction() {
-    return <Form className={style.encryptionForm} >
-      <Form.Field className={style.clearIndent}>
-        <label>To:</label> <div className={style.listDesc}>{this.state.to}</div>
-        <label>Amount:</label> <div>{this.state.formatedAmount}</div>
-        <Divider />
-        <label>Total:</label> <div>{this.state.formatedTotal}</div>
-      </Form.Field>
-      <Divider hidden />
-    </Form>
-  }
-
-  renderSign() {
-    return <Form className={style.encryptionForm} >
-      <Form.Field className={style.clearIndent}>
-        <div className={style.vynosInfo}>Signing this message can have dangerous side effects. 
-        Only sign messages from sites you fully trust with your entire account.</div>
-        <label>Address:</label> <div className={style.listDesc}>{this.state.from}</div>
-        <label>Message:</label> <div className={style.listDesc}>{this.state.data}</div>
-        </Form.Field>
-      <Divider hidden />
-    </Form>
-  }
-
   render() {
     if (!this.state.transaction) {
       return null
@@ -136,14 +93,12 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
     if (this.state.pendingCount > 1) {
       pending = <div>Pending transactions: {this.state.pendingCount}</div>
     }
-
-    let transactionData;
+    let transactionData
     if (this.state.transaction.kind == TransactionKind.SIGN) {
-      transactionData = this.renderSign()
+      transactionData = <ApproveSignature transaction={this.state.transaction} key={this.state.transaction.id}/>
     } else {
-      transactionData = this.renderTransaction()
+      transactionData = <ApproveTransaction transaction={this.state.transaction} key={this.state.transaction.id}/>
     }
-
     return <div>
       <WalletAccount />
       <Container textAlign="center" style={{ marginTop: '10px' }}>

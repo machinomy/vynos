@@ -122,7 +122,6 @@ export class Send extends React.Component<SendProps, SendState> {
         self.setState({step2Valid: false, balanceError: err.message});
       }else{
         console.log('Transaction hash :', transactionHash);
-        self.props.hideSend();
       }
     });
   }

@@ -30,9 +30,7 @@ export default class ProviderOptions {
   }
 
   approveTransaction(txParams: any, callback: ApproveTransactionCallback) {
-    const description = 'Send to ' + txParams.to.slice(0, 8) + '..' + txParams.to.slice(-2)
-    const meta = JSON.stringify(txParams)
-    let transaction = transactions.ethereum(randomId().toString(), description, meta, txParams.value, 0)
+    let transaction = transactions.ethereum(randomId().toString(), txParams.to, txParams.value, 0)
     this.transactions.approveTransaction(transaction).then(result => {
       callback(null, result)
     }).catch(callback)
@@ -57,14 +55,12 @@ export default class ProviderOptions {
   signMessage(messageParams: any, callback: ApproveSignCallback) {    
     this.background.getPrivateKey().then(privateKey => {
       const message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
-      const messageBuffer = ethUtil.hashPersonalMessage(message)
-      const msgSig = ethUtil.ecsign(messageBuffer, privateKey)
+      // METAMASK cant sign hex string. 
+      // messageBuffer = ethUtil.hashPersonalMessage(message)
+      const msgSig = ethUtil.ecsign(message, privateKey)
       const rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
       
-      const hex = message.toString('hex')
-      const description = hex.slice(0, 8) + '..' + hex.slice(-2)
-      const meta = JSON.stringify(messageParams)
-      const transaction = transactions.signature(description, meta)
+      const transaction = transactions.signature(messageParams.from, messageParams.data)
 
       this.transactions.approveTransaction(transaction).then(result => {
         if (result) {
@@ -72,9 +68,11 @@ export default class ProviderOptions {
         } else {
           callback('Vynos: User rejected sign')
         }
-      }).catch(callback)
+      }).catch(error => {
+        callback(error.message)
+      })
     }).catch(error => {
-      callback(error)
+      callback(error.message)
     })
   }
 

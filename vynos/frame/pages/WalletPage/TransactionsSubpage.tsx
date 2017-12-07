@@ -2,6 +2,7 @@ import * as React from 'react'
 import TransactionStorage from '../../../lib/storage/TransactionMetaStorage'
 import Transaction from "../../../lib/TransactionMeta";
 import TransactionState from "../../../lib/TransactionState"
+import TransactionKind from "../../../lib/TransactionKind"
 import {List, Image} from 'semantic-ui-react'
 import {formatAmount, formatDate} from "../../../lib/formatting";
 import BlockieComponent from "../../components/BlockieComponent";
@@ -60,6 +61,18 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
     }
   }
 
+  transactionDescription (transaction: Transaction) {
+    let description
+    if (transaction.kind == TransactionKind.MICROPAYMENT) {
+      description = transaction.description
+    } else if (transaction.kind == TransactionKind.ETHEREUM && transaction.to) {
+      description = 'Send to ' + transaction.to.slice(0, 8) + '..' + transaction.to.slice(-2)
+    } else if (transaction.kind == TransactionKind.SIGN && transaction.data) {
+      description = transaction.data.slice(0, 8) + '..' + transaction.data.slice(-2)
+    }
+    return description
+  }
+
   renderTransaction (transaction: Transaction) {
     let icon = this.transactionIcon(transaction)
     let { value, denomination } = formatAmount(transaction.amount)
@@ -78,7 +91,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
       {icon}
       <List.Content className={style.listContent}>
         <List.Header className={style.listHeader}>{transaction.title} <span className={style.lifetimeDate}>{date}</span></List.Header>
-        <List.Description className={style.listDesc}>{transaction.description}</List.Description>
+        <List.Description className={style.listDesc}>{this.transactionDescription(transaction)}</List.Description>
       </List.Content>
     </List.Item>
   }

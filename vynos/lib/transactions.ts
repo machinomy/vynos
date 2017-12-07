@@ -4,12 +4,11 @@ import TransactionKind from "./TransactionKind";
 import TransactionState from "./TransactionState";
 import PurchaseMeta from "./PurchaseMeta";
 
-export function ethereum (id: string, description: string, meta: string, amount: number, fee: number): Transaction {
+export function ethereum (id: string, to: string, amount: number, fee: number): Transaction {
   return {
     id: randomId().toString(),
     title: 'Ethereum',
-    description: description,
-    meta: meta,
+    to,
     time: Date.now(),
     amount: amount,
     fee: fee,
@@ -32,12 +31,12 @@ export function micropayment (purchaseMeta: PurchaseMeta, receiver: string, amou
   }
 }
 
-export function signature (description: string, meta: string): Transaction {
+export function signature (from: string, data: string): Transaction {
   return {
     id: randomId().toString(),
     title: 'Signature',
-    description: description,
-    meta: meta,
+    from,
+    data,
     time: Date.now(),
     amount: 0,
     fee: 0,
