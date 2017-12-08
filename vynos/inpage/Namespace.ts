@@ -3,6 +3,7 @@ import Promise = require('bluebird')
 import Frame from './Frame'
 import FrameStream from '../lib/FrameStream'
 import Vynos from '../lib/Vynos'
+import NamespaceEventsController from '../lib/NamespaceEventsController'
 
 // DOM and Window is ready.
 export function isReady(callback: () => void) {
@@ -35,13 +36,7 @@ export default class Namespace {
         this.frame = frame ? frame : new Frame(this.scriptAddress, frameElement)
         this.frame.attach(this.window.document)
         let stream = new FrameStream("vynos").toFrame(this.frame.element);
-        stream.on('data', (chunk: any) => {
-          if (chunk.id == 'worker/broadcast/SharedState') {
-            if (chunk.result.isTransactionPending) {
-              this.display()
-            }
-          }
-        })
+        new NamespaceEventsController(this, stream)
         resolve(new VynosClient(stream))
       })
     })

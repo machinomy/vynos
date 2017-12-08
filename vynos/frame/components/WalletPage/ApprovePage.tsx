@@ -93,12 +93,19 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
     if (this.state.pendingCount > 1) {
       pending = <div>Pending transactions: {this.state.pendingCount}</div>
     }
+
     let transactionData
-    if (this.state.transaction.kind == TransactionKind.SIGN) {
-      transactionData = <ApproveSignature transaction={this.state.transaction} key={this.state.transaction.id}/>
-    } else {
-      transactionData = <ApproveTransaction transaction={this.state.transaction} key={this.state.transaction.id}/>
+    switch (this.state.transaction.kind) {
+      case TransactionKind.SIGN:
+        transactionData = <ApproveSignature transaction={this.state.transaction} key={this.state.transaction.id}/>
+        break
+      case TransactionKind.ETHEREUM:
+        transactionData = <ApproveTransaction transaction={this.state.transaction} key={this.state.transaction.id}/>
+        break
+      default:
+        throw new Error("Not Implemented")
     }
+
     return <div>
       <WalletAccount />
       <Container textAlign="center" style={{ marginTop: '10px' }}>

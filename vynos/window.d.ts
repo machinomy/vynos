@@ -6,8 +6,6 @@ export interface DevWindow extends Window {
 
 export interface VynosWindow extends Window {
   vynos: Namespace,
-  send: any,
-  sign: any,
   showVynosNotification: any
 }
 
