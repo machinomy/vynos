@@ -56,6 +56,10 @@ export default class BackgroundController {
     tryCall()
   }
 
+  resolveTransaction() {
+    this.store.dispatch(actions.setLastUpdateDb(Date.now()))
+  }
+
   rememberPage(path: string) {
     this.store.dispatch(actions.rememberPage(path))
   }

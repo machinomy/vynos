@@ -17,6 +17,7 @@ export default function reducers(workerProxy: WorkerProxy): Reducer<FrameState> 
 
   const sharedReducer = reducerWithInitialState(state.shared)
     .case(actions.setSharedState, actions.setSharedStateHandler)
+    .case(actions.setPending, actions.setPendingHandler)
 
   return redux.combineReducers({
     router: routerReducer,

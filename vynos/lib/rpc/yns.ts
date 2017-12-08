@@ -209,6 +209,19 @@ export class BuyRequest implements RequestPayload {
   }
 }
 
+export class TransactonResolved implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof TransactonResolved.method;
+  params: never[];
+
+  static method = "yns_transactionResolved"
+
+  static match(payload: RequestPayload): payload is TransactonResolved {
+    return payload.method === TransactonResolved.method
+  }
+}
+
 export interface BuyResponse extends ResponsePayload {
   result: [VynosBuyResponse]
 }

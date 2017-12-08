@@ -8,6 +8,7 @@ import {randomId} from "../../lib/Payload";
 import * as transactions from "../../lib/transactions";
 
 export type ApproveTransactionCallback = (error: any, isApproved?: boolean) => void
+export type ApproveSignCallback = (error: any, rawMsgSig?: string) => void
 
 export default class ProviderOptions {
   background: BackgroundController
@@ -29,13 +30,10 @@ export default class ProviderOptions {
   }
 
   approveTransaction(txParams: any, callback: ApproveTransactionCallback) {
-    let transaction = transactions.ethereum(randomId().toString(), JSON.stringify(txParams), 42, 42)
-    callback(null, true) // FIXME
-    /*
+    let transaction = transactions.ethereum(randomId().toString(), txParams.to, txParams.value, 0)
     this.transactions.approveTransaction(transaction).then(result => {
       callback(null, result)
     }).catch(callback)
-     */
   }
 
   approveTransactionAlways(txParams: any, callback: ApproveTransactionCallback) {
@@ -54,14 +52,27 @@ export default class ProviderOptions {
     })
   }
 
-  signMessage(messageParams: any, callback: any) {
+  signMessage(messageParams: any, callback: ApproveSignCallback) {    
     this.background.getPrivateKey().then(privateKey => {
-      let message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
-      let msgSig = ethUtil.ecsign(message, privateKey)
-      let rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
-      callback(null, rawMsgSig)
+      const message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
+      // METAMASK cant sign hex string. 
+      // messageBuffer = ethUtil.hashPersonalMessage(message)
+      const msgSig = ethUtil.ecsign(message, privateKey)
+      const rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
+      
+      const transaction = transactions.signature(messageParams.from, messageParams.data)
+
+      this.transactions.approveTransaction(transaction).then(result => {
+        if (result) {
+          callback(null, rawMsgSig)
+        } else {
+          callback('Vynos: User rejected sign')
+        }
+      }).catch(error => {
+        callback(error.message)
+      })
     }).catch(error => {
-      callback(error)
+      callback(error.message)
     })
   }
 

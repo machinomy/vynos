@@ -18,6 +18,33 @@ function updateRecentPaymentChannel(channel: PaymentChannel) {
 }
 */
 
+// _window.send = async (value) => {
+//   let eth = 0.01 
+//   if (value) {
+//     eth = value
+//   }
+//   let vynos = _window.vynos
+//   let wallet = await vynos.ready()
+//   let web3 = new Web3(wallet.provider)
+//   let account = await wallet.getAccount()
+//   console.log(account)
+//   web3.eth.sendTransaction({ from: account, to: '0x5bf66080c92b81173f470e25f9a12fc146278429', value: web3.toWei(eth, 'ether') }, (err, txid) => {
+//     console.log(err)
+//     console.log(txid)
+//   })
+// }
+
+// _window.sign = async () => {
+//   let vynos = _window.vynos
+//   let wallet = await vynos.ready()
+//   let web3 = new Web3(wallet.provider)
+//   let account = await wallet.getAccount()
+//   web3.eth.sign(account, web3.sha3('vynos'), (err, res) => {
+//     console.log(err)
+//     console.log(res)
+//   })
+// }
+
 window.addEventListener("load", function () {
   let vynos = _window.vynos
 

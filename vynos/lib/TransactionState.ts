@@ -1,7 +1,8 @@
 enum TransactionState {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED'
+  REJECTED = 'REJECTED',
+  VIEWED = 'VIEWED'
 }
 
 export default TransactionState

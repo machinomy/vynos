@@ -21,7 +21,6 @@ export interface DashboardSubpageState {
 }
 
 export class DashboardSubpage extends React.Component<DashboardSubpageProps, DashboardSubpageState> {
-
   constructor (props: any) {
     super(props);
     this.state = {

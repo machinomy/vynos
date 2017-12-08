@@ -77,16 +77,6 @@ export class Send extends React.Component<SendProps, SendState> {
     this.balance = balance;
   }
 
-  goStep2() {
-    this.fees = new BigNumber(0.1);
-    this.setState({step: 2});
-    if (this.balance < this.amount.plus(this.fees)) {
-      this.setState({step2Valid: false, balanceError: "Insufficient funds"});
-    } else {
-      this.setState({step2Valid: true, balanceError: ""});
-    }
-  }
-
   menu() {
     return <Menu className={style.clearBorder} style={{margin: "-56px 0 0 0", zIndex: 10}}>
       <Menu.Item link className={style.menuIntoOneItemFluid}
@@ -123,7 +113,6 @@ export class Send extends React.Component<SendProps, SendState> {
   sendTransaction() {
     let web3 = this.props.web3!;
     let self = this;
-    console.error('defAc', web3.eth.defaultAccount);
     web3.eth.sendTransaction({
       from: this.address,
       to: this.to,
@@ -133,7 +122,6 @@ export class Send extends React.Component<SendProps, SendState> {
         self.setState({step2Valid: false, balanceError: err.message});
       }else{
         console.log('Transaction hash :', transactionHash);
-        self.props.hideSend();
       }
     });
   }
@@ -145,7 +133,7 @@ export class Send extends React.Component<SendProps, SendState> {
         <div>
           {this.getWallet()}
           <Container textAlign="center" style={{marginTop: '10px'}}>
-            <Form className={style.encryptionForm} onSubmit={this.goStep2.bind(this)}>
+            <Form className={style.encryptionForm} onSubmit={this.sendTransaction.bind(this)}>
               <Form.Field className={style.clearIndent}>
                 {this.inputTo()}
               </Form.Field>
@@ -159,33 +147,6 @@ export class Send extends React.Component<SendProps, SendState> {
           </Container>
         </div>
       </div>
-
-    if (this.state.step === 2)
-      return <div>
-        {this.menu()}
-        <div>
-          {this.getWallet()}
-          <Container textAlign="center" style={{marginTop: '10px'}}>
-            <Form className={style.encryptionForm} onSubmit={this.sendTransaction.bind(this)}>
-              <Form.Field className={style.clearIndent}>
-                <div>To: {this.to}</div>
-                <div>Amount: {this.amount.toString()} Ether</div>
-                <div>Fees: {this.fees.toString()}</div>
-                <Divider/>
-                <div>
-                  <div>Total: {this.amount.plus(this.fees).toString()} Ether</div>
-                  <div>{this.state.balanceError ? <span className={style.errorText}><i
-                    className={style.vynosInfo}/> {this.state.balanceError}</span> : ''}</div>
-                </div>
-              </Form.Field>
-              <Divider hidden/>
-              <Button type='submit' content="Send" primary className={style.buttonNav}
-                      disabled={!this.state.step2Valid}/>
-            </Form>
-          </Container>
-        </div>
-      </div>
-
     return <div></div>
   }
 }
