@@ -1,6 +1,5 @@
 import StreamProvider from './../lib/StreamProvider'
 import { Duplex } from 'readable-stream'
-import {AccountsRequest, AccountsResponse} from '../lib/rpc/eth'
 import {
   BuyRequest, BuyResponse,
   CloseChannelRequest, CloseChannelResponse, InitAccountRequest, InitAccountResponse, ListChannelsRequest,
@@ -10,7 +9,6 @@ import {
 } from '../lib/rpc/yns';
 import {JSONRPC, randomId} from "../lib/Payload";
 import Promise = require('bluebird')
-import Web3 = require("web3")
 import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import VynosPayInChannelResponse from "../lib/VynosPayInChannelResponse";
 import Vynos from '../lib/Vynos'
@@ -26,23 +24,11 @@ export default class VynosClient implements Vynos {
     return Promise.resolve(ch)
   }
 
-
-  makePayment () {
-    throw new Error("Not Implemented")
-  }
-
   provider: StreamProvider
 
   constructor (stream: Duplex) {
     this.provider = new StreamProvider("VynosClient")
     this.provider.pipe(stream).pipe(this.provider)
-  }
-
-  getAccount(): Promise<string> {
-    let request = new AccountsRequest()
-    return this.provider.ask(request).then((response: AccountsResponse) => {
-      return response.result[0]
-    })
   }
 
   initAccount(): Promise<void> {
@@ -57,10 +43,6 @@ export default class VynosClient implements Vynos {
     })
   }
 
-  getWeb3(): Promise<Web3> {
-    return Promise.resolve(new Web3(this.provider))
-  }
-
   openChannel (receiverAccount: string, channelValue: BigNumber.BigNumber): Promise<PaymentChannel> {
     let request: OpenChannelRequest = {
       id: randomId(),
@@ -73,20 +55,14 @@ export default class VynosClient implements Vynos {
     })
   }
 
-  closeChannel(channel: string): Promise<string> {
+  closeChannel(channelId: string): Promise<void> {
     let request: CloseChannelRequest = {
       id: randomId(),
       method: CloseChannelRequest.method,
       jsonrpc: JSONRPC,
-      params: [channel]
+      params: [channelId]
     }
-    // if (isPaymentChannel(channel)) {
-    //   request.params = [channel.toJSON()]
-    // }
-    return this.provider.ask(request).then((response: CloseChannelResponse) => {
-      // return PaymentChannel.fromDocument(response.result[0])
-      return response.result[0]
-    })
+    return this.provider.ask(request)
   }
 
   payInChannel (channel: PaymentChannel | PaymentChannelJSON, amount: number, override?: boolean): Promise<VynosPayInChannelResponse> {
