@@ -2650,7 +2650,6 @@ ethereum-common@0.0.18, ethereum-common@^0.0.18:
 
 "ethereumjs-abi@https://github.com/ethereumjs/ethereumjs-abi":
   version "0.6.4"
-  uid ee6ded67235a98f3ef4ae2a338aee70a9f68fe20
   resolved "https://github.com/ethereumjs/ethereumjs-abi#ee6ded67235a98f3ef4ae2a338aee70a9f68fe20"
   dependencies:
     bn.js "^4.10.0"
@@ -2910,7 +2909,7 @@ faye-websocket@~0.7.2:
   dependencies:
     websocket-driver ">=0.3.6"
 
-fbjs@^0.8.6, fbjs@^0.8.9:
+fbjs@^0.8.9:
   version "0.8.12"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
   dependencies:
@@ -6238,12 +6237,6 @@ react-router@^4.2.0:
     path-to-regexp "^1.7.0"
     prop-types "^15.5.4"
     warning "^3.0.0"
-
-react-tap-event-plugin@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-tap-event-plugin/-/react-tap-event-plugin-2.0.1.tgz#316beb3bc6556e29ec869a7293e89c826a9074d2"
-  dependencies:
-    fbjs "^0.8.6"
 
 react-transition-group@^2.2.1:
   version "2.2.1"
