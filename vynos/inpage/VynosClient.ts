@@ -14,6 +14,8 @@ import VynosPayInChannelResponse from "../lib/VynosPayInChannelResponse";
 import Vynos from '../lib/Vynos'
 import VynosBuyResponse from "../lib/VynosBuyResponse";
 import PurchaseMeta, {purchaseMetaFromDocument} from "../lib/PurchaseMeta";
+import {SharedState} from "../worker/WorkerState";
+import {SharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
 
 function isPaymentChannel(pc: PaymentChannel|PaymentChannelJSON): pc is PaymentChannel {
   return !!((pc as PaymentChannel).toJSON)
@@ -111,6 +113,13 @@ export default class VynosClient implements Vynos {
     }
     return this.provider.ask(request).then((response: ListChannelsResponse) => {
       return response.result.map(pc => PaymentChannel.fromDocument(pc))
+    })
+  }
+
+  onSharedStateUpdate(fn: (state: SharedState) => void): void {
+    this.provider.listen<SharedStateBroadcast>(SharedStateBroadcastType, broadcast => {
+      let state = broadcast.result
+      fn(state)
     })
   }
 }
