@@ -8,7 +8,7 @@
 To use Vynos one has to plug it into a web page as yet another javascript library. In future, it will be available as an NPM package.
 For now, one has to put this to the web page code:
 
-```
+```html
 <script src="https://vynos.tech/vynos.js"></script>
 ```
 
@@ -23,7 +23,7 @@ calling the wallet while it is not loaded, or waiting for loading using `while` 
 One could call `vynos.ready()` multiple times. It initialises the wallet once. If loaded, it returns the current
 instance of the wallet:
 
-```
+```javascript
 vynos.ready().then(wallet => {
   wallet.initAccount().then(() => {
     console.log("The user has an account, and the wallet is unlocked")
@@ -41,7 +41,8 @@ Wallet instance provides the following API:
 * `wallet.provider` - web3 provider.
 
 Also, web3 API could be used as well:
-```
+
+```javascript
 vynos.ready().then(wallet => {
   wallet.initAccount().then(() => {
     let web3 = new Web3(wallet.provider)
