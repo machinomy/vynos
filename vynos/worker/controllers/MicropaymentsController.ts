@@ -56,9 +56,7 @@ export default class MicropaymentsController {
           let machinomy = new Machinomy(account, this.network.web3, { engine: 'nedb', databaseFile: 'vynos' })
           machinomy.close(channelId).then(() => {
             resolve(channelId)
-          }).catch((e: Error) => {
-            console.log(e)
-          })
+          }).catch(reject)
         })
       })
     })
@@ -108,11 +106,7 @@ export default class MicropaymentsController {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
           let machinomy = new Machinomy(account, this.network.web3, { engine: 'nedb', databaseFile: 'vynos' })
-          machinomy.channels().then((res: any) => {
-            resolve(res)
-          }).catch((e: Error) => {
-            console.log(e)
-          })
+          machinomy.channels().then(resolve).catch(reject)
         })
       })
     })
