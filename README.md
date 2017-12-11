@@ -1,4 +1,4 @@
-# Ynos
+# Vynos
 
 > In-browser micropayments wallet.
 
@@ -65,8 +65,8 @@ For installation instructions go to the [official web site](https://yarnpkg.com/
 ## Install
 
 ```
-git clone https://github.com/SpankChain/ynos ynos
-cd ynos
+git clone https://github.com/SpankChain/vynos
+cd vynos
 yarn install
 ```
 
@@ -82,11 +82,11 @@ RPC_URL=http://example.com:port
 ```
 yarn run harness
 ```
-That command starts a web server to play with Ynos on localhost.
+That command starts a web server to play with Vynos on localhost.
 Open browser on `http://localhost:9999` and click on some buttons.
 
 ## WTF is Harness
-It demonstrates Ynos work on localhost. It runs a web page (Ynos client) on localhost:8080.
-Serves Ynos frame (stores privateKeys a-la MetaMaskara) from localhost:9090. Different ports
+It demonstrates Vynos work on localhost. It runs a web page (Vynos client) on localhost:8080.
+Serves Vynos frame (stores privateKeys a-la MetaMaskara) from localhost:9090. Different ports
 make the browser think the pages belong to different origins, thus should be secured
 against each other malicious behaviour.
