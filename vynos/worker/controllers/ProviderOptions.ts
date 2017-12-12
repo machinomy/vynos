@@ -59,29 +59,18 @@ export default class ProviderOptions {
       let rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
       callback(null, rawMsgSig)
     }).catch(error => {
-      callback(error)
+      callback(error.message)
     })
   }
 
   signMessage(messageParams: any, callback: ApproveSignCallback) {   
-    this.background.getPrivateKey().then(privateKey => {
-      const message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
-      // METAMASK cant sign hex string. 
-      // messageBuffer = ethUtil.hashPersonalMessage(message)
-      const msgSig = ethUtil.ecsign(message, privateKey)
-      const rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
-      
-      const transaction = transactions.signature(messageParams.from, messageParams.data)
-
-      this.transactions.approveTransaction(transaction).then(result => {
-        if (result) {
-          callback(null, rawMsgSig)
-        } else {
-          callback('Vynos: User rejected sign')
-        }
-      }).catch(error => {
-        callback(error.message)
-      })
+    const transaction = transactions.signature(messageParams.from, messageParams.data)
+    this.transactions.approveTransaction(transaction).then(result => {
+      if (result) {
+        this.signMessageAlways(messageParams, callback)
+      } else {
+        callback('Vynos: User rejected sign')
+      }
     }).catch(error => {
       callback(error.message)
     })
