@@ -32,9 +32,13 @@ export default class ProviderOptions {
   approveTransaction(txParams: any, callback: ApproveTransactionCallback) {
     let transaction = transactions.ethereum(randomId().toString(), txParams.to, txParams.value, 0)
     this.transactions.approveTransaction(transaction).then(result => {
-      callback(null, result)
+      if (result) {
+        callback(null, result)
+      } else {
+        callback('Vynos: User rejected transaction')
+      }
     }).catch(error => {
-      callback(error)
+      callback(error.message)
     })
   }
 
