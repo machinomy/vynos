@@ -53,7 +53,7 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.network.web3, { engine: 'nedb', databaseFile: 'vynos' })
+          let machinomy = new Machinomy(account, this.web3, { engine: 'nedb', databaseFile: 'vynos' })
           machinomy.close(channelId).then(() => {
             resolve(channelId)
           }).catch(reject)
@@ -73,7 +73,7 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.network.web3, {engine: 'nedb', databaseFile: 'vynos'})
+          let machinomy = new Machinomy(account, this.web3, {engine: 'nedb', databaseFile: 'vynos'})
           return machinomy.buy({
             receiver: receiver,
             price: amount,
@@ -105,7 +105,7 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.network.web3, { engine: 'nedb', databaseFile: 'vynos' })
+          let machinomy = new Machinomy(account, this.web3, { engine: 'nedb', databaseFile: 'vynos' })
           machinomy.channels().then(resolve).catch(reject)
         })
       })
