@@ -76,6 +76,18 @@ export default class ProviderOptions {
     })
   }
 
+  signMessageApproving(messageParams: any, callback: ApproveSignCallback) {    
+    this.background.getPrivateKey().then(privateKey => {
+      const message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
+      const msgSig = ethUtil.ecsign(message, privateKey)
+      const rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
+      const transaction = transactions.signature(messageParams.from, messageParams.data)
+      callback(null, rawMsgSig)
+    }).catch(error => {
+      callback(error.message)
+    })
+  }
+
   walled(): ProviderOpts {
     return {
       static: {
@@ -106,7 +118,7 @@ export default class ProviderOptions {
       getAccounts: this.getAccounts.bind(this),
       approveTransaction: this.approveTransactionAlways.bind(this),
       signTransaction: this.signTransaction.bind(this),
-      signMessage: this.signMessage.bind(this)
+      signMessage: this.signMessageApproving.bind(this)
       // tx signing, newUnapprovedTransaction
       //processTransaction: processTransaction,
       // old style msg signing, newUnsignedMessage
