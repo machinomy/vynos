@@ -33,7 +33,9 @@ export default class ProviderOptions {
     let transaction = transactions.ethereum(randomId().toString(), txParams.to, txParams.value, 0)
     this.transactions.approveTransaction(transaction).then(result => {
       callback(null, result)
-    }).catch(callback)
+    }).catch(error => {
+      callback(error)
+    })
   }
 
   approveTransactionAlways(txParams: any, callback: ApproveTransactionCallback) {
