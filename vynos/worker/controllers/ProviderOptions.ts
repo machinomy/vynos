@@ -53,7 +53,7 @@ export default class ProviderOptions {
       let txHex = '0x' + Buffer.from(tx.serialize()).toString('hex')
       callback(null, txHex)
     }).catch(error => {
-      callback(error)
+      callback(error.message)
     })
   }
 

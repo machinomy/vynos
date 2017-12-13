@@ -16,8 +16,12 @@ export default class StreamProvider extends Duplex implements Web3.Provider {
   }
 
   sendAsync<A extends Payload, B>(payload: A, callback: Function) {
-    this.ask(payload).then(result => {
-      callback(null, result)
+    this.ask(payload).then((result: any) => {
+      if (result.error) {
+        callback(result.error)
+      } else {
+        callback(null, result)
+      }
     }).catch(error => {
       callback(error, null)
     })

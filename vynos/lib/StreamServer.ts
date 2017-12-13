@@ -28,7 +28,7 @@ export default class StreamServer extends Duplex {
         this.push({
           id: payload.id,
           jsonrpc: payload.jsonrpc,
-          result:['error', error]
+          error: error
         })
       } else {
         if (response) this.push(response)
