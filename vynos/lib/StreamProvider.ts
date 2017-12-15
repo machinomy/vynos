@@ -22,6 +22,7 @@ export default class StreamProvider extends Duplex implements Web3.Provider {
       } else {
         callback(null, result)
       }
+      return null
     }).catch(error => {
       callback(error, null)
     })
