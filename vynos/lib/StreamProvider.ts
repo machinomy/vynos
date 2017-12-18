@@ -15,8 +15,8 @@ export default class StreamProvider extends Duplex implements Web3.Provider {
     this.strict = strict || false
   }
 
-  sendAsync<A extends Payload, B>(payload: A, callback: Function) {
-    this.ask(payload).then((result: any) => {
+  sendAsync<A extends Payload, B extends ResponsePayload>(payload: A, callback: Function) {
+    this.ask<A, B>(payload).then((result: B) => {
       if (result.error) {
         callback(result.error)
       } else {
@@ -32,14 +32,18 @@ export default class StreamProvider extends Duplex implements Web3.Provider {
     throw new Error(`Vynos Web3 provider does not support synchronous methods, please use asynchronous style`)
   }
 
-  ask<A extends Payload, B>(payload: A, timeout: number = 0): Promise<B> {
+  ask<A extends Payload, B extends ResponsePayload>(payload: A, timeout: number = 0): Promise<B> {
     let id = payload.id
     let result = new Promise<B>((resolve, reject) => {
       let resolved = false
 
       this._callbacks.set(id.toString(), (response: B) => {
         resolved = true
-        resolve(response)
+        if (result.error) {
+          reject(result.error)
+        } else {
+          resolve(response)
+        }
       })
 
       if (timeout > 0) {
