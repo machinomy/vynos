@@ -39,11 +39,7 @@ export default class StreamProvider extends Duplex implements Web3.Provider {
 
       this._callbacks.set(id.toString(), (response: B) => {
         resolved = true
-        if (result.error) {
-          reject(result.error)
-        } else {
-          resolve(response)
-        }
+        resolve(response)
       })
 
       if (timeout > 0) {
