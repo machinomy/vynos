@@ -50,7 +50,8 @@
     "@types/react-router-redux": "^5.0.8",
     "@types/react-transition-group": "^2.0.6",
     "copy-webpack-plugin": "^4.2.0",
-    "dotenv": "^4.0.0"
+    "dotenv": "^4.0.0",
+    "types-web3-provider-engine": "^0.0.2"
   },
   "dependencies": {
     "bip39": "^2.3.1",
@@ -88,7 +89,6 @@
     "redux-persist": "^4.8.0",
     "redux-thunk": "^2.2.0",
     "semantic-ui-react": "^0.71.5",
-    "types-web3-provider-engine": "^0.0.2",
     "typescript-fsa": "^2.3.1",
     "typescript-fsa-reducers": "^0.4.4",
     "typescript-fsa-redux-thunk": "xdave/typescript-fsa-redux-thunk",
