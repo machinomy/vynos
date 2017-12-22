@@ -200,7 +200,7 @@ export class BuyRequest implements RequestPayload {
   id: number;
   jsonrpc: typeof JSONRPC;
   method: typeof BuyRequest.method;
-  params: [string, number, string, string, PurchaseMeta];
+  params: [string, number, string, string, PurchaseMeta, number];
 
   static method = "yns_buyRequest"
 
