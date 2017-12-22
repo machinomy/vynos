@@ -68,12 +68,18 @@ export default class MicropaymentsController {
     })
   }
 
-  buy(receiver: string, amount: number, gateway: string, meta: string, purchaseMeta: PurchaseMeta): Promise<VynosBuyResponse> {
+  buy(receiver: string, amount: number, gateway: string, meta: string, purchaseMeta: PurchaseMeta, channelValue?: number): Promise<VynosBuyResponse> {
     return new Promise((resolve, reject) => {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.web3, {engine: 'nedb', databaseFile: 'vynos'})
+          let options
+          if (channelValue !== undefined) {
+            options = {engine: 'nedb', databaseFile: 'vynos', minimumChannelAmount: channelValue}
+          } else {
+            options = {engine: 'nedb', databaseFile: 'vynos'}
+          }
+          let machinomy = new Machinomy(account, this.web3, options)
           return machinomy.buy({
             receiver: receiver,
             price: amount,
