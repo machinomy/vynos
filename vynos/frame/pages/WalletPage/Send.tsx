@@ -35,9 +35,9 @@ export class Send extends React.Component<SendProps, SendState> {
     super(props);
     this.address = "";
     this.to = "";
-    this.amount = new BigNumber(0);
-    this.fees = new BigNumber(0);
-    this.balance = new BigNumber(0);
+    this.amount = new BigNumber.BigNumber(0);
+    this.fees = new BigNumber.BigNumber(0);
+    this.balance = new BigNumber.BigNumber(0);
     this.state = {step: 1, step1Valid: false, step2Valid: false, toError: "", amountError: "", balanceError: ""};
   }
 
@@ -49,7 +49,7 @@ export class Send extends React.Component<SendProps, SendState> {
 
   setAmount(ev: ChangeEvent<EventTarget>) {
     let value = (ev.target as HTMLInputElement).value;
-    this.amount = new BigNumber(parseFloat(value));
+    this.amount = new BigNumber.BigNumber(parseFloat(value));
     this.checkValidStep1()
   }
 

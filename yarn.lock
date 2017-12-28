@@ -2,12 +2,10 @@
 # yarn lockfile v1
 
 
-"@machinomy/contracts@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@machinomy/contracts/-/contracts-1.0.1.tgz#58a743ce2eb0cf7789a4fff2d6a30be4c26a0971"
+"@machinomy/contracts@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@machinomy/contracts/-/contracts-3.1.0.tgz#0d540494606bc0c0187589bae269770620fede98"
   dependencies:
-    "@types/bignumber.js" "^4.0.3"
-    "@types/node" "^8.0.28"
     bignumber.js "^4.1.0"
     buffer "^5.0.7"
     chai "^4.1.2"
@@ -18,13 +16,17 @@
     web3-typescript-typings "https://github.com/machinomy/web3-typescript-typings"
     zeppelin-solidity "^1.2.0"
 
+"@machinomy/types-truffle-contract@https://github.com/machinomy/types-truffle-contract":
+  version "0.0.1"
+  resolved "https://github.com/machinomy/types-truffle-contract#112f61ec4527a0fbf7c1b9bcc0bedaa6be42caa7"
+  dependencies:
+    truffle-contract "^3.0.0"
+    web3 "^0.20.2"
+    web3-typescript-typings "https://github.com/0xProject/web3-typescript-typings"
+
 "@types/bignumber.js@^4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/bignumber.js/-/bignumber.js-4.0.2.tgz#22a16946c9faa9f2c9c0ad4c7c3734a3033320ae"
-
-"@types/bignumber.js@^4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@types/bignumber.js/-/bignumber.js-4.0.3.tgz#e8ce5f28c3025a01c6af7fc6d944494903a9e348"
 
 "@types/bluebird@3.5.8":
   version "3.5.8"
@@ -77,27 +79,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/fs-extra@^4.0.0":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-4.0.3.tgz#87343b1ab99415b61817ac894ed622355a0ebf67"
-  dependencies:
-    "@types/node" "*"
-
-"@types/glob@*":
-  version "5.0.33"
-  resolved "https://registry.yarnpkg.com/@types/glob/-/glob-5.0.33.tgz#3dff7c6ce09d65abe919c7961dc3dee016f36ad7"
-  dependencies:
-    "@types/minimatch" "*"
-    "@types/node" "*"
-
-"@types/handlebars@^4.0.31":
-  version "4.0.36"
-  resolved "https://registry.yarnpkg.com/@types/handlebars/-/handlebars-4.0.36.tgz#ff57c77fa1ab6713bb446534ddc4d979707a3a79"
-
-"@types/highlight.js@^9.1.8":
-  version "9.1.10"
-  resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.1.10.tgz#b621f809cd9573b80992b90cffc5788208e3069c"
-
 "@types/history@*":
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.0.tgz#093d67ed780d889c9543f6dca24ebee0b6b9fc45"
@@ -106,7 +87,7 @@
   version "2.5.52"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.52.tgz#6ea5435d5c71562296e63ef27a4718f94f2fbb13"
 
-"@types/lodash@^4.14.37", "@types/lodash@^4.14.68":
+"@types/lodash@^4.14.68":
   version "4.14.80"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.80.tgz#a6b8b7900e6a7dcbc2e90d9b6dfbe3f6a7f69951"
 
@@ -114,21 +95,9 @@
   version "4.14.77"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.77.tgz#0bc699413e84d6ed5d927ca30ea0f0a890b42d75"
 
-"@types/marked@0.0.28":
-  version "0.0.28"
-  resolved "https://registry.yarnpkg.com/@types/marked/-/marked-0.0.28.tgz#44ba754e9fa51432583e8eb30a7c4dd249b52faa"
-
 "@types/mime@*":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.0.tgz#5a7306e367c539b9f6543499de8dd519fac37a8b"
-
-"@types/minimatch@*":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.1.tgz#b683eb60be358304ef146f5775db4c0e3696a550"
-
-"@types/minimatch@^2.0.29":
-  version "2.0.29"
-  resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-2.0.29.tgz#5002e14f75e2d71e564281df0431c8c1b4a2a36a"
 
 "@types/nedb@^1.8.3":
   version "1.8.5"
@@ -144,7 +113,7 @@
   version "8.0.31"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.31.tgz#d9af61093cf4bfc9f066ca34de0175012cfb0ce9"
 
-"@types/node@^8.0.28", "@types/node@^8.0.9":
+"@types/node@^8.0.9":
   version "8.0.47"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.47.tgz#968e596f91acd59069054558a00708c445ca30c2"
 
@@ -225,13 +194,6 @@
   dependencies:
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
-
-"@types/shelljs@^0.7.0":
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/@types/shelljs/-/shelljs-0.7.5.tgz#5834fb7385d1137bd2be5842f2c278ac36a117f4"
-  dependencies:
-    "@types/glob" "*"
-    "@types/node" "*"
 
 "@types/tmp@^0.0.33":
   version "0.0.33"
@@ -512,7 +474,7 @@ async@^0.9.0, async@~0.9.0:
   version "0.9.2"
   resolved "https://registry.yarnpkg.com/async/-/async-0.9.2.tgz#aea74d5e61c1f899613bf64bda66d4c78f2fd17d"
 
-async@^1.4.0, async@^1.4.2, async@^1.5.2:
+async@^1.4.2, async@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
@@ -1044,11 +1006,7 @@ big.js@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-3.1.3.tgz#4cada2193652eb3ca9ec8e55c9015669c9806978"
 
-bignumber.js@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-4.0.2.tgz#2d1dc37ee5968867ecea90b6da4d16e68608d21d"
-
-bignumber.js@^4.1.0:
+bignumber.js@^4.0.2, bignumber.js@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-4.1.0.tgz#db6f14067c140bd46624815a7916c92d9b6c24b1"
 
@@ -2881,7 +2839,7 @@ fs-extra@^0.30.0:
     path-is-absolute "^1.0.0"
     rimraf "^2.2.8"
 
-fs-extra@^4.0.0, fs-extra@^4.0.2:
+fs-extra@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-4.0.2.tgz#f91704c53d1b461f893452b0c307d9997647ab6b"
   dependencies:
@@ -3020,7 +2978,7 @@ glob@^4.3.1:
     minimatch "^2.0.1"
     once "^1.3.0"
 
-glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.1.2, glob@~7.1.1:
+glob@^7.0.3, glob@^7.0.5, glob@^7.1.2, glob@~7.1.1:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.2.tgz#c19c9df9a028702d678612384a6552404c636d15"
   dependencies:
@@ -3218,16 +3176,6 @@ handle-thing@^1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-1.2.5.tgz#fd7aad726bf1a5fd16dfc29b2f7a6601d27139c4"
 
-handlebars@^4.0.6:
-  version "4.0.11"
-  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.0.11.tgz#630a35dfe0294bc281edae6ffc5d329fc7982dcc"
-  dependencies:
-    async "^1.4.0"
-    optimist "^0.6.1"
-    source-map "^0.4.4"
-  optionalDependencies:
-    uglify-js "^2.6"
-
 har-schema@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/har-schema/-/har-schema-1.0.5.tgz#d263135f43307c02c602afc8fe95970c0151369e"
@@ -3323,10 +3271,6 @@ hdkey@^0.7.0:
   dependencies:
     coinstring "^2.0.0"
     secp256k1 "^3.0.1"
-
-highlight.js@^9.0.0:
-  version "9.12.0"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.12.0.tgz#e6d9dbe57cbefe60751f02af336195870c90c01e"
 
 history@^4.5.1, history@^4.6.0:
   version "4.6.3"
@@ -4356,7 +4300,7 @@ lodash.values@~2.4.1:
   dependencies:
     lodash.keys "~2.4.1"
 
-lodash@^4.13.1, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1:
+lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -4404,11 +4348,11 @@ macaddress@^0.2.8:
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
 
-machinomy@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/machinomy/-/machinomy-1.2.1.tgz#f8b4b3fc0160da4dafd73a3a3db31a0ec3ad42ad"
+machinomy@^1.6.0-next.1:
+  version "1.6.0-next.1"
+  resolved "https://registry.yarnpkg.com/machinomy/-/machinomy-1.6.0-next.1.tgz#f27027f48d7f08912689df3ee55cc84c183d2e9f"
   dependencies:
-    "@machinomy/contracts" "^1.0.1"
+    "@machinomy/contracts" "^3.1.0"
     "@types/bignumber.js" "^4.0.2"
     "@types/bluebird" "3.5.8"
     "@types/body-parser" "^1.16.4"
@@ -4436,7 +4380,6 @@ machinomy@^1.2.1:
     nedb "^1.8.0"
     prompt "^1.0.0"
     request "^2.76.0"
-    typedoc "https://github.com/lilezek/typedoc"
     types-bn "^0.0.1"
     types-ethereumjs-util "^0.0.5"
     types-rlp "^0.0.1"
@@ -4463,10 +4406,6 @@ map-cache@^0.2.0:
 map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
-
-marked@^0.3.5:
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.3.6.tgz#b2c6c618fccece4ef86c4fc6cb8a7cbf5aeda8d7"
 
 matchdep@^1.0.0:
   version "1.0.1"
@@ -4653,10 +4592,6 @@ minimist@^0.2.0:
 minimist@^1.1.0, minimist@^1.1.3, minimist@^1.2.0, minimist@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
-
-minimist@~0.0.1:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.10.tgz#de3f98543dbf96082be48ad1a0c7cda836301dcf"
 
 mississippi@^1.3.0:
   version "1.3.0"
@@ -5021,13 +4956,6 @@ opn@4.0.2:
   dependencies:
     object-assign "^4.0.1"
     pinkie-promise "^2.0.0"
-
-optimist@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/optimist/-/optimist-0.6.1.tgz#da3ea74686fa21a19a111c326e90eb15a0196686"
-  dependencies:
-    minimist "~0.0.1"
-    wordwrap "~0.0.2"
 
 orchestrator@^0.3.0:
   version "0.3.8"
@@ -5626,10 +5554,6 @@ process@^0.11.0:
 process@~0.5.1:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/process/-/process-0.5.2.tgz#1638d8a8e34c2f440a91db95ab9aeb677fc185cf"
-
-progress@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.0.tgz#8a1be366bf8fc23db2bd23f10c6fe920b4389d1f"
 
 promise-inflight@^1.0.1:
   version "1.0.1"
@@ -6620,14 +6544,6 @@ shallow-clone@^0.1.2:
     lazy-cache "^0.2.3"
     mixin-object "^2.0.1"
 
-shelljs@^0.7.0:
-  version "0.7.8"
-  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.7.8.tgz#decbcf874b0d1e5fb72e14b164a9683048e9acb3"
-  dependencies:
-    glob "^7.0.0"
-    interpret "^1.0.0"
-    rechoir "^0.6.2"
-
 sigmund@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/sigmund/-/sigmund-1.0.1.tgz#3ff21f198cad2175f9f3b781853fd94d0d19b590"
@@ -7250,32 +7166,6 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typedoc-default-themes@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/typedoc-default-themes/-/typedoc-default-themes-0.5.0.tgz#6dc2433e78ed8bea8e887a3acde2f31785bd6227"
-
-"typedoc@https://github.com/lilezek/typedoc":
-  version "0.8.0"
-  resolved "https://github.com/lilezek/typedoc#75c1ddb9d9f5035bdad8b47a8885bcfbc2099265"
-  dependencies:
-    "@types/fs-extra" "^4.0.0"
-    "@types/handlebars" "^4.0.31"
-    "@types/highlight.js" "^9.1.8"
-    "@types/lodash" "^4.14.37"
-    "@types/marked" "0.0.28"
-    "@types/minimatch" "^2.0.29"
-    "@types/shelljs" "^0.7.0"
-    fs-extra "^4.0.0"
-    handlebars "^4.0.6"
-    highlight.js "^9.0.0"
-    lodash "^4.13.1"
-    marked "^0.3.5"
-    minimatch "^3.0.0"
-    progress "^2.0.0"
-    shelljs "^0.7.0"
-    typedoc-default-themes "^0.5.0"
-    typescript "^2.5.0-dev.20170727"
-
 types-bn@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/types-bn/-/types-bn-0.0.1.tgz#4253c7c7251b14e1d77cdca6f58800e5e2b82c4b"
@@ -7333,7 +7223,7 @@ typescript-logger@^1.1.0:
   dependencies:
     gulp-webserver "^0.9.1"
 
-typescript@2.5.3, typescript@^2.5.0-dev.20170727, typescript@^2.5.3:
+typescript@2.5.3, typescript@^2.5.3:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.3.tgz#df3dcdc38f3beb800d4bc322646b04a3f6ca7f0d"
 
@@ -7348,7 +7238,7 @@ uglify-es@^3.1.3:
     commander "~2.11.0"
     source-map "~0.6.1"
 
-uglify-js@^2.6, uglify-js@^2.8.27:
+uglify-js@^2.8.27:
   version "2.8.29"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.29.tgz#29c5733148057bb4e1f75df35b7a9cb72e6a59dd"
   dependencies:
@@ -7688,9 +7578,15 @@ web3-provider-engine@^13.2.9:
     xhr "^2.2.0"
     xtend "^4.0.1"
 
+"web3-typescript-typings@https://github.com/0xProject/web3-typescript-typings":
+  version "0.7.1"
+  resolved "https://github.com/0xProject/web3-typescript-typings#bceb42c44e30cc29f947f54672bef52e3c920ebd"
+  dependencies:
+    bignumber.js "^4.0.2"
+
 "web3-typescript-typings@https://github.com/machinomy/web3-typescript-typings":
-  version "0.2.1"
-  resolved "https://github.com/machinomy/web3-typescript-typings#129e3c32ddf33c19af1b81802d6f89b2aecf857d"
+  version "0.6.2"
+  resolved "https://github.com/machinomy/web3-typescript-typings#9dc1b34664b08c5fdc9aba13c2546fb4d00bd2d3"
   dependencies:
     bignumber.js "^4.0.2"
 
@@ -7707,6 +7603,16 @@ web3@^0.19.0:
 web3@^0.20.1:
   version "0.20.2"
   resolved "https://registry.yarnpkg.com/web3/-/web3-0.20.2.tgz#c54dac5fc0e377399c04c1a6ecbb12e4513278d6"
+  dependencies:
+    bignumber.js "git+https://github.com/frozeman/bignumber.js-nolookahead.git"
+    crypto-js "^3.1.4"
+    utf8 "^2.1.1"
+    xhr2 "*"
+    xmlhttprequest "*"
+
+web3@^0.20.2:
+  version "0.20.3"
+  resolved "https://registry.yarnpkg.com/web3/-/web3-0.20.3.tgz#caa44373dc8815ac8767bddb6ba73073964caa8b"
   dependencies:
     bignumber.js "git+https://github.com/frozeman/bignumber.js-nolookahead.git"
     crypto-js "^3.1.4"
@@ -7866,10 +7772,6 @@ winston@2.1.x:
 wordwrap@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.2.tgz#b79669bb42ecb409f83d583cad52ca17eaa1643f"
-
-wordwrap@~0.0.2:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
 
 worker-farm@^1.4.1:
   version "1.5.0"
