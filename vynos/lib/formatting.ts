@@ -1,6 +1,7 @@
 import _ = require('lodash')
 import Web3 = require('web3')
 import moment = require('moment')
+import BigNumber = require('bignumber.js')
 
 const DENOMINATIONS = [
   'kwei',
@@ -22,11 +23,12 @@ export interface Amount {
 
 export function formatAmount (wei: number): Amount {
   let web3 = new Web3()
+  let bigNumberWei = new BigNumber.BigNumber(wei)
   let shortestDenomination = _.minBy(DENOMINATIONS, d => {
-    return web3.fromWei(wei, d).toString().length
+    return web3.fromWei(bigNumberWei, d as Web3.Unit).toString().length
   })
   let denomination = shortestDenomination || 'wei'
-  let value = web3.fromWei(wei, shortestDenomination || 'wei').toString()
+  let value = web3.fromWei(bigNumberWei, (shortestDenomination || 'wei') as Web3.Unit).toString()
   return { value, denomination }
 }
 
