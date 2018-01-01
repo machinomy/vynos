@@ -34,5 +34,13 @@ export function formatAmount (wei: number): Amount {
 
 export function formatDate (timestamp: number): string {
   let date = new Date(timestamp)
-  return moment(date).format('D MMM')
+  let result
+  if (moment(date).isSame(new Date(), "day")) {
+    result = 'just ' + moment(date).format('hh:mm:ss')
+  } else if (moment(date).isSame(new Date(), "year")) {
+    result = moment(date).format('D MMM, hh:mm:ss')
+  } else {
+    result = moment(date).format('D MMM YY, hh:mm:ss')
+  }
+  return result
 }
