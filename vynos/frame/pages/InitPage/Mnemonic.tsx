@@ -36,8 +36,25 @@ export class Mnemonic extends React.Component<MnemonicProps, {}> {
         <Form.Field control='textarea' rows='3' value={this.props.mnemonic} readOnly className={style.mnemonicTextarea} />
         <Divider hidden />
         <Button type='submit' content="Done" primary className={style.buttonNav} />
+        <Divider hidden />
+        <Button type='button' content="Save words to file" onClick={() => this.handleSaveToFile(this.props.mnemonic)} className={style.buttonNav} />
       </Form>
     </Container>
+  }
+
+  handleSaveToFile (data : string) {
+    let blob = new Blob([data], {type: 'text/plain'})
+    let filename = 'secretSeedPhrase.txt'
+    if(window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveBlob(blob, filename);
+    } else {
+      var elem = window.document.createElement('a');
+      elem.href = window.URL.createObjectURL(blob);
+      elem.download = filename;
+      document.body.appendChild(elem);
+      elem.click();
+      document.body.removeChild(elem);
+    }
   }
 }
 
