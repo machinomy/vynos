@@ -83,9 +83,19 @@
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.0.tgz#093d67ed780d889c9543f6dca24ebee0b6b9fc45"
 
+"@types/html2canvas@^0.5.35":
+  version "0.5.35"
+  resolved "https://registry.yarnpkg.com/@types/html2canvas/-/html2canvas-0.5.35.tgz#62ef0b59918bf87553593342fa2b040a7477a587"
+  dependencies:
+    "@types/jquery" "*"
+
 "@types/jasmine@^2.5.52":
   version "2.5.52"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.52.tgz#6ea5435d5c71562296e63ef27a4718f94f2fbb13"
+
+"@types/jquery@*":
+  version "3.2.17"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.2.17.tgz#01df9805dd5cf83a14cf5bfd81adced7d4fbd970"
 
 "@types/lodash@^4.14.68":
   version "4.14.80"
@@ -980,6 +990,10 @@ base62@0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/base62/-/base62-0.1.1.tgz#7b4174c2f94449753b11c2651c083da841a7b084"
 
+base64-arraybuffer@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/base64-arraybuffer/-/base64-arraybuffer-0.1.5.tgz#73926771923b5a19747ad666aa5cd4bf9c6e9ce8"
+
 base64-js@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-0.0.2.tgz#024f0f72afa25b75f9c0ee73cd4f55ec1bed9784"
@@ -1797,6 +1811,12 @@ crypto-js@^3.1.9-1:
 css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
+
+css-line-break@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/css-line-break/-/css-line-break-1.0.1.tgz#19f2063a33e95fb2831b86446c0b80c188af450a"
+  dependencies:
+    base64-arraybuffer "^0.1.5"
 
 css-loader@^0.28.4:
   version "0.28.4"
@@ -3353,6 +3373,12 @@ html-comment-regex@^1.1.0:
 html-entities@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.2.1.tgz#0df29351f0721163515dfb9e5543e5f6eed5162f"
+
+html2canvas@^1.0.0-alpha.9:
+  version "1.0.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/html2canvas/-/html2canvas-1.0.0-alpha.9.tgz#ff603d80835afeb6c2766e86104768a1cef1c801"
+  dependencies:
+    css-line-break "1.0.1"
 
 http-deceiver@^1.2.7:
   version "1.2.7"
