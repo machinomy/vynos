@@ -9,7 +9,8 @@ import {
   RestoreWalletRequest, RestoreWalletResponse, RememberPageRequest,
   UnlockWalletRequest,
   UnlockWalletResponse,
-  TransactonResolved
+  TransactonResolved,
+  ChangeNetwork
 } from "../lib/rpc/yns";
 import {Action} from "redux";
 import Web3 = require("web3")
@@ -130,5 +131,17 @@ export default class WorkerProxy extends EventEmitter {
 
   dispatch<A extends Action>(action: A) {
     console.warn("WorkerProxy#dispatch", action)
+  }
+
+  changeNetwork(): Promise<void> {
+    let request: ChangeNetwork = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ChangeNetwork.method,
+      params: []
+    }
+    return this.provider.ask(request).then(() => {
+      return;
+    })
   }
 }

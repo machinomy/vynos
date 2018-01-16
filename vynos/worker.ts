@@ -1,4 +1,4 @@
-import {asServiceWorker} from './worker/window'
+import { asServiceWorker } from './worker/window'
 import BackgroundController from "./worker/controllers/BackgroundController";
 import StreamServer from "./lib/StreamServer";
 import ServiceWorkerStream from "./lib/ServiceWorkerStream";
@@ -7,23 +7,20 @@ import NetworkController from "./worker/controllers/NetworkController";
 import MicropaymentsHandler from "./worker/controllers/MicropaymentsHandler";
 import MicropaymentsController from "./worker/controllers/MicropaymentsController";
 import _ = require('lodash')
-import {DevWindow} from "./window";
+import { DevWindow } from "./window";
 import TransactionService from "./worker/TransactionService";
-
+import SettingStorage from "./lib/storage/SettingStorage";
 asServiceWorker(self => {
-  let rpcUrl: null | string = null
   if (self.registration.active) {
     let scriptUrl = self.registration.active.scriptURL
     let scriptQuery = scriptUrl.replace(/.*\?/, '')
     let query = _.chain(scriptQuery).replace('?', '').split('&').map(_.ary(_.partial(_.split, _, '='), 1)).fromPairs().value()
-    rpcUrl = query.rpc_url
   }
-  rpcUrl = rpcUrl || (window as DevWindow).RPC_URL || 'https://ropsten.infura.io/T1S8a0bkyrGD7jxJBgeH';
 
   let backgroundController = new BackgroundController()
 
   let transactionService = new TransactionService(backgroundController.store)
-  let networkController = new NetworkController(backgroundController, transactionService, rpcUrl)
+  let networkController = new NetworkController(backgroundController, transactionService)
   let micropaymentsController = new MicropaymentsController(networkController, backgroundController, transactionService)
   let micropaymentsHandler = new MicropaymentsHandler(micropaymentsController)
 

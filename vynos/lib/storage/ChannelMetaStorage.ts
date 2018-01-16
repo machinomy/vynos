@@ -1,5 +1,9 @@
 import Promise = require('bluebird')
 import Datastore = require('nedb')
+import { default as globalEvents } from "../GlobalEvents";
+import SettingStorage from "./SettingStorage";
+
+const settingStorage = new SettingStorage()
 
 export interface ChannelMeta {
   channelId: string
@@ -16,35 +20,65 @@ export interface ChannelMeta {
 export default class ChannelMetaStorage {
   datastore: Datastore
 
-  constructor() {
-    this.datastore = new Datastore({filename: 'channelMetaStorage', autoload: true})
+  constructor () {
+    this.load().catch(console.error)
+    globalEvents.on('changeNetwork', () => {
+      this.load().catch(console.error)
+    })
   }
 
-  save(meta: ChannelMeta): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.datastore.insert<ChannelMeta>(meta, err => {
-        if (err) {
-          reject(err)
-        } else {
+  load (): Promise<void> {
+    return new Promise(resolve => {
+      settingStorage.getNetwork().then((network: any) => {
+        this.datastore = new Datastore({ filename: 'channelMetaStorage_' + network.name, autoload: true })
+        this.datastore.loadDatabase(() => {
           resolve()
-        }
+        })
       })
     })
   }
 
-  setClosingTime(channelId: string, time: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.datastore.update({channelId: channelId}, {$set: {closingTime: time}}, {}, err => {
-        if(err){
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
+  ready (): Promise<void> {
+    return new Promise(resolve => {
+      if (this.datastore) {
+        resolve()
+      } else {
+        this.load().then(() => {
+          resolve()
+        })
+      }
+    })
   }
 
-  insertIfNotExists(meta: ChannelMeta): Promise<void> {
+  save (meta: ChannelMeta): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.ready().then(() => {
+        this.datastore.insert<ChannelMeta>(meta, err => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve()
+          }
+        })
+      })
+    })
+  }
+
+  setClosingTime (channelId: string, time: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.ready().then(() => {
+        this.datastore.update({ channelId: channelId }, { $set: { closingTime: time } }, {}, err => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve()
+          }
+        })
+      })
+    })
+  }
+
+  insertIfNotExists (meta: ChannelMeta): Promise<void> {
     return this.firstById(meta.channelId).then(found => {
       if (!found) {
         return this.save(meta)
@@ -53,30 +87,34 @@ export default class ChannelMetaStorage {
     })
   }
 
-  firstById(channelId: string): Promise<ChannelMeta | null> {
+  firstById (channelId: string): Promise<ChannelMeta | null> {
     return new Promise((resolve, reject) => {
-      this.datastore.findOne<ChannelMeta>({channelId}, (err, meta) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(meta)
-        }
+      this.ready().then(() => {
+        this.datastore.findOne<ChannelMeta>({ channelId }, (err, meta) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(meta)
+          }
+        })
       })
     })
   }
 
-  findByIds(ids: Array<string>): Promise<Array<ChannelMeta>> {
+  findByIds (ids: Array<string>): Promise<Array<ChannelMeta>> {
     let orQuery = ids.map(id => {
-      return {channelId: id}
+      return { channelId: id }
     })
-    let query = {$or: orQuery}
+    let query = { $or: orQuery }
     return new Promise((resolve, reject) => {
-      this.datastore.find<ChannelMeta>(query).sort({closingTime: -1, openingTime: -1}).exec((err, metas) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(metas)
-        }
+      this.ready().then(() => {
+        this.datastore.find<ChannelMeta>(query).sort({ closingTime: -1, openingTime: -1 }).exec((err, metas) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(metas)
+          }
+        })
       })
     })
   }
