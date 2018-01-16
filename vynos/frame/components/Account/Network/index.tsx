@@ -19,23 +19,23 @@ export interface NetworkState {
 
 export class Network extends React.Component<NetworkProps, NetworkState> {
   settingStorage: SettingStorage
-  networksName: string[]
+  networkNames: string[]
 
   constructor () {
     super();
     this.settingStorage = new SettingStorage()
-    this.networksName = []
+    this.networkNames = []
     this.state = { value: '0', inputOther: '' }
     this.handleChange = this.handleChange.bind(this)
   }
 
   async componentDidMount () {
     for (let name in networks) {
-      this.networksName.push(name)
+      this.networkNames.push(name)
     }
     let resultNetwork: any = await this.settingStorage.getNetwork()
     let value;
-    if (this.networksName.indexOf(resultNetwork.name) !== -1) {
+    if (this.networkNames.indexOf(resultNetwork.name) !== -1) {
       value = resultNetwork.name
     } else {
       value = 'Other'
@@ -65,14 +65,14 @@ export class Network extends React.Component<NetworkProps, NetworkState> {
       <Container className={style.clearBorder}>
         <Form className={style.formNetwork} onSubmit={this.saveNetwork.bind(this)}>
           <Form.Group grouped>
-            {this.networksName.length && this.networksName.map((network: string) => {
+            {this.networkNames.length && this.networkNames.map((network: string) => {
               return <Form.Field key={network}><Radio name={'network'} label={network} value={network}
                                                       onChange={this.setRadio.bind(this)}
                                                       checked={this.state.value === network} style={{ width: '100%' }}/></Form.Field>
             })}
             <Form.Field key={'Other'}><Radio name={'network'} label={'Other'} value={'Other'}
                                              onChange={this.setRadio.bind(this)}
-                                             checked={this.networksName.indexOf(this.state.value) === -1}
+                                             checked={this.networkNames.indexOf(this.state.value) === -1}
                                              style={{ width: '100%' }}/></Form.Field>
             <input type="text" placeholder="http://127.0.0.1:8545" onChange={this.handleChange}
                    value={this.state.inputOther} id={'inputOther'}/>
