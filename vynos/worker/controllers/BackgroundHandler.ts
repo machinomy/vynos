@@ -8,7 +8,8 @@ import {
   LockWalletRequest,
   LockWalletResponse, RestoreWalletRequest, RememberPageRequest,
   UnlockWalletRequest,
-  UnlockWalletResponse, RememberPageResponse, TransactonResolved
+  UnlockWalletResponse, RememberPageResponse, TransactonResolved,
+  GetPrivateKeyHexRequest, GetPrivateKeyHexResponse
 } from "../../lib/rpc/yns";
 import {Writable} from "readable-stream";
 import {SharedStateBroadcast, SharedStateBroadcastType} from "../../lib/rpc/SharedStateBroadcast";
@@ -130,6 +131,17 @@ export default class BackgroundHandler {
     end(null)
   }
 
+  getPrivateKeyHex(message: GetPrivateKeyHexRequest, next: Function, end: EndFunction) {
+    this.controller.getPrivateKey().then((buffer: Buffer) => {
+      let response: GetPrivateKeyHexResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: buffer.toString('hex')
+      }
+      end(null, response)
+    }).catch(end)
+  }
+
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (GetSharedStateRequest.match(message)) {
       this.getSharedState(message, next, end)
@@ -149,6 +161,8 @@ export default class BackgroundHandler {
       this.rememberPage(message, next, end)
     } else if (TransactonResolved.match(message)) {
       this.resolveTransaction(message, next, end)
+    } else if (GetPrivateKeyHexRequest.match(message)) {
+      this.getPrivateKeyHex(message, next, end)
     } else {
       next()
     }
