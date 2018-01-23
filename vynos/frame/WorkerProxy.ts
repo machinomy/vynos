@@ -10,7 +10,7 @@ import {
   UnlockWalletRequest,
   UnlockWalletResponse,
   TransactonResolved,
-  ChangeNetwork
+  ChangeNetworkRequest
 } from "../lib/rpc/yns";
 import {Action} from "redux";
 import Web3 = require("web3")
@@ -134,10 +134,10 @@ export default class WorkerProxy extends EventEmitter {
   }
 
   changeNetwork(): Promise<void> {
-    let request: ChangeNetwork = {
+    let request: ChangeNetworkRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
-      method: ChangeNetwork.method,
+      method: ChangeNetworkRequest.method,
       params: []
     }
     return this.provider.ask(request).then(() => {

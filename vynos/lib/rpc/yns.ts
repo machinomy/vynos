@@ -243,15 +243,19 @@ export interface ListChannelsResponse extends ResponsePayload {
   result: Array<PaymentChannelJSON>
 }
 
-export class ChangeNetwork implements RequestPayload {
+export class ChangeNetworkRequest implements RequestPayload {
   id: number;
   jsonrpc: typeof JSONRPC;
-  method: typeof ChangeNetwork.method;
+  method: typeof ChangeNetworkRequest.method;
   params: any[];
 
   static method: string = "yns_ChangeNetwork"
 
-  static match(payload: RequestPayload): payload is ChangeNetwork {
-    return payload.method === ChangeNetwork.method
+  static match(payload: RequestPayload): payload is ChangeNetworkRequest {
+    return payload.method === ChangeNetworkRequest.method
   }
+}
+
+export interface ChangeNetworkResponse extends ResponsePayload {
+  result: string
 }

@@ -1,9 +1,6 @@
 import Promise = require('bluebird')
 import Datastore = require('nedb')
-import { default as globalEvents } from "../GlobalEvents";
-import SettingStorage from "./SettingStorage";
-
-const settingStorage = new SettingStorage()
+import Storage from '../Storage'
 
 export interface ChannelMeta {
   channelId: string
@@ -18,42 +15,18 @@ export interface ChannelMeta {
  * Database layer for {MetaChannel}
  */
 export default class ChannelMetaStorage {
-  datastore: Datastore
+  datastore: Promise<Datastore>
 
   constructor () {
-    this.load().catch(console.error)
-    globalEvents.on('changeNetwork', () => {
-      this.load().catch(console.error)
-    })
-  }
-
-  load (): Promise<void> {
-    return new Promise(resolve => {
-      settingStorage.getNetwork().then((network: any) => {
-        this.datastore = new Datastore({ filename: 'channelMetaStorage_' + network.name, autoload: true })
-        this.datastore.loadDatabase(() => {
-          resolve()
-        })
-      })
-    })
-  }
-
-  ready (): Promise<void> {
-    return new Promise(resolve => {
-      if (this.datastore) {
-        resolve()
-      } else {
-        this.load().then(() => {
-          resolve()
-        })
-      }
-    })
+    let d = new Storage('channelMetaStorage')
+    this.datastore = d.ready();
+    this.datastore.then()
   }
 
   save (meta: ChannelMeta): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.ready().then(() => {
-        this.datastore.insert<ChannelMeta>(meta, err => {
+      this.datastore.then((datastore) => {
+        datastore.insert<ChannelMeta>(meta, err => {
           if (err) {
             reject(err)
           } else {
@@ -66,8 +39,8 @@ export default class ChannelMetaStorage {
 
   setClosingTime (channelId: string, time: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.ready().then(() => {
-        this.datastore.update({ channelId: channelId }, { $set: { closingTime: time } }, {}, err => {
+      this.datastore.then((datastore) => {
+        datastore.update({ channelId: channelId }, { $set: { closingTime: time } }, {}, err => {
           if (err) {
             reject(err)
           } else {
@@ -89,8 +62,8 @@ export default class ChannelMetaStorage {
 
   firstById (channelId: string): Promise<ChannelMeta | null> {
     return new Promise((resolve, reject) => {
-      this.ready().then(() => {
-        this.datastore.findOne<ChannelMeta>({ channelId }, (err, meta) => {
+      this.datastore.then((datastore) => {
+        datastore.findOne<ChannelMeta>({ channelId }, (err, meta) => {
           if (err) {
             reject(err)
           } else {
@@ -107,8 +80,8 @@ export default class ChannelMetaStorage {
     })
     let query = { $or: orQuery }
     return new Promise((resolve, reject) => {
-      this.ready().then(() => {
-        this.datastore.find<ChannelMeta>(query).sort({ closingTime: -1, openingTime: -1 }).exec((err, metas) => {
+      this.datastore.then((datastore) => {
+        datastore.find<ChannelMeta>(query).sort({ closingTime: -1, openingTime: -1 }).exec((err, metas) => {
           if (err) {
             reject(err)
           } else {

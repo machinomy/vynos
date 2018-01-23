@@ -8,7 +8,7 @@ import {
   LockWalletRequest,
   LockWalletResponse, RestoreWalletRequest, RememberPageRequest,
   UnlockWalletRequest,
-  UnlockWalletResponse, RememberPageResponse, TransactonResolved, ChangeNetwork
+  UnlockWalletResponse, RememberPageResponse, TransactonResolved, ChangeNetworkRequest, ChangeNetworkResponse
 } from "../../lib/rpc/yns";
 import { Writable } from "readable-stream";
 import { SharedStateBroadcast, SharedStateBroadcastType } from "../../lib/rpc/SharedStateBroadcast";
@@ -131,8 +131,16 @@ export default class BackgroundHandler {
     end(null)
   }
 
-  changeNetwork (message: ChangeNetwork, next: Function, end: EndFunction) {
-    this.controller.changeNetwork().then(() => end(null)).catch(end)
+  changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) {
+    let response: ChangeNetworkResponse = {
+      id: message.id,
+      jsonrpc: message.jsonrpc,
+      result: 'ok'
+    }
+
+    this.controller.changeNetwork().then(() => {
+      end(null, response)
+    }).catch(end)
   }
 
   handler (message: RequestPayload, next: Function, end: EndFunction) {
@@ -154,7 +162,7 @@ export default class BackgroundHandler {
       this.rememberPage(message, next, end)
     } else if (TransactonResolved.match(message)) {
       this.resolveTransaction(message, next, end)
-    } else if (ChangeNetwork.match(message)) {
+    } else if (ChangeNetworkRequest.match(message)) {
       this.changeNetwork(message, next, end)
     } else {
       next()

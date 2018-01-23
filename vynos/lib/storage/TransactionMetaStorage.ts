@@ -2,48 +2,20 @@ import Datastore = require('nedb')
 import Promise = require('bluebird')
 import TransactionMeta from "../TransactionMeta";
 import TransactionState from "../TransactionState";
-import SettingStorage from "./SettingStorage";
-import { default as globalEvents } from "../GlobalEvents";
-
-const settingStorage = new SettingStorage()
+import Storage from "../Storage";
 
 export default class TransactionMetaStorage {
-  datastore: Datastore
+  datastore: Promise<Datastore>
 
   constructor () {
-    this.load().catch(console.error)
-    globalEvents.on('changeNetwork', () => {
-      this.load().catch(console.error)
-    })
-  }
-
-  load () {
-    return new Promise(resolve => {
-      settingStorage.getNetwork().then((network: any) => {
-        this.datastore = new Datastore({ filename: 'transactions_' + network.name, autoload: true })
-        this.datastore.loadDatabase(() => {
-          resolve()
-        })
-      })
-    })
-  }
-
-  ready (): Promise<void> {
-    return new Promise(resolve => {
-      if (this.datastore) {
-        resolve()
-      } else {
-        this.load().then(() => {
-          resolve()
-        })
-      }
-    })
+    let d = new Storage('transactions')
+    this.datastore = d.ready();
   }
 
   add (transaction: TransactionMeta): Promise<TransactionMeta> {
     return new Promise((resolve, reject) => {
-      this.ready().then(() => {
-        this.datastore.insert(transaction, err => {
+      this.datastore.then((datastore) => {
+        datastore.insert(transaction, err => {
           if (err) {
             reject(err)
           } else {
@@ -56,9 +28,9 @@ export default class TransactionMetaStorage {
 
   byId (id: string): Promise<TransactionMeta | null> {
     return new Promise((resolve, reject) => {
-      this.ready().then(() => {
-        this.datastore.loadDatabase(() => {
-          this.datastore.findOne<TransactionMeta>({ id: id }, (err, transaction) => {
+      this.datastore.then((datastore) => {
+        datastore.loadDatabase(() => {
+          datastore.findOne<TransactionMeta>({ id: id }, (err, transaction) => {
             if (err) {
               reject(err)
             } else {
@@ -94,9 +66,9 @@ export default class TransactionMetaStorage {
 
   update (query: object, update: object): Promise<Array<TransactionMeta>> {
     return new Promise((resolve: Function, reject: Function) => {
-      this.ready().then(() => {
-        this.datastore.update(query, update, { multi: true }, (err: Error, res: any) => {
-          this.datastore.persistence.compactDatafile()
+      this.datastore.then((datastore) => {
+        datastore.update(query, update, { multi: true }, (err: Error, res: any) => {
+          datastore.persistence.compactDatafile()
           if (err) {
             return reject(err)
           }
@@ -108,8 +80,8 @@ export default class TransactionMetaStorage {
 
   all (): Promise<Array<TransactionMeta>> {
     return new Promise((resolve, reject) => {
-      this.ready().then(() => {
-        this.datastore.loadDatabase(() => {
+      this.datastore.then((datastore) => {
+        datastore.loadDatabase(() => {
           this.find({}).then(transactions => {
             return resolve(transactions);
           })
@@ -120,8 +92,8 @@ export default class TransactionMetaStorage {
 
   protected find (query: any): Promise<Array<TransactionMeta>> {
     return new Promise((resolve, reject) => {
-      this.ready().then(() => {
-        this.datastore.find<TransactionMeta>(query).sort({ time: 1 }).exec((err, transactions) => {
+      this.datastore.then((datastore) => {
+        datastore.find<TransactionMeta>(query).sort({ time: 1 }).exec((err, transactions) => {
           if (err) {
             reject(err)
           } else {

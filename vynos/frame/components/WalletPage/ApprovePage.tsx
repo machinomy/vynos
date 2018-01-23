@@ -57,18 +57,16 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
   }
 
   update () {
-    this.storage.load().then(() => {
-      this.storage.pending().then(pending => {
-        let transaction = pending[0]
-        if (transaction) {
-          this.setState({
-            transaction,
-            pendingCount: pending.length,
-          })
-        } else {
-          this.props.setPending(false)
-        }
-      })
+    this.storage.pending().then(pending => {
+      let transaction = pending[0]
+      if (transaction) {
+        this.setState({
+          transaction,
+          pendingCount: pending.length,
+        })
+      } else {
+        this.props.setPending(false)
+      }
     })
   }
 
