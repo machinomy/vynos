@@ -1,6 +1,7 @@
 import Promise = require('bluebird')
 import Datastore = require('nedb')
 import Storage from '../Storage'
+import { CHANGE_NETWORK } from '../constants'
 
 export interface ChannelMeta {
   channelId: string
@@ -18,7 +19,7 @@ export default class ChannelMetaStorage {
   datastore: Promise<Datastore>
 
   constructor () {
-    let d = new Storage('channelMetaStorage')
+    let d = new Storage(CHANGE_NETWORK)
     this.datastore = d.ready();
     this.datastore.then()
   }

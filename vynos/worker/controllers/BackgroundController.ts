@@ -12,6 +12,7 @@ import { persistStore, autoRehydrate } from 'redux-persist';
 import localForage = require("localforage")
 import {EventEmitter} from "events";
 import GlobalEvents from '../../lib/GlobalEvents'
+import { CHANGE_NETWORK } from '../../lib/constants'
 
 const STATE_UPDATED_EVENT = "stateUpdated"
 
@@ -165,7 +166,7 @@ export default class BackgroundController {
 
   changeNetwork(): Promise<void> {
     return new Promise(resolve => {
-      GlobalEvents.emit('changeNetwork')
+      GlobalEvents.emit(CHANGE_NETWORK)
       return resolve()
     })
   }

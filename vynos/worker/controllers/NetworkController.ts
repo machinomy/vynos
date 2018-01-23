@@ -10,6 +10,7 @@ import TransactionService from "../TransactionService";
 import SettingStorage from "../../lib/storage/SettingStorage";
 import Promise = require('bluebird')
 import { default as globalEvents } from '../../lib/GlobalEvents'
+import { CHANGE_NETWORK } from '../../lib/constants'
 
 const settingStorage = new SettingStorage()
 
@@ -27,7 +28,7 @@ export default class NetworkController {
     this.handler = this.handler.bind(this)
     this.getNetwork()
 
-    globalEvents.on('changeNetwork', () => {
+    globalEvents.on(CHANGE_NETWORK, () => {
       this.getNetwork()
     })
   }
