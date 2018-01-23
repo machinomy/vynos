@@ -30,7 +30,8 @@ export default class ProviderOptions {
   }
 
   approveTransaction(txParams: any, callback: ApproveTransactionCallback) {
-    let transaction = transactions.ethereum(randomId().toString(), txParams.to, txParams.value, 0)
+    let fee = txParams.gas * txParams.gasPrice
+    let transaction = transactions.ethereum(randomId().toString(), txParams.to, txParams.value, fee)
     this.transactions.approveTransaction(transaction).then(result => {
       if (result) {
         callback(null, result)
@@ -57,7 +58,7 @@ export default class ProviderOptions {
     })
   }
 
-  signMessageAlways(messageParams: any, callback: ApproveSignCallback) {  
+  signMessageAlways(messageParams: any, callback: ApproveSignCallback) {
     this.background.getPrivateKey().then(privateKey => {
       let message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
       let msgSig = ethUtil.ecsign(message, privateKey)
@@ -68,7 +69,7 @@ export default class ProviderOptions {
     })
   }
 
-  signMessage(messageParams: any, callback: ApproveSignCallback) {   
+  signMessage(messageParams: any, callback: ApproveSignCallback) {
     const transaction = transactions.signature(messageParams.from, messageParams.data)
     this.transactions.approveTransaction(transaction).then(result => {
       if (result) {
