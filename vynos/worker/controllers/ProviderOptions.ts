@@ -75,12 +75,12 @@ export default class ProviderOptions {
       return
     }
 
-    if (!isHex(messageParams.data)) {
+    if (!isHex(messageParams.data.substring(2))) {
       callback(new Error('Vynos signMessage: message data is not in hex'))
       return
     }
 
-    if (messageParams.data.length() - '0x'.length < 32) {
+    if (messageParams.data.length - '0x'.length < 32) {
       callback(new Error('Vynos signMessage: message data length must be not less than 32'))
       return
     }

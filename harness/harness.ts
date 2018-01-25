@@ -19,7 +19,7 @@ function updateRecentPaymentChannel(channel: PaymentChannel) {
 */
 
 // _window.send = async (value) => {
-//   let eth = 0.01 
+//   let eth = 0.01
 //   if (value) {
 //     eth = value
 //   }
@@ -34,16 +34,32 @@ function updateRecentPaymentChannel(channel: PaymentChannel) {
 //   })
 // }
 
-// _window.sign = async () => {
-//   let vynos = _window.vynos
-//   let wallet = await vynos.ready()
-//   let web3 = new Web3(wallet.provider)
-//   let account = await wallet.getAccount()
-//   web3.eth.sign(account, web3.sha3('vynos'), (err, res) => {
-//     console.log(err)
-//     console.log(res)
-//   })
-// }
+_window.signMessage = function(message: string) {
+  if (message === undefined || message === null) {
+    message = ''
+  }
+  let vynos = _window.vynos
+  vynos.ready().then((wallet) => {
+    let web3 = new Web3(wallet.provider)
+    web3.eth.getAccounts((err, accounts) => {
+      if (err) {
+        if (err.message === 'invalid address') {
+          console.error('Please, login into Vynos.')
+        }
+        console.error(err)
+      }else {
+        web3.eth.sign(accounts[0], web3.sha3(message), (err, res) => {
+          if (err) {
+            console.error(err)
+          }
+          if (res) {
+            console.log(res)
+          }
+        })
+      }
+    })
+  })
+}
 
 window.addEventListener("load", function () {
   let vynos = _window.vynos
@@ -65,6 +81,17 @@ window.addEventListener("load", function () {
   if (displayButton) {
     displayButton.onclick = () => {
       vynos.display()
+    }
+  }
+
+  let signMessageForm = document.getElementById("sign_message_form")
+  if (signMessageForm) {
+    signMessageForm.onsubmit = function (ev: Event) {
+      ev.preventDefault()
+      let messageElement = <HTMLInputElement>document.getElementById("sign_message_input")
+      if (messageElement) {
+        _window.signMessage(messageElement.value)
+      }
     }
   }
 
