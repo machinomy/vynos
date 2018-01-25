@@ -52,7 +52,7 @@ export function openChannel (title: string, description: string, from: string, t
     to: to,
     title: title,
     description: description,
-    icon: '/frame/styles/images/channel-open.png',
+    icon: '/frame/styles/images/open_channel-approved.png',
     time: Date.now(),
     amount: amount,
     fee: 0,
