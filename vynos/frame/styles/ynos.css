@@ -229,7 +229,8 @@ div.terms-text > p {
 }
 
 .rejected-item {
-  opacity: 0.2;
+  /* Do not fade rejected transactions */
+  /*opacity: 0.2;*/
 }
 
 .scrollbar-container .list-item {
@@ -250,7 +251,8 @@ div.terms-text > p {
   padding-left: 15px !important;
   width: 185px;
   max-width: 185px !important;
-  opacity: 0.2;
+  /* Do not fade rejected transactions */
+  /*opacity: 0.2;*/
 }
 
 .ui.mini.image.avatar.list-item-avatar {
