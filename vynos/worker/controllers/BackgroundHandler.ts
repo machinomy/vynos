@@ -8,7 +8,8 @@ import {
   LockWalletRequest,
   LockWalletResponse, RestoreWalletRequest, RememberPageRequest,
   UnlockWalletRequest,
-  UnlockWalletResponse, RememberPageResponse, TransactonResolved, ChangeNetworkRequest, ChangeNetworkResponse
+  UnlockWalletResponse, RememberPageResponse, TransactonResolved, ChangeNetworkRequest, ChangeNetworkResponse,
+  GetPrivateKeyHexRequest, GetPrivateKeyHexResponse
 } from "../../lib/rpc/yns";
 import { Writable } from "readable-stream";
 import { SharedStateBroadcast, SharedStateBroadcastType } from "../../lib/rpc/SharedStateBroadcast";
@@ -131,7 +132,7 @@ export default class BackgroundHandler {
     end(null)
   }
 
-  changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) {
+changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) {
     let response: ChangeNetworkResponse = {
       id: message.id,
       jsonrpc: message.jsonrpc,
@@ -139,6 +140,17 @@ export default class BackgroundHandler {
     }
 
     this.controller.changeNetwork().then(() => {
+      end(null, response)
+    }).catch(end)
+  }
+
+  getPrivateKeyHex(message: GetPrivateKeyHexRequest, next: Function, end: EndFunction) {
+    this.controller.getPrivateKey().then((buffer: Buffer) => {
+      let response: GetPrivateKeyHexResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: buffer.toString('hex')
+      }
       end(null, response)
     }).catch(end)
   }
@@ -164,6 +176,8 @@ export default class BackgroundHandler {
       this.resolveTransaction(message, next, end)
     } else if (ChangeNetworkRequest.match(message)) {
       this.changeNetwork(message, next, end)
+    } else if (GetPrivateKeyHexRequest.match(message)) {
+      this.getPrivateKeyHex(message, next, end)
     } else {
       next()
     }

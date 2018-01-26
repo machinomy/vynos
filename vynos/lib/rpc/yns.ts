@@ -259,3 +259,20 @@ export class ChangeNetworkRequest implements RequestPayload {
 export interface ChangeNetworkResponse extends ResponsePayload {
   result: string
 }
+
+export class GetPrivateKeyHexRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof GetPrivateKeyHexRequest.method;
+  params: never[];
+
+  static method = "yns_getPrivateKeyHex"
+
+  static match (payload: RequestPayload): payload is GetPrivateKeyHexRequest {
+    return payload.method === GetPrivateKeyHexRequest.method
+  }
+}
+
+export interface GetPrivateKeyHexResponse extends ResponsePayload {
+  result: string
+}
