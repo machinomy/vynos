@@ -10,6 +10,7 @@ import {
   UnlockWalletRequest,
   UnlockWalletResponse,
   TransactonResolved,
+  ChangeNetworkRequest,
   GetPrivateKeyHexRequest, GetPrivateKeyHexResponse
 } from "../lib/rpc/yns";
 import {Action} from "redux";
@@ -143,5 +144,17 @@ export default class WorkerProxy extends EventEmitter {
 
   dispatch<A extends Action>(action: A) {
     console.warn("WorkerProxy#dispatch", action)
+  }
+
+  changeNetwork(): Promise<void> {
+    let request: ChangeNetworkRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ChangeNetworkRequest.method,
+      params: []
+    }
+    return this.provider.ask(request).then(() => {
+      return;
+    })
   }
 }
