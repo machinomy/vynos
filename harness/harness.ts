@@ -1,10 +1,11 @@
-import {VynosWindow} from "../vynos/window";
+import {DevWindow, VynosWindow} from "../vynos/window";
 import {PaymentChannel} from "machinomy/lib/channel";
 import {inspect} from "util";
 import Namespace from "../vynos/inpage/Namespace";
 import Web3 = require("web3");
 
 let _window = (window as VynosWindow);
+let devWindow = (window as DevWindow);
 
 /*
 let recentPaymentChannel: PaymentChannel|null = null
@@ -34,7 +35,7 @@ function updateRecentPaymentChannel(channel: PaymentChannel) {
 //   })
 // }
 
-_window.signMessage = function(message: string) {
+devWindow.signMessage = function(message : string) {
   if (message === undefined || message === null) {
     message = ''
   }
@@ -90,7 +91,7 @@ window.addEventListener("load", function () {
       ev.preventDefault()
       let messageElement = <HTMLInputElement>document.getElementById("sign_message_input")
       if (messageElement) {
-        _window.signMessage(messageElement.value)
+        devWindow.signMessage(messageElement.value)
       }
     }
   }

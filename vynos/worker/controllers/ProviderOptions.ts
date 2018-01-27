@@ -6,7 +6,6 @@ import Tx = require('ethereumjs-tx')
 import TransactionService from "../TransactionService";
 import {randomId} from "../../lib/Payload";
 import * as transactions from "../../lib/transactions";
-const isHex = require('is-hex')
 
 export type ApproveTransactionCallback = (error: any, isApproved?: boolean) => void
 export type ApproveSignCallback = (error: any, rawMsgSig?: string) => void
@@ -71,17 +70,18 @@ export default class ProviderOptions {
 
   signMessage(messageParams: any, callback: ApproveSignCallback) {
     if (typeof messageParams.data === 'string' && !messageParams.data.startsWith('0x')) {
-      callback(new Error('Vynos signMessage: message data must be hex and starts with 0x'))
+      callback(new Error('Vynos signMessage: message data must be 32 byte hex string'))
       return
     }
 
-    if (!isHex(messageParams.data.substring(2))) {
-      callback(new Error('Vynos signMessage: message data is not in hex'))
+    let matchArray = messageParams.data.substring(2).match(/[0-9A-Fa-f]+/g)
+    if (!matchArray || matchArray.length > 1 || matchArray[0].length !== messageParams.data.substring(2).length) {
+      callback(new Error('Vynos signMessage: message data must be 32 byte hex string'))
       return
     }
 
     if (messageParams.data.length - '0x'.length < 32) {
-      callback(new Error('Vynos signMessage: message data length must be not less than 32'))
+      callback(new Error('Vynos signMessage: message data must be 32 byte hex string'))
       return
     }
 
