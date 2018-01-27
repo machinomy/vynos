@@ -3,9 +3,10 @@ import {connect} from "react-redux";
 import {FormEvent} from "react";
 import {FrameState} from "../../redux/FrameState";
 import WorkerProxy from "../../WorkerProxy";
-import { Container, Button, Form, Header, Divider } from 'semantic-ui-react'
+import { Container, Button, Form, Header, Divider, Tab } from 'semantic-ui-react'
 import Logo from '../../components/Logo'
 const style = require('../../styles/ynos.css')
+import * as qr from 'qr-image'
 
 export interface MnemonicStateProps {
   workerProxy: WorkerProxy
@@ -16,31 +17,42 @@ export interface MnemonicProps extends MnemonicStateProps {
 }
 
 export class Mnemonic extends React.Component<MnemonicProps, {}> {
+   mnemonicTabPanes = [
+    { menuItem: 'Words', render: () =>
+        <Tab.Pane attached={false}>
+          <Header as='h1' className={style.mnemonicHeader}>
+            Remember these words
+            <Header.Subheader>
+              Save them somewhere safe and secret. <br />
+              These restore the wallet.
+            </Header.Subheader>
+          </Header>
+
+          <Form.Field control='textarea' rows='3' value={this.props.mnemonic} readOnly className={style.mnemonicTextarea} />
+          <p className={style.mnemonicSaveToFile}>
+            <a onClick={this.handleSaveToFile.bind(this)}>Save words to file</a>
+          </p>
+        </Tab.Pane>
+    },
+    { menuItem: 'QR', render: () =>
+        <Tab.Pane attached={false}>
+            <Header as='h1' className={style.mnemonicHeader}>
+              OR scan this
+            </Header>
+          {this.renderQR()}
+        </Tab.Pane>
+    }]
+
   handleSubmit (ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     this.props.workerProxy.didStoreMnemonic()
   }
 
-  render () {
-    return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
-      <Logo />
-      <Divider hidden />
-      <Header as='h1' className={style.mnemonicHeader}>
-        Remember these words
-        <Header.Subheader>
-          Save them somewhere safe and secret. <br />
-          These restore the wallet.
-        </Header.Subheader>
-      </Header>
-      <Form onSubmit={this.handleSubmit.bind(this)} className={style.mnemonicForm}>
-        <Form.Field control='textarea' rows='3' value={this.props.mnemonic} readOnly className={style.mnemonicTextarea} />
-        <Divider hidden />
-        <Button type='submit' content="Done" primary className={style.buttonNav} />
-        <p>
-          <a onClick={this.handleSaveToFile.bind(this)}>Save words to file</a>
-        </p>
-      </Form>
-    </Container>
+  renderQR () {
+    let mnemonic = this.props.mnemonic
+    let pngBuffer = qr.imageSync(mnemonic, {type: 'png', margin: 1}) as Buffer
+    let dataURI = 'data:image/png;base64,' + pngBuffer.toString('base64')
+    return <img className='react-qr mnemonic-qr' src={dataURI} />
   }
 
   handleSaveToFile () {
@@ -57,6 +69,16 @@ export class Mnemonic extends React.Component<MnemonicProps, {}> {
       elem.click();
       document.body.removeChild(elem);
     }
+  }
+
+  render () {
+    return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
+      <Form onSubmit={this.handleSubmit.bind(this)} className={style.mnemonicForm}>
+        <Tab menu={{pointing: true}} panes={this.mnemonicTabPanes} className={style.mnemonicTabs} />
+        <Divider hidden/>
+        <Button type='submit' content="Done" primary className={style.buttonNav}/>
+      </Form>
+    </Container>
   }
 }
 

@@ -582,3 +582,7 @@ Channels page
 #closed-channel a {
   color: #00AEEF !important;
 }
+
+.mnemonic-tabs .mnemonic-save-to-file {
+  margin-top: 7vh;
+}
