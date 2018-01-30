@@ -55,7 +55,11 @@ export default class MicropaymentsController {
           let account = accounts[0]
           let machinomy = new Machinomy(account, this.web3, { engine: 'nedb', databaseFile: 'vynos' })
           machinomy.close(channelId).then(() => {
-            resolve(channelId)
+            let channelDescription = JSON.stringify({channelId: channelId.toString()})
+            let transaction = transactions.closeChannel(channelDescription)
+            return this.transactions.addTransaction(transaction).then(() => {
+              resolve(channelId)
+            })
           }).catch(reject)
         })
       })

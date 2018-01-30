@@ -44,3 +44,19 @@ export function signature (from: string, data: string): Transaction {
     state: TransactionState.PENDING
   }
 }
+
+export function closeChannel (description: string): Transaction {
+  return {
+    id: randomId().toString(),
+    title: 'Closing channel',
+    from: '',
+    to: '',
+    description: description,
+    icon: '/frame/styles/images/close_channel-approved.png',
+    time: Date.now(),
+    amount: 0,
+    fee: 0,
+    kind: TransactionKind.CLOSE_CHANNEL,
+    state: TransactionState.APPROVED
+  }
+}

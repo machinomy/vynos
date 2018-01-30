@@ -69,6 +69,9 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
       description = 'Send to ' + transaction.to.slice(0, 8) + '..' + transaction.to.slice(-2)
     } else if (transaction.kind == TransactionKind.SIGN && transaction.data) {
       description = transaction.data.slice(0, 8) + '..' + transaction.data.slice(-2)
+    } else if (transaction.kind == TransactionKind.CLOSE_CHANNEL && transaction.description) {
+      let parsedDescription = JSON.parse(transaction.description)
+      description = parsedDescription.channelId.slice(0, 8) + '..' + parsedDescription.channelId.slice(-2)
     }
     return description
   }
