@@ -13,6 +13,7 @@ import TransactionService from "../TransactionService";
 import * as transactions from '../../lib/transactions'
 import PurchaseMeta from "../../lib/PurchaseMeta";
 import ChannelMetaStorage from "../../lib/storage/ChannelMetaStorage";
+import TransactionState from "../../lib/TransactionState";
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -101,9 +102,16 @@ export default class MicropaymentsController {
             })
           }).then(response =>{
             let transaction = transactions.micropayment(purchaseMeta, receiver, amount)
-            return this.transactions.addTransaction(transaction).then(() => {
-              return response
+            this.background.getSharedState().then(sharedState => {
+                if (amount > sharedState.preferences.micropaymentThreshold) {
+                  transaction.state = TransactionState.PENDING
+                  this.transactions.approveTransaction(transaction)
+                }
+              return this.transactions.addTransaction(transaction).then(() => {
+                return response
+              })
             })
+            return response
           }).then(resolve).catch(reject)
         })
       })

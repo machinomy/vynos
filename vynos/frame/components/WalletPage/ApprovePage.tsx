@@ -11,6 +11,7 @@ import TransactionState from '../../../lib/TransactionState'
 import TransactionKind from '../../../lib/TransactionKind'
 import ApproveSignature from './ApproveSignature'
 import ApproveTransaction from './ApproveTransaction'
+import ApproveMicropayment from './ApproveMicropayment'
 
 const style = require('../../styles/ynos.css')
 
@@ -100,6 +101,9 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
         break
       case TransactionKind.ETHEREUM:
         transactionData = <ApproveTransaction transaction={this.state.transaction} key={this.state.transaction.id}/>
+        break
+      case TransactionKind.MICROPAYMENT:
+        transactionData = <ApproveMicropayment transaction={this.state.transaction} key={this.state.transaction.id}/>
         break
       default:
         throw new Error("Not Implemented")

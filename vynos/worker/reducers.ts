@@ -10,5 +10,6 @@ const reducers: ReducerBuilder<WorkerState, WorkerState> = reducerWithInitialSta
   .case(actions.setTransactionPending, actions.setTransactionPendingHandler)
   .case(actions.rememberPage, actions.rememberPageHandler)
   .case(actions.setLastUpdateDb, actions.setLastUpdateDbHandler)
+  .case(actions.setPreferences, actions.setPreferencesHandler)
 
 export default reducers

@@ -1,7 +1,6 @@
 import actionCreatorFactory, {ActionCreator} from 'typescript-fsa'
-import {WorkerState} from './WorkerState';
+import {Preferences, WorkerState} from './WorkerState';
 import Wallet from 'ethereumjs-wallet'
-import Transaction from "../lib/TransactionMeta";
 
 const actionCreator = actionCreatorFactory("worker");
 
@@ -66,5 +65,12 @@ export function setLastUpdateDbHandler(state: WorkerState, timestamp: number): W
   return {
     ...state,
     runtime: {...state.runtime, lastUpdateDb: timestamp}
+  }
+}
+
+export const setPreferences = actionCreator<Preferences>("persistent/setPreferences")
+export function setPreferencesHandler(state: WorkerState, preferences: Preferences): WorkerState {
+  return { ...state,
+    persistent: { ...state.persistent, preferences }
   }
 }

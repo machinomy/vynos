@@ -1,6 +1,6 @@
 import * as redux from "redux";
 import reducers from "../reducers";
-import {buildSharedState, INITIAL_STATE, SharedState, WorkerState} from "../WorkerState";
+import {buildSharedState, INITIAL_STATE, Preferences, SharedState, WorkerState} from "../WorkerState";
 import {Store} from "redux";
 import * as actions from "../actions";
 import bip39 =require("bip39")
@@ -168,6 +168,13 @@ export default class BackgroundController {
     return new Promise(resolve => {
       GlobalEvents.emit(CHANGE_NETWORK)
       return resolve()
+    })
+  }
+
+  setPreferences(preferences: Preferences): Promise<void> {
+    return new Promise(resolve => {
+      this.store.dispatch(actions.setPreferences(preferences))
+      resolve()
     })
   }
 }
