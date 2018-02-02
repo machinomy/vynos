@@ -14,6 +14,7 @@ import * as transactions from '../../lib/transactions'
 import PurchaseMeta from "../../lib/PurchaseMeta";
 import ChannelMetaStorage from "../../lib/storage/ChannelMetaStorage";
 import TransactionState from "../../lib/TransactionState";
+const timeparse = require('timeparse');
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -103,11 +104,23 @@ export default class MicropaymentsController {
           }).then(response =>{
             let transaction = transactions.micropayment(purchaseMeta, receiver, amount)
             this.background.getSharedState().then(sharedState => {
-                if (amount > sharedState.preferences.micropaymentThreshold) {
+                let interval = Date.now() - sharedState.lastMicropaymentTime
+                let throttlingInMs = -1
+                if (sharedState.preferences.micropaymentThrottlingHumanReadable === '-1ms'
+                  || sharedState.preferences.micropaymentThrottlingHumanReadable.length === 0) {
+                  throttlingInMs = -1
+                } else if (/^\d+$/.test(sharedState.preferences.micropaymentThrottlingHumanReadable)) {
+                  throttlingInMs = parseInt(sharedState.preferences.micropaymentThrottlingHumanReadable)
+                } else {
+                  throttlingInMs = timeparse(sharedState.preferences.micropaymentThrottlingHumanReadable)
+                }
+
+                if (amount > sharedState.preferences.micropaymentThreshold || interval < throttlingInMs) {
                   transaction.state = TransactionState.PENDING
                   this.transactions.approveTransaction(transaction)
                 }
               return this.transactions.addTransaction(transaction).then(() => {
+                this.background.setLastMicropaymentTime(Date.now())
                 return response
               })
             })

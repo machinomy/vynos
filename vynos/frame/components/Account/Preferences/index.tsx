@@ -9,6 +9,7 @@ const style = require("../../../styles/ynos.css");
 
 export interface PreferencesStateProps {
   preferences: PreferencesType
+  throttlingTimeFormatted: string
 }
 
 export interface PreferencesProps {
@@ -22,7 +23,8 @@ export class Preferences extends React.Component<PreferencesProps, PreferencesSt
   constructor(props: PreferencesProps) {
     super(props)
     this.state = {
-      preferences : props.preferences
+      preferences : props.preferences,
+      throttlingTimeFormatted: props.preferences.micropaymentThrottlingHumanReadable
     }
   }
 
@@ -52,13 +54,25 @@ export class Preferences extends React.Component<PreferencesProps, PreferencesSt
         <Form.Group grouped>
           <label>Other</label><br/>
             <label>Threshold (in wei)</label>
-            <Form.Input className={'micropaymentThreshold'} value={this.state.preferences.micropaymentThreshold} onChange={()=>{this.handleChangeMicropaymentThreshold()}}/>
+            <Form.Input className={'micropaymentThreshold'} value={this.state.preferences.micropaymentThreshold} onChange={()=>{this.handleChangeMicropaymentThreshold()}}/><br/>
+            <label>Throttling (in ms, s, m, h, d, w or empty for none, eg 2h5m)</label>
+            <Form.Input className={'micropaymentThrottling'} value={this.state.throttlingTimeFormatted}
+                        onChange={()=>{this.handleChangeMicropaymentThrottling()}}/><br/>
         </Form.Group>
         <p className={style.buttonNav}>
           <Button type='submit' content="Save" primary disabled/>
         </p>
       </Form>
     </Container>
+  }
+
+  handleChangeMicropaymentThrottling() {
+    let newValueAsString = (document.querySelector('.micropaymentThrottling input') as HTMLInputElement)
+      ? (document.querySelector('.micropaymentThrottling input') as HTMLInputElement) .value
+      : '-1'
+    this.state = {...this.state, throttlingTimeFormatted: newValueAsString}
+    this.state.preferences.micropaymentThrottlingHumanReadable = this.state.throttlingTimeFormatted
+    this.props.workerProxy.setPreferences(this.state.preferences).then(()=>{})
   }
 
   handleChangeMicropaymentThreshold() {

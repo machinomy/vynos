@@ -12,6 +12,13 @@ export function setWalletHandler(state: WorkerState, wallet: Wallet|undefined): 
   }
 }
 
+export const setLastMicropaymentTime = actionCreator<number>("runtime/setLastMicropaymentTime")
+export function setLastMicropaymentTimeHandler(state: WorkerState, lastMicropaymentTime: number): WorkerState {
+  return { ...state,
+    runtime: { ...state.runtime, lastMicropaymentTime: lastMicropaymentTime }
+  }
+}
+
 // Persistent
 export const setKeyring = actionCreator<string>("persistent/setKeyring")
 export function setKeyringHandler(state: WorkerState, keyring: string): WorkerState {

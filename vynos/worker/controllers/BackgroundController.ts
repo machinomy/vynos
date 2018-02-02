@@ -177,4 +177,11 @@ export default class BackgroundController {
       resolve()
     })
   }
+
+  setLastMicropaymentTime(lastMicropaymentTime: number): Promise<void> {
+    return new Promise(resolve => {
+      this.store.dispatch(actions.setLastMicropaymentTime(lastMicropaymentTime))
+      resolve()
+    })
+  }
 }
