@@ -30,7 +30,8 @@ export default class ProviderOptions {
   }
 
   approveTransaction(txParams: any, callback: ApproveTransactionCallback) {
-    let transaction = transactions.ethereum(randomId().toString(), txParams.to, txParams.value, 0)
+    let fee = txParams.gas * txParams.gasPrice
+    let transaction = transactions.ethereum(randomId().toString(), txParams.to, txParams.value, fee)
     this.transactions.approveTransaction(transaction).then(result => {
       if (result) {
         callback(null, result)
