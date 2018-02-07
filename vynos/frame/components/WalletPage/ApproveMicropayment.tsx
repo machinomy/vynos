@@ -11,7 +11,6 @@ export interface ApproveTransactionProps {
 }
 
 export interface ApproveTransactionState{
-  channelId: string
   formatedAmount: string
 }
 
@@ -23,18 +22,27 @@ export default class ApprovePage extends React.Component<ApproveTransactionProps
     let delimitedOutput = this.props.transaction.amount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     let formatedAmount = value + ' ' + denomination + '('+ delimitedOutput +' wei)'
     this.state = {
-      channelId: '',
       formatedAmount: formatedAmount
     }
   }
 
   render() {
-    return <Form className={style.encryptionForm} >
+    return <Form className={style.encryptionForm}>
       <Form.Field className={style.clearIndent}>
-        <label>Channel:</label> <div className={style.listDesc}>{this.state.channelId}</div>
-        <label>Amount:</label> <div>{this.state.formatedAmount}</div>
+        <Form.Group grouped>
+          <label>Site</label>
+          <div>{this.props.transaction.origin}</div>
+        </Form.Group>
+        <Form.Group grouped>
+          <label>Description</label>
+          <div>{this.props.transaction.description}</div>
+        </Form.Group>
+        <Form.Group grouped>
+          <label>Amount</label>
+          <div>{this.state.formatedAmount}</div>
+        </Form.Group>
       </Form.Field>
-      <Divider hidden />
+      <Divider hidden/>
     </Form>
   }
 }

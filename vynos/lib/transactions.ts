@@ -1,5 +1,5 @@
 import Transaction from "./TransactionMeta";
-import {randomId} from "./Payload";
+import { randomId } from "./Payload";
 import TransactionKind from "./TransactionKind";
 import TransactionState from "./TransactionState";
 import PurchaseMeta from "./PurchaseMeta";
@@ -20,6 +20,7 @@ export function ethereum (id: string, to: string, amount: number, fee: number): 
 export function micropayment (purchaseMeta: PurchaseMeta, receiver: string, amount: number): Transaction {
   return {
     id: randomId().toString(),
+    origin: purchaseMeta.origin,
     title: purchaseMeta.siteName,
     description: purchaseMeta.description,
     icon: purchaseMeta.icon,

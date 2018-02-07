@@ -33,7 +33,8 @@ export class Preferences extends React.Component<PreferencesProps, PreferencesSt
   }
 
   render () {
-    return <Container className={`${style.clearBorder}`}>
+    return <div style={{overflow:"auto", paddingBottom:"20px"}}>
+    <Container className={`${style.clearBorder}`}>
       <Form>
         <Form.Group grouped>
           <label>Channels</label>
@@ -41,9 +42,11 @@ export class Preferences extends React.Component<PreferencesProps, PreferencesSt
           <Form.Checkbox label='Throttling' disabled/>
         </Form.Group>
         <Form.Group grouped>
-          <label>Micropayments</label>
-          <Form.Input placeholder='Maximum micropayment' disabled/>
-          <Form.Checkbox label='Throttling' disabled/>
+          <label>Micropayments (threshold in wei)</label>
+          <Form.Input placeholder='Maximum micropayment' className={'micropaymentThreshold'} value={this.state.preferences.micropaymentThreshold} onChange={()=>{this.handleChangeMicropaymentThreshold()}}/>
+          <label>Throttling (in ms, s, m, h, d, w or empty for none, eg 2h5m)</label>
+          <Form.Input className={'micropaymentThrottling'} value={this.state.throttlingTimeFormatted}
+                      onChange={()=>{this.handleChangeMicropaymentThrottling()}}/>
         </Form.Group>
         <Form.Group grouped>
           <label>Security</label>
@@ -51,25 +54,18 @@ export class Preferences extends React.Component<PreferencesProps, PreferencesSt
             <a onClick={() => {this.handleSavePrivateKeyToFile()}}>Save private key to file</a>
           </p>
         </Form.Group>
-        <Form.Group grouped>
-          <label>Other</label><br/>
-            <label>Threshold (in wei)</label>
-            <Form.Input className={'micropaymentThreshold'} value={this.state.preferences.micropaymentThreshold} onChange={()=>{this.handleChangeMicropaymentThreshold()}}/><br/>
-            <label>Throttling (in ms, s, m, h, d, w or empty for none, eg 2h5m)</label>
-            <Form.Input className={'micropaymentThrottling'} value={this.state.throttlingTimeFormatted}
-                        onChange={()=>{this.handleChangeMicropaymentThrottling()}}/><br/>
-        </Form.Group>
-        <p className={style.buttonNav}>
-          <Button type='submit' content="Save" primary disabled/>
-        </p>
+        {/*<p className={style.buttonNav}>*/}
+          {/*<Button type='submit' content="Save" primary disabled/>*/}
+        {/*</p>*/}
       </Form>
     </Container>
+    </div>
   }
 
   handleChangeMicropaymentThrottling() {
     let newValueAsString = (document.querySelector('.micropaymentThrottling input') as HTMLInputElement)
       ? (document.querySelector('.micropaymentThrottling input') as HTMLInputElement) .value
-      : '-1'
+      : '0'
     this.state = {...this.state, throttlingTimeFormatted: newValueAsString}
     this.state.preferences.micropaymentThrottlingHumanReadable = this.state.throttlingTimeFormatted
     this.props.workerProxy.setPreferences(this.state.preferences).then(()=>{})

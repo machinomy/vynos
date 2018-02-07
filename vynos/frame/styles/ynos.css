@@ -580,3 +580,17 @@ Channels page
 #closed-channel a {
   color: #00AEEF !important;
 }
+
+/******************************
+Approve page
+******************************/
+
+.approveMicropaymentError {
+  background-color: #db2828;
+  color: #fff;
+  text-align: center;
+  height: 72px;
+  line-height: 72px;
+  font-size: 19px;
+  font-weight: bold;
+}

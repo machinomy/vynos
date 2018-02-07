@@ -107,6 +107,7 @@ export default class MicropaymentsController {
                 let interval = Date.now() - sharedState.lastMicropaymentTime
                 let throttlingInMs = -1
                 if (sharedState.preferences.micropaymentThrottlingHumanReadable === '-1ms'
+                  || sharedState.preferences.micropaymentThrottlingHumanReadable === '0'
                   || sharedState.preferences.micropaymentThrottlingHumanReadable.length === 0) {
                   throttlingInMs = -1
                 } else if (/^\d+$/.test(sharedState.preferences.micropaymentThrottlingHumanReadable)) {

@@ -110,7 +110,9 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
     }
 
     return <div>
-      <WalletAccount/>
+      {this.state.transaction.kind === TransactionKind.MICROPAYMENT ? <div className={style.approveMicropaymentError}>
+        Too often or too large a payment
+      </div> : ''}
       <Container textAlign="center" style={{ marginTop: '10px' }}>
         {pending}
         {transactionData}
