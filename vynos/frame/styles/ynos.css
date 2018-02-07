@@ -228,11 +228,6 @@ div.terms-text > p {
   overflow-x: hidden !important;
 }
 
-.rejected-item {
-  /* Do not fade rejected transactions */
-  /*opacity: 0.2;*/
-}
-
 .scrollbar-container .list-item {
   padding: 0 20px 15px 15px !important;
 }
@@ -251,8 +246,6 @@ div.terms-text > p {
   padding-left: 15px !important;
   width: 185px;
   max-width: 185px !important;
-  /* Do not fade rejected transactions */
-  /*opacity: 0.2;*/
 }
 
 .ui.mini.image.avatar.list-item-avatar {
