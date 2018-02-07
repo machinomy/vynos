@@ -70,12 +70,28 @@ export default class ProviderOptions {
   }
 
   signMessage(messageParams: any, callback: ApproveSignCallback) {
+    if (typeof messageParams.data === 'string' && !messageParams.data.startsWith('0x')) {
+      callback(new Error('Vynos signMessage: message data must be 32 byte hex string'))
+      return
+    }
+
+    let matchArray = messageParams.data.substring(2).match(/[0-9A-Fa-f]+/g)
+    if (!matchArray || matchArray.length > 1 || matchArray[0].length !== messageParams.data.substring(2).length) {
+      callback(new Error('Vynos signMessage: message data must be 32 byte hex string'))
+      return
+    }
+
+    if (messageParams.data.length - '0x'.length < 32) {
+      callback(new Error('Vynos signMessage: message data must be 32 byte hex string'))
+      return
+    }
+
     const transaction = transactions.signature(messageParams.from, messageParams.data)
     this.transactions.approveTransaction(transaction).then(result => {
       if (result) {
         this.signMessageAlways(messageParams, callback)
       } else {
-        callback('Vynos: User rejected sign')
+        callback(new Error('Vynos: User rejected sign'))
       }
     }).catch(error => {
       callback(error.message)

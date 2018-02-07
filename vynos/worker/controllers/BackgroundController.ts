@@ -11,7 +11,8 @@ import Wallet = require("ethereumjs-wallet")
 import { persistStore, autoRehydrate } from 'redux-persist';
 import localForage = require("localforage")
 import {EventEmitter} from "events";
-import {isNumber} from "util";
+import GlobalEvents from '../../lib/GlobalEvents'
+import { CHANGE_NETWORK } from '../../lib/constants'
 
 const STATE_UPDATED_EVENT = "stateUpdated"
 
@@ -160,6 +161,13 @@ export default class BackgroundController {
       this.getSharedState().then(sharedState => {
         fn(sharedState)
       })
+    })
+  }
+
+  changeNetwork(): Promise<void> {
+    return new Promise(resolve => {
+      GlobalEvents.emit(CHANGE_NETWORK)
+      return resolve()
     })
   }
 }

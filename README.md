@@ -90,3 +90,6 @@ It demonstrates Vynos work on localhost. It runs a web page (Vynos client) on lo
 Serves Vynos frame (stores privateKeys a-la MetaMaskara) from localhost:9090. Different ports
 make the browser think the pages belong to different origins, thus should be secured
 against each other malicious behaviour.
+
+## Copyright Notice
+Vynos use icons from icons8.com
