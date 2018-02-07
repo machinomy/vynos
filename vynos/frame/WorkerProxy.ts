@@ -9,7 +9,9 @@ import {
   RestoreWalletRequest, RestoreWalletResponse, RememberPageRequest,
   UnlockWalletRequest,
   UnlockWalletResponse,
-  TransactonResolved
+  TransactonResolved,
+  ChangeNetworkRequest,
+  GetPrivateKeyHexRequest, GetPrivateKeyHexResponse
 } from "../lib/rpc/yns";
 import {Action} from "redux";
 import Web3 = require("web3")
@@ -128,7 +130,31 @@ export default class WorkerProxy extends EventEmitter {
     this.provider.ask(request).then(() => {})
   }
 
+  getPrivateKeyHex(): Promise<string> {
+    let request: GetPrivateKeyHexRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: GetPrivateKeyHexRequest.method,
+      params: []
+    }
+    return this.provider.ask(request).then((response: GetPrivateKeyHexResponse) => {
+      return response.result
+    })
+  }
+
   dispatch<A extends Action>(action: A) {
     console.warn("WorkerProxy#dispatch", action)
+  }
+
+  changeNetwork(): Promise<void> {
+    let request: ChangeNetworkRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ChangeNetworkRequest.method,
+      params: []
+    }
+    return this.provider.ask(request).then(() => {
+      return;
+    })
   }
 }

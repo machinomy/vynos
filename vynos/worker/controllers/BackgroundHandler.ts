@@ -1,6 +1,6 @@
 import BackgroundController from "./BackgroundController";
-import {JSONRPC, RequestPayload} from "../../lib/Payload";
-import {EndFunction} from "../../lib/StreamServer";
+import { JSONRPC, RequestPayload } from "../../lib/Payload";
+import { EndFunction } from "../../lib/StreamServer";
 import {
   DidStoreMnemonicRequest, DidStoreMnemonicResponse,
   GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, InitAccountRequest,
@@ -8,20 +8,22 @@ import {
   LockWalletRequest,
   LockWalletResponse, RestoreWalletRequest, RememberPageRequest,
   UnlockWalletRequest,
-  UnlockWalletResponse, RememberPageResponse, TransactonResolved
+  UnlockWalletResponse, RememberPageResponse, TransactonResolved, ChangeNetworkRequest, ChangeNetworkResponse,
+  GetPrivateKeyHexRequest, GetPrivateKeyHexResponse
 } from "../../lib/rpc/yns";
-import {Writable} from "readable-stream";
-import {SharedStateBroadcast, SharedStateBroadcastType} from "../../lib/rpc/SharedStateBroadcast";
+import { Writable } from "readable-stream";
+import { SharedStateBroadcast, SharedStateBroadcastType } from "../../lib/rpc/SharedStateBroadcast";
+import NetworkController from "./NetworkController";
 
 export default class BackgroundHandler {
   controller: BackgroundController
 
-  constructor(controller: BackgroundController) {
+  constructor (controller: BackgroundController) {
     this.controller = controller
     this.handler = this.handler.bind(this)
   }
 
-  getSharedState(message: GetSharedStateRequest, next: Function, end: EndFunction) {
+  getSharedState (message: GetSharedStateRequest, next: Function, end: EndFunction) {
     this.controller.getSharedState().then(sharedState => {
       let response: GetSharedStateResponse = {
         id: message.id,
@@ -32,7 +34,7 @@ export default class BackgroundHandler {
     }).catch(end)
   }
 
-  genKeyring(message: GenKeyringRequest, next: Function, end: EndFunction) {
+  genKeyring (message: GenKeyringRequest, next: Function, end: EndFunction) {
     let password: string = message.params[0]
     this.controller.genKeyring(password).then((mnemonic: string) => {
       let response: GenKeyringResponse = {
@@ -44,7 +46,7 @@ export default class BackgroundHandler {
     }).catch(end)
   }
 
-  restoreWallet(message: RestoreWalletRequest, next: Function, end: EndFunction) {
+  restoreWallet (message: RestoreWalletRequest, next: Function, end: EndFunction) {
     let password: string = message.params[0]
     let mnemonic: string = message.params[1]
     this.controller.restoreWallet(password, mnemonic).then(() => {
@@ -57,7 +59,7 @@ export default class BackgroundHandler {
     }).catch(end)
   }
 
-  didStoreMnemonic(message: DidStoreMnemonicRequest, next: Function, end: EndFunction) {
+  didStoreMnemonic (message: DidStoreMnemonicRequest, next: Function, end: EndFunction) {
     this.controller.didStoreMnemonic().then(() => {
       let response: DidStoreMnemonicResponse = {
         id: message.id,
@@ -68,7 +70,7 @@ export default class BackgroundHandler {
     }).catch(end)
   }
 
-  unlockWallet(message: UnlockWalletRequest, next: Function, end: EndFunction) {
+  unlockWallet (message: UnlockWalletRequest, next: Function, end: EndFunction) {
     let password = message.params[0]
     this.controller.unlockWallet(password).then(() => {
       let response: UnlockWalletResponse = {
@@ -92,7 +94,7 @@ export default class BackgroundHandler {
     })
   }
 
-  lockWallet(message: LockWalletRequest, next: Function, end: EndFunction) {
+  lockWallet (message: LockWalletRequest, next: Function, end: EndFunction) {
     this.controller.lockWallet().then(() => {
       let response: LockWalletResponse = {
         id: message.id,
@@ -103,7 +105,7 @@ export default class BackgroundHandler {
     }).catch(end)
   }
 
-  initAccount(message: InitAccountRequest, next: Function, end: EndFunction) {
+  initAccount (message: InitAccountRequest, next: Function, end: EndFunction) {
     this.controller.awaitUnlock(() => {
       let response: InitAccountResponse = {
         id: message.id,
@@ -114,7 +116,7 @@ export default class BackgroundHandler {
     })
   }
 
-  rememberPage(message: RememberPageRequest, next: Function, end: EndFunction) {
+  rememberPage (message: RememberPageRequest, next: Function, end: EndFunction) {
     let path = message.params[0]
     this.controller.rememberPage(path)
     let response: RememberPageResponse = {
@@ -125,9 +127,32 @@ export default class BackgroundHandler {
     end(null, response)
   }
 
-  resolveTransaction(message: TransactonResolved, next: Function, end: EndFunction) {
+  resolveTransaction (message: TransactonResolved, next: Function, end: EndFunction) {
     this.controller.resolveTransaction()
     end(null)
+  }
+
+changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) {
+    let response: ChangeNetworkResponse = {
+      id: message.id,
+      jsonrpc: message.jsonrpc,
+      result: 'ok'
+    }
+
+    this.controller.changeNetwork().then(() => {
+      end(null, response)
+    }).catch(end)
+  }
+
+  getPrivateKeyHex(message: GetPrivateKeyHexRequest, next: Function, end: EndFunction) {
+    this.controller.getPrivateKey().then((buffer: Buffer) => {
+      let response: GetPrivateKeyHexResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: buffer.toString('hex')
+      }
+      end(null, response)
+    }).catch(end)
   }
 
   handler (message: RequestPayload, next: Function, end: EndFunction) {
@@ -149,12 +174,16 @@ export default class BackgroundHandler {
       this.rememberPage(message, next, end)
     } else if (TransactonResolved.match(message)) {
       this.resolveTransaction(message, next, end)
+    } else if (ChangeNetworkRequest.match(message)) {
+      this.changeNetwork(message, next, end)
+    } else if (GetPrivateKeyHexRequest.match(message)) {
+      this.getPrivateKeyHex(message, next, end)
     } else {
       next()
     }
   }
 
-  broadcastSharedState(stream: Writable) {
+  broadcastSharedState (stream: Writable) {
     this.controller.didChangeSharedState(sharedState => {
       let message: SharedStateBroadcast = {
         id: SharedStateBroadcastType,

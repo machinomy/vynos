@@ -19,7 +19,7 @@
   position: absolute;
 }
 
-.flex-container  {
+.flex-container {
   display: flex !important;
   height: 100% !important;
   flex-direction: column !important;
@@ -61,7 +61,6 @@ a.read-terms {
   flex: 0 0 4rem;
 }
 
-
 h1.mnemonic-header {
   margin-top: 0 !important;
 }
@@ -94,7 +93,7 @@ h1.welcome-header {
 .mnemonic-input {
   border: 0 !important;
   border-radius: 0 !important;
-  border-bottom: 1px solid rgba(34,36,38,.15) !important;
+  border-bottom: 1px solid rgba(34, 36, 38, .15) !important;
   box-shadow: none !important;
   padding: 10px 0 !important;
 }
@@ -102,6 +101,7 @@ h1.welcome-header {
 .auth-form-field {
   padding-bottom: 45px !important;
 }
+
 /******************************
 Wallet page
 ******************************/
@@ -205,7 +205,7 @@ div.terms-text > p {
   width: 100% !important;
   border: 0 !important;
   padding: 0 50px !important;
-  box-shadow: 0 7px 10px -5px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 7px 10px -5px rgba(0, 0, 0, 0.1) !important;
   border-radius: 0 !important;
   padding-bottom: 20px !important;
   background-color: #FAFAFA !important;
@@ -301,8 +301,6 @@ div.terms-text > p {
 .wrap > #welcome.is-active {
   display: block;
 }
-
-
 
 /******************************
 Icon Fonts
@@ -451,6 +449,7 @@ Top menu
 .clear-shadow {
   box-shadow: none !important;
 }
+
 /******************************
 Network page
 ******************************/
@@ -492,7 +491,6 @@ TransactionImpl page
 .key-highlight {
   color: #00AEEF;
 }
-
 
 /******************************
 Encryption page
@@ -537,7 +535,7 @@ button.button-nav {
   color: #D04071;
 }
 
-.error-text *{
+.error-text * {
   color: #D04071;
 }
 

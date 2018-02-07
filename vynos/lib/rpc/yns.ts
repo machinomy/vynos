@@ -242,3 +242,37 @@ export class ListChannelsRequest implements RequestPayload {
 export interface ListChannelsResponse extends ResponsePayload {
   result: Array<PaymentChannelJSON>
 }
+
+export class ChangeNetworkRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof ChangeNetworkRequest.method;
+  params: any[];
+
+  static method: string = "yns_ChangeNetwork"
+
+  static match(payload: RequestPayload): payload is ChangeNetworkRequest {
+    return payload.method === ChangeNetworkRequest.method
+  }
+}
+
+export interface ChangeNetworkResponse extends ResponsePayload {
+  result: string
+}
+
+export class GetPrivateKeyHexRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof GetPrivateKeyHexRequest.method;
+  params: never[];
+
+  static method = "yns_getPrivateKeyHex"
+
+  static match (payload: RequestPayload): payload is GetPrivateKeyHexRequest {
+    return payload.method === GetPrivateKeyHexRequest.method
+  }
+}
+
+export interface GetPrivateKeyHexResponse extends ResponsePayload {
+  result: string
+}
