@@ -83,10 +83,14 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
       styleListItem += ' ' + style.rejectedItem
       transactiontTitle = 'Transaction was rejected by user'
     }
+    let fee = formatAmount(transaction.fee ? transaction.fee : 0)
 
     return <List.Item className={styleListItem} key={transaction.id} title={transactiontTitle}>
       <List.Content floated='right'>
         <span className={style.channelBalance}>{value} {denomination}</span>
+        <p>
+          <span className={style.channelBalance}>Fee {fee.value} {fee.denomination}</span>
+        </p>
       </List.Content>
       {icon}
       <List.Content className={style.listContent}>
