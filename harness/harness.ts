@@ -4,7 +4,7 @@ import {inspect} from "util";
 import Namespace from "../vynos/inpage/Namespace";
 import Web3 = require("web3");
 import VynosBuyResponse from "../vynos/lib/VynosBuyResponse";
-const BigNumber = require ('bignumber.js')
+import * as BigNumber from 'bignumber.js'
 
 let _window = (window as VynosWindow);
 
