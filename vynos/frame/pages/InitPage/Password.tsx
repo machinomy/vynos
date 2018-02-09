@@ -93,7 +93,8 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
     return <input type="password"
                   placeholder="Password"
                   className={className}
-                  onChange={this.handleChangePassword} />
+                  onChange={this.handleChangePassword}
+                  autoComplete="new-password" />
   }
 
   renderPasswordHint () {
@@ -109,7 +110,8 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
     return  <input type="password"
                    placeholder="Password Confirmation"
                    className={className}
-                   onChange={this.handleChangePasswordConfirmation} />
+                   onChange={this.handleChangePasswordConfirmation}
+                   autoComplete="new-password" />
   }
 
   renderPasswordConfirmationHint () {
