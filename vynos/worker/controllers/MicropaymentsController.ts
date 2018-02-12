@@ -1,7 +1,6 @@
 import NetworkController from "./NetworkController";
 import BackgroundController from "./BackgroundController";
 import { PaymentChannel } from "machinomy/lib/channel";
-import Promise = require('bluebird')
 import Payment from "machinomy/lib/Payment";
 import VynosBuyResponse from "../../lib/VynosBuyResponse";
 import Machinomy from 'machinomy'

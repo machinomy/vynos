@@ -1,4 +1,3 @@
-import Promise = require('bluebird')
 import Datastore = require('nedb')
 import SettingStorage from "./storage/SettingStorage";
 import { default as globalEvents } from "./GlobalEvents";
