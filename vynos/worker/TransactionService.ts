@@ -1,4 +1,3 @@
-import Promise = require('bluebird')
 import TransactionStorage from "../lib/storage/TransactionMetaStorage";
 import { WorkerState } from "./WorkerState";
 import { Store } from "redux";
@@ -43,7 +42,7 @@ export default class TransactionService {
     return new Promise((resolve, reject) => {
       this.store.subscribe(() => { // FIX ME perfomance problem
         if (resolved) {
-          return 
+          return
         }
         this.storage.byId(transaction.id).then(found => {
           if (!found) {
