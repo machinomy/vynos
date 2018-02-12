@@ -8,7 +8,6 @@ import {
   OpenChannelResponse, PayInChannelRequest, PayInChannelResponse
 } from '../lib/rpc/yns';
 import {JSONRPC, randomId} from "../lib/Payload";
-import Promise = require('bluebird')
 import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import VynosPayInChannelResponse from "../lib/VynosPayInChannelResponse";
 import Vynos from '../lib/Vynos'
@@ -101,7 +100,7 @@ export default class VynosClient implements Vynos {
       } else if(!response.result[0].channelId){
         return Promise.reject(response.result[1])
       }else {
-        return response.result[0]
+        return Promise.resolve(response.result[0])
       }
     })
   }

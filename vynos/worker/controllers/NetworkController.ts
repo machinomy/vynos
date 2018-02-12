@@ -8,7 +8,6 @@ import Web3 = require("web3")
 import ProviderOptions from "./ProviderOptions";
 import TransactionService from "../TransactionService";
 import SettingStorage from "../../lib/storage/SettingStorage";
-import Promise = require('bluebird')
 import { default as globalEvents } from '../../lib/GlobalEvents'
 import { CHANGE_NETWORK } from '../../lib/constants'
 

@@ -1,4 +1,3 @@
-import Promise = require('bluebird')
 import Datastore = require('nedb')
 import Storage from '../Storage'
 import { CHANGE_NETWORK } from '../constants'

@@ -62,7 +62,8 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
     return <input type="password"
                   placeholder="Password"
                   className={className}
-                  onChange={this.handleChangePassword.bind(this)} />
+                  onChange={this.handleChangePassword.bind(this)}
+                  autoComplete="wallet-password" />
   }
 
   renderPasswordHint () {

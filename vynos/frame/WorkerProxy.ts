@@ -16,7 +16,6 @@ import {
 } from "../lib/rpc/yns";
 import {Action} from "redux";
 import Web3 = require("web3")
-import Promise = require('bluebird')
 
 export default class WorkerProxy extends EventEmitter {
   provider: StreamProvider

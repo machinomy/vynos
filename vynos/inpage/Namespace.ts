@@ -1,5 +1,4 @@
 import VynosClient from './VynosClient'
-import Promise = require('bluebird')
 import Frame from './Frame'
 import FrameStream from '../lib/FrameStream'
 import Vynos from '../lib/Vynos'

@@ -1,5 +1,4 @@
 import Datastore = require('nedb')
-import Promise = require('bluebird')
 import TransactionMeta from "../TransactionMeta";
 import TransactionState from "../TransactionState";
 import Storage from "../Storage";
