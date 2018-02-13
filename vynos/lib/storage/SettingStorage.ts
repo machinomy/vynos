@@ -1,4 +1,3 @@
-import Promise = require('bluebird')
 import Datastore = require('nedb')
 
 const networks = require('../../networks')

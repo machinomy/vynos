@@ -60,3 +60,19 @@ export function closeChannel (description: string): Transaction {
     state: TransactionState.APPROVED
   }
 }
+
+export function openChannel (title: string, description: string, from: string, to: string, amount: number): Transaction {
+  return {
+    id: randomId().toString(),
+    from: from,
+    to: to,
+    title: title,
+    description: description,
+    icon: '/frame/styles/images/open_channel-approved.png',
+    time: Date.now(),
+    amount: amount,
+    fee: 0,
+    kind: TransactionKind.OPEN_CHANNEL,
+    state: TransactionState.APPROVED
+  }
+}

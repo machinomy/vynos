@@ -1,7 +1,6 @@
 import NetworkController from "./NetworkController";
 import BackgroundController from "./BackgroundController";
 import { PaymentChannel } from "machinomy/lib/channel";
-import Promise = require('bluebird')
 import Payment from "machinomy/lib/Payment";
 import VynosBuyResponse from "../../lib/VynosBuyResponse";
 import Machinomy from 'machinomy'
@@ -90,19 +89,29 @@ export default class MicropaymentsController {
             gateway: gateway,
             meta: meta
           }).then(response => {
-            return this.channels.insertIfNotExists({
-              channelId: response.channelId.toString(),
-              title: purchaseMeta.siteName,
-              host: purchaseMeta.origin,
-              icon: purchaseMeta.siteIcon,
-              openingTime: Date.now()
-            }).then(() => {
-              return response
+            this.channels.firstById(response.channelId.toString()).then(meta => {
+              if (meta !== null) {
+                  return response
+              } else{
+                return this.channels.save({
+                  channelId: response.channelId.toString(),
+                  title: purchaseMeta.siteName,
+                  host: purchaseMeta.origin,
+                  icon: '/frame/styles/images/channel.png',
+                  openingTime: Date.now()
+                }).then(()=>{
+                  let channelDescription = JSON.stringify({channelId: response.channelId.toString()})
+                  let transaction = transactions.openChannel('Opening of channel', channelDescription, account, receiver, channelValue ? channelValue : amount * 10)
+                  return this.transactions.addTransaction(transaction).then(() => {
+                    return response
+                  })
+                })
+              }
             })
-          }).then(response =>{
+          }).then(response => {
             let transaction = transactions.micropayment(purchaseMeta, receiver, amount)
             return this.transactions.addTransaction(transaction).then(() => {
-              return response
+              return response!
             })
           }).then(resolve).catch(reject)
         })
