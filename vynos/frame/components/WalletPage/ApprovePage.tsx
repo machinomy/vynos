@@ -75,6 +75,8 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
     this.storage.approve(transaction.id).then((result) => {
       transaction.state = TransactionState.APPROVED
       this.props.workerProxy.resolveTransaction()
+      this.props.workerProxy.setApproveById(transaction.id)
+      this.update()
     })
   }
 
@@ -82,6 +84,8 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
     this.storage.reject(transaction.id).then(() => {
       transaction.state = TransactionState.REJECTED
       this.props.workerProxy.resolveTransaction()
+      this.props.workerProxy.setRejectById(transaction.id)
+      this.update()
     })
   }
 

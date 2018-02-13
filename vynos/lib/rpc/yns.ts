@@ -294,3 +294,39 @@ export class SetPreferencesRequest implements RequestPayload {
 export interface SetPreferencesResponse extends ResponsePayload {
   result: null
 }
+
+export class SetApproveByIdRequest implements RequestPayload {
+  id: number
+  jsonrpc: typeof JSONRPC
+  method: typeof SetApproveByIdRequest.method
+  params: [string]
+
+  static method: string = "yns_setApproveByIdRequest"
+
+  static match(payload: RequestPayload): payload is SetApproveByIdRequest {
+    return payload.method === SetApproveByIdRequest.method
+  }
+}
+
+export interface SetApproveByIdResponse extends ResponsePayload {
+  result: null
+}
+
+export class SetRejectByIdRequest implements RequestPayload {
+  id: number
+  jsonrpc: typeof JSONRPC
+  method: typeof SetRejectByIdRequest.method
+  params: [string]
+
+  static method: string = "yns_setRejectByIdRequest"
+
+  static match(payload: RequestPayload): payload is SetRejectByIdRequest {
+    return payload.method === SetRejectByIdRequest.method
+  }
+}
+
+export interface SetRejectByIdResponse extends ResponsePayload {
+  result: null
+}
+
+
