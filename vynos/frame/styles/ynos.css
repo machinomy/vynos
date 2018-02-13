@@ -575,3 +575,33 @@ Channels page
 #closed-channel a {
   color: #00AEEF !important;
 }
+
+/******************************
+Verifiable page
+******************************/
+
+#verifiable-block {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background: #fff;
+  z-index: 999999;
+  text-align: center;
+}
+
+#verifiable-text {
+  font-size: 14px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+#verifiable-rand-number {
+  font-size: 50px;
+  line-height: 52px;
+}
+
+#shield-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 5px;
+}

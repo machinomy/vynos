@@ -5,7 +5,7 @@ import {FrameState} from '../../redux/FrameState'
 import WorkerProxy from '../../WorkerProxy'
 import {connect} from 'react-redux'
 import * as actions from "../../redux/actions";
-import {Button, Container, Divider, Form, Header, GridRow} from 'semantic-ui-react'
+import {Button, Container, Divider, Form, Header, GridRow, Icon} from 'semantic-ui-react'
 import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../../constants';
 import RestorePage from "../RestorePage";
 import Logo from "../../components/Logo";
@@ -21,11 +21,12 @@ export interface PasswordState {
 }
 
 export interface PasswordSubpageStateProps {
-  workerProxy: WorkerProxy
+  workerProxy?: WorkerProxy
+  showVerifiable: () => void
 }
 
 export interface PasswordSubpageDispatchProps {
-  genKeyring: (workerProxy: WorkerProxy, password: string) => void
+  genKeyring?: (workerProxy: WorkerProxy, password: string) => void
 }
 
 export type PasswordSubpageProps = PasswordSubpageStateProps & PasswordSubpageDispatchProps
@@ -66,7 +67,7 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
   handleSubmit (e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (this.isValid() && this.state.password) {
-      return this.props.genKeyring(this.props.workerProxy, this.state.password)
+      return this.props.genKeyring!(this.props.workerProxy!, this.state.password)
     }
   }
 
@@ -158,13 +159,15 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
         <br />
         <a onClick={this.doDisplayRestorePage.bind(this)}>Restore wallet</a>
       </Form>
+      <a onClick={this.props.showVerifiable} id={style.shieldIcon}><Icon name={'shield'} size={'large'}></Icon></a>
     </Container>
   }
 }
 
-function mapStateToProps(state: FrameState): PasswordSubpageStateProps {
+function mapStateToProps(state: FrameState, props: PasswordSubpageProps): PasswordSubpageStateProps {
   return {
-    workerProxy: state.temp.workerProxy
+    workerProxy: state.temp.workerProxy,
+    showVerifiable: props.showVerifiable
   }
 }
 

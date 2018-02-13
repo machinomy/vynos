@@ -9,14 +9,15 @@ const style = require("../../../styles/ynos.css");
 export interface PreferencesStateProps {}
 
 export interface PreferencesProps {
-  workerProxy: WorkerProxy
+  workerProxy?: WorkerProxy
+  showVerifiable: () => void
 }
 
 export class Preferences extends React.Component<PreferencesProps, PreferencesStateProps> {
   privateKeyHex : string
 
   async componentWillMount () {
-    this.privateKeyHex = await this.props.workerProxy.getPrivateKeyHex()
+    this.privateKeyHex = await this.props.workerProxy!.getPrivateKeyHex()
   }
 
   render () {
@@ -36,6 +37,9 @@ export class Preferences extends React.Component<PreferencesProps, PreferencesSt
           <label>Security</label>
           <p>
             <a onClick={() => {this.handleSavePrivateKeyToFile()}}>Save private key to file</a>
+          </p>
+          <p>
+            <a onClick={this.props.showVerifiable}>Verify authenticity Vynos</a>
           </p>
         </Form.Group>
         <p className={style.buttonNav}>
@@ -61,10 +65,11 @@ export class Preferences extends React.Component<PreferencesProps, PreferencesSt
   }
 }
 
-function mapStateToProps (state: FrameState): PreferencesProps {
+function mapStateToProps (state: FrameState, props: PreferencesProps): PreferencesProps {
   const workerProxy = state.temp.workerProxy!
   return {
-    workerProxy: workerProxy
+    workerProxy: workerProxy,
+    showVerifiable: props.showVerifiable
   }
 }
 

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {connect} from 'react-redux'
-import { Container, Menu, Form, Button, Divider } from 'semantic-ui-react'
+import { Container, Menu, Form, Button, Divider, Icon } from 'semantic-ui-react'
 const style = require('../styles/ynos.css')
 
 import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../constants'
@@ -10,7 +10,8 @@ import {ChangeEvent, FormEvent} from "react";
 import bip39 = require('bip39')
 
 export interface RestorePageStateProps {
-  workerProxy: WorkerProxy
+  workerProxy?: WorkerProxy
+  showVerifiable: () => void
 }
 
 export interface RestorePageProps extends RestorePageStateProps {
@@ -39,7 +40,7 @@ class RestorePage extends React.Component<RestorePageProps, RestorePageState> {
   handleSubmit (ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     if (this.isValid() && this.state.password && this.state.seed) {
-      this.props.workerProxy.restoreWallet(this.state.password, this.state.seed).then(() => {
+      this.props.workerProxy!.restoreWallet(this.state.password, this.state.seed).then(() => {
         this.goBack()
       })
     }
@@ -177,13 +178,15 @@ class RestorePage extends React.Component<RestorePageProps, RestorePageState> {
           <Button type='submit' content="Restore" primary className={style.buttonNav} />
         </Form>
       </Container>
+      <a onClick={this.props.showVerifiable} id={style.shieldIcon}><Icon name={'shield'} size={'large'}></Icon></a>
     </div>
   }
 }
 
-function mapStateToProps (state: FrameState): RestorePageStateProps {
+function mapStateToProps (state: FrameState, props: RestorePageStateProps): RestorePageStateProps {
   return {
-    workerProxy: state.temp.workerProxy
+    workerProxy: state.temp.workerProxy,
+    showVerifiable: props.showVerifiable
   }
 }
 

@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {ChangeEvent, FormEvent} from 'react'
 import _ = require('lodash')
 import WorkerProxy from '../WorkerProxy';
-import { Container, Form, Button, Divider } from 'semantic-ui-react'
+import { Container, Form, Button, Divider, Icon } from 'semantic-ui-react'
 import Logo from '../components/Logo'
 import {FrameState} from "../redux/FrameState";
 import RestorePage from "./RestorePage";
@@ -11,7 +11,8 @@ import RestorePage from "./RestorePage";
 const style = require("../styles/ynos.css");
 
 export interface UnlockPageProps {
-  workerProxy: WorkerProxy
+  workerProxy?: WorkerProxy
+  showVerifiable: () => void
 }
 
 export type UnlockPageState = {
@@ -48,7 +49,7 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
       loading: true
     });
     let password = _.toString(this.state.password);
-    this.props.workerProxy.doUnlock(password).then((errorReason) => {
+    this.props.workerProxy!.doUnlock(password).then((errorReason) => {
       if (errorReason) {
         this.setState({
           passwordError: errorReason
@@ -88,7 +89,7 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
 
   render () {
     if (this.state.displayRestore)
-      return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)} />
+      return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)} showVerifiable={this.props.showVerifiable} />
 
     return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
       <Logo />
@@ -103,13 +104,15 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
         <br />
         <a onClick={this.doDisplayRestore.bind(this)}>Restore wallet</a>
       </Form>
+      <a onClick={this.props.showVerifiable} id={style.shieldIcon}><Icon name={'shield'} size={'large'}></Icon></a>
     </Container>
   }
 }
 
-function mapStateToProps (state: FrameState): UnlockPageProps {
+function mapStateToProps (state: FrameState, props: UnlockPageProps): UnlockPageProps {
   return {
-    workerProxy: state.temp.workerProxy
+    workerProxy: state.temp.workerProxy,
+    showVerifiable: props.showVerifiable
   }
 }
 
