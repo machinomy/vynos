@@ -113,17 +113,25 @@ export class Send extends React.Component<SendProps, SendState> {
   sendTransaction() {
     let web3 = this.props.web3!;
     let self = this;
-    web3.eth.sendTransaction({
+    let txData : Web3.TxData = {
       from: this.address,
       to: this.to,
       value: web3.toWei(this.amount, 'ether')
-    }, function (err, transactionHash) {
-      if (err) {
-        self.setState({step2Valid: false, balanceError: err.message});
-      }else{
-        console.log('Transaction hash :', transactionHash);
-      }
-    });
+    }
+    web3.eth.getGasPrice((err, gasPrice) => {
+      txData.gasPrice = gasPrice.toNumber()
+       web3.eth.estimateGas(txData, (err, estimateGas)=>{
+        txData.gas = estimateGas
+        web3.eth.sendTransaction(txData, function (err, transactionHash) {
+          if (err) {
+            self.setState({step2Valid: false, balanceError: err.message});
+          }else{
+            console.log('Transaction hash :', transactionHash);
+          }
+        });
+      })
+    })
+
   }
 
   render() {

@@ -2,6 +2,7 @@ import TransactionKind from "./TransactionKind";
 
 export default interface TransactionMeta {
   id: string
+  origin?: string
   title: string
   description?: string
   meta?: string

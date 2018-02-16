@@ -3,11 +3,11 @@ import TransactionStorage from '../../../lib/storage/TransactionMetaStorage'
 import Transaction from "../../../lib/TransactionMeta";
 import TransactionState from "../../../lib/TransactionState"
 import TransactionKind from "../../../lib/TransactionKind"
-import {List, Image} from 'semantic-ui-react'
-import {formatAmount, formatDate} from "../../../lib/formatting";
+import { List, Image } from 'semantic-ui-react'
+import { formatAmount, formatDate } from "../../../lib/formatting";
 import BlockieComponent from "../../components/BlockieComponent";
-import {connect} from 'react-redux';
-import {FrameState} from "../../redux/FrameState";
+import { connect } from 'react-redux';
+import { FrameState } from "../../redux/FrameState";
 
 const style = require('../../styles/ynos.css')
 
@@ -23,7 +23,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
   transactionStorage: TransactionStorage
   localLastUpdateDb: number
 
-  constructor(props: TransactionsSubpageProps) {
+  constructor (props: TransactionsSubpageProps) {
     super(props)
     this.state = {
       transactions: []
@@ -36,7 +36,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
     this.updateTransactions();
   }
 
-  updateTransactions (){
+  updateTransactions () {
     this.transactionStorage.all().then(transactions => {
       this.setState({
         transactions: transactions.reverse()
@@ -45,7 +45,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
   }
 
   shouldComponentUpdate (nextProps: TransactionsSubpageProps) {
-    if(this.localLastUpdateDb < nextProps.lastUpdateDb){
+    if (this.localLastUpdateDb < nextProps.lastUpdateDb) {
       this.localLastUpdateDb = nextProps.lastUpdateDb;
       this.updateTransactions();
       return false;
@@ -54,11 +54,10 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
   }
 
   transactionIcon (transaction: Transaction) {
-    if (transaction.icon) {
-      return <div className={"ui mini image " + style.listItemAvatar}><Image src={transaction.icon} size="mini" /></div>
-    } else {
-      return <BlockieComponent classDiv={"ui mini avatar image " + style.listItemAvatar} classCanvas={"ui mini avatar image"} size={35} scale={2} seed={transaction.id} />
-    }
+    let kind = transaction.kind
+    let state = transaction.state
+    let imageSrc = '/frame/styles/images/' + kind.toLowerCase() + '-' + state.toLowerCase() + '.png'
+    return <div className={"ui mini image " + style.listItemAvatar}><Image src={imageSrc} size="mini"/></div>
   }
 
   transactionDescription (transaction: Transaction) {
@@ -69,6 +68,16 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
       description = 'Send to ' + transaction.to.slice(0, 8) + '..' + transaction.to.slice(-2)
     } else if (transaction.kind == TransactionKind.SIGN && transaction.data) {
       description = transaction.data.slice(0, 8) + '..' + transaction.data.slice(-2)
+    } else if (transaction.kind == TransactionKind.CLOSE_CHANNEL && transaction.description) {
+      let parsedDescription = JSON.parse(transaction.description)
+      description = parsedDescription.channelId.slice(0, 8) + '..' + parsedDescription.channelId.slice(-2)
+    } else if (transaction.kind == TransactionKind.OPEN_CHANNEL) {
+      if (transaction.description !== undefined) {
+        let parsedDescription = JSON.parse(transaction.description)
+        if (parsedDescription.channelId !== undefined) {
+          description = parsedDescription.channelId.slice(0, 8) + '..' + parsedDescription.channelId.slice(-2)
+        }
+      }
     }
     return description
   }
@@ -83,10 +92,14 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
       styleListItem += ' ' + style.rejectedItem
       transactiontTitle = 'Transaction was rejected by user'
     }
+    let fee = formatAmount(transaction.fee ? transaction.fee : 0)
 
     return <List.Item className={styleListItem} key={transaction.id} title={transactiontTitle}>
       <List.Content floated='right'>
         <span className={style.channelBalance}>{value} {denomination}</span>
+        <p>
+          <span className={style.channelBalance}>Fee {fee.value} {fee.denomination}</span>
+        </p>
       </List.Content>
       {icon}
       <List.Content className={style.listContent}>
@@ -110,7 +123,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
   }
 }
 
-function mapStateToProps(state: FrameState): TransactionsSubpageProps {
+function mapStateToProps (state: FrameState): TransactionsSubpageProps {
   return {
     lastUpdateDb: state.shared.lastUpdateDb
   }

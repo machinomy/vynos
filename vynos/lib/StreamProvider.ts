@@ -1,6 +1,5 @@
 import {Duplex} from "readable-stream";
 import Payload, {ResponsePayload} from "./Payload";
-import Promise = require('bluebird')
 import Web3 = require("web3");
 
 export default class StreamProvider extends Duplex implements Web3.Provider {

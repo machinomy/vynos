@@ -1,25 +1,34 @@
-import {VynosWindow} from "../vynos/window";
+import {DevWindow, VynosWindow} from "../vynos/window";
 import {PaymentChannel} from "machinomy/lib/channel";
 import {inspect} from "util";
 import Namespace from "../vynos/inpage/Namespace";
 import Web3 = require("web3");
+import VynosBuyResponse from "../vynos/lib/VynosBuyResponse";
+import * as BigNumber from 'bignumber.js'
 
 let _window = (window as VynosWindow);
+let devWindow = (window as DevWindow);
 
-/*
-let recentPaymentChannel: PaymentChannel|null = null
 
-function updateRecentPaymentChannel(channel: PaymentChannel) {
-  recentPaymentChannel = channel
-  let code = document.getElementById("payment-channel-code")
-  if (code) {
-    code.textContent = JSON.stringify(channel.toJSON())
+// let recentPaymentChannel: PaymentChannel|null = null
+let recentBuyResponse : VynosBuyResponse|null = null
+let gateway = 'http://127.0.0.1:3001/v1/accept'
+
+function updateRecentVynosBuyResponse(buyResponse: VynosBuyResponse) {
+  recentBuyResponse = buyResponse
+  let channelCode = document.getElementById("payment-channel-code")
+  let tokenCode = document.getElementById("payment-token-code")
+  if (channelCode) {
+    channelCode.textContent = 'channelId: ' + JSON.stringify(buyResponse.channelId.toString())
+  }
+  if (tokenCode) {
+    tokenCode.textContent = 'token: ' + JSON.stringify(buyResponse.token)
   }
 }
-*/
+
 
 // _window.send = async (value) => {
-//   let eth = 0.01 
+//   let eth = 0.01
 //   if (value) {
 //     eth = value
 //   }
@@ -34,16 +43,32 @@ function updateRecentPaymentChannel(channel: PaymentChannel) {
 //   })
 // }
 
-// _window.sign = async () => {
-//   let vynos = _window.vynos
-//   let wallet = await vynos.ready()
-//   let web3 = new Web3(wallet.provider)
-//   let account = await wallet.getAccount()
-//   web3.eth.sign(account, web3.sha3('vynos'), (err, res) => {
-//     console.log(err)
-//     console.log(res)
-//   })
-// }
+devWindow.signMessage = function(message : string) {
+  if (message === undefined || message === null) {
+    message = ''
+  }
+  let vynos = _window.vynos
+  vynos.ready().then((wallet) => {
+    let web3 = new Web3(wallet.provider)
+    web3.eth.getAccounts((err, accounts) => {
+      if (err) {
+        if (err.message === 'invalid address') {
+          console.error('Please, login into Vynos.')
+        }
+        console.error(err)
+      }else {
+        web3.eth.sign(accounts[0], web3.sha3(message), (err, res) => {
+          if (err) {
+            console.error(err)
+          }
+          if (res) {
+            console.log(res)
+          }
+        })
+      }
+    })
+  })
+}
 
 window.addEventListener("load", function () {
   let vynos = _window.vynos
@@ -68,6 +93,17 @@ window.addEventListener("load", function () {
     }
   }
 
+  let signMessageForm = document.getElementById("sign_message_form")
+  if (signMessageForm) {
+    signMessageForm.onsubmit = function (ev: Event) {
+      ev.preventDefault()
+      let messageElement = <HTMLInputElement>document.getElementById("sign_message_input")
+      if (messageElement) {
+        devWindow.signMessage(messageElement.value)
+      }
+    }
+  }
+
   /*
   ynos.initFrame().then(() => {
     return ynos.initAccount()
@@ -89,35 +125,35 @@ window.addEventListener("load", function () {
   }).catch(error => {
     console.log(error)
   })
+  */
 
   let openChannelForm = document.getElementById("open_channel")
   if (openChannelForm) {
     openChannelForm.onsubmit = function (ev: Event) {
       ev.preventDefault()
-      ynos.initFrame().then(() => {
-        return ynos.initAccount()
-      }).then(() => {
-        ynos.getWeb3().then(web3 => {
-          let receiverAccount = "0xD5173D09C0567bad2B747cABB54E6BB013077d02"
+      vynos.ready().then((wallet) => {
+        let web3 = new Web3(wallet.provider)
+
+          let receiverAccount = ''
           let receiverInput = document.getElementById("receiver_address")
           if (receiverInput) {
-            receiverAccount = (receiverInput as HTMLInputElement).value || receiverAccount
+            receiverAccount = (receiverInput as HTMLInputElement).value
           }
           console.log(receiverAccount)
-          let amount = web3.toWei(0.01, "ether")
+          let amount = web3.toWei(0.0001, "ether")
           let resultSpan = document.getElementById("open_channel_id")
           if (resultSpan) {
             resultSpan.textContent = "Loading..."
           }
-          ynos.openChannel(receiverAccount, amount).then((paymentChannel: PaymentChannel) => {
-            console.log(paymentChannel)
-            updateRecentPaymentChannel(paymentChannel)
+          wallet.buy(receiverAccount!, parseInt(amount), gateway, Date.now().toString()).then((buyResponse : VynosBuyResponse) => {
+            console.log(buyResponse)
+            updateRecentVynosBuyResponse(buyResponse)
             let resultSpan = document.getElementById("open_channel_id")
             if (resultSpan) {
-              resultSpan.textContent = paymentChannel.channelId + ", state: " + paymentChannel.state
+              resultSpan.textContent = recentBuyResponse!.channelId.toString()
             }
           })
-        })
+
       })
     }
   }
@@ -126,23 +162,21 @@ window.addEventListener("load", function () {
   if (closeChannelForm) {
     closeChannelForm.onsubmit = function (ev: Event) {
       ev.preventDefault()
-      ynos.initFrame().then(() => {
-        return ynos.initAccount()
-      }).then(() => {
-        if (recentPaymentChannel) {
-          ynos.closeChannel(recentPaymentChannel).then((paymentChannel: PaymentChannel) => {
-            console.log(paymentChannel)
-            updateRecentPaymentChannel(paymentChannel)
+      vynos.ready().then((wallet) => {
+        if (recentBuyResponse) {
+          wallet.closeChannel(recentBuyResponse!.channelId.toString()).then(() => {
+            console.log('Closing channel:')
+            console.log(recentBuyResponse!.channelId.toString())
             let resultSpan = document.getElementById("open_channel_id")
             if (resultSpan) {
-              resultSpan.textContent = paymentChannel.channelId + ", state: " + paymentChannel.state
+              resultSpan.textContent = 'n/a'
             }
           })
         }
       })
     }
   }
-
+/*
   let finishSettleForm = document.getElementById("finish_settle")
   if (finishSettleForm) {
     finishSettleForm.onsubmit = function (ev: Event) {

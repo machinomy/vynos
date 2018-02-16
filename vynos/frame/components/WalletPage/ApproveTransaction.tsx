@@ -13,20 +13,31 @@ export interface ApproveTransactionState{
   to: string,
   formatedAmount: string
   formatedTotal: string
+  formatedFee: string
 }
 
 export default class ApprovePage extends React.Component<ApproveTransactionProps, ApproveTransactionState> {
   constructor(props: any) {
     super(props)
+
+    this.componentWillReceiveProps()
+  }
+
+
+  componentWillReceiveProps() {
     if (!this.props.transaction.to) {
       return
     }
-    let web3 = new Web3()
-    let formatedAmount = web3.fromWei(this.props.transaction.amount, 'ether').toString()
+
+    let formatedAmount = new Web3().fromWei(this.props.transaction.amount, 'ether')
+    let formatedFee = new Web3().fromWei(this.props.transaction.fee ? this.props.transaction.fee : 0, 'ether')
+    let amount = parseFloat(formatedAmount)
+    let fee = parseFloat(formatedFee)
     this.state = {
       to: this.props.transaction.to,
-      formatedAmount,
-      formatedTotal: formatedAmount
+      formatedAmount: formatedAmount,
+      formatedFee: formatedFee,
+      formatedTotal: (amount + fee).toFixed(6)
     }
   }
 
@@ -35,6 +46,8 @@ export default class ApprovePage extends React.Component<ApproveTransactionProps
       <Form.Field className={style.clearIndent}>
         <label>To:</label> <div className={style.listDesc}>{this.state.to}</div>
         <label>Amount:</label> <div>{this.state.formatedAmount}</div>
+        <Divider />
+        <label>Fee:</label> <div>{this.state.formatedFee}</div>
         <Divider />
         <label>Total:</label> <div>{this.state.formatedTotal}</div>
       </Form.Field>

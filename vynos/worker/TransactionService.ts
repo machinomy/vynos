@@ -1,10 +1,11 @@
-import Promise = require('bluebird')
 import TransactionStorage from "../lib/storage/TransactionMetaStorage";
 import { WorkerState } from "./WorkerState";
 import { Store } from "redux";
 import * as actions from './actions'
 import Transaction from '../lib/TransactionMeta'
 import TransactionState from "../lib/TransactionState";
+import {txApproved, txRejected} from '../lib/events'
+import bus from '../lib/bus'
 
 export default class TransactionService {
   storage: TransactionStorage
@@ -27,6 +28,22 @@ export default class TransactionService {
     })
   }
 
+  setApproveById(id: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.storage.approve(id)
+      let eventName = txApproved(id)
+      bus.emit(eventName)
+    })
+  }
+
+  setRejectById(id: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.storage.reject(id)
+      let eventName = txRejected(id)
+      bus.emit(eventName)
+    })
+  }
+
   checkPendingTrasactions() {
     this.storage.pending().then((transactions)=>{
       if (transactions.length) {
@@ -43,7 +60,7 @@ export default class TransactionService {
     return new Promise((resolve, reject) => {
       this.store.subscribe(() => { // FIX ME perfomance problem
         if (resolved) {
-          return 
+          return
         }
         this.storage.byId(transaction.id).then(found => {
           if (!found) {

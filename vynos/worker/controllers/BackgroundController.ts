@@ -1,6 +1,6 @@
 import * as redux from "redux";
 import reducers from "../reducers";
-import {buildSharedState, INITIAL_STATE, SharedState, WorkerState} from "../WorkerState";
+import {buildSharedState, INITIAL_STATE, Preferences, SharedState, WorkerState} from "../WorkerState";
 import {Store} from "redux";
 import * as actions from "../actions";
 import bip39 =require("bip39")
@@ -11,7 +11,8 @@ import Wallet = require("ethereumjs-wallet")
 import { persistStore, autoRehydrate } from 'redux-persist';
 import localForage = require("localforage")
 import {EventEmitter} from "events";
-import {isNumber} from "util";
+import bus from '../../lib/bus'
+import { CHANGE_NETWORK } from '../../lib/constants'
 
 const STATE_UPDATED_EVENT = "stateUpdated"
 
@@ -160,6 +161,27 @@ export default class BackgroundController {
       this.getSharedState().then(sharedState => {
         fn(sharedState)
       })
+    })
+  }
+
+  changeNetwork(): Promise<void> {
+    return new Promise(resolve => {
+      bus.emit(CHANGE_NETWORK)
+      return resolve()
+    })
+  }
+
+  setPreferences(preferences: Preferences): Promise<void> {
+    return new Promise(resolve => {
+      this.store.dispatch(actions.setPreferences(preferences))
+      resolve()
+    })
+  }
+
+  setLastMicropaymentTime(lastMicropaymentTime: number): Promise<void> {
+    return new Promise(resolve => {
+      this.store.dispatch(actions.setLastMicropaymentTime(lastMicropaymentTime))
+      resolve()
     })
   }
 }

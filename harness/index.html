@@ -36,12 +36,13 @@
 
                 <div>
                     <form id="open_channel">
-                        <p>Receiver Address: <input type="text" id="receiver_address" /></p>
-                        <p><button type="submit">Open Channel, 0.01 Eth</button></p>
+                        <p>Receiver Address: <input type="text" id="receiver_address" value="0xc8ebc512fd59a9e9b04233a2178e28aa3e42608d"/></p>
+                        <p><button type="submit">Open Channel, 0.0001 Eth</button></p>
                         <p>Channel id: <span id="open_channel_id">n/a</span></p>
                         <p>
-                            PaymentChannel:
+                            Vynos Buy Response:
                             <pre><code id="payment-channel-code">N/A</code></pre>
+                            <pre><code id="payment-token-code">N/A</code></pre>
                         </p>
                     </form>
                 </div>
@@ -70,6 +71,16 @@
                         <p><button type="submit">Finish settle channel</button></p>
                     </form>
                 </div>
+
+              <hr />
+
+              <h4>Sign message</h4>
+              <div>
+                <form id="sign_message_form">
+                  <p>Message: <input type="text" id="sign_message_input" value="vynos"/></p>
+                  <p><button type="submit">Sign message</button></p>
+                </form>
+              </div>
             </div>
         </div>
     </div>
