@@ -8,7 +8,7 @@ import Web3 = require("web3")
 import ProviderOptions from "./ProviderOptions";
 import TransactionService from "../TransactionService";
 import SettingStorage from "../../lib/storage/SettingStorage";
-import { default as globalEvents } from '../../lib/GlobalEvents'
+import { default as bus } from '../../lib/bus'
 import { CHANGE_NETWORK } from '../../lib/constants'
 
 const settingStorage = new SettingStorage()
@@ -27,7 +27,7 @@ export default class NetworkController {
     this.handler = this.handler.bind(this)
     this.getNetwork()
 
-    globalEvents.on(CHANGE_NETWORK, () => {
+    bus.on(CHANGE_NETWORK, () => {
       this.getNetwork()
     })
   }

@@ -5,6 +5,7 @@ import Payment from "machinomy/lib/Payment";
 import VynosBuyResponse from "../VynosBuyResponse";
 import { ChannelMeta } from '../storage/ChannelMetaStorage'
 import PurchaseMeta from "../PurchaseMeta";
+import {Preferences} from "../../worker/WorkerState";
 
 export class InitAccountRequest implements RequestPayload {
   id: number;
@@ -276,3 +277,56 @@ export class GetPrivateKeyHexRequest implements RequestPayload {
 export interface GetPrivateKeyHexResponse extends ResponsePayload {
   result: string
 }
+
+export class SetPreferencesRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof SetPreferencesRequest.method;
+  params: [Preferences];
+
+  static method = "yns_setPreferences"
+
+  static match(payload: RequestPayload): payload is SetPreferencesRequest {
+    return payload.method === SetPreferencesRequest.method
+  }
+}
+
+export interface SetPreferencesResponse extends ResponsePayload {
+  result: null
+}
+
+export class SetApproveByIdRequest implements RequestPayload {
+  id: number
+  jsonrpc: typeof JSONRPC
+  method: typeof SetApproveByIdRequest.method
+  params: [string]
+
+  static method: string = "yns_setApproveByIdRequest"
+
+  static match(payload: RequestPayload): payload is SetApproveByIdRequest {
+    return payload.method === SetApproveByIdRequest.method
+  }
+}
+
+export interface SetApproveByIdResponse extends ResponsePayload {
+  result: null
+}
+
+export class SetRejectByIdRequest implements RequestPayload {
+  id: number
+  jsonrpc: typeof JSONRPC
+  method: typeof SetRejectByIdRequest.method
+  params: [string]
+
+  static method: string = "yns_setRejectByIdRequest"
+
+  static match(payload: RequestPayload): payload is SetRejectByIdRequest {
+    return payload.method === SetRejectByIdRequest.method
+  }
+}
+
+export interface SetRejectByIdResponse extends ResponsePayload {
+  result: null
+}
+
+

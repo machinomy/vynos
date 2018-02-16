@@ -1,17 +1,19 @@
 import StreamProvider from "../lib/StreamProvider";
 import {EventEmitter} from "events";
-import {SharedState} from "../worker/WorkerState";
+import {SharedState, Preferences} from "../worker/WorkerState";
 import {JSONRPC, randomId} from "../lib/Payload";
 import {isSharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
 import {
-  DidStoreMnemonicRequest, DidStoreMnemonicResponse,
+  DidStoreMnemonicRequest,
   GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, LockWalletRequest,
   RestoreWalletRequest, RestoreWalletResponse, RememberPageRequest,
   UnlockWalletRequest,
   UnlockWalletResponse,
   TransactonResolved,
   ChangeNetworkRequest,
-  GetPrivateKeyHexRequest, GetPrivateKeyHexResponse
+  GetPrivateKeyHexRequest, GetPrivateKeyHexResponse,
+  SetPreferencesRequest,
+  SetApproveByIdRequest, SetRejectByIdRequest
 } from "../lib/rpc/yns";
 import {Action} from "redux";
 import Web3 = require("web3")
@@ -154,6 +156,43 @@ export default class WorkerProxy extends EventEmitter {
     }
     return this.provider.ask(request).then(() => {
       return;
+    })
+  }
+
+  setPreferences(preferences: Preferences): Promise<void> {
+    let request: SetPreferencesRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: SetPreferencesRequest.method,
+      params: [preferences]
+    }
+
+    return this.provider.ask(request).then(() => {
+      return;
+    })
+  }
+
+  setApproveById(id: string): void {
+    let request: SetApproveByIdRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: SetApproveByIdRequest.method,
+      params: [id]
+    }
+    this.provider.ask(request).then(() => {
+      // Do Nothing
+    })
+  }
+
+  setRejectById(id: string): void {
+    let request: SetRejectByIdRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: SetRejectByIdRequest.method,
+      params: [id]
+    }
+    this.provider.ask(request).then(() => {
+      // Do Nothing
     })
   }
 }

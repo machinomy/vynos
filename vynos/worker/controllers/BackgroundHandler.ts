@@ -9,7 +9,8 @@ import {
   LockWalletResponse, RestoreWalletRequest, RememberPageRequest,
   UnlockWalletRequest,
   UnlockWalletResponse, RememberPageResponse, TransactonResolved, ChangeNetworkRequest, ChangeNetworkResponse,
-  GetPrivateKeyHexRequest, GetPrivateKeyHexResponse
+  GetPrivateKeyHexRequest, GetPrivateKeyHexResponse,
+  SetPreferencesRequest, SetPreferencesResponse
 } from "../../lib/rpc/yns";
 import { Writable } from "readable-stream";
 import { SharedStateBroadcast, SharedStateBroadcastType } from "../../lib/rpc/SharedStateBroadcast";
@@ -155,6 +156,18 @@ changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) 
     }).catch(end)
   }
 
+  setPreferences(message: SetPreferencesRequest, next: Function, end: EndFunction) {
+    let preferences = message.params[0]
+    this.controller.setPreferences(preferences).then(() => {
+      let response: SetPreferencesResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: null
+      }
+      end(null, response)
+    }).catch(end)
+  }
+
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (GetSharedStateRequest.match(message)) {
       this.getSharedState(message, next, end)
@@ -178,6 +191,8 @@ changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) 
       this.changeNetwork(message, next, end)
     } else if (GetPrivateKeyHexRequest.match(message)) {
       this.getPrivateKeyHex(message, next, end)
+    } else if (SetPreferencesRequest.match(message)) {
+      this.setPreferences(message, next, end)
     } else {
       next()
     }

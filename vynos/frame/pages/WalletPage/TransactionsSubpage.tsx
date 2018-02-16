@@ -3,11 +3,11 @@ import TransactionStorage from '../../../lib/storage/TransactionMetaStorage'
 import Transaction from "../../../lib/TransactionMeta";
 import TransactionState from "../../../lib/TransactionState"
 import TransactionKind from "../../../lib/TransactionKind"
-import {List, Image} from 'semantic-ui-react'
-import {formatAmount, formatDate} from "../../../lib/formatting";
+import { List, Image } from 'semantic-ui-react'
+import { formatAmount, formatDate } from "../../../lib/formatting";
 import BlockieComponent from "../../components/BlockieComponent";
-import {connect} from 'react-redux';
-import {FrameState} from "../../redux/FrameState";
+import { connect } from 'react-redux';
+import { FrameState } from "../../redux/FrameState";
 
 const style = require('../../styles/ynos.css')
 
@@ -23,7 +23,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
   transactionStorage: TransactionStorage
   localLastUpdateDb: number
 
-  constructor(props: TransactionsSubpageProps) {
+  constructor (props: TransactionsSubpageProps) {
     super(props)
     this.state = {
       transactions: []
@@ -36,7 +36,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
     this.updateTransactions();
   }
 
-  updateTransactions (){
+  updateTransactions () {
     this.transactionStorage.all().then(transactions => {
       this.setState({
         transactions: transactions.reverse()
@@ -45,7 +45,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
   }
 
   shouldComponentUpdate (nextProps: TransactionsSubpageProps) {
-    if(this.localLastUpdateDb < nextProps.lastUpdateDb){
+    if (this.localLastUpdateDb < nextProps.lastUpdateDb) {
       this.localLastUpdateDb = nextProps.lastUpdateDb;
       this.updateTransactions();
       return false;
@@ -123,7 +123,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
   }
 }
 
-function mapStateToProps(state: FrameState): TransactionsSubpageProps {
+function mapStateToProps (state: FrameState): TransactionsSubpageProps {
   return {
     lastUpdateDb: state.shared.lastUpdateDb
   }
