@@ -96,6 +96,7 @@
     "typescript-fsa-reducers": "^0.4.4",
     "typescript-fsa-redux-thunk": "xdave/typescript-fsa-redux-thunk",
     "web3": "^0.19.0",
-    "web3-provider-engine": "^13.0.3"
+    "web3-provider-engine": "^13.0.3",
+    "timeparse": "^1.0.0"
   }
 }

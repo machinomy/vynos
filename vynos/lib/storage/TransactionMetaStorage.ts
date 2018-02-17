@@ -2,6 +2,8 @@ import Datastore = require('nedb')
 import TransactionMeta from "../TransactionMeta";
 import TransactionState from "../TransactionState";
 import Storage from "../Storage";
+import bus from '../../lib/bus'
+import * as events from '../events'
 
 export default class TransactionMetaStorage {
   datastore: Promise<Datastore>
@@ -57,10 +59,20 @@ export default class TransactionMetaStorage {
 
   approve (id: string) {
     return this.update({ id }, { '$set': { state: 'APPROVED' } })
+      .then(array => {
+        let eventName = events.txApproved(id)
+        bus.emit(eventName)
+        return array
+      })
   }
 
   reject (id: string) {
     return this.update({ id }, { '$set': { state: 'REJECTED' } })
+      .then(array => {
+        let eventName = events.txRejected(id)
+        bus.emit(eventName)
+        return array
+    })
   }
 
   update (query: object, update: object): Promise<Array<TransactionMeta>> {
