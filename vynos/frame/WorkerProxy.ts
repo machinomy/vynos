@@ -13,7 +13,9 @@ import {
   ChangeNetworkRequest,
   GetPrivateKeyHexRequest, GetPrivateKeyHexResponse,
   SetPreferencesRequest,
-  SetApproveByIdRequest, SetRejectByIdRequest
+  SetApproveByIdRequest, SetRejectByIdRequest,
+  ClearTransactionMetastorageRequest, ClearReduxPersistentStorageRequest,
+  ClearChannelMetastorageRequest
 } from "../lib/rpc/yns";
 import {Action} from "redux";
 import Web3 = require("web3")
@@ -195,4 +197,35 @@ export default class WorkerProxy extends EventEmitter {
       // Do Nothing
     })
   }
+
+  clearTransactionMetastorage(): void {
+    let request: ClearTransactionMetastorageRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ClearTransactionMetastorageRequest.method,
+      params: []
+    }
+    this.provider.ask(request).then(() => {})
+  }
+
+  clearChannelMetastorage(): void {
+    let request: ClearChannelMetastorageRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ClearChannelMetastorageRequest.method,
+      params: []
+    }
+    this.provider.ask(request).then(() => {})
+  }
+
+  clearReduxPersistentStorage(): void {
+    let request: ClearReduxPersistentStorageRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ClearReduxPersistentStorageRequest.method,
+      params: []
+    }
+    this.provider.ask(request).then(() => {})
+  }
+
 }

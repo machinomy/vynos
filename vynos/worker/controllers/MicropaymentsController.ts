@@ -63,7 +63,7 @@ export default class MicropaymentsController {
           let account = accounts[0]
           let machinomy = new Machinomy(account, this.web3, { engine: 'nedb', databaseFile: 'vynos' })
           machinomy.close(channelId).then(() => {
-            let channelDescription = JSON.stringify({channelId: channelId.toString()})
+            let channelDescription = JSON.stringify({channelId: channelId})
             let transaction = transactions.closeChannel(channelDescription)
             return this.transactions.addTransaction(transaction).then(() => {
               resolve(channelId)
@@ -127,16 +127,16 @@ export default class MicropaymentsController {
               gateway: gateway,
               meta: meta
             })
-            let channelFound = this.channels.firstById(response.channelId.toString())
+            let channelFound = this.channels.firstById(response.channelId)
             if (!channelFound) {
               await this.channels.save({
-                channelId: response.channelId.toString(),
+                channelId: response.channelId,
                 title: purchaseMeta.siteName,
                 host: purchaseMeta.origin,
                 icon: '/frame/styles/images/channel.png',
                 openingTime: Date.now()
               })
-              let channelDescription = JSON.stringify({channelId: response.channelId.toString()})
+              let channelDescription = JSON.stringify({channelId: response.channelId})
               let transaction = transactions.openChannel('Opening of channel', channelDescription, account, receiver, channelValue ? channelValue : amount * 10)
               await this.transactions.addTransaction(transaction)
             }

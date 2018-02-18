@@ -330,3 +330,53 @@ export interface SetRejectByIdResponse extends ResponsePayload {
 }
 
 
+export class ClearTransactionMetastorageRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof ClearTransactionMetastorageRequest.method;
+  params: never[];
+
+  static method = "yns_clearTransactionMetastorageRequest"
+
+  static match(payload: RequestPayload): payload is ClearTransactionMetastorageRequest {
+    return payload.method === ClearTransactionMetastorageRequest.method
+  }
+}
+
+export interface ClearTransactionMetastorageResponse extends ResponsePayload {
+  result: null
+}
+
+export class ClearChannelMetastorageRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof ClearChannelMetastorageRequest.method;
+  params: never[];
+
+  static method = "yns_clearChannelMetastorageRequest"
+
+  static match(payload: RequestPayload): payload is ClearChannelMetastorageRequest {
+    return payload.method === ClearChannelMetastorageRequest.method
+  }
+}
+
+export interface ClearChannelMetastorageResponse extends ResponsePayload {
+  result: null
+}
+
+export class ClearReduxPersistentStorageRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof ClearReduxPersistentStorageRequest.method;
+  params: never[];
+
+  static method = "yns_clearReduxPersistentStorageRequest"
+
+  static match(payload: RequestPayload): payload is ClearReduxPersistentStorageRequest {
+    return payload.method === ClearReduxPersistentStorageRequest.method
+  }
+}
+
+export interface ClearReduxPersistentStorageResponse extends ResponsePayload {
+  result: null
+}

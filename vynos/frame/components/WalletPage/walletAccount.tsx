@@ -22,6 +22,7 @@ export interface WalletAccountState {
 
 export class WalletAccount extends React.Component<WalletAccountProps, WalletAccountState> {
   updateBalanceTimer: any;
+  _isMounted: boolean
 
   constructor(props: any) {
     super(props);
@@ -30,6 +31,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
       balance: '0',
       isDetailsDisplayed: false
     }
+    this._isMounted = false
   }
 
   renderBlockie() {
@@ -39,19 +41,24 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
   }
 
   componentDidMount() {
+    this._isMounted = true
     if (this.props.web3) {
       let web3 = this.props.web3
       web3.eth.getAccounts((err, accounts) => {
         let address = accounts[0]
         this.updateBalanceTimer = setInterval(() => {
           web3.eth.getBalance(address, (err, balance) => {
-            this.setState({
-              balance: web3.fromWei(balance, 'ether').toString()
-            })
+            if (this._isMounted) {
+              this.setState({
+                balance: web3.fromWei(balance, 'ether').toString()
+              })
+            }
             if(this.props.onChangeBalance) this.props.onChangeBalance(parseFloat(this.state.balance));
           })
         }, 500)
-        this.setState({address: address})
+        if (this._isMounted) {
+          this.setState({address: address})
+        }
         if(this.props.onChangeAddress) this.props.onChangeAddress(address);
       })
     }
@@ -59,6 +66,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
 
   componentWillUnmount() {
     clearInterval(this.updateBalanceTimer)
+    this._isMounted = false
   }
 
   displayDetails() {
@@ -66,9 +74,11 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     if (this.state.isDetailsDisplayed) {
       next = false
     }
-    this.setState({
-      isDetailsDisplayed: next
-    })
+    if (this._isMounted) {
+      this.setState({
+        isDetailsDisplayed: next
+      })
+    }
     if(this.props.onChangeDetailsDisplayed) this.props.onChangeDetailsDisplayed(next);
   }
 

@@ -19,7 +19,7 @@ function updateRecentVynosBuyResponse(buyResponse: VynosBuyResponse) {
   let channelCode = document.getElementById("payment-channel-code")
   let tokenCode = document.getElementById("payment-token-code")
   if (channelCode) {
-    channelCode.textContent = 'channelId: ' + JSON.stringify(buyResponse.channelId.toString())
+    channelCode.textContent = 'channelId: ' + JSON.stringify(buyResponse.channelId)
   }
   if (tokenCode) {
     tokenCode.textContent = 'token: ' + JSON.stringify(buyResponse.token)
@@ -150,7 +150,7 @@ window.addEventListener("load", function () {
             updateRecentVynosBuyResponse(buyResponse)
             let resultSpan = document.getElementById("open_channel_id")
             if (resultSpan) {
-              resultSpan.textContent = recentBuyResponse!.channelId.toString()
+              resultSpan.textContent = recentBuyResponse!.channelId
             }
           })
 
@@ -164,9 +164,9 @@ window.addEventListener("load", function () {
       ev.preventDefault()
       vynos.ready().then((wallet) => {
         if (recentBuyResponse) {
-          wallet.closeChannel(recentBuyResponse!.channelId.toString()).then(() => {
+          wallet.closeChannel(recentBuyResponse!.channelId).then(() => {
             console.log('Closing channel:')
-            console.log(recentBuyResponse!.channelId.toString())
+            console.log(recentBuyResponse!.channelId)
             let resultSpan = document.getElementById("open_channel_id")
             if (resultSpan) {
               resultSpan.textContent = 'n/a'
