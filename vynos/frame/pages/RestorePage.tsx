@@ -39,6 +39,8 @@ class RestorePage extends React.Component<RestorePageProps, RestorePageState> {
   handleSubmit (ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     if (this.isValid() && this.state.password && this.state.seed) {
+      // TODO this.props.workerProxy.clearTransactionMetastorage() here
+      // TODO this.props.workerProxy.clearReduxPersistentStorage() here
       this.props.workerProxy.restoreWallet(this.state.password, this.state.seed).then(() => {
         this.goBack()
       })

@@ -329,4 +329,21 @@ export interface SetRejectByIdResponse extends ResponsePayload {
   result: null
 }
 
+export class SetAvatarRequest implements RequestPayload {
+  id: number
+  jsonrpc: typeof JSONRPC
+  method: typeof SetAvatarRequest.method
+  params: [string]
+
+  static method: string = "yns_setAvatarRequest"
+
+  static match(payload: RequestPayload): payload is SetAvatarRequest {
+    return payload.method === SetAvatarRequest.method
+  }
+}
+
+export interface SetAvatarResponse extends ResponsePayload {
+  result: null
+}
+
 

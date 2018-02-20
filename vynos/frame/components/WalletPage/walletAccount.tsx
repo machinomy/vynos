@@ -4,6 +4,8 @@ import Web3 = require('web3')
 import {FrameState} from '../../redux/FrameState'
 
 import {Image} from 'semantic-ui-react'
+import BlockieComponent from "../../components/BlockieComponent";
+import WorkerProxy from "../../WorkerProxy";
 
 const style = require('../../styles/ynos.css')
 
@@ -12,6 +14,8 @@ export interface WalletAccountProps {
   onChangeAddress?: (address: string) => void
   onChangeDetailsDisplayed?: (value: boolean) => void
   onChangeBalance?: (balance: number) => void
+  avatar?: string,
+  workerProxy?: WorkerProxy
 }
 
 export interface WalletAccountState {
@@ -32,10 +36,18 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     }
   }
 
-  renderBlockie() {
-    return <div className={style.accountAvatar}>
-      <Image src={require('../../styles/images/avatar.svg')}/>
-    </div>
+  renderAvatar() {
+    if (this.props.avatar && this.props.avatar.length) {
+      return <div className={style.accountAvatar}>
+                <Image src={this.props.avatar} />
+             </div>
+    } else {
+      return <BlockieComponent classDiv={"ui mini avatar image"} classCanvas={"ui mini avatar image"} size={35}
+                               scale={2} seed={this.state.address ? this.state.address : ''}
+                               onBlockieGenerated={(base64: string) => {
+                                 this.props.workerProxy!.setAvatar(base64)
+                               }}/>
+    }
   }
 
   componentDidMount() {
@@ -74,7 +86,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
 
   render() {
     return <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
-      {this.renderBlockie()}
+      {this.renderAvatar()}
       <div className={style.walletAccount}>
         <div className={style.walletAddress}>
           {this.state.address}
@@ -92,7 +104,9 @@ function mapStateToProps(state: FrameState, ownProps: WalletAccountProps): Walle
     web3: state.temp.workerProxy.web3,
     onChangeAddress: ownProps.onChangeAddress,
     onChangeDetailsDisplayed: ownProps.onChangeDetailsDisplayed,
-    onChangeBalance: ownProps.onChangeBalance
+    onChangeBalance: ownProps.onChangeBalance,
+    avatar: state.shared.avatar,
+    workerProxy: state.temp.workerProxy
   }
 }
 

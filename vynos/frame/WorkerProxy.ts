@@ -13,7 +13,7 @@ import {
   ChangeNetworkRequest,
   GetPrivateKeyHexRequest, GetPrivateKeyHexResponse,
   SetPreferencesRequest,
-  SetApproveByIdRequest, SetRejectByIdRequest
+  SetApproveByIdRequest, SetRejectByIdRequest, SetAvatarRequest
 } from "../lib/rpc/yns";
 import {Action} from "redux";
 import Web3 = require("web3")
@@ -190,6 +190,18 @@ export default class WorkerProxy extends EventEmitter {
       jsonrpc: JSONRPC,
       method: SetRejectByIdRequest.method,
       params: [id]
+    }
+    this.provider.ask(request).then(() => {
+      // Do Nothing
+    })
+  }
+
+  setAvatar(avatar: string): void {
+    let request: SetAvatarRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: SetAvatarRequest.method,
+      params: [avatar]
     }
     this.provider.ask(request).then(() => {
       // Do Nothing

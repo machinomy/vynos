@@ -253,6 +253,11 @@ div.terms-text > p {
   opacity: 0.2;
 }
 
+.account-avatar > img {
+  border-radius: 64px;
+  margin-top: 2px;
+}
+
 .ui.mini.image.avatar.list-item-avatar {
   width: 75px;
 }
