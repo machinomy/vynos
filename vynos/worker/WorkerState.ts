@@ -19,16 +19,14 @@ export interface SharedState {
   rememberPath: string
   lastUpdateDb: number
   preferences: Preferences
-  lastMicropaymentTime: number,
-  avatar: string
+  lastMicropaymentTime: number
 }
 
 export interface PersistentState {
   didInit: boolean,
   keyring?: string,
   rememberPath: string
-  preferences: Preferences,
-  avatar: string
+  preferences: Preferences
 }
 
 export interface WorkerState {
@@ -46,7 +44,6 @@ export const INITIAL_SHARED_STATE: SharedState = {
     micropaymentThreshold: 1000000,
     micropaymentThrottlingHumanReadable: '-1ms'
   },
-  avatar: '',
   lastMicropaymentTime: 0
 }
 
@@ -57,8 +54,7 @@ export const INITIAL_STATE: WorkerState = {
     preferences: {
       micropaymentThreshold: 1000000,
       micropaymentThrottlingHumanReadable: '-1ms'
-    },
-    avatar: ''
+    }
   },
   runtime: {
     isTransactionPending: 0,
@@ -75,7 +71,6 @@ export function buildSharedState(state: WorkerState): SharedState {
     rememberPath: state.persistent.rememberPath,
     lastUpdateDb: state.runtime.lastUpdateDb,
     preferences: state.persistent.preferences,
-    lastMicropaymentTime: state.runtime.lastMicropaymentTime,
-    avatar: state.persistent.avatar
+    lastMicropaymentTime: state.runtime.lastMicropaymentTime
   }
 }

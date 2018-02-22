@@ -184,12 +184,4 @@ export default class BackgroundController {
       resolve()
     })
   }
-
-  setAvatar(avatar: string): Promise<void> {
-    return new Promise(resolve => {
-      this.store.dispatch(actions.setAvatar(avatar))
-      resolve()
-    })
-  }
-  
 }

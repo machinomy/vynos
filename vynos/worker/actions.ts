@@ -81,11 +81,3 @@ export function setPreferencesHandler(state: WorkerState, preferences: Preferenc
     persistent: { ...state.persistent, preferences }
   }
 }
-
-export const setAvatar = actionCreator<string>("persistent/setAvatar")
-export function setAvatarHandler(state: WorkerState, avatar: string): WorkerState {
-  return { ...state,
-    persistent: { ...state.persistent, avatar: avatar }
-  }
-}
-

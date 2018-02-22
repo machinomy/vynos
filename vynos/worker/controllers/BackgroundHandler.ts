@@ -10,7 +10,7 @@ import {
   UnlockWalletRequest,
   UnlockWalletResponse, RememberPageResponse, TransactonResolved, ChangeNetworkRequest, ChangeNetworkResponse,
   GetPrivateKeyHexRequest, GetPrivateKeyHexResponse,
-  SetPreferencesRequest, SetPreferencesResponse, SetAvatarRequest, SetAvatarResponse
+  SetPreferencesRequest, SetPreferencesResponse
 } from "../../lib/rpc/yns";
 import { Writable } from "readable-stream";
 import { SharedStateBroadcast, SharedStateBroadcastType } from "../../lib/rpc/SharedStateBroadcast";
@@ -168,18 +168,6 @@ changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) 
     }).catch(end)
   }
 
-  setAvatar(message: SetAvatarRequest, next: Function, end: EndFunction) {
-    let avatar = message.params[0]
-    this.controller.setAvatar(avatar).then(() => {
-      let response: SetAvatarResponse = {
-        id: message.id,
-        jsonrpc: message.jsonrpc,
-        result: null
-      }
-      end(null, response)
-    }).catch(end)
-  }
-
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (GetSharedStateRequest.match(message)) {
       this.getSharedState(message, next, end)
@@ -205,8 +193,6 @@ changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) 
       this.getPrivateKeyHex(message, next, end)
     } else if (SetPreferencesRequest.match(message)) {
       this.setPreferences(message, next, end)
-    } else if (SetAvatarRequest.match(message)) {
-      this.setAvatar(message, next, end)
     } else {
       next()
     }

@@ -5,7 +5,6 @@ import {FrameState} from '../../redux/FrameState'
 
 import {Image} from 'semantic-ui-react'
 import BlockieComponent from "../../components/BlockieComponent";
-import WorkerProxy from "../../WorkerProxy";
 
 const style = require('../../styles/ynos.css')
 
@@ -14,8 +13,6 @@ export interface WalletAccountProps {
   onChangeAddress?: (address: string) => void
   onChangeDetailsDisplayed?: (value: boolean) => void
   onChangeBalance?: (balance: number) => void
-  avatar?: string,
-  workerProxy?: WorkerProxy
 }
 
 export interface WalletAccountState {
@@ -37,15 +34,15 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
   }
 
   renderAvatar() {
-    if (this.props.avatar && this.props.avatar.length) {
+    if (localStorage.getItem('mc_wallet_avatar') && (localStorage.getItem('mc_wallet_avatar') as string).length > 0) {
       return <div className={style.accountAvatar}>
-                <Image src={this.props.avatar} />
+                <Image src={localStorage.getItem('mc_wallet_avatar') as string} />
              </div>
     } else {
       return <BlockieComponent classDiv={"ui mini avatar image"} classCanvas={"ui mini avatar image"} size={35}
                                scale={2} seed={this.state.address ? this.state.address : ''}
                                onBlockieGenerated={(base64: string) => {
-                                 this.props.workerProxy!.setAvatar(base64)
+                                 localStorage.setItem('mc_wallet_avatar', base64)
                                }}/>
     }
   }
@@ -104,9 +101,7 @@ function mapStateToProps(state: FrameState, ownProps: WalletAccountProps): Walle
     web3: state.temp.workerProxy.web3,
     onChangeAddress: ownProps.onChangeAddress,
     onChangeDetailsDisplayed: ownProps.onChangeDetailsDisplayed,
-    onChangeBalance: ownProps.onChangeBalance,
-    avatar: state.shared.avatar,
-    workerProxy: state.temp.workerProxy
+    onChangeBalance: ownProps.onChangeBalance
   }
 }
 

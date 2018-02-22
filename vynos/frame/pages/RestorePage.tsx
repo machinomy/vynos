@@ -41,6 +41,7 @@ class RestorePage extends React.Component<RestorePageProps, RestorePageState> {
     if (this.isValid() && this.state.password && this.state.seed) {
       // TODO this.props.workerProxy.clearTransactionMetastorage() here
       // TODO this.props.workerProxy.clearReduxPersistentStorage() here
+      localStorage.clear()
       this.props.workerProxy.restoreWallet(this.state.password, this.state.seed).then(() => {
         this.goBack()
       })

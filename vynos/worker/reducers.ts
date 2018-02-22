@@ -12,6 +12,5 @@ const reducers: ReducerBuilder<WorkerState, WorkerState> = reducerWithInitialSta
   .case(actions.rememberPage, actions.rememberPageHandler)
   .case(actions.setLastUpdateDb, actions.setLastUpdateDbHandler)
   .case(actions.setPreferences, actions.setPreferencesHandler)
-  .case(actions.setAvatar, actions.setAvatarHandler)
 
 export default reducers
