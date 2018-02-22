@@ -20,16 +20,19 @@ export interface PasswordState {
   displayRestore: boolean
 }
 
-export interface PasswordSubpageStateProps {
-  workerProxy?: WorkerProxy
+export interface OwnPasswordProps {
   showVerifiable: () => void
+}
+
+export interface PasswordSubpageStateProps {
+  workerProxy: WorkerProxy
 }
 
 export interface PasswordSubpageDispatchProps {
   genKeyring?: (workerProxy: WorkerProxy, password: string) => void
 }
 
-export type PasswordSubpageProps = PasswordSubpageStateProps & PasswordSubpageDispatchProps
+export type PasswordSubpageProps = PasswordSubpageStateProps & PasswordSubpageDispatchProps & OwnPasswordProps
 
 export class Password extends React.Component<PasswordSubpageProps, PasswordState> {
   constructor (props: PasswordSubpageProps) {
@@ -67,7 +70,7 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
   handleSubmit (e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (this.isValid() && this.state.password) {
-      return this.props.genKeyring!(this.props.workerProxy!, this.state.password)
+      return this.props.genKeyring!(this.props.workerProxy, this.state.password)
     }
   }
 
@@ -164,7 +167,7 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
   }
 }
 
-function mapStateToProps(state: FrameState, props: PasswordSubpageProps): PasswordSubpageStateProps {
+function mapStateToProps(state: FrameState, props: OwnPasswordProps): PasswordSubpageStateProps & OwnPasswordProps {
   return {
     workerProxy: state.temp.workerProxy,
     showVerifiable: props.showVerifiable

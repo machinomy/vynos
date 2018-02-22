@@ -10,9 +10,12 @@ import RestorePage from "./RestorePage";
 
 const style = require("../styles/ynos.css");
 
-export interface UnlockPageProps {
-  workerProxy?: WorkerProxy
+export interface OwnUnlockProps {
   showVerifiable: () => void
+}
+
+export interface UnlockPageProps {
+  workerProxy: WorkerProxy
 }
 
 export type UnlockPageState = {
@@ -22,8 +25,8 @@ export type UnlockPageState = {
   displayRestore: boolean
 };
 
-export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState> {
-  constructor (props: UnlockPageProps) {
+export class UnlockPage extends React.Component<UnlockPageProps & OwnUnlockProps, UnlockPageState> {
+  constructor (props: UnlockPageProps & OwnUnlockProps) {
     super(props);
     this.state = {
       password: '',
@@ -49,7 +52,7 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
       loading: true
     });
     let password = _.toString(this.state.password);
-    this.props.workerProxy!.doUnlock(password).then((errorReason) => {
+    this.props.workerProxy.doUnlock(password).then((errorReason) => {
       if (errorReason) {
         this.setState({
           passwordError: errorReason
@@ -109,7 +112,7 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
   }
 }
 
-function mapStateToProps (state: FrameState, props: UnlockPageProps): UnlockPageProps {
+function mapStateToProps (state: FrameState, props: OwnUnlockProps): UnlockPageProps & OwnUnlockProps {
   return {
     workerProxy: state.temp.workerProxy,
     showVerifiable: props.showVerifiable

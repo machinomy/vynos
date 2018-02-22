@@ -9,9 +9,12 @@ import {FrameState} from "../redux/FrameState";
 import {ChangeEvent, FormEvent} from "react";
 import bip39 = require('bip39')
 
-export interface RestorePageStateProps {
-  workerProxy?: WorkerProxy
+export interface OwnRestorePageProps {
   showVerifiable: () => void
+}
+
+export interface RestorePageStateProps {
+  workerProxy: WorkerProxy
 }
 
 export interface RestorePageProps extends RestorePageStateProps {
@@ -27,8 +30,8 @@ export interface RestorePageState {
   passwordConfirmationError?: string
 }
 
-class RestorePage extends React.Component<RestorePageProps, RestorePageState> {
-  constructor (props: RestorePageProps) {
+class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps, RestorePageState> {
+  constructor (props: RestorePageProps & OwnRestorePageProps) {
     super(props)
     this.state = {}
   }
@@ -40,7 +43,7 @@ class RestorePage extends React.Component<RestorePageProps, RestorePageState> {
   handleSubmit (ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     if (this.isValid() && this.state.password && this.state.seed) {
-      this.props.workerProxy!.restoreWallet(this.state.password, this.state.seed).then(() => {
+      this.props.workerProxy.restoreWallet(this.state.password, this.state.seed).then(() => {
         this.goBack()
       })
     }
@@ -183,7 +186,7 @@ class RestorePage extends React.Component<RestorePageProps, RestorePageState> {
   }
 }
 
-function mapStateToProps (state: FrameState, props: RestorePageStateProps): RestorePageStateProps {
+function mapStateToProps (state: FrameState, props: OwnRestorePageProps): RestorePageStateProps & OwnRestorePageProps {
   return {
     workerProxy: state.temp.workerProxy,
     showVerifiable: props.showVerifiable

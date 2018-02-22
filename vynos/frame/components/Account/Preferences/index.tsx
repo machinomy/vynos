@@ -8,16 +8,19 @@ const style = require("../../../styles/ynos.css");
 
 export interface PreferencesStateProps {}
 
-export interface PreferencesProps {
-  workerProxy?: WorkerProxy
+export interface OwnPreferencesProps {
   showVerifiable: () => void
 }
 
-export class Preferences extends React.Component<PreferencesProps, PreferencesStateProps> {
+export interface PreferencesProps {
+  workerProxy: WorkerProxy
+}
+
+export class Preferences extends React.Component<PreferencesProps & OwnPreferencesProps, PreferencesStateProps> {
   privateKeyHex : string
 
   async componentWillMount () {
-    this.privateKeyHex = await this.props.workerProxy!.getPrivateKeyHex()
+    this.privateKeyHex = await this.props.workerProxy.getPrivateKeyHex()
   }
 
   render () {
@@ -65,8 +68,8 @@ export class Preferences extends React.Component<PreferencesProps, PreferencesSt
   }
 }
 
-function mapStateToProps (state: FrameState, props: PreferencesProps): PreferencesProps {
-  const workerProxy = state.temp.workerProxy!
+function mapStateToProps (state: FrameState, props: OwnPreferencesProps): PreferencesProps & OwnPreferencesProps {
+  const workerProxy = state.temp.workerProxy
   return {
     workerProxy: workerProxy,
     showVerifiable: props.showVerifiable
