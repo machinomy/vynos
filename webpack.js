@@ -119,7 +119,8 @@ function webpackConfig (entry, devSupplement) {
       fs: 'empty',
       net: 'empty',
       tls: 'empty',
-      module: 'empty'
+      module: 'empty',
+      dns: 'mock'
     }
   }
 
