@@ -1,5 +1,5 @@
 import Transaction from "./TransactionMeta";
-import {randomId} from "./Payload";
+import { randomId } from "./Payload";
 import TransactionKind from "./TransactionKind";
 import TransactionState from "./TransactionState";
 import PurchaseMeta from "./PurchaseMeta";
@@ -20,6 +20,7 @@ export function ethereum (id: string, to: string, amount: number, fee: number): 
 export function micropayment (purchaseMeta: PurchaseMeta, receiver: string, amount: number): Transaction {
   return {
     id: randomId().toString(),
+    origin: purchaseMeta.origin,
     title: purchaseMeta.siteName,
     description: purchaseMeta.description,
     icon: purchaseMeta.icon,
@@ -42,6 +43,22 @@ export function signature (from: string, data: string): Transaction {
     fee: 0,
     kind: TransactionKind.SIGN,
     state: TransactionState.PENDING
+  }
+}
+
+export function closeChannel (description: string): Transaction {
+  return {
+    id: randomId().toString(),
+    title: 'Closing channel',
+    from: '',
+    to: '',
+    description: description,
+    icon: '/frame/styles/images/close_channel-approved.png',
+    time: Date.now(),
+    amount: 0,
+    fee: 0,
+    kind: TransactionKind.CLOSE_CHANNEL,
+    state: TransactionState.APPROVED
   }
 }
 

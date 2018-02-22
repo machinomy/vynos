@@ -3663,10 +3663,6 @@ is-hex-prefixed@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-hex-prefixed/-/is-hex-prefixed-1.0.0.tgz#7d8d37e6ad77e5d127148913c573e082d777f554"
 
-is-hex@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/is-hex/-/is-hex-1.1.3.tgz#440259c079681e0372e52156aa67a233c3975dee"
-
 is-number@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-2.1.0.tgz#01fcbbb393463a548f2f466cce16dece49db908f"
@@ -7048,6 +7044,10 @@ tildify@^1.0.0:
 time-stamp@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/time-stamp/-/time-stamp-1.1.0.tgz#764a5a11af50561921b133f3b44e618687e0f5c3"
+
+timeparse@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/timeparse/-/timeparse-1.0.0.tgz#8098033e6369cc6d86b7f91dd70d6368e240d5c7"
 
 timers-browserify@^2.0.2:
   version "2.0.2"

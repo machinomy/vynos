@@ -5,7 +5,9 @@ import {
   BuyRequest, BuyResponse,
   CloseChannelRequest, CloseChannelResponse, ListChannelsRequest, ListChannelsResponse, OpenChannelRequest,
   OpenChannelResponse,
-  PayInChannelRequest, PayInChannelResponse
+  PayInChannelRequest, PayInChannelResponse,
+  SetApproveByIdRequest, SetApproveByIdResponse,
+  SetRejectByIdRequest, SetRejectByIdResponse
 } from "../../lib/rpc/yns";
 import {PaymentChannel} from "machinomy/lib/channel";
 import Payment from "machinomy/lib/Payment";
@@ -87,6 +89,30 @@ export default class MicropaymentsHandler {
     }).catch(end)
   }
 
+  setApproveById(message: SetApproveByIdRequest, next: Function, end: EndFunction) {
+    let id = message.params[0]
+    this.controller.transactions.setApproveById(id).then(() => {
+      let response: SetApproveByIdResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: null
+      }
+      end(null, response)
+    }).catch(end)
+  }
+
+  setRejectById(message: SetRejectByIdRequest, next: Function, end: EndFunction) {
+    let id = message.params[0]
+    this.controller.transactions.setRejectById(id).then(() => {
+      let response: SetRejectByIdResponse = {
+        id: message.id,
+        jsonrpc: message.jsonrpc,
+        result: null
+      }
+      end(null, response)
+    }).catch(end)
+  }
+
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (OpenChannelRequest.match(message)) {
       this.openChannel(message, next, end)
@@ -98,6 +124,10 @@ export default class MicropaymentsHandler {
       this.listChannels(message, next, end)
     } else if (BuyRequest.match(message)) {
       this.buy(message, next, end)
+    } else if (SetApproveByIdRequest.match(message)) {
+      this.setApproveById(message, next, end)
+    } else if (SetRejectByIdRequest.match(message)) {
+      this.setRejectById(message, next, end)
     } else {
       next()
     }

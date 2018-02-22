@@ -4,6 +4,8 @@ import { Store } from "redux";
 import * as actions from './actions'
 import Transaction from '../lib/TransactionMeta'
 import TransactionState from "../lib/TransactionState";
+import {txApproved, txRejected} from '../lib/events'
+import bus from '../lib/bus'
 
 export default class TransactionService {
   storage: TransactionStorage
@@ -23,6 +25,22 @@ export default class TransactionService {
   approveTransaction(transaction: Transaction): Promise<boolean> {
     return this.storage.add(transaction).then((res) => {
       return this.dispatchTransaction(transaction)
+    })
+  }
+
+  setApproveById(id: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.storage.approve(id)
+      let eventName = txApproved(id)
+      bus.emit(eventName)
+    })
+  }
+
+  setRejectById(id: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.storage.reject(id)
+      let eventName = txRejected(id)
+      bus.emit(eventName)
     })
   }
 
