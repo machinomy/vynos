@@ -1,12 +1,17 @@
 import * as React from 'react'
-import {connect} from 'react-redux'
-import { Container, Menu, Form, Button, Divider, Icon } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { Container, Menu, Form, Button, Divider, Icon, Input } from 'semantic-ui-react'
+
+const web3Utils = require('web3-utils')
+
 const style = require('../styles/ynos.css')
 
-import {MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT} from '../constants'
+const MAX_FILE_SIZE = 1048576 // 1mb
+
+import { MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT } from '../constants'
 import WorkerProxy from '../WorkerProxy'
-import {FrameState} from "../redux/FrameState";
-import {ChangeEvent, FormEvent} from "react";
+import { FrameState } from "../redux/FrameState";
+import { ChangeEvent, FormEvent } from "react";
 import bip39 = require('bip39')
 
 export interface OwnRestorePageProps {
@@ -28,12 +33,29 @@ export interface RestorePageState {
   passwordConfirmation?: string
   passwordError?: string
   passwordConfirmationError?: string
+  fileError?: string
+  fileIsHex?: boolean
+  fileIsJSON?: boolean
+  fileValue?: string
+  incorrectKeyFile?: boolean
 }
 
 class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps, RestorePageState> {
   constructor (props: RestorePageProps & OwnRestorePageProps) {
     super(props)
-    this.state = {}
+    this.state = { incorrectKeyFile: false }
+    this.onDrag = this.onDrag.bind(this)
+    this.onDrop = this.onDrop.bind(this)
+  }
+
+  componentWillMount () {
+    document.addEventListener('dragover', this.onDrag, false);
+    document.addEventListener('drop', this.onDrop, false);
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('dragover', this.onDrag, false);
+    document.removeEventListener('drop', this.onDrop, false);
   }
 
   goBack () {
@@ -42,10 +64,30 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
 
   handleSubmit (ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
-    if (this.isValid() && this.state.password && this.state.seed) {
-      this.props.workerProxy.restoreWallet(this.state.password, this.state.seed).then(() => {
-        this.goBack()
-      })
+    this.setState({ incorrectKeyFile: false })
+    let state = this.state
+    if (this.isValid() && state.password) {
+      if (state.fileIsHex && state.fileValue) {
+        this.props.workerProxy.restoreWallet(state.password, 'hex', state.fileValue).then((ok: string) => {
+          if (ok === 'true') {
+            this.goBack()
+          } else {
+            this.setState({ incorrectKeyFile: true })
+          }
+        })
+      } else if (state.fileIsJSON && state.fileValue) {
+        this.props.workerProxy.restoreWallet(state.password, 'json', state.fileValue).then((ok: string) => {
+          if (ok === 'true') {
+            this.goBack()
+          } else {
+            this.setState({ incorrectKeyFile: true })
+          }
+        })
+      } else if (this.isValid() && state.seed) {
+        this.props.workerProxy.restoreWallet(state.password, 'seed', state.seed).then(() => {
+          this.goBack()
+        })
+      }
     }
   }
 
@@ -98,7 +140,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
     })
   }
 
-  setValue(state: RestorePageState) {
+  setValue (state: RestorePageState) {
     let base = {
       passwordError: undefined,
       passwordConfirmationError: undefined,
@@ -109,18 +151,22 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
   }
 
   renderSeedInput () {
+    if (this.state.fileIsHex || this.state.fileIsJSON) return null
+
     let className = style.mnemonicInput + ' ' + (this.state.seedError ? style.inputError : '')
     return <textarea placeholder="Seed Phrase"
                      className={className}
                      rows={3}
-                     onChange={this.handleChangeSeed.bind(this)} />
+                     onChange={this.handleChangeSeed.bind(this)}/>
   }
 
   renderSeedHint () {
+    if (this.state.fileIsHex || this.state.fileIsJSON) return null
+
     if (this.state.seedError) {
       return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.seedError}</span>;
     } else {
-      return <span className={style.passLenText} />
+      return <span className={style.passLenText}/>
     }
   }
 
@@ -129,7 +175,8 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
     return <input type="password"
                   placeholder="Password"
                   className={className}
-                  onChange={this.handleChangePassword.bind(this)} />
+                  autoComplete="new-password"
+                  onChange={this.handleChangePassword.bind(this)}/>
   }
 
   renderPasswordHint () {
@@ -142,17 +189,85 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
 
   renderPasswordConfirmationInput () {
     let className = this.state.passwordConfirmationError ? style.inputError : ''
-    return  <input type="password"
-                   placeholder="Password Confirmation"
-                   className={className}
-                   onChange={this.handleChangePasswordConfirmation.bind(this)} />
+    return <input type="password"
+                  placeholder="Password Confirmation"
+                  className={className}
+                  autoComplete="new-password"
+                  onChange={this.handleChangePasswordConfirmation.bind(this)}/>
   }
 
   renderPasswordConfirmationHint () {
     if (this.state.passwordConfirmationError) {
-      return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.passwordConfirmationError}</span>;
+      return <span className={style.errorText}><i
+        className={style.vynosInfo}/> {this.state.passwordConfirmationError}</span>;
     } else {
       return <span className={style.errorText}>&nbsp;</span>;
+    }
+  }
+
+  renderPrivKeyText(){
+    if(this.state.fileIsHex){
+      return <div>And now set the password</div>
+    }else if(this.state.fileIsJSON){
+      return <div>And now set the password for unlocking</div>
+    }else {
+      return <a onClick={RestorePage.clickInpFile} style={{ float: 'right' }}>Select private key file</a>
+    }
+
+  }
+
+  static clickInpFile () {
+    document.getElementById('inpFilePrivKey')!.click()
+  }
+
+  changeInputFile (event: ChangeEvent<HTMLInputElement>) {
+    let files: FileList | null = event.target.files
+    if (files && files.length) {
+      this.checkFile(files[0])
+    } else {
+      this.setState({ fileError: '', fileIsHex: false, fileIsJSON: false, incorrectKeyFile: false })
+    }
+  }
+
+  checkFile (file: File) {
+    if (file.size > MAX_FILE_SIZE) {
+      this.setState({ fileError: 'File too large', fileIsHex: false, fileIsJSON: false })
+      return
+    }
+
+    let reader = new FileReader()
+    reader.onload = (file: any) => {
+      let f = file.target.result
+
+      if (web3Utils.isHex(f)) {
+        this.setState({ fileIsHex: true, fileValue: f })
+      } else {
+        this.setState({ fileIsHex: false })
+
+        try {
+          this.setState({ fileIsJSON: true, fileValue: f })
+        } catch (e) {
+          this.setState({ fileIsJSON: false })
+        }
+      }
+    }
+    reader.readAsText(file)
+  }
+
+  onDrag (event: any) {
+    event.stopPropagation();
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+  }
+
+  onDrop (event: any) {
+    event.stopPropagation();
+    event.preventDefault();
+    let files: FileList | null = event.dataTransfer.files
+    if (files && files.length) {
+      this.checkFile(files[0])
+    } else {
+      this.setState({ fileError: '', fileIsHex: false, fileIsJSON: false, incorrectKeyFile: false })
     }
   }
 
@@ -165,10 +280,18 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
       </Menu>
       <Container textAlign="center">
         <Form className={style.encryptionForm} onSubmit={this.handleSubmit.bind(this)}>
+          <div style={{ marginBottom: '10px' }}>
+            {(this.state.incorrectKeyFile) ?
+              <span style={{ fontSize: '16px' }} className={style.errorText}>Incorrect key file</span> : ''}
+          </div>
           <Form.Field className={style.clearIndent}>
             {this.renderSeedInput()}
             {this.renderSeedHint()}
+            {this.renderPrivKeyText()}
           </Form.Field>
+          <div><span className={style.errorText}>{this.state.fileError}</span></div>
+          <input type="file" id={'inpFilePrivKey'} style={{ display: 'none' }}
+                 onChange={this.changeInputFile.bind(this)}/>
           <Form.Field className={style.clearIndent}>
             {this.renderPasswordInput()}
             {this.renderPasswordHint()}
@@ -177,8 +300,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
             {this.renderPasswordConfirmationInput()}
             {this.renderPasswordConfirmationHint()}
           </Form.Field>
-          <Divider hidden />
-          <Button type='submit' content="Restore" primary className={style.buttonNav} />
+          <Button type='submit' content="Restore" primary className={style.buttonNav}/>
         </Form>
       </Container>
       <a onClick={this.props.showVerifiable} id={style.shieldIcon}><Icon name={'shield'} size={'large'}></Icon></a>

@@ -24,7 +24,7 @@ export interface PreferencesProps {
 export class Preferences extends React.Component<PreferencesProps & OwnPreferencesProps, PreferencesStateProps> {
   privateKeyHex : string
 
-  constructor(props: PreferencesProps) {
+  constructor(props: PreferencesProps & OwnPreferencesProps) {
     super(props)
     this.state = {
       preferences : props.preferences,
