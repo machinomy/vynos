@@ -41,6 +41,7 @@ export interface BlockieComponentProps {
   style?: any
   classDiv?: any
   classCanvas?: any
+  onBlockieGenerated?: (base64: string) => void
 }
 
 export default class BlockieComponent extends React.Component<BlockieComponentProps, {}> {
@@ -111,6 +112,9 @@ export default class BlockieComponent extends React.Component<BlockieComponentPr
         if(imageData[i]) {
           canvasContext.fillRect(col * this.scale, row * this.scale, this.scale, this.scale)
         }
+      }
+      if (this.props.onBlockieGenerated) {
+        this.props.onBlockieGenerated(canvasElement.toDataURL())
       }
     }
   }

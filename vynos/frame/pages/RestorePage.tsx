@@ -70,6 +70,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
       if (state.fileIsHex && state.fileValue) {
         this.props.workerProxy.restoreWallet(state.password, 'hex', state.fileValue).then((ok: string) => {
           if (ok === 'true') {
+            localStorage.clear()                                          
             this.goBack()
           } else {
             this.setState({ incorrectKeyFile: true })
@@ -78,6 +79,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
       } else if (state.fileIsJSON && state.fileValue) {
         this.props.workerProxy.restoreWallet(state.password, 'json', state.fileValue).then((ok: string) => {
           if (ok === 'true') {
+            localStorage.clear()
             this.goBack()
           } else {
             this.setState({ incorrectKeyFile: true })
@@ -85,6 +87,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
         })
       } else if (this.isValid() && state.seed) {
         this.props.workerProxy.restoreWallet(state.password, 'seed', state.seed).then(() => {
+          localStorage.clear()
           this.goBack()
         })
       }
