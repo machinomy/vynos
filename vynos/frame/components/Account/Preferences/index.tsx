@@ -1,15 +1,18 @@
 import * as React from "react";
-import { Container, Form, Button, Input, Label } from 'semantic-ui-react'
+import { Container, Form, Button, Input, Label, Dropdown } from 'semantic-ui-react'
 import { FrameState } from "../../../redux/FrameState";
 import { connect } from "react-redux";
 import WorkerProxy from "../../../WorkerProxy";
 import {Preferences as PreferencesType}  from "../../../../worker/WorkerState";
+const fixer = require('fixer-api');
 const style = require("../../../styles/ynos.css");
 
 
 export interface PreferencesStateProps {
   preferences: PreferencesType
   throttlingTimeFormatted: string
+  currencies: Array<DropdownCurrencyData>
+  currentCurrency: string
 }
 
 export interface OwnPreferencesProps {
@@ -21,19 +24,51 @@ export interface PreferencesProps {
   preferences: PreferencesType
 }
 
+// export interface CryptonatorCurrencyData {
+//   code: string
+//   name: string
+//   statuses: string[]
+// }
+//
+// export interface ServerCurrencyData {
+//   code: string
+//   symbol?: string
+//   name_plural: string
+// }
+//
+// export interface FixerCurrencyData {
+//   code: string
+//   name_plural: string
+// }
+
+export interface DropdownCurrencyData {
+  key?: string
+  value?: string
+  text?: string
+}
+
 export class Preferences extends React.Component<PreferencesProps & OwnPreferencesProps, PreferencesStateProps> {
   privateKeyHex : string
 
-  constructor(props: PreferencesProps) {
+  constructor(props: PreferencesProps & OwnPreferencesProps) {
     super(props)
     this.state = {
       preferences : props.preferences,
-      throttlingTimeFormatted: props.preferences.micropaymentThrottlingHumanReadable
+      throttlingTimeFormatted: props.preferences.micropaymentThrottlingHumanReadable,
+      currencies: [],
+      currentCurrency: props.preferences.currency
     }
   }
 
   async componentWillMount () {
     this.privateKeyHex = await this.props.workerProxy.getPrivateKeyHex()
+    let response = await fixer.latest()
+    let listOfCurrencies : Array<DropdownCurrencyData> = []
+    for (const key of Object.keys(response.rates)) {
+      listOfCurrencies.push({'value': key, 'text': key})
+    }
+
+    this.setState( {...this.state, currencies: listOfCurrencies})
   }
 
   render () {
@@ -61,12 +96,30 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
             <a onClick={this.props.showVerifiable}>Verify authenticity Vynos</a>
           </p>
         </Form.Group>
+        <Form.Group grouped>
+          <label>Other</label>
+          <p>
+            <label>Display balance currency</label>
+          </p>
+          <select value={this.state.currentCurrency} onChange={(event)=>{this.handleChangeCurrency(event.target.value as string)}}>
+          {
+            this.state.currencies.map((currency) => {
+              return <option key={currency.value} value={currency.value}>{currency.text}</option>
+            })
+          }
+          </select>
+        </Form.Group>
         {/*<p className={style.buttonNav}>*/}
           {/*<Button type='submit' content="Save" primary disabled/>*/}
         {/*</p>*/}
       </Form>
     </Container>
     </div>
+  }
+
+  handleChangeCurrency(newCurrency : string) {
+    this.state = {...this.state, currentCurrency: newCurrency,  preferences: {...this.state.preferences, currency: newCurrency}}
+    this.props.workerProxy.setPreferences(this.state.preferences)
   }
 
   handleChangeMicropaymentThrottling() {
