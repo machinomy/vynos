@@ -12,15 +12,19 @@ export interface PreferencesStateProps {
   throttlingTimeFormatted: string
 }
 
+export interface OwnPreferencesProps {
+  showVerifiable: () => void
+}
+
 export interface PreferencesProps {
   workerProxy: WorkerProxy
   preferences: PreferencesType
 }
 
-export class Preferences extends React.Component<PreferencesProps, PreferencesStateProps> {
+export class Preferences extends React.Component<PreferencesProps & OwnPreferencesProps, PreferencesStateProps> {
   privateKeyHex : string
 
-  constructor(props: PreferencesProps) {
+  constructor(props: PreferencesProps & OwnPreferencesProps) {
     super(props)
     this.state = {
       preferences : props.preferences,
@@ -52,6 +56,9 @@ export class Preferences extends React.Component<PreferencesProps, PreferencesSt
           <label>Security</label>
           <p>
             <a onClick={() => {this.handleSavePrivateKeyToFile()}}>Save private key to file</a>
+          </p>
+          <p>
+            <a onClick={this.props.showVerifiable}>Verify authenticity Vynos</a>
           </p>
         </Form.Group>
         <p className={style.forgetAccount}>
@@ -105,10 +112,11 @@ export class Preferences extends React.Component<PreferencesProps, PreferencesSt
   }
 }
 
-function mapStateToProps (state: FrameState): PreferencesProps {
-  const workerProxy = state.temp.workerProxy!
+function mapStateToProps (state: FrameState, props: OwnPreferencesProps): PreferencesProps & OwnPreferencesProps {
+  const workerProxy = state.temp.workerProxy
   return {
     workerProxy: workerProxy,
+    showVerifiable: props.showVerifiable,
     preferences: state.shared.preferences
       ? state.shared.preferences
       : {

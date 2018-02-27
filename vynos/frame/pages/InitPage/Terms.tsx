@@ -9,7 +9,8 @@ import Logo from "../../components/Logo";
 const style = require('../../styles/ynos.css')
 
 export interface TermsSubpageDispatchProps {
-  didAcceptTerms: () => void
+  didAcceptTerms?: () => void
+  showVerifiable: () => void
 }
 
 export type TermsSubpageProps = TermsSubpageDispatchProps
@@ -57,7 +58,7 @@ export class Terms extends React.Component<TermsSubpageProps, TermsState> {
       return <TermsTextPage goBack={this.doneDisplayTermsText.bind(this)} />
 
     if (this.state.displayRestore)
-      return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)} />
+      return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)} showVerifiable={this.props.showVerifiable} />
 
     return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
       <Logo />
@@ -77,11 +78,12 @@ export class Terms extends React.Component<TermsSubpageProps, TermsState> {
   }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<FrameState>): TermsSubpageDispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<FrameState>, props: TermsSubpageDispatchProps): TermsSubpageDispatchProps {
   return {
     didAcceptTerms: () => {
       dispatch(actions.didAcceptTerms(true))
-    }
+    },
+    showVerifiable: props.showVerifiable
   }
 }
 

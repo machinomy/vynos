@@ -3,12 +3,16 @@ import {connect} from 'react-redux'
 import {ChangeEvent, FormEvent} from 'react'
 import _ = require('lodash')
 import WorkerProxy from '../WorkerProxy';
-import { Container, Form, Button, Divider } from 'semantic-ui-react'
+import { Container, Form, Button, Divider, Icon } from 'semantic-ui-react'
 import Logo from '../components/Logo'
 import {FrameState} from "../redux/FrameState";
 import RestorePage from "./RestorePage";
 
 const style = require("../styles/ynos.css");
+
+export interface OwnUnlockProps {
+  showVerifiable: () => void
+}
 
 export interface UnlockPageProps {
   workerProxy: WorkerProxy
@@ -21,8 +25,8 @@ export type UnlockPageState = {
   displayRestore: boolean
 };
 
-export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState> {
-  constructor (props: UnlockPageProps) {
+export class UnlockPage extends React.Component<UnlockPageProps & OwnUnlockProps, UnlockPageState> {
+  constructor (props: UnlockPageProps & OwnUnlockProps) {
     super(props);
     this.state = {
       password: '',
@@ -88,7 +92,7 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
 
   render () {
     if (this.state.displayRestore)
-      return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)} />
+      return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)} showVerifiable={this.props.showVerifiable} />
 
     return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
       <Logo />
@@ -103,13 +107,15 @@ export class UnlockPage extends React.Component<UnlockPageProps, UnlockPageState
         <br />
         <a onClick={this.doDisplayRestore.bind(this)}>Restore wallet</a>
       </Form>
+      <a onClick={this.props.showVerifiable} id={style.shieldIcon}><Icon name={'shield'} size={'large'}></Icon></a>
     </Container>
   }
 }
 
-function mapStateToProps (state: FrameState): UnlockPageProps {
+function mapStateToProps (state: FrameState, props: OwnUnlockProps): UnlockPageProps & OwnUnlockProps {
   return {
-    workerProxy: state.temp.workerProxy
+    workerProxy: state.temp.workerProxy,
+    showVerifiable: props.showVerifiable
   }
 }
 

@@ -4,6 +4,7 @@ import Web3 = require('web3')
 import {FrameState} from '../../redux/FrameState'
 
 import {Image} from 'semantic-ui-react'
+import BlockieComponent from "../../components/BlockieComponent";
 
 const style = require('../../styles/ynos.css')
 
@@ -34,10 +35,18 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     this._isMounted = false
   }
 
-  renderBlockie() {
-    return <div className={style.accountAvatar}>
-      <Image src={require('../../styles/images/avatar.svg')}/>
-    </div>
+  renderAvatar() {
+    if (localStorage.getItem('mc_wallet_avatar') && (localStorage.getItem('mc_wallet_avatar') as string).length > 0) {
+      return <div className={style.accountAvatar}>
+                <Image src={localStorage.getItem('mc_wallet_avatar') as string} />
+             </div>
+    } else {
+      return <BlockieComponent classDiv={"ui mini avatar image"} classCanvas={"ui mini avatar image"} size={35}
+                               scale={2} seed={this.state.address ? this.state.address : ''}
+                               onBlockieGenerated={(base64: string) => {
+                                 localStorage.setItem('mc_wallet_avatar', base64)
+                               }}/>
+    }
   }
 
   componentDidMount() {
@@ -84,7 +93,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
 
   render() {
     return <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
-      {this.renderBlockie()}
+      {this.renderAvatar()}
       <div className={style.walletAccount}>
         <div className={style.walletAddress}>
           {this.state.address}

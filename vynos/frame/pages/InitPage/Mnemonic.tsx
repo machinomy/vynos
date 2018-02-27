@@ -3,13 +3,14 @@ import {connect} from "react-redux";
 import {FormEvent} from "react";
 import {FrameState} from "../../redux/FrameState";
 import WorkerProxy from "../../WorkerProxy";
-import { Container, Button, Form, Header, Divider, Tab } from 'semantic-ui-react'
+import { Container, Button, Form, Header, Divider, Tab, Icon } from 'semantic-ui-react'
 import Logo from '../../components/Logo'
 const style = require('../../styles/ynos.css')
 import * as qr from 'qr-image'
 
 export interface MnemonicStateProps {
   workerProxy: WorkerProxy
+  showVerifiable: () => void
 }
 
 export interface MnemonicProps extends MnemonicStateProps {
@@ -62,7 +63,7 @@ export class Mnemonic extends React.Component<MnemonicProps, {}> {
     if (window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(blob, filename);
     } else {
-      var elem = window.document.createElement('a');
+      let elem = window.document.createElement('a');
       elem.href = window.URL.createObjectURL(blob);
       elem.download = filename;
       document.body.appendChild(elem);
@@ -82,9 +83,10 @@ export class Mnemonic extends React.Component<MnemonicProps, {}> {
   }
 }
 
-function mapStateToProps (state: FrameState): MnemonicStateProps {
+function mapStateToProps (state: FrameState, props: MnemonicProps): MnemonicStateProps {
   return {
-    workerProxy: state.temp.workerProxy
+    workerProxy: state.temp.workerProxy,
+    showVerifiable: props.showVerifiable
   }
 }
 
