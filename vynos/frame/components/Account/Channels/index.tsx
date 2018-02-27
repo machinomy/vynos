@@ -110,7 +110,7 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
 
   getIcon(channel: any) {
     if (channel.icon) {
-      return <Image avatar src={channel.icon} size="mini"/>
+      return <Image avatar src={channel.icon} size='mini'/>
     } else {
       return <BlockieComponent classDiv={"ui mini avatar image"} classCanvas={"ui mini avatar image"} size={35}
                                scale={2} seed={channel.host}/>
