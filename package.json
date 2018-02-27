@@ -7,7 +7,7 @@
     "build": "gulp build",
     "build:harness": "gulp build:harness",
     "harness": "gulp harness:serve",
-    "lint": "tslint -t stylish --type-check --project 'tsconfig.json' --exclude node_modules/*"
+    "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'"
   },
   "devDependencies": {
     "@machinomy/types-truffle-contract": "https://github.com/machinomy/types-truffle-contract",
@@ -45,6 +45,9 @@
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
     "ts-loader": "^2.2.1",
+    "tslint": "^5.9.1",
+    "tslint-config-standard": "^7.0.0",
+    "tslint-react": "^3.5.1",
     "types-bn": "^0.0.1",
     "types-ethereumjs-util": "^0.0.5",
     "types-web3-provider-engine": "^0.0.2",
