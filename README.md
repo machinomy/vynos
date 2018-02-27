@@ -53,8 +53,6 @@ vynos.ready().then(wallet => {
 })
 ``` 
 
-NB. Vynos uses [bluebird](http://bluebirdjs.com) Promises library, rather than native Promises now.
-
 # Development
 
 ## Prerequisites
