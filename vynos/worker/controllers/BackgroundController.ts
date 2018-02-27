@@ -13,6 +13,9 @@ import localForage = require("localforage")
 import {EventEmitter} from "events";
 import bus from '../../lib/bus'
 import { CHANGE_NETWORK } from '../../lib/constants'
+import {WalletBuyArguments} from "../../lib/Vynos";
+import * as events from "../../lib/events";
+import {BuyProcessEventBroadcastType} from "../../lib/rpc/buyProcessEventBroadcast";
 
 const STATE_UPDATED_EVENT = "stateUpdated"
 
@@ -182,6 +185,16 @@ export default class BackgroundController {
     return new Promise(resolve => {
       this.store.dispatch(actions.setLastMicropaymentTime(lastMicropaymentTime))
       resolve()
+    })
+  }
+
+  onSentPaymentEvent(): Promise<WalletBuyArguments> {
+    return new Promise(resolve => {
+
+      bus.once(BuyProcessEventBroadcastType, (args)=> {
+        resolve(args)
+      })
+
     })
   }
 }

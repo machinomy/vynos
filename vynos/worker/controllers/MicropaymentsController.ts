@@ -159,8 +159,12 @@ export default class MicropaymentsController {
               meta: meta
             })
             if (callbacks && callbacks.onSentPayment) {
+              // For worker side
               callbacks.onSentPayment(walletBuyArguments)
               bus.emit(BuyProcessEvent.SENT_PAYMENT, walletBuyArguments)
+              // For frame side
+              let sentEvent = events.sentPayment(walletBuyArguments)
+              bus.emit(sentEvent, walletBuyArguments)
             }
             if (callbacks && callbacks.onReceivedToken) {
               callbacks.onReceivedToken(walletBuyArguments, response.token)
@@ -213,6 +217,15 @@ export default class MicropaymentsController {
         bus.once(rejectedEvent, ()=> {
           reject('Micropayment is rejected by the user')
         })
+      })
+    })
+  }
+
+  bindOnSentPayment(args: WalletBuyArguments): Promise<WalletBuyArguments> {
+    return new Promise((resolve, reject) => {
+      let sentPaymentEvent = events.sentPayment(args)
+      bus.once(sentPaymentEvent, ()=> {
+        resolve(args)
       })
     })
   }

@@ -6,6 +6,7 @@ import VynosBuyResponse from "../VynosBuyResponse";
 import { ChannelMeta } from '../storage/ChannelMetaStorage'
 import PurchaseMeta from "../PurchaseMeta";
 import {Preferences} from "../../worker/WorkerState";
+import {BuyProcessCallbacks, WalletBuyArguments} from "../Vynos";
 
 export class InitAccountRequest implements RequestPayload {
   id: number;
@@ -329,4 +330,19 @@ export interface SetRejectByIdResponse extends ResponsePayload {
   result: null
 }
 
+export class BindOnSentPaymentRequest implements RequestPayload {
+  id: number;
+  jsonrpc: typeof JSONRPC;
+  method: typeof BindOnSentPaymentRequest.method;
+  params: [WalletBuyArguments];
 
+  static method = "yns_bindOnSentPaymentRequest"
+
+  static match(payload: RequestPayload): payload is BindOnSentPaymentRequest {
+    return payload.method === BindOnSentPaymentRequest.method
+  }
+}
+
+export interface BindOnSentPaymentResponse extends ResponsePayload {
+  result: [WalletBuyArguments]
+}

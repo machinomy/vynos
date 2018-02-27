@@ -1,6 +1,7 @@
 import StreamProvider from './../lib/StreamProvider'
 import { Duplex } from 'readable-stream'
 import {
+  BindOnSentPaymentRequest, BindOnSentPaymentResponse,
   BuyRequest, BuyResponse,
   CloseChannelRequest, CloseChannelResponse, InitAccountRequest, InitAccountResponse, ListChannelsRequest,
   ListChannelsResponse,
@@ -10,11 +11,12 @@ import {
 import {JSONRPC, randomId} from "../lib/Payload";
 import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import VynosPayInChannelResponse from "../lib/VynosPayInChannelResponse";
-import Vynos from '../lib/Vynos'
+import Vynos, {BuyProcessCallbacks, WalletBuyArguments} from '../lib/Vynos'
 import VynosBuyResponse from "../lib/VynosBuyResponse";
 import PurchaseMeta, {purchaseMetaFromDocument} from "../lib/PurchaseMeta";
 import {SharedState} from "../worker/WorkerState";
 import {SharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
+import Wallet = require("ethereumjs-wallet");
 
 function isPaymentChannel(pc: PaymentChannel|PaymentChannelJSON): pc is PaymentChannel {
   return !!((pc as PaymentChannel).toJSON)
@@ -86,8 +88,27 @@ export default class VynosClient implements Vynos {
     })
   }
 
-  buy (receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number): Promise<VynosBuyResponse> {
+  async buy (receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number, callbacks?: BuyProcessCallbacks): Promise<VynosBuyResponse> {
     let _purchase = purchase || purchaseMetaFromDocument(document)
+    let walletBuyArgs : WalletBuyArguments = {receiver,
+      amount,
+      gateway,
+      meta,
+      purchaseMeta : purchase || {  title: '',
+        description: '',
+        siteName: '',
+        url: '',
+        origin: ''
+      },
+      channelValue,
+      callbacks
+    }
+
+    if (callbacks && callbacks.onSentPayment) {
+      this.bindOnSentPayment(walletBuyArgs).then((args: WalletBuyArguments)=>{
+        callbacks.onSentPayment!(args)
+      })
+    }
     let request: BuyRequest = {
       id: randomId(),
       method: BuyRequest.method,
@@ -102,6 +123,18 @@ export default class VynosClient implements Vynos {
       }else {
         return Promise.resolve(response.result[0])
       }
+    })
+  }
+
+  bindOnSentPayment (buyArgs: WalletBuyArguments): Promise<WalletBuyArguments> {
+    let request: BindOnSentPaymentRequest = {
+      id: randomId(),
+      method: BindOnSentPaymentRequest.method,
+      jsonrpc: JSONRPC,
+      params: [buyArgs]
+    }
+    return this.provider.ask(request).then((response: BindOnSentPaymentResponse) => {
+      return Promise.resolve(response.result[0])
     })
   }
 
