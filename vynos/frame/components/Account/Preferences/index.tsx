@@ -72,7 +72,7 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
   }
 
   render () {
-    return <div style={{overflow:"auto", paddingBottom:"20px"}}>
+    return <div style={{overflow:"auto", paddingBottom:"20px", position: 'absolute', top: '56px', bottom: '0'}}>
     <Container className={`${style.clearBorder}`}>
       <Form>
         <Form.Group grouped>

@@ -185,14 +185,6 @@ Wallet page
   display: inline-block;
 }
 
-.eth-balance:after {
-  content: "Ξ";
-}
-
-.eth-balance:after {
-  padding-left: 2px !important;
-}
-
 div.terms-text > p {
   font-size: 12px !important;
 }
