@@ -8,12 +8,17 @@ import BlockieComponent from "../../components/BlockieComponent";
 
 const style = require('../../styles/ynos.css')
 
-export interface WalletAccountProps {
-  web3?: Web3
+export interface WalletAccountStateProps {
+  web3: Web3
+}
+
+export interface WalletAccountOwnProps {
   onChangeAddress?: (address: string) => void
   onChangeDetailsDisplayed?: (value: boolean) => void
   onChangeBalance?: (balance: number) => void
 }
+
+export type WalletAccountProps = WalletAccountStateProps & WalletAccountOwnProps
 
 export interface WalletAccountState {
   address: string | null
@@ -96,12 +101,12 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
   }
 }
 
-function mapStateToProps(state: FrameState, ownProps: WalletAccountProps): WalletAccountProps {
+function mapStateToProps(state: FrameState, ownProps?: WalletAccountOwnProps): WalletAccountProps {
   return {
     web3: state.temp.workerProxy.web3,
-    onChangeAddress: ownProps.onChangeAddress,
-    onChangeDetailsDisplayed: ownProps.onChangeDetailsDisplayed,
-    onChangeBalance: ownProps.onChangeBalance
+    onChangeAddress: ownProps ? ownProps.onChangeAddress : undefined,
+    onChangeDetailsDisplayed: ownProps ? ownProps.onChangeDetailsDisplayed : undefined,
+    onChangeBalance: ownProps ? ownProps.onChangeBalance : undefined
   }
 }
 
