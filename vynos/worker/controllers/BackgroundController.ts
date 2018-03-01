@@ -14,8 +14,8 @@ import {EventEmitter} from "events";
 import bus from '../../lib/bus'
 import { CHANGE_NETWORK } from '../../lib/constants'
 import {WalletBuyArguments} from "../../lib/Vynos";
-import * as events from "../../lib/events";
-import {BuyProcessEventBroadcastType} from "../../lib/rpc/buyProcessEventBroadcast";
+import {BuyProcessEvent} from "../../lib/rpc/buyProcessEventBroadcast";
+import {ChannelMeta} from "../../lib/storage/ChannelMetaStorage";
 
 const STATE_UPDATED_EVENT = "stateUpdated"
 
@@ -188,13 +188,33 @@ export default class BackgroundController {
     })
   }
 
-  onSentPaymentEvent(): Promise<WalletBuyArguments> {
-    return new Promise(resolve => {
+  onBuyProcessEvent(fn: (typeOfMessage: string, args: WalletBuyArguments, token?: string, channelId?: ChannelMeta) => void): void {
+    bus.on(BuyProcessEvent.NO_CHANNEL_FOUND, (args: WalletBuyArguments) => {
+      fn(BuyProcessEvent.NO_CHANNEL_FOUND, args)
+    })
 
-      bus.once(BuyProcessEventBroadcastType, (args)=> {
-        resolve(args)
-      })
+    bus.on(BuyProcessEvent.CHANNEL_FOUND, (args: WalletBuyArguments, channel: ChannelMeta) => {
+      fn(BuyProcessEvent.CHANNEL_FOUND, args, undefined, channel)
+    })
 
+    bus.on(BuyProcessEvent.OPENING_CHANNEL_STARTED, (args: WalletBuyArguments) => {
+      fn(BuyProcessEvent.OPENING_CHANNEL_STARTED, args)
+    })
+
+    bus.on(BuyProcessEvent.OPENING_CHANNEL_FINISHED, (args: WalletBuyArguments, channel: ChannelMeta) => {
+      fn(BuyProcessEvent.OPENING_CHANNEL_FINISHED, args, undefined, channel)
+    })
+
+    bus.on(BuyProcessEvent.SENT_PAYMENT, (args: WalletBuyArguments) => {
+      fn(BuyProcessEvent.SENT_PAYMENT, args)
+    })
+
+    bus.on(BuyProcessEvent.RECEIVED_TOKEN, (args: WalletBuyArguments, token: string) => {
+      fn(BuyProcessEvent.RECEIVED_TOKEN, args, token)
+    })
+
+    bus.on(BuyProcessEvent.SENT_TOKEN, (args: WalletBuyArguments, token: string) => {
+      fn(BuyProcessEvent.SENT_TOKEN, args, token)
     })
   }
 }

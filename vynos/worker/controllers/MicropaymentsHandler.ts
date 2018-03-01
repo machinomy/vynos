@@ -2,7 +2,6 @@ import MicropaymentsController from "./MicropaymentsController";
 import {RequestPayload} from "../../lib/Payload";
 import {EndFunction} from "../../lib/StreamServer";
 import {
-  BindOnSentPaymentRequest, BindOnSentPaymentResponse,
   BuyRequest, BuyResponse,
   CloseChannelRequest, CloseChannelResponse, ListChannelsRequest, ListChannelsResponse, OpenChannelRequest,
   OpenChannelResponse,
@@ -12,7 +11,6 @@ import {
 } from "../../lib/rpc/yns";
 import {PaymentChannel} from "machinomy/lib/channel";
 import Payment from "machinomy/lib/Payment";
-import {WalletBuyArguments} from "../../lib/Vynos";
 
 export default class MicropaymentsHandler {
   controller: MicropaymentsController
@@ -115,19 +113,6 @@ export default class MicropaymentsHandler {
     }).catch(end)
   }
 
-
-  bindOnSentPayment(message: BindOnSentPaymentRequest, next: Function, end: EndFunction) {
-    let args : WalletBuyArguments = message.params[0]
-    this.controller.bindOnSentPayment(args).then(() => {
-      let response: BindOnSentPaymentResponse = {
-        id: message.id,
-        jsonrpc: message.jsonrpc,
-        result: [args]
-      }
-      end(null, response)
-    }).catch(end)
-  }
-
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (OpenChannelRequest.match(message)) {
       this.openChannel(message, next, end)
@@ -143,8 +128,6 @@ export default class MicropaymentsHandler {
       this.setApproveById(message, next, end)
     } else if (SetRejectByIdRequest.match(message)) {
       this.setRejectById(message, next, end)
-    } else if (BindOnSentPaymentRequest.match(message)) {
-      this.bindOnSentPayment(message, next, end)
     } else {
       next()
     }

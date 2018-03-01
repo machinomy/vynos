@@ -2,7 +2,7 @@ import StreamProvider from "../lib/StreamProvider";
 import {EventEmitter} from "events";
 import {SharedState, Preferences} from "../worker/WorkerState";
 import {JSONRPC, randomId} from "../lib/Payload";
-import {isSharedStateBroadcast, SharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
+import {isSharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
 import {
   DidStoreMnemonicRequest,
   GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, LockWalletRequest,
@@ -17,14 +17,14 @@ import {
 } from "../lib/rpc/yns";
 import {Action} from "redux";
 import Web3 = require("web3")
-import events, {BuyOnSentPaymentBroadcastType} from '../lib/events'
-import {WalletBuyArguments} from "../lib/Vynos";
-import {BuyProcessEventBroadcastType, isBuyProcessEventBroadcast} from "../lib/rpc/buyProcessEventBroadcast";
+import {
+  buyProcessEvent, BuyProcessEventBroadcast, buyProcessEventBroadcastType,
+  isBuyProcessEventBroadcast
+} from "../lib/rpc/buyProcessEventBroadcast";
 
 export default class WorkerProxy extends EventEmitter {
   provider: StreamProvider
   web3: Web3
-  buyProcessCallbacks: Map<string, (args: WalletBuyArguments) => void>
 
   constructor() {
     super()
@@ -34,30 +34,12 @@ export default class WorkerProxy extends EventEmitter {
         this.emit(SharedStateBroadcastType, data)
       }
     })
-
-    this.provider.listen(BuyProcessEventBroadcastType, data=> {
+    this.provider.listen(buyProcessEventBroadcastType, (data : BuyProcessEventBroadcast) => {
       if (isBuyProcessEventBroadcast(data)) {
-        switch (data.type) {
-          case BuyOnSentPaymentBroadcastType: {
-            if (this.buyProcessCallbacks.has(data.id)) {
-              let callback = this.buyProcessCallbacks.get(data.id)
-              callback!(data.args)
-            }
-          } break;
-
-        }
+        this.emit(buyProcessEvent(data.type, data.result[0]), data)
       }
-
     })
-
-    this.addListener(BuyOnSentPaymentBroadcastType, this.onSharedStateBroadcast.bind(this))
     this.web3 = new Web3(this.provider)
-    this.buyProcessCallbacks = new Map<string, (args: WalletBuyArguments) => void>()
-  }
-
-  onSharedStateBroadcast(data: SharedStateBroadcast) {
-    this.state = data.result
-    this.eventEmitter.emit("update");
   }
 
   getWeb3(): Web3 {
