@@ -28,7 +28,7 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
     super(props)
     this.state = {
       preferences : props.preferences,
-      throttlingTimeFormatted: props.preferences.micropaymentThrottlingHumanReadable
+      throttlingTimeFormatted: props.preferences && props.preferences.micropaymentThrottlingHumanReadable ? props.preferences.micropaymentThrottlingHumanReadable : '-1ms'
     }
   }
 
@@ -61,6 +61,9 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
             <a onClick={this.props.showVerifiable}>Verify authenticity Vynos</a>
           </p>
         </Form.Group>
+        <p className={style.forgetAccount}>
+          <Button type='' content="Forget account" primary onClick={() => {this.handleForgetAccount()}}/>
+        </p>
         {/*<p className={style.buttonNav}>*/}
           {/*<Button type='submit' content="Save" primary disabled/>*/}
         {/*</p>*/}
@@ -88,6 +91,11 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
     this.props.workerProxy.setPreferences(this.state.preferences).then(()=>{})
   }
 
+  handleForgetAccount() {
+    this.props.workerProxy.clearTransactionMetastorage()
+    this.props.workerProxy.clearReduxPersistentStorage()
+  }
+
   handleSavePrivateKeyToFile() {
     const blob = new Blob([this.privateKeyHex], {type: 'text/plain'})
     const filename = 'secretPrivateKey.txt'
@@ -110,6 +118,11 @@ function mapStateToProps (state: FrameState, props: OwnPreferencesProps): Prefer
     workerProxy: workerProxy,
     showVerifiable: props.showVerifiable,
     preferences: state.shared.preferences
+      ? state.shared.preferences
+      : {
+          micropaymentThreshold: 1000000,
+          micropaymentThrottlingHumanReadable: '-1ms'
+        }
   }
 }
 

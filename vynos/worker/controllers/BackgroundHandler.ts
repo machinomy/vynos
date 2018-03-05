@@ -10,7 +10,8 @@ import {
   UnlockWalletRequest,
   UnlockWalletResponse, RememberPageResponse, TransactonResolved, ChangeNetworkRequest, ChangeNetworkResponse,
   GetPrivateKeyHexRequest, GetPrivateKeyHexResponse,
-  SetPreferencesRequest, SetPreferencesResponse
+  SetPreferencesRequest, SetPreferencesResponse,
+  ClearTransactionMetastorageRequest, ClearReduxPersistentStorageRequest, ClearChannelMetastorageRequest
 } from "../../lib/rpc/yns";
 import { Writable } from "readable-stream";
 import { SharedStateBroadcast, SharedStateBroadcastType } from "../../lib/rpc/SharedStateBroadcast";
@@ -169,6 +170,21 @@ changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) 
     }).catch(end)
   }
 
+  clearChannelMetastorage(message: ClearChannelMetastorageRequest, next: Function, end: EndFunction) {
+    this.controller.clearChannelMetastorage()
+    end(null)
+  }
+
+  clearTransactionMetastorage(message: ClearTransactionMetastorageRequest, next: Function, end: EndFunction) {
+    this.controller.clearTransactionMetastorage()
+    end(null)
+  }
+
+  clearReduxPersistentStorage(message: ClearReduxPersistentStorageRequest, next: Function, end: EndFunction) {
+    this.controller.clearReduxPersistentStorage()
+    end(null)
+  }
+
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (GetSharedStateRequest.match(message)) {
       this.getSharedState(message, next, end)
@@ -194,6 +210,12 @@ changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) 
       this.getPrivateKeyHex(message, next, end)
     } else if (SetPreferencesRequest.match(message)) {
       this.setPreferences(message, next, end)
+    } else if (ClearChannelMetastorageRequest.match(message)) {
+      this.clearChannelMetastorage(message, next, end)
+    } else if (ClearTransactionMetastorageRequest.match(message)) {
+      this.clearTransactionMetastorage(message, next, end)
+    } else if (ClearReduxPersistentStorageRequest.match(message)) {
+      this.clearReduxPersistentStorage(message, next, end)
     } else {
       next()
     }

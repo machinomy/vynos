@@ -91,4 +91,18 @@ export default class ChannelMetaStorage {
       })
     })
   }
+
+  clear() {
+    this.datastore.then(datastore => {
+      // https://github.com/louischatriot/nedb/issues/84
+      datastore.remove({ }, { multi: true }, function (err, numRemoved) {
+        datastore.loadDatabase(function (err) {
+          if (err) {
+            console.error('Error while deleting channels local database')
+            console.error(err)
+          }
+        });
+      });
+    })
+  }
 }

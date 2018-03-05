@@ -21,6 +21,8 @@ export interface DashboardSubpageState {
 }
 
 export class DashboardSubpage extends React.Component<DashboardSubpageProps, DashboardSubpageState> {
+  _isMounted: boolean
+
   constructor (props: any) {
     super(props);
     this.state = {
@@ -28,6 +30,7 @@ export class DashboardSubpage extends React.Component<DashboardSubpageProps, Das
       address: "",
       sendShown: false
     }
+    this._isMounted = false
   }
 
   renderChildren () {
@@ -39,19 +42,31 @@ export class DashboardSubpage extends React.Component<DashboardSubpageProps, Das
   }
 
   onChangeAddress (address: string) {
-    this.setState({address: address});
+    if (this._isMounted) {
+      this.setState({address: address})
+    }
   }
 
   onChangeDetailsDisplayed (value: boolean){
-    this.setState({isDetailsDisplayed: value});
+    if (this._isMounted) {
+      this.setState({isDetailsDisplayed: value})
+    }
   }
 
   showSend () {
-    this.setState({sendShown: true});
+    if (this._isMounted) {
+      this.setState({sendShown: true})
+    }
   }
 
   hideSend () {
-    this.setState({sendShown: false});
+    if (this._isMounted) {
+      this.setState({sendShown: false})
+    }
+  }
+
+  componentDidMount() {
+    this._isMounted = true
   }
 
   render () {
@@ -63,6 +78,10 @@ export class DashboardSubpage extends React.Component<DashboardSubpageProps, Das
         {this.renderChildren()}
       </div>
     </div>
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 }
 

@@ -1,6 +1,6 @@
 import * as redux from "redux";
 import reducers from "../reducers";
-import {buildSharedState, INITIAL_STATE, Preferences, SharedState, WorkerState} from "../WorkerState";
+import {buildSharedState, INITIAL_STATE, PersistentState, Preferences, SharedState, WorkerState} from "../WorkerState";
 import {Store} from "redux";
 import * as actions from "../actions";
 import bip39 =require("bip39")
@@ -13,6 +13,8 @@ import localForage = require("localforage")
 import {EventEmitter} from "events";
 import bus from '../../lib/bus'
 import { CHANGE_NETWORK } from '../../lib/constants'
+import TransactionService from "../TransactionService";
+import ChannelMetaStorage from "../../lib/storage/ChannelMetaStorage";
 
 const STATE_UPDATED_EVENT = "stateUpdated"
 
@@ -20,6 +22,8 @@ export default class BackgroundController {
   store: Store<WorkerState>
   events: EventEmitter
   hydrated: boolean
+  channels?: ChannelMetaStorage
+  transactionService?: TransactionService
 
   constructor() {
     let middleware = redux.compose(redux.applyMiddleware(createLogger()), autoRehydrate())
@@ -31,6 +35,14 @@ export default class BackgroundController {
       this.hydrated = true
       this.events.emit(STATE_UPDATED_EVENT)
     })
+  }
+
+  setChannelMetastorage(channelMetaStorage : ChannelMetaStorage) {
+    this.channels = channelMetaStorage
+  }
+
+  setTransactionService(transactionService : TransactionService) {
+    this.transactionService = transactionService
   }
 
   awaitHydrated(fn: Function) {
@@ -197,5 +209,17 @@ export default class BackgroundController {
       this.store.dispatch(actions.setLastMicropaymentTime(lastMicropaymentTime))
       resolve()
     })
+  }
+
+  clearChannelMetastorage() {
+    this.channels!.clear()
+  }
+
+  clearTransactionMetastorage() {
+    this.transactionService!.storage.clear()
+  }
+
+  clearReduxPersistentStorage () {
+      this.store.dispatch(this.store.dispatch(actions.setPersistentState({} as PersistentState)))
   }
 }

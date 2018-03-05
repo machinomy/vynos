@@ -22,6 +22,7 @@ export interface TransactionsSubpageState {
 export class TransactionsSubpage extends React.Component<TransactionsSubpageProps, TransactionsSubpageState> {
   transactionStorage: TransactionStorage
   localLastUpdateDb: number
+  _isMounted: boolean
 
   constructor (props: TransactionsSubpageProps) {
     super(props)
@@ -30,17 +31,21 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
     }
     this.localLastUpdateDb = props.lastUpdateDb;
     this.transactionStorage = new TransactionStorage()
+    this._isMounted = false
   }
 
   componentDidMount () {
+    this._isMounted = true
     this.updateTransactions();
   }
 
   updateTransactions () {
     this.transactionStorage.all().then(transactions => {
-      this.setState({
-        transactions: transactions.reverse()
-      })
+      if (this._isMounted) {
+        this.setState({
+          transactions: transactions.reverse()
+        })
+      }
     })
   }
 
@@ -120,6 +125,10 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
     } else {
       return <p></p>
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 }
 
