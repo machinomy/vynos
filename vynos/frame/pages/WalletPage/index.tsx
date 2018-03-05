@@ -9,8 +9,9 @@ import Preferences from "../../components/Account/Preferences/index"
 import TransactionStorage from "../../../lib/storage/TransactionMetaStorage"
 
 export interface WalletPageStateProps {
-  path: string
-  name: string
+  path?: string
+  name?: string
+  showVerifiable: () => void
 }
 
 export interface WalletPageState {
@@ -31,7 +32,7 @@ export class WalletPage extends React.Component<WalletPageStateProps, WalletPage
       case 'Channels':
         return <Channels />
       case 'Preferences':
-        return <Preferences />
+        return <Preferences showVerifiable={this.props.showVerifiable} />
       case 'Network':
         return <Network />
       default:
@@ -54,10 +55,11 @@ export class WalletPage extends React.Component<WalletPageStateProps, WalletPage
   }
 }
 
-function mapStateToProps(state: FrameState): WalletPageStateProps {
+function mapStateToProps(state: FrameState, props: WalletPageStateProps): WalletPageStateProps {
   return {
     path: state.shared.rememberPath,
-    name: nameByPath(state.shared.rememberPath)
+    name: nameByPath(state.shared.rememberPath),
+    showVerifiable: props.showVerifiable
   }
 }
 

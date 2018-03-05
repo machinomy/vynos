@@ -253,6 +253,11 @@ div.terms-text > p {
   opacity: 0.2;
 }
 
+.account-avatar > img {
+  border-radius: 64px;
+  margin-top: 2px;
+}
+
 .ui.mini.image.avatar.list-item-avatar {
   width: 75px;
 }
@@ -549,6 +554,14 @@ button.button-nav {
   border-bottom: 1px solid #D04071 !important;
 }
 
+.select-private-key-file {
+  color: #fff !important;
+  font-size: 14px !important;
+  font-family: 'Source Sans Pro', sans-serif !important;
+  font-weight: 400 !important;
+  text-transform: uppercase !important;
+}
+
 /******************************
 Channels page
 ******************************/
@@ -579,6 +592,36 @@ Channels page
 
 #closed-channel a {
   color: #00AEEF !important;
+}
+
+/******************************
+Verifiable page
+******************************/
+
+#verifiable-block {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background: #fff;
+  z-index: 999999;
+  text-align: center;
+}
+
+#verifiable-text {
+  font-size: 14px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+#verifiable-rand-number {
+  font-size: 50px;
+  line-height: 52px;
+}
+
+#shield-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 5px;
 }
 
 /******************************

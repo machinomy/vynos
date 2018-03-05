@@ -7,12 +7,11 @@
     "build": "gulp build",
     "build:harness": "gulp build:harness",
     "harness": "gulp harness:serve",
-    "lint": "tslint -t stylish --type-check --project 'tsconfig.json' --exclude node_modules/*"
+    "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'"
   },
   "devDependencies": {
     "@machinomy/types-truffle-contract": "https://github.com/machinomy/types-truffle-contract",
     "@types/bignumber.js": "^4.0.2",
-    "@types/bluebird": "^3.5.14",
     "@types/html2canvas": "^0.5.35",
     "@types/jasmine": "^2.5.52",
     "@types/lodash": "^4.14.77",
@@ -45,6 +44,9 @@
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
     "ts-loader": "^2.2.1",
+    "tslint": "^5.9.1",
+    "tslint-config-standard": "^7.0.0",
+    "tslint-react": "^3.5.1",
     "types-bn": "^0.0.1",
     "types-ethereumjs-util": "^0.0.5",
     "types-web3-provider-engine": "^0.0.2",
@@ -57,7 +59,6 @@
   },
   "dependencies": {
     "bip39": "^2.3.1",
-    "bluebird": "^3.5.0",
     "browser-passworder": "^2.0.3",
     "buffer": "^5.0.6",
     "duplexify": "^3.5.0",
@@ -92,11 +93,12 @@
     "redux-persist": "^4.8.0",
     "redux-thunk": "^2.2.0",
     "semantic-ui-react": "^0.71.5",
+    "timeparse": "^1.0.0",
     "typescript-fsa": "^2.3.1",
     "typescript-fsa-reducers": "^0.4.4",
     "typescript-fsa-redux-thunk": "xdave/typescript-fsa-redux-thunk",
     "web3": "^0.19.0",
     "web3-provider-engine": "^13.0.3",
-    "timeparse": "^1.0.0"
+    "web3-utils": "^1.0.0-beta.30"
   }
 }

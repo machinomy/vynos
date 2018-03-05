@@ -73,12 +73,12 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  restoreWallet (password: string, mnemonic: string): Promise<string> {
+  restoreWallet (password: string, type: string, value: string): Promise<string> {
     let request: RestoreWalletRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
       method: RestoreWalletRequest.method,
-      params: [password, mnemonic]
+      params: [password, type, value]
     }
     return this.provider.ask(request).then((response: RestoreWalletResponse) => {
       return response.result

@@ -96,12 +96,26 @@ export default class BackgroundController {
     return new Keyring(privateKey)
   }
 
-  restoreWallet (password: string, mnemonic: string): Promise<void> {
-    let keyring = this._generateKeyring(password, mnemonic)
+  restoreWallet (password: string, type: string, value: string): Promise<boolean> {
+    let keyring: Keyring
+    if(type === 'seed') {
+      keyring = this._generateKeyring(password, value)
+    } else if(type === 'hex') {
+      if(!Keyring.isValidPrivateKey(new Buffer(value, 'hex'))){
+        return Promise.resolve(false)
+      }
+      keyring = new Keyring(new Buffer(value, 'hex'))
+    } else {
+      if(!Keyring.isValidV3(value, password)){
+        return Promise.resolve(false)
+      }
+      keyring = new Keyring(new Buffer(value), true, password)
+    }
     let wallet = keyring.wallet
-    return Keyring.serialize(keyring, password).then(serialized => {
+    Keyring.serialize(keyring, password).then(serialized => {
       this.store.dispatch(actions.restoreWallet({ keyring: serialized, wallet: wallet }))
     })
+    return Promise.resolve(true)
   }
 
   getAccounts(): Promise<Array<string>> {

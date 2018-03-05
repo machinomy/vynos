@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Verify authenticity Vynos</title>
+  <style>
+    #button {
+      -webkit-box-shadow: 0 0 0 0 rgba(34, 36, 38, .15) inset;
+      box-shadow: inset 0 0 0 0 rgba(34, 36, 38, .15);
+      min-width: 140px;
+      height: 36px;
+      background-color: #00AEEF !important;
+      color: #fff !important;
+      font-size: 14px !important;
+      font-family: 'Source Sans Pro', sans-serif !important;
+      font-weight: 400 !important;
+      text-transform: uppercase !important;
+      margin: 0 !important;
+      outline: none;
+      cursor: pointer;
+      display: inline-block;
+      min-height: 1em;
+      outline: 0;
+      border: none;
+      vertical-align: baseline;
+      color: rgba(0, 0, 0, .6);
+      padding: .78571429em 1.5em;
+      text-shadow: none;
+      line-height: 1em;
+      font-style: normal;
+      text-align: center;
+      text-decoration: none;
+      border-radius: .28571429rem;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-transition: opacity .1s ease, background-color .1s ease, color .1s ease, box-shadow .1s ease, background .1s ease;
+      transition: opacity .1s ease, background-color .1s ease, color .1s ease, box-shadow .1s ease, background .1s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body style="text-align: center">
+<div style="font-size: 19px">Проверьте адрес сайта</div>
+<div style="font-size: 50px;line-height: 52px;margin-top: 30px">
+  <script>document.write((localStorage.getItem('randNumber') || '-'))</script>
+</div>
+<div style="margin-top: 25px">
+  <button id="button" onclick="window.close()">Close</button>
+</div>
+</body>
+</html>

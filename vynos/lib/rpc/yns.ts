@@ -327,3 +327,4 @@ export class SetRejectByIdRequest implements RequestPayload {
 export interface SetRejectByIdResponse extends ResponsePayload {
   result: null
 }
+

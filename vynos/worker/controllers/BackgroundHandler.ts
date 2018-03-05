@@ -54,12 +54,13 @@ export default class BackgroundHandler {
 
   restoreWallet (message: RestoreWalletRequest, next: Function, end: EndFunction) {
     let password: string = message.params[0]
-    let mnemonic: string = message.params[1]
-    this.controller.restoreWallet(password, mnemonic).then(() => {
+    let type: string = message.params[1]
+    let value: string = message.params[2]
+    this.controller.restoreWallet(password, type, value).then((ok: boolean) => {
       let response: GenKeyringResponse = {
         id: message.id,
         jsonrpc: message.jsonrpc,
-        result: mnemonic
+        result: ok.toString()
       }
       end(null, response)
     }).catch(end)
