@@ -17,10 +17,6 @@ import {
 } from "../lib/rpc/yns";
 import {Action} from "redux";
 import Web3 = require("web3")
-import {
-  buyProcessEvent, BuyProcessEventBroadcast, buyProcessEventBroadcastType,
-  isBuyProcessEventBroadcast
-} from "../lib/rpc/buyProcessEventBroadcast";
 
 export default class WorkerProxy extends EventEmitter {
   provider: StreamProvider
@@ -32,11 +28,6 @@ export default class WorkerProxy extends EventEmitter {
     this.provider.listen(SharedStateBroadcastType, data => {
       if (isSharedStateBroadcast(data)) {
         this.emit(SharedStateBroadcastType, data)
-      }
-    })
-    this.provider.listen(buyProcessEventBroadcastType, (data : BuyProcessEventBroadcast) => {
-      if (isBuyProcessEventBroadcast(data)) {
-        this.emit(buyProcessEvent(data.type, data.result[0]), data)
       }
     })
     this.web3 = new Web3(this.provider)

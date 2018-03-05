@@ -125,7 +125,7 @@ export default class VynosClient implements Vynos {
     let promiseBuyResponse = this.buy(receiver, amount, gateway, meta, purchase, channelValue)
     let _purchase = purchase || purchaseMetaFromDocument(document)
     let walletBuyArgs : WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, _purchase, channelValue)
-    let result : PromisedWalletResponse = new PromisedWalletResponse(promiseBuyResponse, 'mc_wallet_buyProcessEvent', walletBuyArgs)
+    let result : PromisedWalletResponse = new PromisedWalletResponse(this, promiseBuyResponse, 'mc_wallet_buyProcessEvent', walletBuyArgs)
     return result
   }
 
