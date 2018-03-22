@@ -96,13 +96,22 @@ export default class VynosClient implements Vynos {
     }
 
     console.log("BUY ++");
+    console.log(request);
+
 
     return this.provider.ask(request).then((response: BuyResponse) => {
+      console.log(response);
       if (response.error) {
+        console.log("A");
+
         return Promise.reject(response.error)
-      } else if(!response.result[0].channelId){
+      } else if(!response.result[0].channelId) {
+        console.log("B");
+
         return Promise.reject(response.result[1])
-      }else {
+      } else {
+        console.log("C");
+        
         return Promise.resolve(response.result[0])
       }
     })
