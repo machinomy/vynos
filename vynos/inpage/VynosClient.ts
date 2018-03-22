@@ -87,6 +87,8 @@ export default class VynosClient implements Vynos {
   }
 
   buy (receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number): Promise<VynosBuyResponse> {
+    console.log("BUY");
+    
     let _purchase = purchase || purchaseMetaFromDocument(document)
     let request: BuyRequest = {
       id: randomId(),

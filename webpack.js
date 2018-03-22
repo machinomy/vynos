@@ -5,13 +5,10 @@ const path = require("path"),
   UglifyJSPlugin = require('uglifyjs-webpack-plugin')
   CopyWebpackPlugin = require('copy-webpack-plugin')
 
-
 require('dotenv').config({ path: '.env' });
-
 
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS,
   RPC_URL = process.env.RPC_URL;
-
 
 function webpackConfig (entry, devSupplement) {
   let config = {
