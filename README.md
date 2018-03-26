@@ -72,8 +72,6 @@ Rename example.env to .env and set some environment variables:
 ```
 FRAME_PORT=9090
 HARNESS_PORT=9999
-CONTRACT_ADDRESS=0x**************************
-RPC_URL=http://example.com:port
 ```
 
 ## Run
