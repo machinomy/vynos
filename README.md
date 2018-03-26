@@ -58,12 +58,12 @@ vynos.ready().then(wallet => {
 ## Prerequisites
 
 You are expected to have `yarn` package manager installed globally on your machine.
-For installation instructions go to the [official web site](https://yarnpkg.com/en/docs/install).
+For installation instructions go ts the [official web site](https://yarnpkg.com/en/docs/install).
 
 ## Install
 
 ```
-git clone https://github.com/SpankChain/vynos
+git clone https://github.com/machinomys/vynos
 cd vynos
 yarn install --pure-lockfile
 ```
@@ -80,6 +80,7 @@ yarn run harness
 ```
 That command starts a web server to play with Vynos on localhost.
 Open browser on `http://localhost:9999` and click on some buttons.
+It triggers the building process, so you should wait a little bit staring on the page.
 
 ## WTF is Harness
 It demonstrates Vynos work on localhost. It runs a web page (Vynos client) on localhost:8080.
