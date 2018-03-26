@@ -28,12 +28,10 @@ export default class TransactionService {
     })
   }
 
-  setApproveById(id: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.storage.approve(id)
-      let eventName = txApproved(id)
-      bus.emit(eventName)
-    })
+  async setApproveById(id: string): Promise<void> {
+    await this.storage.approve(id)
+    let eventName = txApproved(id)
+    bus.emit(eventName)
   }
 
   setRejectById(id: string): Promise<void> {

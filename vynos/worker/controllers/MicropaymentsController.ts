@@ -27,8 +27,6 @@ const timeparse = require('timeparse');
 export default class MicropaymentsController {
   network: NetworkController
   background: BackgroundController
-  account: string
-  machinomy: Machinomy
   transactions: TransactionService
   channels: ChannelMetaStorage
   web3: Web3
@@ -40,7 +38,6 @@ export default class MicropaymentsController {
     this.channels = new ChannelMetaStorage()
     this.background.awaitUnlock(() => {
       this.background.getAccounts().then(accounts => {
-        this.account = accounts[0]
         let provider = ZeroClientProvider(this.providerOpts(network.rpcUrl))
         this.web3 = new Web3(provider)
       })
@@ -82,7 +79,7 @@ export default class MicropaymentsController {
     })
   }
 
-  private async checkPrereqs (sharedState : SharedState, amount : number, transaction: TransactionMeta) {
+  private async approve (sharedState: SharedState, transaction: TransactionMeta, fn: () => void) {
     let interval = Date.now() - sharedState.lastMicropaymentTime
     let throttlingInMs = -1
     if (sharedState.preferences.micropaymentThrottlingHumanReadable === '-1ms'
@@ -95,10 +92,14 @@ export default class MicropaymentsController {
       throttlingInMs = timeparse(sharedState.preferences.micropaymentThrottlingHumanReadable)
     }
 
-    if (amount > sharedState.preferences.micropaymentThreshold || interval < throttlingInMs) {
+    if (transaction.amount > sharedState.preferences.micropaymentThreshold || interval < throttlingInMs) {
       transaction.state = TransactionState.PENDING
       await this.transactions.addTransaction(transaction)
       await this.transactions.store.dispatch(actions.setTransactionPending(true))
+      bus.once(events.txApproved(transaction.id), fn)
+    } else {
+      await this.transactions.addTransaction(transaction)
+      fn()
     }
   }
 
@@ -107,10 +108,7 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(async () => {
         let transaction = transactions.micropayment(purchaseMeta, receiver, amount)
         let sharedState = await this.background.getSharedState()
-        await this.checkPrereqs(sharedState, amount, transaction)
-        let id = transaction.id
-        let approvedEvent = events.txApproved(transaction.id)
-        bus.once(approvedEvent,  async () => {
+        await this.approve(sharedState, transaction, async () => {
           try {
             let walletBuyArguments : WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, purchaseMeta, channelValue)
             let accounts = await this.background.getAccounts()
@@ -159,8 +157,7 @@ export default class MicropaymentsController {
             reject(e)
           }
         })
-
-        let rejectedEvent = events.txRejected(id)
+        let rejectedEvent = events.txRejected(transaction.id)
         bus.once(rejectedEvent, ()=> {
           reject('Micropayment is rejected by the user')
         })
