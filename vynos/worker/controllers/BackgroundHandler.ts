@@ -14,7 +14,12 @@ import {
 } from "../../lib/rpc/yns";
 import { Writable } from "readable-stream";
 import { SharedStateBroadcast, SharedStateBroadcastType } from "../../lib/rpc/SharedStateBroadcast";
-import NetworkController from "./NetworkController";
+import {
+  BuyProcessEventBroadcast, BuyProcessEvent,
+  buyProcessEventBroadcastType
+} from "../../lib/rpc/buyProcessEventBroadcast";
+import {WalletBuyArguments} from "../../lib/Vynos";
+import {ChannelMeta} from "../../lib/storage/ChannelMetaStorage";
 
 export default class BackgroundHandler {
   controller: BackgroundController
@@ -205,6 +210,18 @@ changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) 
         id: SharedStateBroadcastType,
         jsonrpc: JSONRPC,
         result: sharedState
+      }
+      stream.write(message)
+    })
+  }
+
+  broadcastBuyProcessEvent (stream: Writable) {
+    this.controller.onBuyProcessEvent((typeOfMessage: BuyProcessEvent, args: WalletBuyArguments, token: string, channel: ChannelMeta) => {
+      let message: BuyProcessEventBroadcast = {
+        id: buyProcessEventBroadcastType,
+        jsonrpc: JSONRPC,
+        type: typeOfMessage,
+        result: [args, token, channel]
       }
       stream.write(message)
     })

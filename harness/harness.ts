@@ -5,6 +5,9 @@ import Namespace from "../vynos/inpage/Namespace";
 import Web3 = require("web3");
 import VynosBuyResponse from "../vynos/lib/VynosBuyResponse";
 import * as BigNumber from 'bignumber.js'
+import {WalletBuyArguments} from "../vynos/lib/Vynos";
+import {buyProcessEvent, BuyProcessEvent} from "../vynos/lib/rpc/buyProcessEventBroadcast";
+import {ChannelMeta} from "../vynos/lib/storage/ChannelMetaStorage";
 
 let _window = (window as VynosWindow);
 let devWindow = (window as DevWindow);
@@ -145,14 +148,23 @@ window.addEventListener("load", function () {
           if (resultSpan) {
             resultSpan.textContent = "Loading..."
           }
-          wallet.buy(receiverAccount!, parseInt(amount), gateway, Date.now().toString()).then((buyResponse : VynosBuyResponse) => {
-            console.log(buyResponse)
-            updateRecentVynosBuyResponse(buyResponse)
-            let resultSpan = document.getElementById("open_channel_id")
-            if (resultSpan) {
-              resultSpan.textContent = recentBuyResponse!.channelId.toString()
-            }
-          })
+          wallet.buyPromised(receiverAccount!, parseInt(amount), gateway, Date.now().toString())
+            .on(BuyProcessEvent.SENT_PAYMENT,
+              (args: WalletBuyArguments)=>{
+                  console.log('PAYMENT WAS SENT!')
+                }).on(BuyProcessEvent.RECEIVED_TOKEN, (args: WalletBuyArguments, token : string)=>{
+                  console.log('Token is '+token)
+                }).on(BuyProcessEvent.OPENING_CHANNEL_FINISHED, (args : WalletBuyArguments, channel : ChannelMeta)=>{
+                  console.log('Channel meta: ')
+                  console.log(channel)
+                }).result.then((buyResponse : VynosBuyResponse) => {
+                  console.log(buyResponse)
+                  updateRecentVynosBuyResponse(buyResponse)
+                  let resultSpan = document.getElementById("open_channel_id")
+                  if (resultSpan) {
+                    resultSpan.textContent = recentBuyResponse!.channelId.toString()
+                  }
+                })
 
       })
     }

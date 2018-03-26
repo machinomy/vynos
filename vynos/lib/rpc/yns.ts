@@ -3,7 +3,6 @@ import {SharedState} from "../../worker/WorkerState";
 import {PaymentChannelJSON} from "machinomy/lib/channel";
 import Payment from "machinomy/lib/Payment";
 import VynosBuyResponse from "../VynosBuyResponse";
-import { ChannelMeta } from '../storage/ChannelMetaStorage'
 import PurchaseMeta from "../PurchaseMeta";
 import {Preferences} from "../../worker/WorkerState";
 
@@ -328,6 +327,4 @@ export class SetRejectByIdRequest implements RequestPayload {
 export interface SetRejectByIdResponse extends ResponsePayload {
   result: null
 }
-
-
 

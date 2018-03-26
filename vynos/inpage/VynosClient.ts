@@ -10,17 +10,26 @@ import {
 import {JSONRPC, randomId} from "../lib/Payload";
 import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
 import VynosPayInChannelResponse from "../lib/VynosPayInChannelResponse";
-import Vynos from '../lib/Vynos'
+import Vynos, {WalletBuyArguments} from '../lib/Vynos'
 import VynosBuyResponse from "../lib/VynosBuyResponse";
 import PurchaseMeta, {purchaseMetaFromDocument} from "../lib/PurchaseMeta";
 import {SharedState} from "../worker/WorkerState";
 import {SharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
+import Wallet = require("ethereumjs-wallet");
+import {
+  buyProcessEvent, BuyProcessEventBroadcast, buyProcessEventBroadcastType, isBuyProcessEventBroadcast
+} from "../lib/rpc/buyProcessEventBroadcast";
+import {default as PromisedWalletResponse} from "../lib/promised";
+import bus from "../lib/bus";
+import {ChannelMeta} from "../lib/storage/ChannelMetaStorage";
 
 function isPaymentChannel(pc: PaymentChannel|PaymentChannelJSON): pc is PaymentChannel {
   return !!((pc as PaymentChannel).toJSON)
 }
 
 export default class VynosClient implements Vynos {
+  buyProcessCallbacks: Map<string, (args: WalletBuyArguments, tokenOrChannel?: string | ChannelMeta) => void>
+
   depositToChannel (ch: PaymentChannel): Promise<PaymentChannel> {
     return Promise.resolve(ch)
   }
@@ -30,6 +39,12 @@ export default class VynosClient implements Vynos {
   constructor (stream: Duplex) {
     this.provider = new StreamProvider("VynosClient")
     this.provider.pipe(stream).pipe(this.provider)
+
+    this.buyProcessCallbacks = new Map<string, (args: WalletBuyArguments, tokenOrChannelId?: string | ChannelMeta) => void>()
+
+    bus.on('mc_wallet_buyProcessEvent', (eventName: string, callback: (args: WalletBuyArguments, tokenOrChannelId?: string | ChannelMeta) => void) => {
+      this.addCallbackForBuyProcessEvent(eventName, callback)
+    })
   }
 
   initAccount(): Promise<void> {
@@ -88,6 +103,7 @@ export default class VynosClient implements Vynos {
 
   buy (receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number): Promise<VynosBuyResponse> {
     let _purchase = purchase || purchaseMetaFromDocument(document)
+
     let request: BuyRequest = {
       id: randomId(),
       method: BuyRequest.method,
@@ -103,6 +119,14 @@ export default class VynosClient implements Vynos {
         return Promise.resolve(response.result[0])
       }
     })
+  }
+
+  buyPromised(receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number) : PromisedWalletResponse {
+    let promiseBuyResponse = this.buy(receiver, amount, gateway, meta, purchase, channelValue)
+    let _purchase = purchase || purchaseMetaFromDocument(document)
+    let walletBuyArgs : WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, _purchase, channelValue)
+    let result : PromisedWalletResponse = new PromisedWalletResponse(this, promiseBuyResponse, 'mc_wallet_buyProcessEvent', walletBuyArgs)
+    return result
   }
 
   listChannels(): Promise<Array<PaymentChannel>> {
@@ -122,5 +146,29 @@ export default class VynosClient implements Vynos {
       let state = broadcast.result
       fn(state)
     })
+  }
+
+  onBuyProcessEventReceived() : void {
+    this.provider.listen<BuyProcessEventBroadcast>(buyProcessEventBroadcastType, (data : BuyProcessEventBroadcast) => {
+      if (isBuyProcessEventBroadcast(data)) {
+        let walletArgs : WalletBuyArguments = data.result[0]
+        let token : string = data.result[1]
+        let channel : ChannelMeta = data.result[2]
+        if (this.buyProcessCallbacks.has(buyProcessEvent(data.type, data.result[0]))) {
+          let callback = this.buyProcessCallbacks.get(buyProcessEvent(data.type, data.result[0]))
+          if (token !== undefined) {
+            callback!(walletArgs, token)
+          } else if (channel !== undefined) {
+            callback!(walletArgs, channel)
+          } else {
+            callback!(walletArgs)
+          }
+        }
+      }
+    })
+  }
+
+  addCallbackForBuyProcessEvent(event: string, callback: (args: WalletBuyArguments, tokenOrChannelId?: string | ChannelMeta) => void) {
+    this.buyProcessCallbacks.set(event, callback)
   }
 }

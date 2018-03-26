@@ -41,6 +41,7 @@ export default class Namespace {
             this.display()
           }
         })
+        client.onBuyProcessEventReceived()
         resolve(client)
       })
     })

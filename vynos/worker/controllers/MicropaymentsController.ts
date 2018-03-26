@@ -11,7 +11,7 @@ import Web3 = require("web3")
 import TransactionService from "../TransactionService";
 import * as transactions from '../../lib/transactions'
 import PurchaseMeta from "../../lib/PurchaseMeta";
-import ChannelMetaStorage from "../../lib/storage/ChannelMetaStorage";
+import ChannelMetaStorage, {ChannelMeta} from "../../lib/storage/ChannelMetaStorage";
 import TransactionState from "../../lib/TransactionState";
 import TransactionMeta from "../../lib/TransactionMeta";
 import * as actions from "../actions";
@@ -19,6 +19,8 @@ import bus from '../../lib/bus'
 import {CHANGE_NETWORK} from "../../lib/constants";
 import {SharedState} from "../WorkerState";
 import * as events from '../../lib/events'
+import {BuyProcessEvent, buyProcessEvent} from '../../lib/rpc/buyProcessEventBroadcast'
+import {WalletBuyArguments} from "../../lib/Vynos";
 
 const timeparse = require('timeparse');
 
@@ -100,7 +102,6 @@ export default class MicropaymentsController {
     }
   }
 
-
   buy(receiver: string, amount: number, gateway: string, meta: string, purchaseMeta: PurchaseMeta, channelValue?: number): Promise<VynosBuyResponse> {
     return new Promise<VynosBuyResponse>((resolve, reject) => {
       this.background.awaitUnlock(async () => {
@@ -108,10 +109,10 @@ export default class MicropaymentsController {
         let sharedState = await this.background.getSharedState()
         await this.checkPrereqs(sharedState, amount, transaction)
         let id = transaction.id
-
         let approvedEvent = events.txApproved(transaction.id)
         bus.once(approvedEvent,  async () => {
           try {
+            let walletBuyArguments : WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, purchaseMeta, channelValue)
             let accounts = await this.background.getAccounts()
             let account = accounts[0]
             let options: any
@@ -127,22 +128,33 @@ export default class MicropaymentsController {
               gateway: gateway,
               meta: meta
             })
-            let channelFound = this.channels.firstById(response.channelId.toString())
+            bus.emit(BuyProcessEvent.SENT_PAYMENT, walletBuyArguments)
+            bus.emit(BuyProcessEvent.RECEIVED_TOKEN, walletBuyArguments, response.token)
+
+            let channelFound = await this.channels.firstById(response.channelId.toString())
             if (!channelFound) {
-              await this.channels.save({
+              bus.emit(BuyProcessEvent.NO_CHANNEL_FOUND, walletBuyArguments)
+              bus.emit(BuyProcessEvent.OPENING_CHANNEL_STARTED, walletBuyArguments)
+
+              let newChannelMeta = {
                 channelId: response.channelId.toString(),
                 title: purchaseMeta.siteName,
                 host: purchaseMeta.origin,
                 icon: '/frame/styles/images/channel.png',
                 openingTime: Date.now()
-              })
+              }
+              await this.channels.save(newChannelMeta)
               let channelDescription = JSON.stringify({channelId: response.channelId.toString()})
               let transaction = transactions.openChannel('Opening of channel', channelDescription, account, receiver, channelValue ? channelValue : amount * 10)
               await this.transactions.addTransaction(transaction)
+              bus.emit(BuyProcessEvent.OPENING_CHANNEL_FINISHED, walletBuyArguments, newChannelMeta)
+            } else {
+              bus.emit(BuyProcessEvent.CHANNEL_FOUND, walletBuyArguments, channelFound)
             }
             transaction.state = TransactionState.APPROVED
             await this.background.setLastMicropaymentTime(Date.now())
             resolve(response)
+            bus.emit(BuyProcessEvent.SENT_TOKEN, walletBuyArguments, response.token)
           } catch (e) {
             reject(e)
           }
