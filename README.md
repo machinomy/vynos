@@ -65,7 +65,7 @@ For installation instructions go to the [official web site](https://yarnpkg.com/
 ```
 git clone https://github.com/SpankChain/vynos
 cd vynos
-yarn install
+yarn install --pure-lockfile
 ```
 
 Rename example.env to .env and set some environment variables:
