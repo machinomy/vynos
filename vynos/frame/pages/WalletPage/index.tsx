@@ -1,12 +1,12 @@
 import * as React from 'react'
-import WalletMenu, {nameByPath} from './WalletMenu'
-import {FrameState} from '../../redux/FrameState'
-import {connect} from 'react-redux'
-import DashboardSubpage from "./DashboardSubpage";
-import Channels from "../../components/Account/Channels/index"
-import Network from "../../components/Account/Network/index"
-import Preferences from "../../components/Account/Preferences/index"
-import TransactionStorage from "../../../lib/storage/TransactionMetaStorage"
+import WalletMenu, { nameByPath } from './WalletMenu'
+import { FrameState } from '../../redux/FrameState'
+import { connect } from 'react-redux'
+import DashboardSubpage from './DashboardSubpage'
+import Channels from '../../components/Account/Channels/index'
+import Network from '../../components/Account/Network/index'
+import Preferences from '../../components/Account/Preferences/index'
+import TransactionStorage from '../../../lib/storage/TransactionMetaStorage'
 
 export interface WalletPageStateProps {
   path?: string
@@ -18,12 +18,11 @@ export interface WalletPageState {
   sendShown: boolean
 }
 
-
 export class WalletPage extends React.Component<WalletPageStateProps, WalletPageState> {
 
   constructor (props: any) {
-    super(props);
-    this.state = {sendShown: false};
+    super(props)
+    this.state = { sendShown: false }
   }
 
   renderSubpage () {
@@ -40,7 +39,6 @@ export class WalletPage extends React.Component<WalletPageStateProps, WalletPage
     }
   }
 
-
   consoleLogPendingTxs () {
     let storage = new TransactionStorage()
     storage.pending().then(allpending => {
@@ -55,7 +53,7 @@ export class WalletPage extends React.Component<WalletPageStateProps, WalletPage
   }
 }
 
-function mapStateToProps(state: FrameState, props: WalletPageStateProps): WalletPageStateProps {
+function mapStateToProps (state: FrameState, props: WalletPageStateProps): WalletPageStateProps {
   return {
     path: state.shared.rememberPath,
     name: nameByPath(state.shared.rememberPath),

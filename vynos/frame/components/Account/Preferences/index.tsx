@@ -3,7 +3,7 @@ import { Container, Form } from 'semantic-ui-react'
 import { FrameState } from '../../../redux/FrameState'
 import { connect } from 'react-redux'
 import WorkerProxy from '../../../WorkerProxy'
-import { Preferences as PreferencesType }  from '../../../../worker/WorkerState'
+import { Preferences as PreferencesType } from '../../../../worker/WorkerState'
 const style = require('../../../styles/ynos.css')
 
 export interface PreferencesStateProps {
@@ -36,22 +36,22 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
   }
 
   render () {
-    return <div style={{ overflow:'auto', paddingBottom:'20px' }}>
+    return <div style={{ overflow: 'auto', paddingBottom: '20px' }}>
     <Container className={`${style.clearBorder}`}>
       <Form>
-        <Form.Group grouped>
+        <Form.Group grouped={true}>
           <label>Channels</label>
-          <Form.Checkbox label="Ask to create" disabled/>
-          <Form.Checkbox label="Throttling" disabled/>
+          <Form.Checkbox label="Ask to create" disabled={true}/>
+          <Form.Checkbox label="Throttling" disabled={true}/>
         </Form.Group>
-        <Form.Group grouped>
+        <Form.Group grouped={true}>
           <label>Micropayments (threshold in wei)</label>
           <Form.Input placeholder="Maximum micropayment" className={'micropaymentThreshold'} value={this.state.preferences.micropaymentThreshold} onChange={() => {this.handleChangeMicropaymentThreshold()}}/>
           <label>Throttling (in ms, s, m, h, d, w or empty for none, eg 2h5m)</label>
           <Form.Input className={'micropaymentThrottling'} value={this.state.throttlingTimeFormatted}
                       onChange={() => {this.handleChangeMicropaymentThrottling()}}/>
         </Form.Group>
-        <Form.Group grouped>
+        <Form.Group grouped={true}>
           <label>Security</label>
           <p>
             <a onClick={() => {this.handleSavePrivateKeyToFile()}}>Save private key to file</a>

@@ -2,16 +2,15 @@ import * as React from 'react'
 import { Container, Grid, Menu, Header, List, Image } from 'semantic-ui-react'
 const style = require('../../../styles/ynos.css')
 
-
 const Transaction: React.SFC<any> = (props) => {
   return <div>
         <Menu className={style.clearBorder}>
-            <Menu.Item link className={style.menuIntoOneItemFluid}><i className={style.vynosArrowBack}></i>Transaction</Menu.Item>
+            <Menu.Item link={true} className={style.menuIntoOneItemFluid}><i className={style.vynosArrowBack}></i>Transaction</Menu.Item>
         </Menu>
         <Container>
             <List>
                 <List.Item>
-                    <Image avatar src={require('../../../styles/images/avatar.svg')} />
+                    <Image avatar={true} src={require('../../../styles/images/avatar.svg')} />
                     <List.Content>
                         <List.Header as="a">9 July 2017, 10:33</List.Header>
                         <List.Description>10 hours ago, 2033 confirmations</List.Description>
@@ -22,15 +21,15 @@ const Transaction: React.SFC<any> = (props) => {
             <Grid columns="equal">
                 <Grid.Row>
                     <Grid.Column>
-                        <Header sub>Amount</Header>
+                        <Header sub={true}>Amount</Header>
                         <span>1.0000 ETH</span>
                     </Grid.Column>
                     <Grid.Column>
-                        <Header sub>Free paid</Header>
+                        <Header sub={true}>Free paid</Header>
                         <span>1.0000 ETH</span>
                     </Grid.Column>
                     <Grid.Column>
-                        <Header sub>Gas used</Header>
+                        <Header sub={true}>Gas used</Header>
                         <span>1.0000 ETH</span>
                     </Grid.Column>
                 </Grid.Row>

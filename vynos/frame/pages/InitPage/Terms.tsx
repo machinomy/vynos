@@ -1,11 +1,11 @@
-import * as React from "react";
-import {connect, Dispatch} from "react-redux";
-import {FrameState} from "../../redux/FrameState";
-import * as actions from "../../redux/actions";
-import { Button, Container, Divider  } from 'semantic-ui-react'
+import * as React from 'react'
+import { connect, Dispatch } from 'react-redux'
+import { FrameState } from '../../redux/FrameState'
+import * as actions from '../../redux/actions'
+import { Button, Container, Divider } from 'semantic-ui-react'
 import TermsTextPage from '../TermsTextPage'
 import RestorePage from '../RestorePage'
-import Logo from "../../components/Logo";
+import Logo from '../../components/Logo'
 const style = require('../../styles/ynos.css')
 
 export interface TermsSubpageDispatchProps {
@@ -54,23 +54,25 @@ export class Terms extends React.Component<TermsSubpageProps, TermsState> {
   }
 
   render () {
-    if (this.state.displayTermsText)
-      return <TermsTextPage goBack={this.doneDisplayTermsText.bind(this)} />
+    if (this.state.displayTermsText) {
+      return <TermsTextPage goBack={this.doneDisplayTermsText.bind(this)}/>
+    }
 
-    if (this.state.displayRestore)
-      return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)} showVerifiable={this.props.showVerifiable} />
+    if (this.state.displayRestore) {
+      return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)} showVerifiable={this.props.showVerifiable}/>
+    }
 
     return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
       <Logo />
-      <Divider hidden />
+      <Divider hidden={true} />
       <p>
         Ready to unlock a true value<br/>
         of quality content<br/>
         through <em>real</em> micropayments?
       </p>
-      <Divider hidden />
+      <Divider hidden={true} />
       <a className={style.readTerms} onClick={this.doDisplayTermsText.bind(this)} />
-      <Divider hidden />
+      <Divider hidden={true} />
       <Button onClick={this.props.didAcceptTerms} content="Accept" primary className={style.buttonNav} />
       <br />
       <a onClick={this.doDisplayRestore.bind(this)}>Restore wallet</a>

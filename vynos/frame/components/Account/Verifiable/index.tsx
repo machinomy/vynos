@@ -55,7 +55,7 @@ export class VerifiablePage extends React.Component<VerifiablePageProps, Verifia
   render () {
     return <div id={style.verifiableBlock}>
       {this.menu()}
-      <div id={style.verifiableText}>Кликаем по ссылке ниже, сравниваем циферки и если они совпадают - радуемся</div>
+      <div id={style.verifiableText}>Please, click link below, compare numbers - they must be equal</div>
       <div id={style.verifiableRandNumber}>{this.state.randNumber}</div>
       <div><a onClick={this.show.bind(this)}>Verify authenticity Vynos</a></div>
     </div>

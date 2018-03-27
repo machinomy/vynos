@@ -95,8 +95,8 @@ export default class BlockieComponent extends React.Component<BlockieComponentPr
     let spotColor = this.props.spotColor || stringToColor(this.seed + 'spotColor') || randomColor(this.random)
     let imageData = this.createImageData()
 
-    let canvasElement = this.refs.canvas as HTMLCanvasElement;
-    let canvasContext = canvasElement.getContext('2d');
+    let canvasElement = this.refs.canvas as HTMLCanvasElement
+    let canvasContext = canvasElement.getContext('2d')
     if (canvasContext) {
       canvasContext.fillStyle = backgroundColor
       canvasContext.fillRect(0, 0, this.canvasSize, this.canvasSize)

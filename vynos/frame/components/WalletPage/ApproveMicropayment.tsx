@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Form, Divider } from 'semantic-ui-react'
 import TransactionMeta from '../../../lib/TransactionMeta'
-import { formatAmount } from "../../../lib/formatting"
+import { formatAmount } from '../../../lib/formatting'
 
 const style = require('../../styles/ynos.css')
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import { Container, Menu } from 'semantic-ui-react'
 const style = require('../styles/ynos.css')
 
@@ -11,7 +11,7 @@ export default class TermsTextPage extends React.Component<TermsTextPageProps, a
     return <div>
       <Menu className={style.clearBorder}>
         <Menu.Item
-          link className={style.menuIntoOneItemFluid}
+          link={true} className={style.menuIntoOneItemFluid}
           onClick={this.props.goBack}>
           <i className={style.vynosArrowBack}/> Terms of Use
         </Menu.Item>

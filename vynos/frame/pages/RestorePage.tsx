@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Container, Menu, Form, Button, Divider, Icon, Input } from 'semantic-ui-react'
+import { Container, Menu, Form, Button, Icon } from 'semantic-ui-react'
 
 const web3Utils = require('web3-utils')
 
@@ -10,8 +10,8 @@ const MAX_FILE_SIZE = 1048576 // 1mb
 
 import { MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT } from '../constants'
 import WorkerProxy from '../WorkerProxy'
-import { FrameState } from "../redux/FrameState";
-import { ChangeEvent, FormEvent } from "react";
+import { FrameState } from '../redux/FrameState'
+import { ChangeEvent, FormEvent } from 'react'
 import bip39 = require('bip39')
 
 export interface OwnRestorePageProps {
@@ -48,14 +48,18 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
     this.onDrop = this.onDrop.bind(this)
   }
 
+  static clickInpFile () {
+    document.getElementById('inpFilePrivKey')!.click()
+  }
+
   componentWillMount () {
-    document.addEventListener('dragover', this.onDrag, false);
-    document.addEventListener('drop', this.onDrop, false);
+    document.addEventListener('dragover', this.onDrag, false)
+    document.addEventListener('drop', this.onDrop, false)
   }
 
   componentWillUnmount () {
-    document.removeEventListener('dragover', this.onDrag, false);
-    document.removeEventListener('drop', this.onDrop, false);
+    document.removeEventListener('dragover', this.onDrag, false)
+    document.removeEventListener('drop', this.onDrop, false)
   }
 
   goBack () {
@@ -70,7 +74,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
       if (state.fileIsHex && state.fileValue) {
         this.props.workerProxy.restoreWallet(state.password, 'hex', state.fileValue).then((ok: string) => {
           if (ok === 'true') {
-            localStorage.clear()                                          
+            localStorage.clear()
             this.goBack()
           } else {
             this.setState({ incorrectKeyFile: true })
@@ -95,17 +99,17 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
   }
 
   isValid () {
-    let passwordError = this.state.passwordError;
+    let passwordError = this.state.passwordError
     if (this.state.password && this.state.password.length < MINIMUM_PASSWORD_LENGTH) {
-      passwordError = PASSWORD_HINT_TEXT;
+      passwordError = PASSWORD_HINT_TEXT
       this.setState({
         passwordError: passwordError
       })
     }
 
-    let passwordConfirmationError = this.state.passwordConfirmationError;
+    let passwordConfirmationError = this.state.passwordConfirmationError
     if (this.state.passwordConfirmation !== this.state.password && this.state.passwordConfirmation) {
-      passwordConfirmationError = PASSWORD_CONFIRMATION_HINT_TEXT;
+      passwordConfirmationError = PASSWORD_CONFIRMATION_HINT_TEXT
       this.setState({
         passwordConfirmationError: passwordConfirmationError
       })
@@ -167,7 +171,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
     if (this.state.fileIsHex || this.state.fileIsJSON) return null
 
     if (this.state.seedError) {
-      return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.seedError}</span>;
+      return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.seedError}</span>
     } else {
       return <span className={style.passLenText}/>
     }
@@ -184,7 +188,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
 
   renderPasswordHint () {
     if (this.state.passwordError) {
-      return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.passwordError}</span>;
+      return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.passwordError}</span>
     } else {
       return <span className={style.passLenText}>At least {MINIMUM_PASSWORD_LENGTH} characters</span>
     }
@@ -202,25 +206,21 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
   renderPasswordConfirmationHint () {
     if (this.state.passwordConfirmationError) {
       return <span className={style.errorText}><i
-        className={style.vynosInfo}/> {this.state.passwordConfirmationError}</span>;
+        className={style.vynosInfo}/> {this.state.passwordConfirmationError}</span>
     } else {
-      return <span className={style.errorText}>&nbsp;</span>;
+      return <span className={style.errorText}>&nbsp;</span>
     }
   }
 
   renderPrivKeyText(){
-    if(this.state.fileIsHex){
+    if (this.state.fileIsHex) {
       return <div>And now set the password</div>
-    }else if(this.state.fileIsJSON){
+    } else if (this.state.fileIsJSON) {
       return <div>And now set the password for unlocking</div>
-    }else {
+    } else {
       return <a onClick={RestorePage.clickInpFile} style={{ float: 'right' }}>Select private key file</a>
     }
 
-  }
-
-  static clickInpFile () {
-    document.getElementById('inpFilePrivKey')!.click()
   }
 
   changeInputFile (event: ChangeEvent<HTMLInputElement>) {
@@ -258,14 +258,14 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
   }
 
   onDrag (event: any) {
-    event.stopPropagation();
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'copy';
+    event.stopPropagation()
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'copy'
   }
 
   onDrop (event: any) {
-    event.stopPropagation();
-    event.preventDefault();
+    event.stopPropagation()
+    event.preventDefault()
     let files: FileList | null = event.dataTransfer.files
     if (files && files.length) {
       this.checkFile(files[0])
@@ -303,7 +303,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
             {this.renderPasswordConfirmationInput()}
             {this.renderPasswordConfirmationHint()}
           </Form.Field>
-          <Button type='submit' content="Restore" primary className={style.buttonNav}/>
+          <Button type="submit" content="Restore" primary={true} className={style.buttonNav}/>
         </Form>
       </Container>
       <a onClick={this.props.showVerifiable} id={style.shieldIcon}><Icon name={'shield'} size={'large'}></Icon></a>

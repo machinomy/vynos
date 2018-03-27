@@ -15,7 +15,7 @@ import {
   SetPreferencesRequest,
   SetApproveByIdRequest, SetRejectByIdRequest
 } from '../lib/rpc/yns'
-import { Action } from 'redux';
+import { Action } from 'redux'
 import Web3 = require('web3')
 
 export default class WorkerProxy extends EventEmitter {
@@ -146,7 +146,7 @@ export default class WorkerProxy extends EventEmitter {
   }
 
   dispatch<A extends Action> (action: A) {
-    console.warn("WorkerProxy#dispatch", action)
+    console.warn('WorkerProxy#dispatch', action)
   }
 
   changeNetwork (): Promise<void> {

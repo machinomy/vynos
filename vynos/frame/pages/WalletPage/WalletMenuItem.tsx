@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Dropdown} from 'semantic-ui-react'
+import { Dropdown } from 'semantic-ui-react'
 
 export interface WalletMenuItemProps {
   href: string
@@ -17,7 +17,7 @@ export default class WalletMenuItem extends React.Component<WalletMenuItemProps,
   }
 
   render () {
-    return <Dropdown.Item as='a' onClick={this.handleClick.bind(this)}>
+    return <Dropdown.Item as="a" onClick={this.handleClick.bind(this)}>
       {this.props.name}
     </Dropdown.Item>
   }

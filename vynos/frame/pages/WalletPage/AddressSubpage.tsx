@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Container, Menu, Form, Button, Divider } from 'semantic-ui-react'
+import { Button, Divider } from 'semantic-ui-react'
 import * as qr from 'qr-image'
 
 const style = require('../../styles/ynos.css')
@@ -13,7 +13,7 @@ export interface AddressSubpageState {
   copyToClipboardText: string
 }
 
-function etherscanLink(hexAddress: string): string {
+function etherscanLink (hexAddress: string): string {
   return `https://ropsten.etherscan.io/address/${hexAddress}` // FIXME Networks
 }
 
@@ -40,29 +40,29 @@ export default class AddressSubpage extends React.Component<AddressSubpageProps,
   }
 
   renderQR () {
-    let pngBuffer = qr.imageSync(this.props.address, {type: 'png', margin: 1}) as Buffer
+    let pngBuffer = qr.imageSync(this.props.address, { type: 'png', margin: 1 }) as Buffer
     let dataURI = 'data:image/png;base64,' + pngBuffer.toString('base64')
-    return <img className='react-qr' src={dataURI} />
+    return <img className="react-qr" src={dataURI} />
   }
 
   render () {
     return <div className={style.walletAddressSubpage}>
       <div className={style.walletAddressSubpageButtons}>
         <div className={style.walletAddressSubpageButtonsSingle}>
-          <Button type="submit" content="Refill" className={style.buttonNav} disabled />
+          <Button type="submit" content="Refill" className={style.buttonNav} disabled={true} />
         </div>
         <div className={style.walletAddressSubpageButtonsSingle}>
           <Button type="submit" content="Send" className={style.buttonNav} onClick={this.props.showSend.bind(this)} />
         </div>
       </div>
-      <Divider hidden />
+      <Divider hidden={true} />
       <p className={style.walletAddressSubpageParagraph}>
         {this.props.address}
       </p>
       <p className={style.walletAddressSubpageParagraph}>
         <a href={etherscanLink(this.props.address)} target="_blank">View on Etherscan</a>
       </p>
-      <Divider hidden />
+      <Divider hidden={true} />
       <p className={style.walletAddressSubpageParagraph}>
         {this.renderQR()}
       </p>

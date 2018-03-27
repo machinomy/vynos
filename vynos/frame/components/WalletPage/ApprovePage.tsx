@@ -122,13 +122,15 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
         {transactionData}
         <div className="ui grid">
           <div className="eight wide column">
-            <button className="positive ui fluid button"
-                    onClick={this.approve.bind(this, this.state.transaction)}>Approve
+            <button
+              className="positive ui fluid button"
+              onClick={this.approve.bind(this, this.state.transaction)}>Approve
             </button>
           </div>
           <div className="eight wide column">
-            <button className="negative ui fluid button"
-                    onClick={this.reject.bind(this, this.state.transaction)}>Cancel
+            <button
+              className="negative ui fluid button"
+              onClick={this.reject.bind(this, this.state.transaction)}>Cancel
             </button>
           </div>
         </div>

@@ -2,9 +2,9 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { FrameState } from '../redux/FrameState'
 import InitPage from './InitPage'
-import UnlockPage from "./UnlockPage";
-import WalletPage from './WalletPage';
-import ApprovePage from "../components/WalletPage/ApprovePage"
+import UnlockPage from './UnlockPage'
+import WalletPage from './WalletPage'
+import ApprovePage from '../components/WalletPage/ApprovePage'
 import VerifiablePage from '../components/Account/Verifiable/index'
 
 export function isUnlockPageExpected (state: FrameState): boolean {
@@ -41,13 +41,13 @@ export class RootContainer extends React.Component<RootContainerProps, any> {
     this.setState({ showingVerifiable: false })
   }
 
-  renderVerifable(){
+  renderVerifable () {
     if (this.state.showingVerifiable) {
       return <VerifiablePage showVerifiable={this.showVerifiable} hideVerifiable={this.hideVerifiable}/>
     }
   }
 
-  renderOther(){
+  renderOther () {
     if (this.props.isTransactionPending) {
       return <ApprovePage/>
     }

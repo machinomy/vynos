@@ -10,10 +10,10 @@ export default class BoughtItem {
   date: string
   price: number
 
-  constructor(opts: BoughtItemOpts) {
-    this.media = opts.media;
-    this.title = opts.title;
-    this.date = opts.date;
+  constructor (opts: BoughtItemOpts) {
+    this.media = opts.media
+    this.title = opts.title
+    this.date = opts.date
     this.price = opts.price
   }
 }

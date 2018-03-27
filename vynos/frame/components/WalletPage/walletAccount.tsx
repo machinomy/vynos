@@ -39,11 +39,13 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
                 <Image src={localStorage.getItem('mc_wallet_avatar') as string} />
              </div>
     } else {
-      return <BlockieComponent classDiv={'ui mini avatar image'} classCanvas={'ui mini avatar image'} size={35}
-                               scale={2} seed={this.state.address ? this.state.address : ''}
-                               onBlockieGenerated={(base64: string) => {
-                                 localStorage.setItem('mc_wallet_avatar', base64)
-                               }}/>
+      return <BlockieComponent
+                classDiv={'ui mini avatar image'} classCanvas={'ui mini avatar image'} size={35}
+                scale={2} seed={this.state.address ? this.state.address : ''}
+                onBlockieGenerated={(base64: string) => {
+                  localStorage.setItem('mc_wallet_avatar', base64)
+                }}
+              />
     }
   }
 
@@ -57,13 +59,13 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
             this.setState({
               balance: web3.fromWei(balance, 'ether').toString()
             })
-            if (this.props.onChangeBalance){
+            if (this.props.onChangeBalance) {
               this.props.onChangeBalance(parseFloat(this.state.balance))
             }
           })
         }, 500)
         this.setState({ address: address })
-        if(this.props.onChangeAddress) {
+        if (this.props.onChangeAddress) {
           this.props.onChangeAddress(address)
         }
       })
@@ -82,7 +84,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     this.setState({
       isDetailsDisplayed: next
     })
-    if(this.props.onChangeDetailsDisplayed) {
+    if (this.props.onChangeDetailsDisplayed) {
       this.props.onChangeDetailsDisplayed(next)
     }
   }
