@@ -1,6 +1,6 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { FrameState } from "../../../redux/FrameState";
+import * as React from 'react'
+import { connect } from 'react-redux'
+import { FrameState } from '../../../redux/FrameState'
 import { Menu } from 'semantic-ui-react'
 
 const style = require('../../../styles/ynos.css')
@@ -25,6 +25,9 @@ export class VerifiablePage extends React.Component<VerifiablePageProps, Verifia
     this.state = { randNumber }
   }
 
+  static getRandomNumber (min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min) + min)
+  }
 
   show () {
     this.win = window.open('/check.html', '', 'width=300,height=200')
@@ -47,10 +50,6 @@ export class VerifiablePage extends React.Component<VerifiablePageProps, Verifia
       this.win.close()
     }
     localStorage.removeItem('randNumber')
-  }
-
-  static getRandomNumber (min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min) + min);
   }
 
   render () {

@@ -1,13 +1,12 @@
-import * as React from "react";
+import * as React from 'react'
 import { Container, Form, Radio } from 'semantic-ui-react'
-import SettingStorage from "../../../../lib/storage/SettingStorage";
-import { connect } from "react-redux";
-import { FrameState } from "../../../redux/FrameState";
-import { ChangeEvent } from "react";
+import SettingStorage from '../../../../lib/storage/SettingStorage'
+import { connect } from 'react-redux'
+import { FrameState } from '../../../redux/FrameState'
+import { ChangeEvent } from 'react'
 
-const style = require("../../../styles/ynos.css");
+const style = require('../../../styles/ynos.css')
 const networks = require('../../../../networks.json')
-
 
 export interface NetworkProps {
   changeNetwork: () => void
@@ -24,7 +23,7 @@ export class Network extends React.Component<NetworkProps, NetworkState> {
   networkNames: string[]
 
   constructor () {
-    super();
+    super()
     this.settingStorage = new SettingStorage()
     this.networkNames = []
     this.state = { value: '0', customNetwork: '', savedCustomNetwork: '' }
@@ -36,14 +35,14 @@ export class Network extends React.Component<NetworkProps, NetworkState> {
       this.networkNames.push(name)
     }
     let resultNetwork: any = await this.settingStorage.getNetwork()
-    let value;
+    let value
     if (this.networkNames.indexOf(resultNetwork.name) !== -1) {
       value = resultNetwork.name
     } else {
       value = 'Other'
       this.setState({ customNetwork: resultNetwork.value, savedCustomNetwork: resultNetwork.value })
     }
-    this.setState({ value: value });
+    this.setState({ value: value })
   }
 
   setRadio (ev: Event, input: HTMLInputElement) {

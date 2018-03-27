@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Menu, Button, Container, Form, Divider } from 'semantic-ui-react'
+import { Form, Divider } from 'semantic-ui-react'
 import TransactionMeta from '../../../lib/TransactionMeta'
 import Web3 = require('web3')
 
@@ -9,7 +9,7 @@ export interface ApproveTransactionProps {
   transaction: TransactionMeta
 }
 
-export interface ApproveTransactionState{
+export interface ApproveTransactionState {
   to: string,
   formatedAmount: string
   formatedTotal: string
@@ -17,14 +17,13 @@ export interface ApproveTransactionState{
 }
 
 export default class ApprovePage extends React.Component<ApproveTransactionProps, ApproveTransactionState> {
-  constructor(props: any) {
+  constructor (props: any) {
     super(props)
 
     this.componentWillReceiveProps()
   }
 
-
-  componentWillReceiveProps() {
+  componentWillReceiveProps () {
     if (!this.props.transaction.to) {
       return
     }
@@ -41,7 +40,7 @@ export default class ApprovePage extends React.Component<ApproveTransactionProps
     }
   }
 
-  render() {
+  render () {
     return <Form className={style.encryptionForm} >
       <Form.Field className={style.clearIndent}>
         <label>To:</label> <div className={style.listDesc}>{this.state.to}</div>
@@ -51,8 +50,7 @@ export default class ApprovePage extends React.Component<ApproveTransactionProps
         <Divider />
         <label>Total:</label> <div>{this.state.formatedTotal}</div>
       </Form.Field>
-      <Divider hidden />
+      <Divider hidden={true} />
     </Form>
   }
 }
-

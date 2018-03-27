@@ -1,7 +1,6 @@
-import * as React from "react";
+import * as React from 'react'
 import { Container, Menu, List, Button } from 'semantic-ui-react'
-const style = require("../../../styles/ynos.css");
-
+const style = require('../../../styles/ynos.css')
 
 const Refill: React.SFC<any> = (props) => {
     return <div>
@@ -26,7 +25,6 @@ const Refill: React.SFC<any> = (props) => {
             </List>
         </Container>
     </div>
-};
+}
 
-
-export default Refill;
+export default Refill

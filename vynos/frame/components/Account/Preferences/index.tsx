@@ -1,11 +1,10 @@
-import * as React from "react";
-import { Container, Form, Button, Input, Label } from 'semantic-ui-react'
-import { FrameState } from "../../../redux/FrameState";
-import { connect } from "react-redux";
-import WorkerProxy from "../../../WorkerProxy";
-import {Preferences as PreferencesType}  from "../../../../worker/WorkerState";
-const style = require("../../../styles/ynos.css");
-
+import * as React from 'react'
+import { Container, Form } from 'semantic-ui-react'
+import { FrameState } from '../../../redux/FrameState'
+import { connect } from 'react-redux'
+import WorkerProxy from '../../../WorkerProxy'
+import { Preferences as PreferencesType }  from '../../../../worker/WorkerState'
+const style = require('../../../styles/ynos.css')
 
 export interface PreferencesStateProps {
   preferences: PreferencesType
@@ -22,9 +21,9 @@ export interface PreferencesProps {
 }
 
 export class Preferences extends React.Component<PreferencesProps & OwnPreferencesProps, PreferencesStateProps> {
-  privateKeyHex : string
+  privateKeyHex: string
 
-  constructor(props: PreferencesProps & OwnPreferencesProps) {
+  constructor (props: PreferencesProps & OwnPreferencesProps) {
     super(props)
     this.state = {
       preferences : props.preferences,
@@ -37,20 +36,20 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
   }
 
   render () {
-    return <div style={{overflow:"auto", paddingBottom:"20px"}}>
+    return <div style={{ overflow:'auto', paddingBottom:'20px' }}>
     <Container className={`${style.clearBorder}`}>
       <Form>
         <Form.Group grouped>
           <label>Channels</label>
-          <Form.Checkbox label='Ask to create' disabled/>
-          <Form.Checkbox label='Throttling' disabled/>
+          <Form.Checkbox label="Ask to create" disabled/>
+          <Form.Checkbox label="Throttling" disabled/>
         </Form.Group>
         <Form.Group grouped>
           <label>Micropayments (threshold in wei)</label>
-          <Form.Input placeholder='Maximum micropayment' className={'micropaymentThreshold'} value={this.state.preferences.micropaymentThreshold} onChange={()=>{this.handleChangeMicropaymentThreshold()}}/>
+          <Form.Input placeholder="Maximum micropayment" className={'micropaymentThreshold'} value={this.state.preferences.micropaymentThreshold} onChange={() => {this.handleChangeMicropaymentThreshold()}}/>
           <label>Throttling (in ms, s, m, h, d, w or empty for none, eg 2h5m)</label>
           <Form.Input className={'micropaymentThrottling'} value={this.state.throttlingTimeFormatted}
-                      onChange={()=>{this.handleChangeMicropaymentThrottling()}}/>
+                      onChange={() => {this.handleChangeMicropaymentThrottling()}}/>
         </Form.Group>
         <Form.Group grouped>
           <label>Security</label>
@@ -69,27 +68,27 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
     </div>
   }
 
-  handleChangeMicropaymentThrottling() {
+  handleChangeMicropaymentThrottling () {
     let newValueAsString = (document.querySelector('.micropaymentThrottling input') as HTMLInputElement)
       ? (document.querySelector('.micropaymentThrottling input') as HTMLInputElement) .value
       : '0'
-    this.state = {...this.state, throttlingTimeFormatted: newValueAsString}
+    this.state = { ...this.state, throttlingTimeFormatted: newValueAsString }
     this.state.preferences.micropaymentThrottlingHumanReadable = this.state.throttlingTimeFormatted
-    this.props.workerProxy.setPreferences(this.state.preferences).then(()=>{})
+    this.props.workerProxy.setPreferences(this.state.preferences).then(() => {})
   }
 
-  handleChangeMicropaymentThreshold() {
+  handleChangeMicropaymentThreshold () {
     let newValueAsString = (document.querySelector('.micropaymentThreshold input') as HTMLInputElement).value
-    let newValue = newValueAsString && newValueAsString.length > 0 ? parseInt(newValueAsString) : 0
+    let newValue = newValueAsString && newValueAsString.length > 0 ? parseInt(newValueAsString, 10) : 0
     if (newValue < 0 || newValue === Number.NaN) {
       newValue = 0
     }
     this.state.preferences.micropaymentThreshold = newValue
-    this.props.workerProxy.setPreferences(this.state.preferences).then(()=>{})
+    this.props.workerProxy.setPreferences(this.state.preferences).then(() => {})
   }
 
-  handleSavePrivateKeyToFile() {
-    const blob = new Blob([this.privateKeyHex], {type: 'text/plain'})
+  handleSavePrivateKeyToFile () {
+    const blob = new Blob([this.privateKeyHex], { type: 'text/plain' })
     const filename = 'secretPrivateKey.txt'
     if (window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(blob, filename)

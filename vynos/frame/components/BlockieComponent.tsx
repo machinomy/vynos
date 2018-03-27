@@ -1,32 +1,32 @@
-import * as React from "react";
-import Random from "../../lib/Random";
-import _ = require("lodash")
+import * as React from 'react'
+import Random from '../../lib/Random'
+import _ = require('lodash')
 
-export function stringToColor(string: string): null|string {
-  if (_.isEmpty(string)) {
+export function stringToColor (str: string): null | string {
+  if (_.isEmpty(str)) {
     return null
   } else {
-    let hash = 0;
-    for (let i = 0; i < string.length; i++) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    let hash = 0
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash)
     }
-    let colour = '#';
+    let colour = '#'
     for (let i = 0; i < 3; i++) {
-      let value = (hash >> (i * 8)) & 0xFF;
-      colour += ('00' + value.toString(16)).substr(-2);
+      let value = (hash >> (i * 8)) & 0xFF
+      colour += ('00' + value.toString(16)).substr(-2)
     }
-    return colour;
+    return colour
   }
 }
 
 export function randomColor (random: Random): string {
   let rand = random.nextNumber
-  //saturation is the whole color spectrum
+  // saturation is the whole color spectrum
   let h = Math.floor(rand() * 360)
-  //saturation goes from 40 to 100, it avoids greyish colors
+  // saturation goes from 40 to 100, it avoids greyish colors
   let s = ((rand() * 60) + 40) + '%'
-  //lightness can be anything from 0 to 100, but probabilities are a bell curve around 50%
-  let l = ((rand()+rand()+rand()+rand()) * 25) + '%'
+  // lightness can be anything from 0 to 100, but probabilities are a bell curve around 50%
+  let l = ((rand() + rand() + rand() + rand()) * 25) + '%'
 
   return 'hsl(' + h + ',' + s + ',' + l + ')'
 }
@@ -56,7 +56,7 @@ export default class BlockieComponent extends React.Component<BlockieComponentPr
     this.size = this.props.size || 8
     this.scale = this.props.scale || 4
 
-    this.seed = this.props.seed || Math.floor((Math.random()*Math.pow(10,16))).toString(16)
+    this.seed = this.props.seed || Math.floor((Math.random() * Math.pow(10,16))).toString(16)
     this.random = new Random(this.seed)
 
     this.canvasSize = this.size * this.scale
@@ -70,18 +70,18 @@ export default class BlockieComponent extends React.Component<BlockieComponentPr
     let mirrorWidth = width - dataWidth
 
     let data = []
-    for(let y = 0; y < height; y++) {
+    for (let y = 0; y < height; y++) {
       let row = []
-      for(let x = 0; x < dataWidth; x++) {
+      for (let x = 0; x < dataWidth; x++) {
         // this makes foreground and background color to have a 43% (1/2.3) probability
         // spot color has 13% chance
-        row[x] = Math.floor(this.random.nextNumber()*2.3)
+        row[x] = Math.floor(this.random.nextNumber() * 2.3)
       }
       let r = row.slice(0, mirrorWidth)
       r.reverse()
       row = row.concat(r)
 
-      for(let i = 0; i < row.length; i++) {
+      for (let i = 0; i < row.length; i++) {
         data.push(row[i])
       }
     }
@@ -102,14 +102,14 @@ export default class BlockieComponent extends React.Component<BlockieComponentPr
       canvasContext.fillRect(0, 0, this.canvasSize, this.canvasSize)
       canvasContext.fillStyle = color
 
-      for(let i = 0; i < imageData.length; i++) {
+      for (let i = 0; i < imageData.length; i++) {
         let row = Math.floor(i / this.size)
         let col = i % this.size
         // if data is 2, choose spot color, if 1 choose foreground
         canvasContext.fillStyle = (imageData[i] === 1) ? color : spotColor
 
         // if data is 0, leave the background
-        if(imageData[i]) {
+        if (imageData[i]) {
           canvasContext.fillRect(col * this.scale, row * this.scale, this.scale, this.scale)
         }
       }

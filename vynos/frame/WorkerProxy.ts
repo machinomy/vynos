@@ -1,8 +1,8 @@
-import StreamProvider from "../lib/StreamProvider";
-import {EventEmitter} from "events";
-import {SharedState, Preferences} from "../worker/WorkerState";
-import {JSONRPC, randomId} from "../lib/Payload";
-import {isSharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
+import StreamProvider from '../lib/StreamProvider'
+import { EventEmitter } from 'events'
+import { SharedState, Preferences } from '../worker/WorkerState'
+import { JSONRPC, randomId } from '../lib/Payload'
+import { isSharedStateBroadcast, SharedStateBroadcastType } from '../lib/rpc/SharedStateBroadcast'
 import {
   DidStoreMnemonicRequest,
   GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, LockWalletRequest,
@@ -14,17 +14,17 @@ import {
   GetPrivateKeyHexRequest, GetPrivateKeyHexResponse,
   SetPreferencesRequest,
   SetApproveByIdRequest, SetRejectByIdRequest
-} from "../lib/rpc/yns";
-import {Action} from "redux";
-import Web3 = require("web3")
+} from '../lib/rpc/yns'
+import { Action } from 'redux';
+import Web3 = require('web3')
 
 export default class WorkerProxy extends EventEmitter {
   provider: StreamProvider
   web3: Web3
 
-  constructor() {
+  constructor () {
     super()
-    this.provider = new StreamProvider("WorkerProxy")
+    this.provider = new StreamProvider('WorkerProxy')
     this.provider.listen(SharedStateBroadcastType, data => {
       if (isSharedStateBroadcast(data)) {
         this.emit(SharedStateBroadcastType, data)
@@ -33,11 +33,11 @@ export default class WorkerProxy extends EventEmitter {
     this.web3 = new Web3(this.provider)
   }
 
-  getWeb3(): Web3 {
+  getWeb3 (): Web3 {
     return new Web3(this.provider)
   }
 
-  doLock(): Promise<void> {
+  doLock (): Promise<void> {
     let request: LockWalletRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
@@ -45,11 +45,11 @@ export default class WorkerProxy extends EventEmitter {
       params: []
     }
     return this.provider.ask(request).then(() => {
-      return;
+      return
     })
   }
 
-  doUnlock(password: string): Promise<string | undefined> {
+  doUnlock (password: string): Promise<string | undefined> {
     let request: UnlockWalletRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
@@ -61,7 +61,7 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  genKeyring(password: string): Promise<string> {
+  genKeyring (password: string): Promise<string> {
     let request: GenKeyringRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
@@ -85,7 +85,7 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  getSharedState(): Promise<SharedState> {
+  getSharedState (): Promise<SharedState> {
     let request: GetSharedStateRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
@@ -97,7 +97,7 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  didStoreMnemonic(): Promise<void> {
+  didStoreMnemonic (): Promise<void> {
     let request: DidStoreMnemonicRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
@@ -105,11 +105,11 @@ export default class WorkerProxy extends EventEmitter {
       params: []
     }
     return this.provider.ask(request).then(() => {
-      return;
+      return
     })
   }
 
-  rememberPage(path: string): void {
+  rememberPage (path: string): void {
     let request: RememberPageRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
@@ -121,17 +121,19 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  resolveTransaction(): void {
+  resolveTransaction (): void {
     let request: TransactonResolved = {
       id: randomId(),
       jsonrpc: JSONRPC,
       method: TransactonResolved.method,
       params: []
     }
-    this.provider.ask(request).then(() => {})
+    this.provider.ask(request).then(() => {
+      // Do Nothing
+    })
   }
 
-  getPrivateKeyHex(): Promise<string> {
+  getPrivateKeyHex (): Promise<string> {
     let request: GetPrivateKeyHexRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
@@ -143,11 +145,11 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  dispatch<A extends Action>(action: A) {
+  dispatch<A extends Action> (action: A) {
     console.warn("WorkerProxy#dispatch", action)
   }
 
-  changeNetwork(): Promise<void> {
+  changeNetwork (): Promise<void> {
     let request: ChangeNetworkRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
@@ -155,11 +157,11 @@ export default class WorkerProxy extends EventEmitter {
       params: []
     }
     return this.provider.ask(request).then(() => {
-      return;
+      return
     })
   }
 
-  setPreferences(preferences: Preferences): Promise<void> {
+  setPreferences (preferences: Preferences): Promise<void> {
     let request: SetPreferencesRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
@@ -168,11 +170,11 @@ export default class WorkerProxy extends EventEmitter {
     }
 
     return this.provider.ask(request).then(() => {
-      return;
+      return
     })
   }
 
-  setApproveById(id: string): void {
+  setApproveById (id: string): void {
     let request: SetApproveByIdRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
@@ -184,7 +186,7 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  setRejectById(id: string): void {
+  setRejectById (id: string): void {
     let request: SetRejectByIdRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,

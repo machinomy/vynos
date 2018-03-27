@@ -1,10 +1,10 @@
 import * as React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import Web3 = require('web3')
-import {FrameState} from '../../redux/FrameState'
+import { FrameState } from '../../redux/FrameState'
 
-import {Image} from 'semantic-ui-react'
-import BlockieComponent from "../../components/BlockieComponent";
+import { Image } from 'semantic-ui-react'
+import BlockieComponent from '../../components/BlockieComponent'
 
 const style = require('../../styles/ynos.css')
 
@@ -22,10 +22,10 @@ export interface WalletAccountState {
 }
 
 export class WalletAccount extends React.Component<WalletAccountProps, WalletAccountState> {
-  updateBalanceTimer: any;
+  updateBalanceTimer: any
 
-  constructor(props: any) {
-    super(props);
+  constructor (props: any) {
+    super(props)
     this.state = {
       address: null,
       balance: '0',
@@ -33,13 +33,13 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     }
   }
 
-  renderAvatar() {
+  renderAvatar () {
     if (localStorage.getItem('mc_wallet_avatar') && (localStorage.getItem('mc_wallet_avatar') as string).length > 0) {
       return <div className={style.accountAvatar}>
                 <Image src={localStorage.getItem('mc_wallet_avatar') as string} />
              </div>
     } else {
-      return <BlockieComponent classDiv={"ui mini avatar image"} classCanvas={"ui mini avatar image"} size={35}
+      return <BlockieComponent classDiv={'ui mini avatar image'} classCanvas={'ui mini avatar image'} size={35}
                                scale={2} seed={this.state.address ? this.state.address : ''}
                                onBlockieGenerated={(base64: string) => {
                                  localStorage.setItem('mc_wallet_avatar', base64)
@@ -47,7 +47,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (this.props.web3) {
       let web3 = this.props.web3
       web3.eth.getAccounts((err, accounts) => {
@@ -57,20 +57,24 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
             this.setState({
               balance: web3.fromWei(balance, 'ether').toString()
             })
-            if(this.props.onChangeBalance) this.props.onChangeBalance(parseFloat(this.state.balance));
+            if (this.props.onChangeBalance){
+              this.props.onChangeBalance(parseFloat(this.state.balance))
+            }
           })
         }, 500)
-        this.setState({address: address})
-        if(this.props.onChangeAddress) this.props.onChangeAddress(address);
+        this.setState({ address: address })
+        if(this.props.onChangeAddress) {
+          this.props.onChangeAddress(address)
+        }
       })
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     clearInterval(this.updateBalanceTimer)
   }
 
-  displayDetails() {
+  displayDetails () {
     let next = true
     if (this.state.isDetailsDisplayed) {
       next = false
@@ -78,10 +82,12 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     this.setState({
       isDetailsDisplayed: next
     })
-    if(this.props.onChangeDetailsDisplayed) this.props.onChangeDetailsDisplayed(next);
+    if(this.props.onChangeDetailsDisplayed) {
+      this.props.onChangeDetailsDisplayed(next)
+    }
   }
 
-  render() {
+  render () {
     return <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
       {this.renderAvatar()}
       <div className={style.walletAccount}>
@@ -96,7 +102,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
   }
 }
 
-function mapStateToProps(state: FrameState, ownProps: WalletAccountProps): WalletAccountProps {
+function mapStateToProps (state: FrameState, ownProps: WalletAccountProps): WalletAccountProps {
   return {
     web3: state.temp.workerProxy.web3,
     onChangeAddress: ownProps.onChangeAddress,

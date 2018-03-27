@@ -1,11 +1,10 @@
 import * as React from 'react'
-import TransactionStorage from "../../../lib/storage/TransactionMetaStorage"
-import { Menu, Button, Container, Form, Divider } from 'semantic-ui-react'
-import WalletAccount from "../../components/WalletPage/WalletAccount"
+import TransactionStorage from '../../../lib/storage/TransactionMetaStorage'
+import { Container } from 'semantic-ui-react'
 import WorkerProxy from '../../WorkerProxy'
 import { connect, Dispatch } from 'react-redux'
 import { FrameState } from '../../redux/FrameState'
-import * as actions from "../../redux/actions"
+import * as actions from '../../redux/actions'
 import TransactionMeta from '../../../lib/TransactionMeta'
 import TransactionState from '../../../lib/TransactionState'
 import TransactionKind from '../../../lib/TransactionKind'
@@ -51,8 +50,9 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
   }
 
   componentWillUnmount () {
-    if (this.state.transaction && this.state.transaction.state == TransactionState.PENDING) {
+    if (this.state.transaction && this.state.transaction.state === TransactionState.PENDING) {
       this.storage.view(this.state.transaction.id).then((result) => {
+        // Do nothing
       })
     }
   }
@@ -63,7 +63,7 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
       if (transaction) {
         this.setState({
           transaction,
-          pendingCount: pending.length,
+          pendingCount: pending.length
         })
       } else {
         this.props.setPending(false)
@@ -110,7 +110,7 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
         transactionData = <ApproveMicropayment transaction={this.state.transaction} key={this.state.transaction.id}/>
         break
       default:
-        throw new Error("Not Implemented")
+        throw new Error('Not Implemented')
     }
 
     return <div>

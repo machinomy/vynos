@@ -1,10 +1,10 @@
-import * as React from "react";
+import * as React from 'react'
 import { Container, Grid, Menu, Header, List, Image } from 'semantic-ui-react'
-const style = require("../../../styles/ynos.css");
+const style = require('../../../styles/ynos.css')
 
 
 const Transaction: React.SFC<any> = (props) => {
-    return <div>
+  return <div>
         <Menu className={style.clearBorder}>
             <Menu.Item link className={style.menuIntoOneItemFluid}><i className={style.vynosArrowBack}></i>Transaction</Menu.Item>
         </Menu>
@@ -13,13 +13,13 @@ const Transaction: React.SFC<any> = (props) => {
                 <List.Item>
                     <Image avatar src={require('../../../styles/images/avatar.svg')} />
                     <List.Content>
-                        <List.Header as='a'>9 July 2017, 10:33</List.Header>
+                        <List.Header as="a">9 July 2017, 10:33</List.Header>
                         <List.Description>10 hours ago, 2033 confirmations</List.Description>
                     </List.Content>
                 </List.Item>
             </List>
             <p><span className={style.keyHighlight}>0x2345364DFJKL345JVLLKJ249432</span></p>
-            <Grid columns='equal'>
+            <Grid columns="equal">
                 <Grid.Row>
                     <Grid.Column>
                         <Header sub>Amount</Header>
@@ -59,7 +59,6 @@ const Transaction: React.SFC<any> = (props) => {
             </List>
         </Container>
     </div>
-};
+}
 
-
-export default Transaction;
+export default Transaction

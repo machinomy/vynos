@@ -1,9 +1,9 @@
-import {register, ServiceWorkerClient} from './lib/serviceWorkerClient'
+import { register, ServiceWorkerClient } from './lib/serviceWorkerClient'
 import FrameStream from './lib/FrameStream'
 import PostStream from './lib/PostStream'
 import WorkerProxy from './frame/WorkerProxy'
 import renderApplication from './frame/renderApplication'
-import {Duplex} from 'readable-stream'
+import { Duplex } from 'readable-stream'
 
 class Client implements ServiceWorkerClient {
   workerStream: PostStream
@@ -12,13 +12,13 @@ class Client implements ServiceWorkerClient {
 
   constructor () {
     this.workerProxy = new WorkerProxy()
-    this.windowStream = new FrameStream("vynos").toParent()
+    this.windowStream = new FrameStream('vynos').toParent()
   }
 
   load (serviceWorker: ServiceWorker) {
     this.workerStream = new PostStream({
-      sourceName: "frame",
-      targetName: "worker",
+      sourceName: 'frame',
+      targetName: 'worker',
       source: navigator.serviceWorker,
       target: serviceWorker
     })

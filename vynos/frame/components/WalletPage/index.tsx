@@ -1,30 +1,30 @@
 import * as React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import Web3 = require('web3')
-import {FrameState} from '../../redux/FrameState'
+import { FrameState } from '../../redux/FrameState'
 import WorkerProxy from '../../WorkerProxy'
 
-import { Container, List, Image, Header, Button } from 'semantic-ui-react'
-import AddressSubpage from "./AddressSubpage";
+import { Image } from 'semantic-ui-react'
+import AddressSubpage from './AddressSubpage'
 
 const style = require('../../styles/ynos.css')
 
 export interface WalletPageProps {
   workerProxy: WorkerProxy
-  web3: Web3;
+  web3: Web3
 }
 
 export interface WalletPageState {
-  address: string|null
+  address: string | null
   balance: string
   isDetailsDisplayed: boolean
 }
 
 export class WalletPage extends React.Component<WalletPageProps, WalletPageState> {
-  updateBalanceTimer: any;
+  updateBalanceTimer: any
 
   constructor (props: any) {
-    super(props);
+    super(props)
     this.state = {
       address: null,
       balance: '0',
@@ -50,7 +50,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
             })
           })
         }, 500)
-        this.setState({address: address})
+        this.setState({ address: address })
       })
     }
   }
@@ -98,7 +98,7 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
 }
 
 function mapStateToProps (state: FrameState): WalletPageProps {
-  let workerProxy = state.temp.workerProxy!
+  let workerProxy = state.temp.workerProxy
   return {
     workerProxy: workerProxy,
     web3: workerProxy.getWeb3()
