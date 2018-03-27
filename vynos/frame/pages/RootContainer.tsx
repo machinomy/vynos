@@ -61,10 +61,12 @@ export class RootContainer extends React.Component<RootContainerProps, any> {
   }
 
   render () {
-    return <div>
+    return (
+      <div>
         {this.renderVerifable()}
         {this.renderOther()}
       </div>
+    )
   }
 }
 

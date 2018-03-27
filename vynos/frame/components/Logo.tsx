@@ -10,10 +10,12 @@ const VYNOS_STYLE = {
 }
 
 const Logo = () => {
-  return <div style={{ width: '100px' }} >
-    <Image src={logoImage} centered={true}/>
-    <h1 style={VYNOS_STYLE}>vynos</h1>
-  </div>
+  return (
+    <div style={{ width: '100px' }} >
+      <Image src={logoImage} centered={true}/>
+      <h1 style={VYNOS_STYLE}>vynos</h1>
+    </div>
+  )
 }
 
 export default Logo

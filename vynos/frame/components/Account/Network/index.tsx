@@ -3,7 +3,6 @@ import { Container, Form, Radio } from 'semantic-ui-react'
 import SettingStorage from '../../../../lib/storage/SettingStorage'
 import { connect } from 'react-redux'
 import { FrameState } from '../../../redux/FrameState'
-import { ChangeEvent } from 'react'
 
 const style = require('../../../styles/ynos.css')
 const networks = require('../../../../networks.json')
@@ -58,7 +57,7 @@ export class Network extends React.Component<NetworkProps, NetworkState> {
     this.setState({ savedCustomNetwork: this.state.customNetwork })
   }
 
-  handleChange (event: ChangeEvent<HTMLInputElement>) {
+  handleChange (event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ customNetwork: event.target.value })
   }
 
@@ -72,19 +71,41 @@ export class Network extends React.Component<NetworkProps, NetworkState> {
     return (
       <Container className={style.clearBorder}>
         <Form className={style.formNetwork} onSubmit={this.saveNetwork.bind(this)}>
-          <Form.Group grouped>
+          <Form.Group grouped={true}>
             {this.networkNames.length && this.networkNames.map((network: string) => {
-              return <Form.Field key={network}><Radio name={'network'} label={network} value={network}
-                                                      onChange={this.setRadio.bind(this)}
-                                                      checked={this.state.value === network} style={{ width: '100%' }}/></Form.Field>
+              return <Form.Field key={network}>
+                      <Radio
+                        name={'network'}
+                        label={network}
+                        value={network}
+                        onChange={this.setRadio.bind(this)}
+                        checked={this.state.value === network}
+                        style={{ width: '100%' }}
+                      />
+                     </Form.Field>
             })}
-            <Form.Field key={'Other'}><Radio name={'network'} label={'Other'} value={'Other'}
-                                             onChange={this.setRadio.bind(this)}
-                                             checked={this.networkNames.indexOf(this.state.value) === -1}
-                                             style={{ width: '100%' }}/></Form.Field>
-            <input type="text" placeholder="http://127.0.0.1:8545" onChange={this.handleChange}
-                   value={this.state.customNetwork} id={'customNetwork'}/>
-            <input type="submit" value="Save network" style={{ marginTop: '30px', display: buttonStyle }}/>
+            <Form.Field key={'Other'}>
+              <Radio
+                name={'network'}
+                label={'Other'}
+                value={'Other'}
+                onChange={this.setRadio.bind(this)}
+                checked={this.networkNames.indexOf(this.state.value) === -1}
+                style={{ width: '100%' }}
+              />
+            </Form.Field>
+            <input
+              type="text"
+              placeholder="http://127.0.0.1:8545"
+              onChange={this.handleChange}
+              value={this.state.customNetwork}
+              id={'customNetwork'}
+            />
+            <input
+              type="submit"
+              value="Save network"
+              style={{ marginTop: '30px', display: buttonStyle }}
+            />
           </Form.Group>
         </Form>
       </Container>

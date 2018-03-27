@@ -26,22 +26,24 @@ export default class ApprovePage extends React.Component<ApproveTransactionProps
   }
 
   render () {
-    return <Form className={style.encryptionForm}>
-      <Form.Field className={style.clearIndent}>
-        <Form.Group grouped={true}>
-          <label>Site</label>
-          <div>{this.props.transaction.origin}</div>
-        </Form.Group>
-        <Form.Group grouped={true}>
-          <label>Description</label>
-          <div>{this.props.transaction.description}</div>
-        </Form.Group>
-        <Form.Group grouped={true}>
-          <label>Amount</label>
-          <div>{this.state.formatedAmount}</div>
-        </Form.Group>
-      </Form.Field>
-      <Divider hidden={true}/>
-    </Form>
+    return (
+      <Form className={style.encryptionForm}>
+        <Form.Field className={style.clearIndent}>
+          <Form.Group grouped={true}>
+            <label>Site</label>
+            <div>{this.props.transaction.origin}</div>
+          </Form.Group>
+          <Form.Group grouped={true}>
+            <label>Description</label>
+            <div>{this.props.transaction.description}</div>
+          </Form.Group>
+          <Form.Group grouped={true}>
+            <label>Amount</label>
+            <div>{this.state.formatedAmount}</div>
+          </Form.Group>
+        </Form.Field>
+        <Divider hidden={true}/>
+      </Form>
+    )
   }
 }

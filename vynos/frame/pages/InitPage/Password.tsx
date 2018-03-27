@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { ChangeEvent, FormEvent } from 'react'
 import { Dispatch } from 'redux'
 import { FrameState } from '../../redux/FrameState'
 import WorkerProxy from '../../WorkerProxy'
@@ -67,14 +66,14 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
     return !(passwordError || passwordConfirmationError)
   }
 
-  handleSubmit (e: FormEvent<HTMLFormElement>) {
+  handleSubmit (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (this.isValid() && this.state.password) {
       return this.props.genKeyring!(this.props.workerProxy, this.state.password)
     }
   }
 
-  handleChangePassword (ev: ChangeEvent<EventTarget>) {
+  handleChangePassword (ev: React.ChangeEvent<EventTarget>) {
     let value = (ev.target as HTMLInputElement).value
     this.setState({
       password: value,
@@ -83,7 +82,7 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
     })
   }
 
-  handleChangePasswordConfirmation (ev: ChangeEvent<EventTarget>) {
+  handleChangePasswordConfirmation (ev: React.ChangeEvent<EventTarget>) {
     let value = (ev.target as HTMLInputElement).value
     this.setState({
       passwordConfirmation: value,
@@ -94,11 +93,15 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
 
   renderPasswordInput () {
     let className = this.state.passwordError ? style.inputError : ''
-    return <input type="password"
-                  placeholder="Password"
-                  className={className}
-                  onChange={this.handleChangePassword}
-                  autoComplete="new-password" />
+    return (
+      <input
+        type="password"
+        placeholder="Password"
+        className={className}
+        onChange={this.handleChangePassword}
+        autoComplete="new-password"
+      />
+    )
   }
 
   renderPasswordHint () {
@@ -111,11 +114,15 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
 
   renderPasswordConfirmationInput () {
     let className = this.state.passwordConfirmationError ? style.inputError : ''
-    return <input type="password"
-                   placeholder="Password Confirmation"
-                   className={className}
-                   onChange={this.handleChangePasswordConfirmation}
-                   autoComplete="new-password" />
+    return (
+      <input
+        type="password"
+        placeholder="Password Confirmation"
+        className={className}
+        onChange={this.handleChangePasswordConfirmation}
+        autoComplete="new-password"
+      />
+    )
   }
 
   renderPasswordConfirmationHint () {
@@ -143,39 +150,41 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
       return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)}/>
     }
 
-    return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
-      <Logo />
-      <Divider hidden={true} />
-      <Header as="h1" className={style.encryptionHeader}>Encrypt your new wallet</Header>
-      <Form onSubmit={this.handleSubmit} className={style.encryptionForm}>
-        <div className="equal width fields" style={{ flexDirection: 'column', textAlign: 'left' }}>
-          <Form.Field className={style.clearIndent}>
-            {this.renderPasswordInput()}
-            {this.renderPasswordHint()}
-          </Form.Field>
-          <Form.Field className={style.clearIndent}>
-            {this.renderPasswordConfirmationInput()}
-            {this.renderPasswordConfirmationHint()}
-          </Form.Field>
-        </div>
+    return (
+      <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
+        <Logo />
         <Divider hidden={true} />
-        <Button type='submit' content="Create wallet" primary={true} className={style.buttonNav} />
-        <br />
-        <a onClick={this.doDisplayRestorePage.bind(this)}>Restore wallet</a>
-      </Form>
-      <a onClick={this.props.showVerifiable} id={style.shieldIcon}><Icon name={'shield'} size={'large'}></Icon></a>
-    </Container>
+        <Header as="h1" className={style.encryptionHeader}>Encrypt your new wallet</Header>
+        <Form onSubmit={this.handleSubmit} className={style.encryptionForm}>
+          <div className="equal width fields" style={{ flexDirection: 'column', textAlign: 'left' }}>
+            <Form.Field className={style.clearIndent}>
+              {this.renderPasswordInput()}
+              {this.renderPasswordHint()}
+            </Form.Field>
+            <Form.Field className={style.clearIndent}>
+              {this.renderPasswordConfirmationInput()}
+              {this.renderPasswordConfirmationHint()}
+            </Form.Field>
+          </div>
+          <Divider hidden={true} />
+          <Button type="submit" content="Create wallet" primary={true} className={style.buttonNav} />
+          <br />
+          <a onClick={this.doDisplayRestorePage.bind(this)}>Restore wallet</a>
+        </Form>
+        <a onClick={this.props.showVerifiable} id={style.shieldIcon}><Icon name={'shield'} size={'large'}/></a>
+      </Container>
+    )
   }
 }
 
-function mapStateToProps(state: FrameState, props: OwnPasswordProps): PasswordSubpageStateProps & OwnPasswordProps {
+function mapStateToProps (state: FrameState, props: OwnPasswordProps): PasswordSubpageStateProps & OwnPasswordProps {
   return {
     workerProxy: state.temp.workerProxy,
     showVerifiable: props.showVerifiable
   }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<FrameState>): PasswordSubpageDispatchProps {
+function mapDispatchToProps (dispatch: Dispatch<FrameState>): PasswordSubpageDispatchProps {
   return {
     genKeyring: (workerProxy, password) => {
       workerProxy.genKeyring(password).then(mnemonic => {

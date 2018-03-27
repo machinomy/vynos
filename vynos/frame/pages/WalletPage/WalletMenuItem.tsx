@@ -17,8 +17,10 @@ export default class WalletMenuItem extends React.Component<WalletMenuItemProps,
   }
 
   render () {
-    return <Dropdown.Item as="a" onClick={this.handleClick.bind(this)}>
-      {this.props.name}
-    </Dropdown.Item>
+    return (
+      <Dropdown.Item as="a" onClick={this.handleClick.bind(this)}>
+        {this.props.name}
+      </Dropdown.Item>
+    )
   }
 }

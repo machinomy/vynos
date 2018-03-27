@@ -11,7 +11,6 @@ const MAX_FILE_SIZE = 1048576 // 1mb
 import { MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT } from '../constants'
 import WorkerProxy from '../WorkerProxy'
 import { FrameState } from '../redux/FrameState'
-import { ChangeEvent, FormEvent } from 'react'
 import bip39 = require('bip39')
 
 export interface OwnRestorePageProps {
@@ -66,7 +65,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
     this.props.goBack()
   }
 
-  handleSubmit (ev: FormEvent<HTMLFormElement>) {
+  handleSubmit (ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     this.setState({ incorrectKeyFile: false })
     let state = this.state
@@ -126,21 +125,21 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
     return !(passwordError || passwordConfirmationError || seedError)
   }
 
-  handleChangeSeed (ev: ChangeEvent<EventTarget>) {
+  handleChangeSeed (ev: React.ChangeEvent<EventTarget>) {
     let value = (ev.target as HTMLInputElement).value
     this.setValue({
       seed: value
     })
   }
 
-  handleChangePassword (ev: ChangeEvent<EventTarget>) {
+  handleChangePassword (ev: React.ChangeEvent<EventTarget>) {
     let value = (ev.target as HTMLInputElement).value
     this.setValue({
       password: value
     })
   }
 
-  handleChangePasswordConfirmation (ev: ChangeEvent<EventTarget>) {
+  handleChangePasswordConfirmation (ev: React.ChangeEvent<EventTarget>) {
     let value = (ev.target as HTMLInputElement).value
     this.setValue({
       passwordConfirmation: value
@@ -161,10 +160,14 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
     if (this.state.fileIsHex || this.state.fileIsJSON) return null
 
     let className = style.mnemonicInput + ' ' + (this.state.seedError ? style.inputError : '')
-    return <textarea placeholder="Seed Phrase"
-                     className={className}
-                     rows={3}
-                     onChange={this.handleChangeSeed.bind(this)}/>
+    return (
+      <textarea
+        placeholder="Seed Phrase"
+        className={className}
+        rows={3}
+        onChange={this.handleChangeSeed.bind(this)}
+      />
+    )
   }
 
   renderSeedHint () {
@@ -179,11 +182,15 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
 
   renderPasswordInput () {
     let className = this.state.passwordError ? style.inputError : ''
-    return <input type="password"
-                  placeholder="Password"
-                  className={className}
-                  autoComplete="new-password"
-                  onChange={this.handleChangePassword.bind(this)}/>
+    return (
+      <input
+        type="password"
+        placeholder="Password"
+        className={className}
+        autoComplete="new-password"
+        onChange={this.handleChangePassword.bind(this)}
+      />
+    )
   }
 
   renderPasswordHint () {
@@ -196,23 +203,26 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
 
   renderPasswordConfirmationInput () {
     let className = this.state.passwordConfirmationError ? style.inputError : ''
-    return <input type="password"
-                  placeholder="Password Confirmation"
-                  className={className}
-                  autoComplete="new-password"
-                  onChange={this.handleChangePasswordConfirmation.bind(this)}/>
+    return (
+      <input
+        type="password"
+        placeholder="Password Confirmation"
+        className={className}
+        autoComplete="new-password"
+        onChange={this.handleChangePasswordConfirmation.bind(this)}
+      />
+    )
   }
 
   renderPasswordConfirmationHint () {
     if (this.state.passwordConfirmationError) {
-      return <span className={style.errorText}><i
-        className={style.vynosInfo}/> {this.state.passwordConfirmationError}</span>
+      return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.passwordConfirmationError}</span>
     } else {
       return <span className={style.errorText}>&nbsp;</span>
     }
   }
 
-  renderPrivKeyText(){
+  renderPrivKeyText () {
     if (this.state.fileIsHex) {
       return <div>And now set the password</div>
     } else if (this.state.fileIsJSON) {
@@ -223,7 +233,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
 
   }
 
-  changeInputFile (event: ChangeEvent<HTMLInputElement>) {
+  changeInputFile (event: React.ChangeEvent<HTMLInputElement>) {
     let files: FileList | null = event.target.files
     if (files && files.length) {
       this.checkFile(files[0])
@@ -275,39 +285,45 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
   }
 
   render () {
-    return <div>
-      <Menu className={style.clearBorder}>
-        <Menu.Item link className={style.menuIntoOneItemFluid} onClick={this.goBack.bind(this)}>
-          <i className={style.vynosArrowBack}/> Restore a Wallet
-        </Menu.Item>
-      </Menu>
-      <Container textAlign="center">
-        <Form className={style.encryptionForm} onSubmit={this.handleSubmit.bind(this)}>
-          <div style={{ marginBottom: '10px' }}>
-            {(this.state.incorrectKeyFile) ?
-              <span style={{ fontSize: '16px' }} className={style.errorText}>Incorrect key file</span> : ''}
-          </div>
-          <Form.Field className={style.clearIndent}>
-            {this.renderSeedInput()}
-            {this.renderSeedHint()}
-            {this.renderPrivKeyText()}
-          </Form.Field>
-          <div><span className={style.errorText}>{this.state.fileError}</span></div>
-          <input type="file" id={'inpFilePrivKey'} style={{ display: 'none' }}
-                 onChange={this.changeInputFile.bind(this)}/>
-          <Form.Field className={style.clearIndent}>
-            {this.renderPasswordInput()}
-            {this.renderPasswordHint()}
-          </Form.Field>
-          <Form.Field className={style.clearIndent}>
-            {this.renderPasswordConfirmationInput()}
-            {this.renderPasswordConfirmationHint()}
-          </Form.Field>
-          <Button type="submit" content="Restore" primary={true} className={style.buttonNav}/>
-        </Form>
-      </Container>
-      <a onClick={this.props.showVerifiable} id={style.shieldIcon}><Icon name={'shield'} size={'large'}></Icon></a>
-    </div>
+    return (
+      <div>
+        <Menu className={style.clearBorder}>
+          <Menu.Item link={true} className={style.menuIntoOneItemFluid} onClick={this.goBack.bind(this)}>
+            <i className={style.vynosArrowBack}/> Restore a Wallet
+          </Menu.Item>
+        </Menu>
+        <Container textAlign="center">
+          <Form className={style.encryptionForm} onSubmit={this.handleSubmit.bind(this)}>
+            <div style={{ marginBottom: '10px' }}>
+              {(this.state.incorrectKeyFile) ?
+                <span style={{ fontSize: '16px' }} className={style.errorText}>Incorrect key file</span> : ''}
+            </div>
+            <Form.Field className={style.clearIndent}>
+              {this.renderSeedInput()}
+              {this.renderSeedHint()}
+              {this.renderPrivKeyText()}
+            </Form.Field>
+            <div><span className={style.errorText}>{this.state.fileError}</span></div>
+            <input
+              type="file"
+              id={'inpFilePrivKey'}
+              style={{ display: 'none' }}
+              onChange={this.changeInputFile.bind(this)}
+            />
+            <Form.Field className={style.clearIndent}>
+              {this.renderPasswordInput()}
+              {this.renderPasswordHint()}
+            </Form.Field>
+            <Form.Field className={style.clearIndent}>
+              {this.renderPasswordConfirmationInput()}
+              {this.renderPasswordConfirmationHint()}
+            </Form.Field>
+            <Button type="submit" content="Restore" primary={true} className={style.buttonNav}/>
+          </Form>
+        </Container>
+        <a onClick={this.props.showVerifiable} id={style.shieldIcon}><Icon name={'shield'} size={'large'}/></a>
+      </div>
+    )
   }
 }
 

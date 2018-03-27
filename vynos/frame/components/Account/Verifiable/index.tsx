@@ -15,7 +15,6 @@ export interface VerifiablePageState {
 }
 
 export class VerifiablePage extends React.Component<VerifiablePageProps, VerifiablePageState> {
-
   win: Window | null
 
   constructor (props: VerifiablePageProps) {
@@ -37,12 +36,20 @@ export class VerifiablePage extends React.Component<VerifiablePageProps, Verifia
   }
 
   menu () {
-    return <Menu className={style.clearBorder} style={{ zIndex: 10 }}>
-      <Menu.Item link className={style.menuIntoOneItemFluid}
-                 onClick={this.props.hideVerifiable}>
-        <i className={style.vynosArrowBack}/> Verify Vynos
-      </Menu.Item>
-    </Menu>
+    return (
+      <Menu
+        className={style.clearBorder}
+        style={{ zIndex: 10 }}
+      >
+        <Menu.Item
+          link={true}
+          className={style.menuIntoOneItemFluid}
+          onClick={this.props.hideVerifiable}
+        >
+          <i className={style.vynosArrowBack}/> Verify Vynos
+        </Menu.Item>
+      </Menu>
+    )
   }
 
   componentWillUnmount () {
@@ -53,12 +60,14 @@ export class VerifiablePage extends React.Component<VerifiablePageProps, Verifia
   }
 
   render () {
-    return <div id={style.verifiableBlock}>
-      {this.menu()}
-      <div id={style.verifiableText}>Please, click link below, compare numbers - they must be equal</div>
-      <div id={style.verifiableRandNumber}>{this.state.randNumber}</div>
-      <div><a onClick={this.show.bind(this)}>Verify authenticity Vynos</a></div>
-    </div>
+    return (
+      <div id={style.verifiableBlock}>
+        {this.menu()}
+        <div id={style.verifiableText}>Please, click link below, compare numbers - they must be equal</div>
+        <div id={style.verifiableRandNumber}>{this.state.randNumber}</div>
+        <div><a onClick={this.show.bind(this)}>Verify authenticity Vynos</a></div>
+      </div>
+    )
   }
 }
 

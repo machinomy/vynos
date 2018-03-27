@@ -113,7 +113,8 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
         throw new Error('Not Implemented')
     }
 
-    return <div>
+    return (
+      <div>
       {this.state.transaction.kind === TransactionKind.MICROPAYMENT ? <div className={style.approveMicropaymentError}>
         Too often or too large a payment
       </div> : ''}
@@ -124,18 +125,21 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
           <div className="eight wide column">
             <button
               className="positive ui fluid button"
-              onClick={this.approve.bind(this, this.state.transaction)}>Approve
+              onClick={this.approve.bind(this, this.state.transaction)}
+            >Approve
             </button>
           </div>
           <div className="eight wide column">
             <button
               className="negative ui fluid button"
-              onClick={this.reject.bind(this, this.state.transaction)}>Cancel
+              onClick={this.reject.bind(this, this.state.transaction)}
+            >Cancel
             </button>
           </div>
         </div>
       </Container>
     </div>
+    )
   }
 }
 

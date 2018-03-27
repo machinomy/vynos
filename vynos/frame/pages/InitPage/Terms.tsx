@@ -62,25 +62,27 @@ export class Terms extends React.Component<TermsSubpageProps, TermsState> {
       return <RestorePage goBack={this.doneDisplayRestorePage.bind(this)} showVerifiable={this.props.showVerifiable}/>
     }
 
-    return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
-      <Logo />
-      <Divider hidden={true} />
-      <p>
-        Ready to unlock a true value<br/>
-        of quality content<br/>
-        through <em>real</em> micropayments?
-      </p>
-      <Divider hidden={true} />
-      <a className={style.readTerms} onClick={this.doDisplayTermsText.bind(this)} />
-      <Divider hidden={true} />
-      <Button onClick={this.props.didAcceptTerms} content="Accept" primary className={style.buttonNav} />
-      <br />
-      <a onClick={this.doDisplayRestore.bind(this)}>Restore wallet</a>
-    </Container>
+    return (
+      <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
+        <Logo />
+        <Divider hidden={true} />
+        <p>
+          Ready to unlock a true value<br/>
+          of quality content<br/>
+          through <em>real</em> micropayments?
+        </p>
+        <Divider hidden={true} />
+        <a className={style.readTerms} onClick={this.doDisplayTermsText.bind(this)} />
+        <Divider hidden={true} />
+        <Button onClick={this.props.didAcceptTerms} content="Accept" primary={true} className={style.buttonNav} />
+        <br />
+        <a onClick={this.doDisplayRestore.bind(this)}>Restore wallet</a>
+      </Container>
+    )
   }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<FrameState>, props: TermsSubpageDispatchProps): TermsSubpageDispatchProps {
+function mapDispatchToProps (dispatch: Dispatch<FrameState>, props: TermsSubpageDispatchProps): TermsSubpageDispatchProps {
   return {
     didAcceptTerms: () => {
       dispatch(actions.didAcceptTerms(true))

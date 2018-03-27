@@ -3,9 +3,10 @@ import { Container, Menu, List, Button } from 'semantic-ui-react'
 const style = require('../../../styles/ynos.css')
 
 const Refill: React.SFC<any> = (props) => {
-  return <div>
+  return (
+    <div>
       <Menu className={style.clearBorder}>
-          <Menu.Item link={true} className={style.menuIntoOneItemFluid}><i className={style.vynosArrowBack}></i>Refill</Menu.Item>
+          <Menu.Item link={true} className={style.menuIntoOneItemFluid}><i className={style.vynosArrowBack}/>Refill</Menu.Item>
       </Menu>
       <Container>
           <List>
@@ -25,6 +26,7 @@ const Refill: React.SFC<any> = (props) => {
           </List>
       </Container>
   </div>
+  )
 }
 
 export default Refill

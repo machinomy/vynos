@@ -27,7 +27,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
     this.state = {
       transactions: []
     }
-    this.localLastUpdateDb = props.lastUpdateDb;
+    this.localLastUpdateDb = props.lastUpdateDb
     this.transactionStorage = new TransactionStorage()
   }
 
@@ -93,19 +93,21 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
     }
     let fee = formatAmount(transaction.fee ? transaction.fee : 0)
 
-    return <List.Item className={styleListItem} key={transaction.id} title={transactionTitle}>
-      <List.Content floated="right">
-        <span className={style.channelBalance}>{value} {denomination}</span>
-        <p>
-          <span className={style.channelBalance}>Fee {fee.value} {fee.denomination}</span>
-        </p>
-      </List.Content>
-      {icon}
-      <List.Content className={style.listContent}>
-        <List.Header className={style.listHeader}>{transaction.title} <span className={style.lifetimeDate}>{date}</span></List.Header>
-        <List.Description className={style.listDesc}>{this.transactionDescription(transaction)}</List.Description>
-      </List.Content>
-    </List.Item>
+    return (
+      <List.Item className={styleListItem} key={transaction.id} title={transactionTitle}>
+        <List.Content floated="right">
+          <span className={style.channelBalance}>{value} {denomination}</span>
+          <p>
+            <span className={style.channelBalance}>Fee {fee.value} {fee.denomination}</span>
+          </p>
+        </List.Content>
+        {icon}
+        <List.Content className={style.listContent}>
+          <List.Header className={style.listHeader}>{transaction.title} <span className={style.lifetimeDate}>{date}</span></List.Header>
+          <List.Description className={style.listDesc}>{this.transactionDescription(transaction)}</List.Description>
+        </List.Content>
+      </List.Item>
+    )
   }
 
   render () {
@@ -113,11 +115,13 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
     let className = style.listWrap + ' ' + style.scrollbarContainer
 
     if (rows.length) {
-      return <List className={className} divided={true} verticalAlign="middle">
-        {rows}
-      </List>
+      return (
+        <List className={className} divided={true} verticalAlign="middle">
+          {rows}
+        </List>
+      )
     } else {
-      return <p></p>
+      return <p/>
     }
   }
 }

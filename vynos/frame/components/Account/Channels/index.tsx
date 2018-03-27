@@ -112,8 +112,15 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
     if (channel.icon) {
       return <Image avatar={true} src={channel.icon} size="mini"/>
     } else {
-      return <BlockieComponent classDiv={"ui mini avatar image"} classCanvas={"ui mini avatar image"} size={35}
-                               scale={2} seed={channel.host}/>
+      return (
+              <BlockieComponent
+                classDiv={'ui mini avatar image'}
+                classCanvas={'ui mini avatar image'}
+                size={35}
+                scale={2}
+                seed={channel.host}
+              />
+      )
     }
   }
 
@@ -124,7 +131,13 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
 
   render () {
     let className = style.listWrap + ' ' + style.scrollbarContainer
-    return <List className={className} divided verticalAlign="middle" style={{margin: 0}}>
+    return (
+      <List
+        className={className}
+        divided={true}
+        verticalAlign="middle"
+        style={{ margin: 0 }}
+      >
       {this.state.channels.map((channel: any) => {
         let isActiveChannel = (channel.channelId === this.state.activeChannel && channel.state === 0)
         let itemId = isActiveChannel ? style.activeChannel : (channel.state === 1 ? style.closedChannel : '')
@@ -134,29 +147,37 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
         let clickHeader = isActiveChannel ? this.setActiveChannel.bind(this, channel.channelId) : null
 
         return (channel.state <= 1) &&
-          <List.Item style={styleItem}
-                     className={style.listItem}
-                     id={itemId}
-                     key={channel.channelId}
-                     onClick={clickItem}>
-            <List.Content floated="right">
-              <span className={style.channelBalance}>{channel.balance}</span>
-            </List.Content>
-            {this.getIcon(channel)}
-            <List.Content className={style.listContent}>
-              <List.Header className={style.listHeader} style={styleHeader}
-                           onClick={clickHeader}>
-                {channel.title}
-              </List.Header>
-              <List.Description className={style.listDesc}>{channel.desc}</List.Description>
-              <List.Description id={((isActiveChannel || (channel.state === 1 && channel.canClose)) ? style.buttonsActiveChannel : '')}
-                                style={{ display: 'none' }}>
-                <a onClick={this.closeChannelId.bind(this, channel)}>CLOSE</a>
-              </List.Description>
-            </List.Content>
+          <List.Item
+            style={styleItem}
+            className={style.listItem}
+            id={itemId}
+            key={channel.channelId}
+            onClick={clickItem}
+          >
+              <List.Content floated="right">
+                <span className={style.channelBalance}>{channel.balance}</span>
+              </List.Content>
+              {this.getIcon(channel)}
+              <List.Content className={style.listContent}>
+                <List.Header
+                  className={style.listHeader}
+                  style={styleHeader}
+                  onClick={clickHeader}
+                >
+                  {channel.title}
+                </List.Header>
+                <List.Description className={style.listDesc}>{channel.desc}</List.Description>
+                <List.Description
+                  id={((isActiveChannel || (channel.state === 1 && channel.canClose)) ? style.buttonsActiveChannel : '')}
+                  style={{ display: 'none' }}
+                >
+                  <a onClick={this.closeChannelId.bind(this, channel)}>CLOSE</a>
+                </List.Description>
+              </List.Content>
           </List.Item>
       })}
-    </List>
+      </List>
+    )
   }
 }
 

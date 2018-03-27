@@ -47,9 +47,11 @@ export class WalletPage extends React.Component<WalletPageStateProps, WalletPage
   }
 
   render () {
-    return <WalletMenu>
-      {this.renderSubpage()}
-    </WalletMenu>
+    return (
+      <WalletMenu>
+        {this.renderSubpage()}
+      </WalletMenu>
+    )
   }
 }
 

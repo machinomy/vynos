@@ -1,10 +1,10 @@
-import {INITIAL_SHARED_STATE, SharedState} from '../../worker/WorkerState'
+import { INITIAL_SHARED_STATE, SharedState } from '../../worker/WorkerState'
 import WorkerProxy from '../WorkerProxy'
-import {RouterState} from 'react-router-redux'
+import { RouterState } from 'react-router-redux'
 
 export interface InitPageState {
   didAcceptTerms: boolean
-  mnemonic: string|null
+  mnemonic: string | null
 }
 
 export interface TempState {
@@ -18,7 +18,7 @@ export interface FrameState {
   router: RouterState
 }
 
-export function initialState(workerProxy: WorkerProxy): FrameState {
+export function initialState (workerProxy: WorkerProxy): FrameState {
   return {
     temp: {
       initPage: {

@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { FormEvent } from 'react'
 import { FrameState } from '../../redux/FrameState'
 import WorkerProxy from '../../WorkerProxy'
 import { Container, Button, Form, Header, Divider, Tab, Icon } from 'semantic-ui-react'
@@ -19,32 +18,36 @@ export interface MnemonicProps extends MnemonicStateProps {
 
 export class Mnemonic extends React.Component<MnemonicProps, {}> {
   mnemonicTabPanes = [
-  { menuItem: 'Words', render: () =>
-      <Tab.Pane attached={false}>
-        <Header as="h1" className={style.mnemonicHeader}>
-          Remember these words
-          <Header.Subheader>
-            Save them somewhere safe and secret. <br />
-            These restore the wallet.
-          </Header.Subheader>
-        </Header>
+    { menuItem: 'Words', render: () =>
+        (
+          <Tab.Pane attached={false}>
+            <Header as="h1" className={style.mnemonicHeader}>
+              Remember these words
+              <Header.Subheader>
+                Save them somewhere safe and secret. <br />
+                These restore the wallet.
+              </Header.Subheader>
+            </Header>
 
-        <Form.Field control="textarea" rows="3" value={this.props.mnemonic} readOnly className={style.mnemonicTextarea} />
-        <p className={style.mnemonicSaveToFile}>
-          <a onClick={this.handleSaveToFile.bind(this)}>Save words to file</a>
-        </p>
-      </Tab.Pane>
-  },
-  { menuItem: 'QR', render: () =>
-      <Tab.Pane attached={false}>
-          <Header as="h1" className={style.mnemonicHeader}>
-            OR scan this
-          </Header>
-        {this.renderQR()}
-      </Tab.Pane>
-  }]
+            <Form.Field control="textarea" rows="3" value={this.props.mnemonic} readOnly={true} className={style.mnemonicTextarea} />
+            <p className={style.mnemonicSaveToFile}>
+              <a onClick={this.handleSaveToFile.bind(this)}>Save words to file</a>
+            </p>
+          </Tab.Pane>
+        )
+    },
+    { menuItem: 'QR', render: () =>
+        (
+          <Tab.Pane attached={false}>
+            <Header as="h1" className={style.mnemonicHeader}>
+              OR scan this
+            </Header>
+            {this.renderQR()}
+          </Tab.Pane>
+        )
+    }]
 
-  handleSubmit (ev: FormEvent<HTMLFormElement>) {
+  handleSubmit (ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     this.props.workerProxy.didStoreMnemonic()
   }
@@ -58,7 +61,7 @@ export class Mnemonic extends React.Component<MnemonicProps, {}> {
 
   handleSaveToFile () {
     let mnemonic = this.props.mnemonic
-    let blob = new Blob([mnemonic], {type: 'text/plain'})
+    let blob = new Blob([mnemonic], { type: 'text/plain' })
     let filename = 'secretSeedPhrase.txt'
     if (window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(blob, filename)
@@ -73,13 +76,15 @@ export class Mnemonic extends React.Component<MnemonicProps, {}> {
   }
 
   render () {
-    return <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
-      <Form onSubmit={this.handleSubmit.bind(this)} className={style.mnemonicForm}>
-        <Tab menu={{ pointing: true }} panes={this.mnemonicTabPanes} className={style.mnemonicTabs} />
-        <Divider hidden={true}/>
-        <Button type="submit" content="Done" primary={true} className={style.buttonNav}/>
-      </Form>
-    </Container>
+    return (
+      <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
+        <Form onSubmit={this.handleSubmit.bind(this)} className={style.mnemonicForm}>
+          <Tab menu={{ pointing: true }} panes={this.mnemonicTabPanes} className={style.mnemonicTabs} />
+          <Divider hidden={true}/>
+          <Button type="submit" content="Done" primary={true} className={style.buttonNav}/>
+        </Form>
+      </Container>
+    )
   }
 }
 

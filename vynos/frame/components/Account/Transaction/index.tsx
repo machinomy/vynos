@@ -3,9 +3,10 @@ import { Container, Grid, Menu, Header, List, Image } from 'semantic-ui-react'
 const style = require('../../../styles/ynos.css')
 
 const Transaction: React.SFC<any> = (props) => {
-  return <div>
+  return (
+    <div>
         <Menu className={style.clearBorder}>
-            <Menu.Item link={true} className={style.menuIntoOneItemFluid}><i className={style.vynosArrowBack}></i>Transaction</Menu.Item>
+            <Menu.Item link={true} className={style.menuIntoOneItemFluid}><i className={style.vynosArrowBack}/>Transaction</Menu.Item>
         </Menu>
         <Container>
             <List>
@@ -58,6 +59,7 @@ const Transaction: React.SFC<any> = (props) => {
             </List>
         </Container>
     </div>
+  )
 }
 
 export default Transaction

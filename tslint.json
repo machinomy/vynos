@@ -4,6 +4,10 @@
   "rules": {
     "no-trailing-whitespace": [true, "ignore-jsdoc"],
     "indent": [true, "spaces", 2],
-    "quotemark": [true, "single", "jsx-double"]
+    "quotemark": [true, "single", "jsx-double"],
+    "jsx-no-bind": [false], // TODO Remove it
+    "jsx-no-multiline-js": [false], // TODO Remove it
+    "jsx-no-lambda": [false], // TODO Remove it
+    "block-spacing": [false] // TODO Remove it
   }
 }

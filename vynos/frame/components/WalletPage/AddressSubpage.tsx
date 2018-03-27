@@ -45,26 +45,28 @@ export default class AddressSubpage extends React.Component<AddressSubpageProps,
   }
 
   render () {
-    return <div className={style.walletAddressSubpage}>
-      <div className={style.walletAddressSubpageButtons}>
-        <div className={style.walletAddressSubpageButtonsSingle}>
-          <Button type="submit" content="Refill" className={style.buttonNav} disabled={true} />
+    return (
+      <div className={style.walletAddressSubpage}>
+        <div className={style.walletAddressSubpageButtons}>
+          <div className={style.walletAddressSubpageButtonsSingle}>
+            <Button type="submit" content="Refill" className={style.buttonNav} disabled={true} />
+          </div>
+          <div className={style.walletAddressSubpageButtonsSingle}>
+            <Button type="submit" content="Send" className={style.buttonNav} disabled={true} />
+          </div>
         </div>
-        <div className={style.walletAddressSubpageButtonsSingle}>
-          <Button type="submit" content="Send" className={style.buttonNav} disabled={true} />
-        </div>
+        <Divider hidden={true} />
+        <p className={style.walletAddressSubpageParagraph}>
+          {this.props.address}
+        </p>
+        <p className={style.walletAddressSubpageParagraph}>
+          <a href={etherscanLink(this.props.address)} target="_blank">View on Etherscan</a>
+        </p>
+        <Divider hidden={true} />
+        <p className={style.walletAddressSubpageParagraph}>
+          {this.renderQR()}
+        </p>
       </div>
-      <Divider hidden={true} />
-      <p className={style.walletAddressSubpageParagraph}>
-        {this.props.address}
-      </p>
-      <p className={style.walletAddressSubpageParagraph}>
-        <a href={etherscanLink(this.props.address)} target="_blank">View on Etherscan</a>
-      </p>
-      <Divider hidden={true} />
-      <p className={style.walletAddressSubpageParagraph}>
-        {this.renderQR()}
-      </p>
-    </div>
+    )
   }
 }

@@ -11,9 +11,9 @@ export interface ApproveTransactionProps {
 
 export interface ApproveTransactionState {
   to: string,
-  formatedAmount: string
-  formatedTotal: string
-  formatedFee: string
+  formattedAmount: string
+  formattedTotal: string
+  formattedFee: string
 }
 
 export default class ApprovePage extends React.Component<ApproveTransactionProps, ApproveTransactionState> {
@@ -28,29 +28,31 @@ export default class ApprovePage extends React.Component<ApproveTransactionProps
       return
     }
 
-    let formatedAmount = new Web3().fromWei(this.props.transaction.amount, 'ether')
-    let formatedFee = new Web3().fromWei(this.props.transaction.fee ? this.props.transaction.fee : 0, 'ether')
-    let amount = parseFloat(formatedAmount)
-    let fee = parseFloat(formatedFee)
+    let formattedAmount = new Web3().fromWei(this.props.transaction.amount, 'ether')
+    let formattedFee = new Web3().fromWei(this.props.transaction.fee ? this.props.transaction.fee : 0, 'ether')
+    let amount = parseFloat(formattedAmount)
+    let fee = parseFloat(formattedFee)
     this.state = {
       to: this.props.transaction.to,
-      formatedAmount: formatedAmount,
-      formatedFee: formatedFee,
-      formatedTotal: (amount + fee).toFixed(6)
+      formattedAmount: formattedAmount,
+      formattedFee: formattedFee,
+      formattedTotal: (amount + fee).toFixed(6)
     }
   }
 
   render () {
-    return <Form className={style.encryptionForm} >
-      <Form.Field className={style.clearIndent}>
-        <label>To:</label> <div className={style.listDesc}>{this.state.to}</div>
-        <label>Amount:</label> <div>{this.state.formatedAmount}</div>
-        <Divider />
-        <label>Fee:</label> <div>{this.state.formatedFee}</div>
-        <Divider />
-        <label>Total:</label> <div>{this.state.formatedTotal}</div>
-      </Form.Field>
-      <Divider hidden={true} />
-    </Form>
+    return (
+      <Form className={style.encryptionForm} >
+        <Form.Field className={style.clearIndent}>
+          <label>To:</label> <div className={style.listDesc}>{this.state.to}</div>
+          <label>Amount:</label> <div>{this.state.formattedAmount}</div>
+          <Divider />
+          <label>Fee:</label> <div>{this.state.formattedFee}</div>
+          <Divider />
+          <label>Total:</label> <div>{this.state.formattedTotal}</div>
+        </Form.Field>
+        <Divider hidden={true} />
+      </Form>
+    )
   }
 }

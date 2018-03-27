@@ -124,8 +124,10 @@ export default class BlockieComponent extends React.Component<BlockieComponentPr
   }
 
   render () {
-    return <div style={this.props.style} className={this.props.classDiv}>
-      <canvas ref="canvas" width={this.canvasSize} height={this.canvasSize} className={this.props.classCanvas} />
-    </div>
+    return (
+      <div style={this.props.style} className={this.props.classDiv}>
+        <canvas ref="canvas" width={this.canvasSize} height={this.canvasSize} className={this.props.classCanvas} />
+      </div>
+    )
   }
 }

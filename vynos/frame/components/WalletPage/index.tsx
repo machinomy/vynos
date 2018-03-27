@@ -33,9 +33,11 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
   }
 
   renderBlockie () {
-    return <div className={style.accountAvatar}>
-      <Image src={require('../../styles/images/avatar.svg')} />
-    </div>
+    return (
+      <div className={style.accountAvatar}>
+        <Image src={require('../../styles/images/avatar.svg')} />
+      </div>
+    )
   }
 
   componentDidMount () {
@@ -78,22 +80,24 @@ export class WalletPage extends React.Component<WalletPageProps, WalletPageState
   }
 
   render () {
-    return <div className={style.walletPage}>
-      <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
-        {this.renderBlockie()}
-        <div className={style.walletAccount}>
-          <div className={style.walletAddress}>
-            {this.state.address}
-          </div>
-          <div className={style.walletBalance}>
-            <span className={style.ethBalance}>{this.state.balance}</span>
+    return (
+      <div className={style.walletPage}>
+        <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
+          {this.renderBlockie()}
+          <div className={style.walletAccount}>
+            <div className={style.walletAddress}>
+              {this.state.address}
+            </div>
+            <div className={style.walletBalance}>
+              <span className={style.ethBalance}>{this.state.balance}</span>
+            </div>
           </div>
         </div>
+        <div className={style.wrap} >
+          {this.renderChildren()}
+        </div>
       </div>
-      <div className={style.wrap} >
-        {this.renderChildren()}
-      </div>
-    </div>
+    )
   }
 }
 
