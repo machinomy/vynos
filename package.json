@@ -92,6 +92,8 @@
     "redux-thunk": "^2.2.0",
     "semantic-ui-react": "^0.71.5",
     "timeparse": "^1.0.0",
+    "tslint": "4.5.1",
+    "tslint-react": "3.0.0",
     "typescript-fsa": "^2.3.1",
     "typescript-fsa-reducers": "^0.4.4",
     "typescript-fsa-redux-thunk": "xdave/typescript-fsa-redux-thunk",
