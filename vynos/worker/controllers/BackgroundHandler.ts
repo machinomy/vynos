@@ -1,25 +1,39 @@
-import BackgroundController from "./BackgroundController";
-import { JSONRPC, RequestPayload } from "../../lib/Payload";
-import { EndFunction } from "../../lib/StreamServer";
+import BackgroundController from './BackgroundController'
+import { JSONRPC, RequestPayload } from '../../lib/Payload'
+import { EndFunction } from '../../lib/StreamServer'
 import {
-  DidStoreMnemonicRequest, DidStoreMnemonicResponse,
-  GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, InitAccountRequest,
+  DidStoreMnemonicRequest,
+  DidStoreMnemonicResponse,
+  GenKeyringRequest,
+  GenKeyringResponse,
+  GetSharedStateRequest,
+  GetSharedStateResponse,
+  InitAccountRequest,
   InitAccountResponse,
   LockWalletRequest,
-  LockWalletResponse, RestoreWalletRequest, RememberPageRequest,
+  LockWalletResponse,
+  RestoreWalletRequest,
+  RememberPageRequest,
   UnlockWalletRequest,
-  UnlockWalletResponse, RememberPageResponse, TransactonResolved, ChangeNetworkRequest, ChangeNetworkResponse,
-  GetPrivateKeyHexRequest, GetPrivateKeyHexResponse,
-  SetPreferencesRequest, SetPreferencesResponse
-} from "../../lib/rpc/yns";
-import { Writable } from "readable-stream";
-import { SharedStateBroadcast, SharedStateBroadcastType } from "../../lib/rpc/SharedStateBroadcast";
+  UnlockWalletResponse,
+  RememberPageResponse,
+  TransactonResolved,
+  ChangeNetworkRequest,
+  ChangeNetworkResponse,
+  GetPrivateKeyHexRequest,
+  GetPrivateKeyHexResponse,
+  SetPreferencesRequest,
+  SetPreferencesResponse
+} from '../../lib/rpc/yns'
+import { Writable } from 'readable-stream'
+import { SharedStateBroadcast, SharedStateBroadcastType } from '../../lib/rpc/SharedStateBroadcast'
 import {
-  BuyProcessEventBroadcast, BuyProcessEvent,
+  BuyProcessEventBroadcast,
+  BuyProcessEvent,
   buyProcessEventBroadcastType
-} from "../../lib/rpc/buyProcessEventBroadcast";
-import {WalletBuyArguments} from "../../lib/Vynos";
-import {ChannelMeta} from "../../lib/storage/ChannelMetaStorage";
+} from '../../lib/rpc/buyProcessEventBroadcast'
+import { WalletBuyArguments } from '../../lib/Vynos'
+import { ChannelMeta } from '../../lib/storage/ChannelMetaStorage'
 
 export default class BackgroundHandler {
   controller: BackgroundController
@@ -87,7 +101,7 @@ export default class BackgroundHandler {
       }
       end(null, response)
     }).catch(err => {
-      if (err.message == 'Incorrect password') {
+      if (err.message === 'Incorrect password') {
         let response: UnlockWalletResponse = {
           id: message.id,
           jsonrpc: message.jsonrpc,
@@ -151,7 +165,7 @@ changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) 
     }).catch(end)
   }
 
-  getPrivateKeyHex(message: GetPrivateKeyHexRequest, next: Function, end: EndFunction) {
+  getPrivateKeyHex (message: GetPrivateKeyHexRequest, next: Function, end: EndFunction) {
     this.controller.getPrivateKey().then((buffer: Buffer) => {
       let response: GetPrivateKeyHexResponse = {
         id: message.id,
@@ -162,7 +176,7 @@ changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) 
     }).catch(end)
   }
 
-  setPreferences(message: SetPreferencesRequest, next: Function, end: EndFunction) {
+  setPreferences (message: SetPreferencesRequest, next: Function, end: EndFunction) {
     let preferences = message.params[0]
     this.controller.setPreferences(preferences).then(() => {
       let response: SetPreferencesResponse = {

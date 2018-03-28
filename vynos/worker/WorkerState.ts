@@ -1,4 +1,4 @@
-import Wallet from "ethereumjs-wallet";
+import Wallet from 'ethereumjs-wallet'
 
 export interface Preferences {
   micropaymentThreshold: number
@@ -63,7 +63,7 @@ export const INITIAL_STATE: WorkerState = {
   }
 }
 
-export function buildSharedState(state: WorkerState): SharedState {
+export function buildSharedState (state: WorkerState): SharedState {
   return {
     didInit: state.persistent.didInit,
     isLocked: !state.runtime.wallet,

@@ -1,28 +1,36 @@
-import MicropaymentsController from "./MicropaymentsController";
-import {RequestPayload} from "../../lib/Payload";
-import {EndFunction} from "../../lib/StreamServer";
+import MicropaymentsController from './MicropaymentsController'
+import { RequestPayload } from '../../lib/Payload'
+import { EndFunction } from '../../lib/StreamServer'
 import {
-  BuyRequest, BuyResponse,
-  CloseChannelRequest, CloseChannelResponse, ListChannelsRequest, ListChannelsResponse, OpenChannelRequest,
+  BuyRequest,
+  BuyResponse,
+  CloseChannelRequest,
+  CloseChannelResponse,
+  ListChannelsRequest,
+  ListChannelsResponse,
+  OpenChannelRequest,
   OpenChannelResponse,
-  PayInChannelRequest, PayInChannelResponse,
-  SetApproveByIdRequest, SetApproveByIdResponse,
-  SetRejectByIdRequest, SetRejectByIdResponse
-} from "../../lib/rpc/yns";
-import {PaymentChannel} from "machinomy/lib/channel";
-import Payment from "machinomy/lib/Payment";
+  PayInChannelRequest,
+  PayInChannelResponse,
+  SetApproveByIdRequest,
+  SetApproveByIdResponse,
+  SetRejectByIdRequest,
+  SetRejectByIdResponse
+} from '../../lib/rpc/yns'
+import { PaymentChannel } from 'machinomy/lib/channel'
+import Payment from 'machinomy/lib/Payment'
 
 export default class MicropaymentsHandler {
   controller: MicropaymentsController
 
-  constructor(controller: MicropaymentsController) {
+  constructor (controller: MicropaymentsController) {
     this.controller = controller
     this.handler = this.handler.bind(this)
   }
 
-  openChannel(message: OpenChannelRequest, next: Function, end: EndFunction) {
+  openChannel (message: OpenChannelRequest, next: Function, end: EndFunction) {
     let receiver = message.params[0]
-    let amount = parseInt(message.params[1]) // FIXME Quite a real bug
+    let amount = parseInt(message.params[1], 10) // FIXME Quite a real bug
     this.controller.openChannel(receiver, amount).then(channel => {
       let response: OpenChannelResponse = {
         id: message.id,
@@ -33,7 +41,7 @@ export default class MicropaymentsHandler {
     }).catch(end)
   }
 
-  closeChannel(message: CloseChannelRequest, next: Function, end: EndFunction) {
+  closeChannel (message: CloseChannelRequest, next: Function, end: EndFunction) {
     let channelId = message.params[0]
     this.controller.closeChannel(channelId).then(channelId => {
       let response: CloseChannelResponse = {
@@ -45,7 +53,7 @@ export default class MicropaymentsHandler {
     }).catch(end)
   }
 
-  payInChannel(message: PayInChannelRequest, next: Function, end: EndFunction) {
+  payInChannel (message: PayInChannelRequest, next: Function, end: EndFunction) {
     let channel = PaymentChannel.fromDocument(message.params[0])
     let amount = message.params[1]
     let override = message.params[2]
@@ -61,7 +69,7 @@ export default class MicropaymentsHandler {
     }).catch(end)
   }
 
-  listChannels(message: ListChannelsRequest, next: Function, end: EndFunction) {
+  listChannels (message: ListChannelsRequest, next: Function, end: EndFunction) {
     this.controller.listChannels().then(channels => {
       let response: ListChannelsResponse = {
         id: message.id,
@@ -72,7 +80,7 @@ export default class MicropaymentsHandler {
     }).catch(end)
   }
 
-  buy(message: BuyRequest, next: Function, end: EndFunction) {
+  buy (message: BuyRequest, next: Function, end: EndFunction) {
     let receiver = message.params[0]
     let amount = message.params[1]
     let gateway = message.params[2]
@@ -89,7 +97,7 @@ export default class MicropaymentsHandler {
     }).catch(end)
   }
 
-  setApproveById(message: SetApproveByIdRequest, next: Function, end: EndFunction) {
+  setApproveById (message: SetApproveByIdRequest, next: Function, end: EndFunction) {
     let id = message.params[0]
     this.controller.transactions.setApproveById(id).then(() => {
       let response: SetApproveByIdResponse = {
@@ -101,7 +109,7 @@ export default class MicropaymentsHandler {
     }).catch(end)
   }
 
-  setRejectById(message: SetRejectByIdRequest, next: Function, end: EndFunction) {
+  setRejectById (message: SetRejectByIdRequest, next: Function, end: EndFunction) {
     let id = message.params[0]
     this.controller.transactions.setRejectById(id).then(() => {
       let response: SetRejectByIdResponse = {

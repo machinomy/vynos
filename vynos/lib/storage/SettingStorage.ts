@@ -63,7 +63,8 @@ export default class SettingStorage {
           if (err) {
             reject(err)
           } else {
-            let network, networkValue
+            let network
+            let networkValue
 
             if (!res) {
               network = DEFAULT_NETWORK

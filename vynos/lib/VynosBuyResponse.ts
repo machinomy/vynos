@@ -1,5 +1,4 @@
-import {ChannelId, PaymentChannel} from "machinomy/lib/channel";
-import Payment from "machinomy/lib/Payment";
+import { ChannelId } from 'machinomy/lib/channel'
 
 export default interface VynosBuyResponse {
   channelId: ChannelId

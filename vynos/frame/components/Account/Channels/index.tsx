@@ -90,8 +90,12 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
         })
         this.channelMetaStorage.findByIds(channelIds).then((metaChannels: any) => {
           metaChannels.map((channel: any) => {
-            if (!isUndefined(balanceByChannelId[channel.channelId])) channel.balance = balanceByChannelId[channel.channelId]
-            if (!isUndefined(stateByChannelId[channel.channelId])) channel.state = stateByChannelId[channel.channelId]
+            if (!isUndefined(balanceByChannelId[channel.channelId])) {
+              channel.balance = balanceByChannelId[channel.channelId]
+            }
+            if (!isUndefined(stateByChannelId[channel.channelId])) {
+              channel.state = stateByChannelId[channel.channelId]
+            }
             if (change[channel.channelId]) {
               for (let key in change[channel.channelId]) {
                 channel[key] = change[channel.channelId][key]

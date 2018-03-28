@@ -5,8 +5,8 @@ import Vynos from '../lib/Vynos'
 import { BROWSER_NOT_SUPPORTED_TEXT } from '../frame/constants'
 
 // DOM and Window is ready.
-export function isReady(callback: () => void) {
-  var state = document.readyState
+export function isReady (callback: () => void) {
+  const state = document.readyState
   if (state === 'complete' || state === 'interactive') {
     return setTimeout(callback, 0)
   }
@@ -34,7 +34,7 @@ export default class Namespace {
       isReady(() => {
         this.frame = frame ? frame : new Frame(this.scriptAddress, frameElement)
         this.frame.attach(this.window.document)
-        let stream = new FrameStream("vynos").toFrame(this.frame.element);
+        let stream = new FrameStream('vynos').toFrame(this.frame.element)
         let client = new VynosClient(stream)
         client.onSharedStateUpdate(state => {
           if (state.isTransactionPending) {
@@ -65,13 +65,13 @@ export default class Namespace {
   }
 
   ready (): Promise<Vynos> {
-    if ("serviceWorker" in navigator) {
+    if ('serviceWorker' in navigator) {
       if (this.client) {
         return this.client
       } else {
         return this.init()
       }
-    }else{
+    } else {
       return Promise.reject(new Error(BROWSER_NOT_SUPPORTED_TEXT))
     }
   }

@@ -2,8 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { FrameState } from '../../redux/FrameState'
 import WorkerProxy from '../../WorkerProxy'
-import { Container, Button, Form, Header, Divider, Tab, Icon } from 'semantic-ui-react'
-import Logo from '../../components/Logo'
+import { Container, Button, Form, Header, Divider, Tab } from 'semantic-ui-react'
 const style = require('../../styles/ynos.css')
 import * as qr from 'qr-image'
 

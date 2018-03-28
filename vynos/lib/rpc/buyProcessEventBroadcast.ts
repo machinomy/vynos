@@ -1,8 +1,8 @@
-import {ResponsePayload} from "../Payload";
-import {WalletBuyArguments} from "../Vynos";
-import {ChannelMeta} from "../storage/ChannelMetaStorage";
+import { ResponsePayload } from '../Payload'
+import { WalletBuyArguments } from '../Vynos'
+import { ChannelMeta } from '../storage/ChannelMetaStorage'
 
-export const buyProcessEventBroadcastType = "worker/broadcast/buyProcessEvent"
+export const buyProcessEventBroadcastType = 'worker/broadcast/buyProcessEvent'
 
 export enum BuyProcessEvent {
   NONE = '',
@@ -15,7 +15,7 @@ export enum BuyProcessEvent {
   SENT_TOKEN = 'buyProcessSentToken'
 }
 
-export function buyProcessEvent(buyProcessEvent: BuyProcessEvent, args: WalletBuyArguments): string {
+export function buyProcessEvent (buyProcessEvent: BuyProcessEvent, args: WalletBuyArguments): string {
   return `event:buyProcessEvent:${buyProcessEvent}:${args.receiver}:${args.amount}:${args.gateway}:${args.meta}:${args.purchaseMeta}`
 }
 
@@ -25,7 +25,7 @@ export interface BuyProcessEventBroadcast extends ResponsePayload {
   result: [WalletBuyArguments, string, ChannelMeta]
 }
 
-export function isBuyProcessEventBroadcast(data: Object): data is BuyProcessEventBroadcast {
+export function isBuyProcessEventBroadcast (data: Object): data is BuyProcessEventBroadcast {
   let probablyBroadcast = (data as BuyProcessEventBroadcast)
   return probablyBroadcast.id === buyProcessEventBroadcastType
 }

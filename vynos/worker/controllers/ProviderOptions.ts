@@ -1,11 +1,11 @@
-import BackgroundController from "./BackgroundController";
-import {ProviderOpts} from "web3-provider-engine";
+import BackgroundController from './BackgroundController'
+import { ProviderOpts } from 'web3-provider-engine'
 import ethUtil = require('ethereumjs-util')
 import sigUtil = require('eth-sig-util')
 import Tx = require('ethereumjs-tx')
-import TransactionService from "../TransactionService";
-import {randomId} from "../../lib/Payload";
-import * as transactions from "../../lib/transactions";
+import TransactionService from '../TransactionService'
+import { randomId } from '../../lib/Payload'
+import * as transactions from '../../lib/transactions'
 
 export type ApproveTransactionCallback = (error: any, isApproved?: boolean) => void
 export type ApproveSignCallback = (error: any, rawMsgSig?: string) => void
@@ -21,7 +21,7 @@ export default class ProviderOptions {
     this.rpcUrl = rpcUrl
   }
 
-  getAccounts(callback: (err: any, accounts?: Array<string>) => void) {
+  getAccounts (callback: (err: any, accounts?: Array<string>) => void) {
     this.background.getAccounts().then(accounts =>
       callback(null, accounts)
     ).catch(error => {
@@ -29,7 +29,7 @@ export default class ProviderOptions {
     })
   }
 
-  approveTransaction(txParams: any, callback: ApproveTransactionCallback) {
+  approveTransaction (txParams: any, callback: ApproveTransactionCallback) {
     let fee = txParams.gas * txParams.gasPrice
     let transaction = transactions.ethereum(randomId().toString(), txParams.to, txParams.value, fee)
     this.transactions.approveTransaction(transaction).then(result => {
@@ -43,11 +43,11 @@ export default class ProviderOptions {
     })
   }
 
-  approveTransactionAlways(txParams: any, callback: ApproveTransactionCallback) {
+  approveTransactionAlways (txParams: any, callback: ApproveTransactionCallback) {
     callback(null, true)
   }
 
-  signTransaction(rawTx: any, callback: any) {
+  signTransaction (rawTx: any, callback: any) {
     this.background.getPrivateKey().then(privateKey => {
       let tx = new Tx(rawTx)
       tx.sign(privateKey)
@@ -58,7 +58,7 @@ export default class ProviderOptions {
     })
   }
 
-  signMessageAlways(messageParams: any, callback: ApproveSignCallback) {
+  signMessageAlways (messageParams: any, callback: ApproveSignCallback) {
     this.background.getPrivateKey().then(privateKey => {
       let message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
       let msgSig = ethUtil.ecsign(message, privateKey)
@@ -69,7 +69,7 @@ export default class ProviderOptions {
     })
   }
 
-  signMessage(messageParams: any, callback: ApproveSignCallback) {
+  signMessage (messageParams: any, callback: ApproveSignCallback) {
     if (typeof messageParams.data === 'string' && !messageParams.data.startsWith('0x')) {
       callback(new Error('Vynos signMessage: message data must be 32 byte hex string'))
       return
@@ -98,11 +98,11 @@ export default class ProviderOptions {
     })
   }
 
-  walled(): ProviderOpts {
+  walled (): ProviderOpts {
     return {
       static: {
         eth_syncing: false,
-        web3_clientVersion: `LiteratePayments/v${1.0}`,
+        web3_clientVersion: `LiteratePayments/v${1.0}`
       },
       rpcUrl: this.rpcUrl,
       getAccounts: this.getAccounts.bind(this),
@@ -110,19 +110,19 @@ export default class ProviderOptions {
       signTransaction: this.signTransaction.bind(this),
       signMessage: this.signMessage.bind(this)
       // tx signing, newUnapprovedTransaction
-      //processTransaction: processTransaction,
+      // processTransaction: processTransaction,
       // old style msg signing, newUnsignedMessage
-      //processMessage: processMessage,
+      // processMessage: processMessage,
       // new style msg signing, newUnsignedPersonalMessage
-      //processPersonalMessage: processPersonalMessage,
+      // processPersonalMessage: processPersonalMessage,
     }
   }
 
-  approving(): ProviderOpts {
+  approving (): ProviderOpts {
     return {
       static: {
         eth_syncing: false,
-        web3_clientVersion: `LiteratePayments/v${1.0}`,
+        web3_clientVersion: `LiteratePayments/v${1.0}`
       },
       rpcUrl: this.rpcUrl,
       getAccounts: this.getAccounts.bind(this),
@@ -130,11 +130,11 @@ export default class ProviderOptions {
       signTransaction: this.signTransaction.bind(this),
       signMessage: this.signMessageAlways.bind(this)
       // tx signing, newUnapprovedTransaction
-      //processTransaction: processTransaction,
+      // processTransaction: processTransaction,
       // old style msg signing, newUnsignedMessage
-      //processMessage: processMessage,
+      // processMessage: processMessage,
       // new style msg signing, newUnsignedPersonalMessage
-      //processPersonalMessage: processPersonalMessage,
+      // processPersonalMessage: processPersonalMessage,
     }
   }
 }

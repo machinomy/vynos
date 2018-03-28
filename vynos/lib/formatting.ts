@@ -30,18 +30,18 @@ export function formatAmount (wei: number): Amount {
     })
     let denomination = shortestDenomination || 'wei'
     let value = web3.fromWei(bigNumberWei, (shortestDenomination || 'wei') as Web3.Unit).toString()
-    return {value, denomination}
-  }else {
-    return {value: '0', denomination: 'wei'}
+    return { value, denomination }
+  } else {
+    return { value: '0', denomination: 'wei' }
   }
 }
 
 export function formatDate (timestamp: number): string {
   let date = new Date(timestamp)
   let result
-  if (moment(date).isSame(new Date(), "day")) {
+  if (moment(date).isSame(new Date(), 'day')) {
     result = 'just ' + moment(date).format('hh:mm:ss')
-  } else if (moment(date).isSame(new Date(), "year")) {
+  } else if (moment(date).isSame(new Date(), 'year')) {
     result = moment(date).format('D MMM, hh:mm:ss')
   } else {
     result = moment(date).format('D MMM YY, hh:mm:ss')

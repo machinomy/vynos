@@ -1,4 +1,4 @@
-import {Duplex} from 'readable-stream'
+import { Duplex } from 'readable-stream'
 
 export interface ServiceWorkerStreamOptions {
   sourceName: string
@@ -11,7 +11,7 @@ export default class ServiceWorkerStream extends Duplex {
   targetName: string
   sourceName: string
 
-  constructor(options: ServiceWorkerStreamOptions) {
+  constructor (options: ServiceWorkerStreamOptions) {
     super({objectMode: true})
     this.source = options.source
     this.targetName = options.targetName
@@ -31,21 +31,21 @@ export default class ServiceWorkerStream extends Duplex {
     }
   }
 
-  _read(n: number) {
+  _read (n: number) {
     // Do Nothing
   }
 
-  _write(data: any, encoding: any, next: Function) {
+  _write (data: any, encoding: any, next: Function) {
     let message = {
       target: this.targetName,
       data: data
-    };
+    }
     this.source.clients.matchAll({includeUncontrolled: true}).then(clients => {
       clients.forEach(client => {
         client.postMessage(message)
       })
     })
-    next();
+    next()
   }
 
 }

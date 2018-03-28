@@ -1,27 +1,27 @@
 import actionCreatorFactory, {ActionCreator} from 'typescript-fsa'
-import {Preferences, WorkerState} from './WorkerState';
+import { Preferences, WorkerState } from './WorkerState'
 import Wallet from 'ethereumjs-wallet'
 
-const actionCreator = actionCreatorFactory("worker");
+const actionCreator = actionCreatorFactory('worker')
 
 // Runtime
-export const setWallet = actionCreator<Wallet|undefined>("runtime/setWallet")
-export function setWalletHandler(state: WorkerState, wallet: Wallet|undefined): WorkerState {
+export const setWallet = actionCreator<Wallet | undefined>('runtime/setWallet')
+export function setWalletHandler (state: WorkerState, wallet: Wallet | undefined): WorkerState {
   return { ...state,
     runtime: { ...state.runtime, wallet: wallet }
   }
 }
 
-export const setLastMicropaymentTime = actionCreator<number>("runtime/setLastMicropaymentTime")
-export function setLastMicropaymentTimeHandler(state: WorkerState, lastMicropaymentTime: number): WorkerState {
+export const setLastMicropaymentTime = actionCreator<number>('runtime/setLastMicropaymentTime')
+export function setLastMicropaymentTimeHandler (state: WorkerState, lastMicropaymentTime: number): WorkerState {
   return { ...state,
     runtime: { ...state.runtime, lastMicropaymentTime: lastMicropaymentTime }
   }
 }
 
 // Persistent
-export const setKeyring = actionCreator<string>("persistent/setKeyring")
-export function setKeyringHandler(state: WorkerState, keyring: string): WorkerState {
+export const setKeyring = actionCreator<string>('persistent/setKeyring')
+export function setKeyringHandler (state: WorkerState, keyring: string): WorkerState {
   return { ...state,
     persistent: { ...state.persistent, keyring: keyring }
   }
@@ -31,7 +31,7 @@ export type RestoreWalletParam = {
   keyring: string,
   wallet: Wallet
 }
-export const restoreWallet = actionCreator<RestoreWalletParam>("persistent+runtime/restoreWallet")
+export const restoreWallet = actionCreator<RestoreWalletParam>('persistent+runtime/restoreWallet')
 export function restoreWalletHandler (state: WorkerState, param: RestoreWalletParam): WorkerState {
   return { ...state,
     persistent: { ...state.persistent, didInit: true, keyring: param.keyring },
@@ -39,8 +39,8 @@ export function restoreWalletHandler (state: WorkerState, param: RestoreWalletPa
   }
 }
 
-export const setDidStoreMnemonic = actionCreator<boolean>("persistent/setDidStoreMnemonic")
-export function setDidStoreMnemonicHandler(state: WorkerState): WorkerState {
+export const setDidStoreMnemonic = actionCreator<boolean>('persistent/setDidStoreMnemonic')
+export function setDidStoreMnemonicHandler (state: WorkerState): WorkerState {
   return {
     ...state,
     persistent: { ...state.persistent, didInit: true }
@@ -48,7 +48,7 @@ export function setDidStoreMnemonicHandler(state: WorkerState): WorkerState {
 }
 
 export const setTransactionPending = actionCreator<boolean>('runtime/setTransactionPending')
-export function setTransactionPendingHandler(state: WorkerState, pending: boolean): WorkerState {
+export function setTransactionPendingHandler (state: WorkerState, pending: boolean): WorkerState {
   let pendingDate = 0
   if (pending) {
     pendingDate = Date.now()
@@ -60,7 +60,7 @@ export function setTransactionPendingHandler(state: WorkerState, pending: boolea
 }
 
 export const rememberPage = actionCreator<string>('persistent/rememberPage')
-export function rememberPageHandler(state: WorkerState, path: string): WorkerState {
+export function rememberPageHandler (state: WorkerState, path: string): WorkerState {
   return {
     ...state,
     persistent: { ...state.persistent, rememberPath: path }
@@ -68,15 +68,15 @@ export function rememberPageHandler(state: WorkerState, path: string): WorkerSta
 }
 
 export const setLastUpdateDb = actionCreator<number>('runtime/setLastUpdateDb')
-export function setLastUpdateDbHandler(state: WorkerState, timestamp: number): WorkerState {
+export function setLastUpdateDbHandler (state: WorkerState, timestamp: number): WorkerState {
   return {
     ...state,
     runtime: {...state.runtime, lastUpdateDb: timestamp}
   }
 }
 
-export const setPreferences = actionCreator<Preferences>("persistent/setPreferences")
-export function setPreferencesHandler(state: WorkerState, preferences: Preferences): WorkerState {
+export const setPreferences = actionCreator<Preferences>('persistent/setPreferences')
+export function setPreferencesHandler (state: WorkerState, preferences: Preferences): WorkerState {
   return { ...state,
     persistent: { ...state.persistent, preferences }
   }

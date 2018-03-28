@@ -1,6 +1,6 @@
 import Datastore = require('nedb')
-import SettingStorage from "./storage/SettingStorage";
-import { default as bus } from "./bus";
+import SettingStorage from './storage/SettingStorage'
+import { default as bus } from './bus'
 import { CHANGE_NETWORK } from './constants'
 
 const settingStorage = new SettingStorage()

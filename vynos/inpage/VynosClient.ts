@@ -1,43 +1,46 @@
 import StreamProvider from './../lib/StreamProvider'
 import { Duplex } from 'readable-stream'
 import {
-  BuyRequest, BuyResponse,
-  CloseChannelRequest, CloseChannelResponse, InitAccountRequest, InitAccountResponse, ListChannelsRequest,
+  BuyRequest,
+  BuyResponse,
+  CloseChannelRequest,
+  InitAccountRequest,
+  InitAccountResponse,
+  ListChannelsRequest,
   ListChannelsResponse,
   OpenChannelRequest,
-  OpenChannelResponse, PayInChannelRequest, PayInChannelResponse
-} from '../lib/rpc/yns';
-import {JSONRPC, randomId} from "../lib/Payload";
-import {PaymentChannel, PaymentChannelJSON} from "machinomy/lib/channel";
-import VynosPayInChannelResponse from "../lib/VynosPayInChannelResponse";
-import Vynos, {WalletBuyArguments} from '../lib/Vynos'
-import VynosBuyResponse from "../lib/VynosBuyResponse";
-import PurchaseMeta, {purchaseMetaFromDocument} from "../lib/PurchaseMeta";
-import {SharedState} from "../worker/WorkerState";
-import {SharedStateBroadcast, SharedStateBroadcastType} from "../lib/rpc/SharedStateBroadcast";
-import Wallet = require("ethereumjs-wallet");
+  OpenChannelResponse,
+  PayInChannelRequest,
+  PayInChannelResponse
+} from '../lib/rpc/yns'
+import { JSONRPC, randomId } from '../lib/Payload'
+import { PaymentChannel, PaymentChannelJSON } from 'machinomy/lib/channel'
+import VynosPayInChannelResponse from '../lib/VynosPayInChannelResponse'
+import Vynos, { WalletBuyArguments } from '../lib/Vynos'
+import VynosBuyResponse from '../lib/VynosBuyResponse'
+import PurchaseMeta, { purchaseMetaFromDocument } from '../lib/PurchaseMeta'
+import { SharedState } from '../worker/WorkerState'
+import { SharedStateBroadcast, SharedStateBroadcastType } from '../lib/rpc/SharedStateBroadcast'
 import {
-  buyProcessEvent, BuyProcessEventBroadcast, buyProcessEventBroadcastType, isBuyProcessEventBroadcast
-} from "../lib/rpc/buyProcessEventBroadcast";
-import {default as PromisedWalletResponse} from "../lib/promised";
-import bus from "../lib/bus";
-import {ChannelMeta} from "../lib/storage/ChannelMetaStorage";
+  buyProcessEvent,
+  BuyProcessEventBroadcast,
+  buyProcessEventBroadcastType,
+  isBuyProcessEventBroadcast
+} from '../lib/rpc/buyProcessEventBroadcast'
+import { default as PromisedWalletResponse } from '../lib/promised'
+import bus from '../lib/bus'
+import { ChannelMeta } from '../lib/storage/ChannelMetaStorage'
 
-function isPaymentChannel(pc: PaymentChannel|PaymentChannelJSON): pc is PaymentChannel {
+function isPaymentChannel (pc: PaymentChannel | PaymentChannelJSON): pc is PaymentChannel {
   return !!((pc as PaymentChannel).toJSON)
 }
 
 export default class VynosClient implements Vynos {
   buyProcessCallbacks: Map<string, (args: WalletBuyArguments, tokenOrChannel?: string | ChannelMeta) => void>
-
-  depositToChannel (ch: PaymentChannel): Promise<PaymentChannel> {
-    return Promise.resolve(ch)
-  }
-
   provider: StreamProvider
 
   constructor (stream: Duplex) {
-    this.provider = new StreamProvider("VynosClient")
+    this.provider = new StreamProvider('VynosClient')
     this.provider.pipe(stream).pipe(this.provider)
 
     this.buyProcessCallbacks = new Map<string, (args: WalletBuyArguments, tokenOrChannelId?: string | ChannelMeta) => void>()
@@ -47,7 +50,11 @@ export default class VynosClient implements Vynos {
     })
   }
 
-  initAccount(): Promise<void> {
+  depositToChannel (ch: PaymentChannel): Promise<PaymentChannel> {
+    return Promise.resolve(ch)
+  }
+
+  initAccount (): Promise<void> {
     let request: InitAccountRequest = {
       id: randomId(),
       method: InitAccountRequest.method,
@@ -55,7 +62,7 @@ export default class VynosClient implements Vynos {
       params: []
     }
     return this.provider.ask(request).then((response: InitAccountResponse) => {
-      return;
+      return
     })
   }
 
@@ -71,7 +78,7 @@ export default class VynosClient implements Vynos {
     })
   }
 
-  closeChannel(channelId: string): Promise<void> {
+  closeChannel (channelId: string): Promise<void> {
     let request: CloseChannelRequest = {
       id: randomId(),
       method: CloseChannelRequest.method,
@@ -113,23 +120,23 @@ export default class VynosClient implements Vynos {
     return this.provider.ask(request).then((response: BuyResponse) => {
       if (response.error) {
         return Promise.reject(response.error)
-      } else if(!response.result[0].channelId){
+      } else if (!response.result[0].channelId) {
         return Promise.reject(response.result[1])
-      }else {
+      } else {
         return Promise.resolve(response.result[0])
       }
     })
   }
 
-  buyPromised(receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number) : PromisedWalletResponse {
+  buyPromised (receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number): PromisedWalletResponse {
     let promiseBuyResponse = this.buy(receiver, amount, gateway, meta, purchase, channelValue)
     let _purchase = purchase || purchaseMetaFromDocument(document)
-    let walletBuyArgs : WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, _purchase, channelValue)
-    let result : PromisedWalletResponse = new PromisedWalletResponse(this, promiseBuyResponse, 'mc_wallet_buyProcessEvent', walletBuyArgs)
+    let walletBuyArgs: WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, _purchase, channelValue)
+    let result: PromisedWalletResponse = new PromisedWalletResponse(this, promiseBuyResponse, 'mc_wallet_buyProcessEvent', walletBuyArgs)
     return result
   }
 
-  listChannels(): Promise<Array<PaymentChannel>> {
+  listChannels (): Promise<Array<PaymentChannel>> {
     let request: ListChannelsRequest = {
       id: randomId(),
       method: ListChannelsRequest.method,
@@ -141,19 +148,19 @@ export default class VynosClient implements Vynos {
     })
   }
 
-  onSharedStateUpdate(fn: (state: SharedState) => void): void {
+  onSharedStateUpdate (fn: (state: SharedState) => void): void {
     this.provider.listen<SharedStateBroadcast>(SharedStateBroadcastType, broadcast => {
       let state = broadcast.result
       fn(state)
     })
   }
 
-  onBuyProcessEventReceived() : void {
-    this.provider.listen<BuyProcessEventBroadcast>(buyProcessEventBroadcastType, (data : BuyProcessEventBroadcast) => {
+  onBuyProcessEventReceived (): void {
+    this.provider.listen<BuyProcessEventBroadcast>(buyProcessEventBroadcastType, (data: BuyProcessEventBroadcast) => {
       if (isBuyProcessEventBroadcast(data)) {
-        let walletArgs : WalletBuyArguments = data.result[0]
-        let token : string = data.result[1]
-        let channel : ChannelMeta = data.result[2]
+        let walletArgs: WalletBuyArguments = data.result[0]
+        let token: string = data.result[1]
+        let channel: ChannelMeta = data.result[2]
         if (this.buyProcessCallbacks.has(buyProcessEvent(data.type, data.result[0]))) {
           let callback = this.buyProcessCallbacks.get(buyProcessEvent(data.type, data.result[0]))
           if (token !== undefined) {
@@ -168,7 +175,7 @@ export default class VynosClient implements Vynos {
     })
   }
 
-  addCallbackForBuyProcessEvent(event: string, callback: (args: WalletBuyArguments, tokenOrChannelId?: string | ChannelMeta) => void) {
+  addCallbackForBuyProcessEvent (event: string, callback: (args: WalletBuyArguments, tokenOrChannelId?: string | ChannelMeta) => void) {
     this.buyProcessCallbacks.set(event, callback)
   }
 }

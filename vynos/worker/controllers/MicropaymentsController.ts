@@ -1,28 +1,28 @@
-import NetworkController from "./NetworkController";
-import BackgroundController from "./BackgroundController";
-import { PaymentChannel } from "machinomy/lib/channel";
-import Payment from "machinomy/lib/Payment";
-import VynosBuyResponse from "../../lib/VynosBuyResponse";
+import NetworkController from './NetworkController'
+import BackgroundController from './BackgroundController'
+import { PaymentChannel } from 'machinomy/lib/channel'
+import Payment from 'machinomy/lib/Payment'
+import VynosBuyResponse from '../../lib/VynosBuyResponse'
 import Machinomy from 'machinomy'
-import ZeroClientProvider = require("web3-provider-engine/zero")
-import {ProviderOpts} from "web3-provider-engine";
-import ProviderOptions from "./ProviderOptions";
-import Web3 = require("web3")
-import TransactionService from "../TransactionService";
+import ZeroClientProvider = require('web3-provider-engine/zero')
+import { ProviderOpts } from 'web3-provider-engine'
+import ProviderOptions from './ProviderOptions'
+import Web3 = require('web3')
+import TransactionService from '../TransactionService'
 import * as transactions from '../../lib/transactions'
-import PurchaseMeta from "../../lib/PurchaseMeta";
-import ChannelMetaStorage, {ChannelMeta} from "../../lib/storage/ChannelMetaStorage";
-import TransactionState from "../../lib/TransactionState";
-import TransactionMeta from "../../lib/TransactionMeta";
-import * as actions from "../actions";
+import PurchaseMeta from '../../lib/PurchaseMeta'
+import ChannelMetaStorage, { ChannelMeta } from '../../lib/storage/ChannelMetaStorage'
+import TransactionState from '../../lib/TransactionState'
+import TransactionMeta from '../../lib/TransactionMeta'
+import * as actions from '../actions'
 import bus from '../../lib/bus'
-import {CHANGE_NETWORK} from "../../lib/constants";
-import {SharedState} from "../WorkerState";
+import { CHANGE_NETWORK } from '../../lib/constants'
+import { SharedState } from '../WorkerState'
 import * as events from '../../lib/events'
-import {BuyProcessEvent, buyProcessEvent} from '../../lib/rpc/buyProcessEventBroadcast'
-import {WalletBuyArguments} from "../../lib/Vynos";
+import { BuyProcessEvent, buyProcessEvent } from '../../lib/rpc/buyProcessEventBroadcast'
+import { WalletBuyArguments } from '../../lib/Vynos'
 
-const timeparse = require('timeparse');
+const timeparse = require('timeparse')
 
 export default class MicropaymentsController {
   network: NetworkController
@@ -31,7 +31,7 @@ export default class MicropaymentsController {
   channels: ChannelMetaStorage
   web3: Web3
 
-  constructor(network: NetworkController, background: BackgroundController, transactions: TransactionService) {
+  constructor (network: NetworkController, background: BackgroundController, transactions: TransactionService) {
     this.network = network
     this.background = background
     this.transactions = transactions
@@ -44,18 +44,18 @@ export default class MicropaymentsController {
     })
   }
 
-  providerOpts(rpcUrl: string): ProviderOpts {
+  providerOpts (rpcUrl: string): ProviderOpts {
     let providerOptions = new ProviderOptions(this.background, this.transactions, rpcUrl)
     return providerOptions.approving()
   }
 
-  openChannel(receiver: string, amount: number): Promise<PaymentChannel> {
+  openChannel (receiver: string, amount: number): Promise<PaymentChannel> {
     return new Promise((resolve, reject) => {
       resolve()
     })
   }
 
-  closeChannel(channelId: string): Promise<string> {
+  closeChannel (channelId: string): Promise<string> {
     return new Promise((resolve, reject) => {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
@@ -73,44 +73,20 @@ export default class MicropaymentsController {
     })
   }
 
-  payInChannel(channel: PaymentChannel, amount: number, override?: boolean): Promise<[PaymentChannel, Payment]> {
+  payInChannel (channel: PaymentChannel, amount: number, override?: boolean): Promise<[PaymentChannel, Payment]> {
     return new Promise((resolve, reject) => {
       resolve()
     })
   }
 
-  private async approve (sharedState: SharedState, transaction: TransactionMeta, fn: () => void) {
-    let interval = Date.now() - sharedState.lastMicropaymentTime
-    let throttlingInMs = -1
-    if (sharedState.preferences.micropaymentThrottlingHumanReadable === '-1ms'
-      || sharedState.preferences.micropaymentThrottlingHumanReadable === '0'
-      || sharedState.preferences.micropaymentThrottlingHumanReadable.length === 0) {
-      throttlingInMs = -1
-    } else if (/^\d+$/.test(sharedState.preferences.micropaymentThrottlingHumanReadable)) {
-      throttlingInMs = parseInt(sharedState.preferences.micropaymentThrottlingHumanReadable)
-    } else {
-      throttlingInMs = timeparse(sharedState.preferences.micropaymentThrottlingHumanReadable)
-    }
-
-    if (transaction.amount > sharedState.preferences.micropaymentThreshold || interval < throttlingInMs) {
-      transaction.state = TransactionState.PENDING
-      await this.transactions.addTransaction(transaction)
-      await this.transactions.store.dispatch(actions.setTransactionPending(true))
-      bus.once(events.txApproved(transaction.id), fn)
-    } else {
-      await this.transactions.addTransaction(transaction)
-      fn()
-    }
-  }
-
-  buy(receiver: string, amount: number, gateway: string, meta: string, purchaseMeta: PurchaseMeta, channelValue?: number): Promise<VynosBuyResponse> {
+  buy (receiver: string, amount: number, gateway: string, meta: string, purchaseMeta: PurchaseMeta, channelValue?: number): Promise<VynosBuyResponse> {
     return new Promise<VynosBuyResponse>((resolve, reject) => {
       this.background.awaitUnlock(async () => {
         let transaction = transactions.micropayment(purchaseMeta, receiver, amount)
         let sharedState = await this.background.getSharedState()
         await this.approve(sharedState, transaction, async () => {
           try {
-            let walletBuyArguments : WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, purchaseMeta, channelValue)
+            let walletBuyArguments: WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, purchaseMeta, channelValue)
             let accounts = await this.background.getAccounts()
             let account = accounts[0]
             let options: any
@@ -158,14 +134,14 @@ export default class MicropaymentsController {
           }
         })
         let rejectedEvent = events.txRejected(transaction.id)
-        bus.once(rejectedEvent, ()=> {
+        bus.once(rejectedEvent, () => {
           reject('Micropayment is rejected by the user')
         })
       })
     })
   }
 
-  listChannels(): Promise<Array<PaymentChannel>> {
+  listChannels (): Promise<Array<PaymentChannel>> {
     return new Promise((resolve, reject) => {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
@@ -175,5 +151,29 @@ export default class MicropaymentsController {
         })
       })
     })
+  }
+
+  private async approve (sharedState: SharedState, transaction: TransactionMeta, fn: () => void) {
+    let interval = Date.now() - sharedState.lastMicropaymentTime
+    let throttlingInMs = -1
+    if (sharedState.preferences.micropaymentThrottlingHumanReadable === '-1ms'
+      || sharedState.preferences.micropaymentThrottlingHumanReadable === '0'
+      || sharedState.preferences.micropaymentThrottlingHumanReadable.length === 0) {
+      throttlingInMs = -1
+    } else if (/^\d+$/.test(sharedState.preferences.micropaymentThrottlingHumanReadable)) {
+      throttlingInMs = parseInt(sharedState.preferences.micropaymentThrottlingHumanReadable, 10)
+    } else {
+      throttlingInMs = timeparse(sharedState.preferences.micropaymentThrottlingHumanReadable)
+    }
+
+    if (transaction.amount > sharedState.preferences.micropaymentThreshold || interval < throttlingInMs) {
+      transaction.state = TransactionState.PENDING
+      await this.transactions.addTransaction(transaction)
+      await this.transactions.store.dispatch(actions.setTransactionPending(true))
+      bus.once(events.txApproved(transaction.id), fn)
+    } else {
+      await this.transactions.addTransaction(transaction)
+      fn()
+    }
   }
 }

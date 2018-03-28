@@ -1,13 +1,13 @@
-import BackgroundController from "./BackgroundController";
-import ZeroClientProvider = require("web3-provider-engine/zero")
-import { ProviderOpts } from "web3-provider-engine";
+import BackgroundController from './BackgroundController'
+import ZeroClientProvider = require('web3-provider-engine/zero')
+import { ProviderOpts } from 'web3-provider-engine'
 import Engine = require('web3-provider-engine')
-import { Payload } from "../../lib/Payload";
-import { EndFunction } from "../../lib/StreamServer";
-import Web3 = require("web3")
-import ProviderOptions from "./ProviderOptions";
-import TransactionService from "../TransactionService";
-import SettingStorage from "../../lib/storage/SettingStorage";
+import { Payload } from '../../lib/Payload'
+import { EndFunction } from '../../lib/StreamServer'
+import Web3 = require('web3')
+import ProviderOptions from './ProviderOptions'
+import TransactionService from '../TransactionService'
+import SettingStorage from '../../lib/storage/SettingStorage'
 import { default as bus } from '../../lib/bus'
 import { CHANGE_NETWORK } from '../../lib/constants'
 

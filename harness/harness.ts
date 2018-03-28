@@ -1,26 +1,24 @@
-import {DevWindow, VynosWindow} from "../vynos/window";
-import {PaymentChannel} from "machinomy/lib/channel";
-import {inspect} from "util";
-import Namespace from "../vynos/inpage/Namespace";
-import Web3 = require("web3");
-import VynosBuyResponse from "../vynos/lib/VynosBuyResponse";
+import { DevWindow, VynosWindow } from '../vynos/window'
+import { PaymentChannel } from 'machinomy/lib/channel'
+import { inspect } from 'util'
+import Namespace from '../vynos/inpage/Namespace'
+import Web3 = require('web3')
+import VynosBuyResponse from '../vynos/lib/VynosBuyResponse'
 import * as BigNumber from 'bignumber.js'
-import {WalletBuyArguments} from "../vynos/lib/Vynos";
-import {buyProcessEvent, BuyProcessEvent} from "../vynos/lib/rpc/buyProcessEventBroadcast";
-import {ChannelMeta} from "../vynos/lib/storage/ChannelMetaStorage";
+import { WalletBuyArguments } from '../vynos/lib/Vynos'
+import { buyProcessEvent, BuyProcessEvent } from '../vynos/lib/rpc/buyProcessEventBroadcast'
+import { ChannelMeta } from '../vynos/lib/storage/ChannelMetaStorage'
 
-let _window = (window as VynosWindow);
-let devWindow = (window as DevWindow);
+let _window = (window as VynosWindow)
+let devWindow = (window as DevWindow)
 
-
-// let recentPaymentChannel: PaymentChannel|null = null
-let recentBuyResponse : VynosBuyResponse|null = null
+let recentBuyResponse: VynosBuyResponse | null = null
 let gateway = 'http://127.0.0.1:3001/v1/accept'
 
-function updateRecentVynosBuyResponse(buyResponse: VynosBuyResponse) {
+function updateRecentVynosBuyResponse (buyResponse: VynosBuyResponse) {
   recentBuyResponse = buyResponse
-  let channelCode = document.getElementById("payment-channel-code")
-  let tokenCode = document.getElementById("payment-token-code")
+  let channelCode = document.getElementById('payment-channel-code')
+  let tokenCode = document.getElementById('payment-token-code')
   if (channelCode) {
     channelCode.textContent = 'channelId: ' + JSON.stringify(buyResponse.channelId.toString())
   }
@@ -28,7 +26,6 @@ function updateRecentVynosBuyResponse(buyResponse: VynosBuyResponse) {
     tokenCode.textContent = 'token: ' + JSON.stringify(buyResponse.token)
   }
 }
-
 
 // _window.send = async (value) => {
 //   let eth = 0.01
@@ -46,7 +43,7 @@ function updateRecentVynosBuyResponse(buyResponse: VynosBuyResponse) {
 //   })
 // }
 
-devWindow.signMessage = function(message : string) {
+devWindow.signMessage = function (message: string) {
   if (message === undefined || message === null) {
     message = ''
   }
@@ -59,7 +56,7 @@ devWindow.signMessage = function(message : string) {
           console.error('Please, login into Vynos.')
         }
         console.error(err)
-      }else {
+      } else {
         web3.eth.sign(accounts[0], web3.sha3(message), (err, res) => {
           if (err) {
             console.error(err)
@@ -73,7 +70,7 @@ devWindow.signMessage = function(message : string) {
   })
 }
 
-window.addEventListener("load", function () {
+window.addEventListener('load', function () {
   let vynos = _window.vynos
 
   let customFrame = document.getElementById('custom_frame')
@@ -96,11 +93,11 @@ window.addEventListener("load", function () {
     }
   }
 
-  let signMessageForm = document.getElementById("sign_message_form")
+  let signMessageForm = document.getElementById('sign_message_form')
   if (signMessageForm) {
     signMessageForm.onsubmit = function (ev: Event) {
       ev.preventDefault()
-      let messageElement = <HTMLInputElement>document.getElementById("sign_message_input")
+      let messageElement = document.getElementById('sign_message_input') as HTMLInputElement
       if (messageElement) {
         devWindow.signMessage(messageElement.value)
       }
@@ -113,11 +110,11 @@ window.addEventListener("load", function () {
   }).then(() => {
     return ynos.getAccount()
   }).then(address => {
-    let span = document.getElementById("account_address")
+    let span = document.getElementById('account_address')
     if (span) {
       let p = span
-      let a = document.createElement("a")
-      a.href = "https://ropsten.etherscan.io/address/" + address.replace(/0x/, '')
+      let a = document.createElement('a')
+      a.href = 'https://ropsten.etherscan.io/address/' + address.replace(/0x/, '')
       a.text = address
       let arr: Array<HTMLElement> = [].slice.call(p.childNodes);
       arr.forEach(element => {
@@ -130,7 +127,7 @@ window.addEventListener("load", function () {
   })
   */
 
-  let openChannelForm = document.getElementById("open_channel")
+  let openChannelForm = document.getElementById('open_channel')
   if (openChannelForm) {
     openChannelForm.onsubmit = function (ev: Event) {
       ev.preventDefault()
@@ -138,29 +135,29 @@ window.addEventListener("load", function () {
         let web3 = new Web3(wallet.provider)
 
           let receiverAccount = ''
-          let receiverInput = document.getElementById("receiver_address")
+          let receiverInput = document.getElementById('receiver_address')
           if (receiverInput) {
             receiverAccount = (receiverInput as HTMLInputElement).value
           }
           console.log(receiverAccount)
-          let amount = web3.toWei(0.0001, "ether")
-          let resultSpan = document.getElementById("open_channel_id")
+          let amount = web3.toWei(0.0001, 'ether')
+          let resultSpan = document.getElementById('open_channel_id')
           if (resultSpan) {
-            resultSpan.textContent = "Loading..."
+            resultSpan.textContent = 'Loading...'
           }
-          wallet.buyPromised(receiverAccount!, parseInt(amount), gateway, Date.now().toString())
+          wallet.buyPromised(receiverAccount!, parseInt(amount, 10), gateway, Date.now().toString())
             .on(BuyProcessEvent.SENT_PAYMENT,
-              (args: WalletBuyArguments)=>{
+              (args: WalletBuyArguments) => {
                   console.log('PAYMENT WAS SENT!')
-                }).on(BuyProcessEvent.RECEIVED_TOKEN, (args: WalletBuyArguments, token : string)=>{
-                  console.log('Token is '+token)
-                }).on(BuyProcessEvent.OPENING_CHANNEL_FINISHED, (args : WalletBuyArguments, channel : ChannelMeta)=>{
+                }).on(BuyProcessEvent.RECEIVED_TOKEN, (args: WalletBuyArguments, token: string) => {
+                  console.log('Token is ' + token)
+                }).on(BuyProcessEvent.OPENING_CHANNEL_FINISHED, (args: WalletBuyArguments, channel: ChannelMeta) => {
                   console.log('Channel meta: ')
                   console.log(channel)
-                }).result.then((buyResponse : VynosBuyResponse) => {
+                }).result.then((buyResponse: VynosBuyResponse) => {
                   console.log(buyResponse)
                   updateRecentVynosBuyResponse(buyResponse)
-                  let resultSpan = document.getElementById("open_channel_id")
+                  let resultSpan = document.getElementById('open_channel_id')
                   if (resultSpan) {
                     resultSpan.textContent = recentBuyResponse!.channelId.toString()
                   }
@@ -170,7 +167,7 @@ window.addEventListener("load", function () {
     }
   }
 
-  let closeChannelForm = document.getElementById("close_channel")
+  let closeChannelForm = document.getElementById('close_channel')
   if (closeChannelForm) {
     closeChannelForm.onsubmit = function (ev: Event) {
       ev.preventDefault()
@@ -179,7 +176,7 @@ window.addEventListener("load", function () {
           wallet.closeChannel(recentBuyResponse!.channelId.toString()).then(() => {
             console.log('Closing channel:')
             console.log(recentBuyResponse!.channelId.toString())
-            let resultSpan = document.getElementById("open_channel_id")
+            let resultSpan = document.getElementById('open_channel_id')
             if (resultSpan) {
               resultSpan.textContent = 'n/a'
             }
@@ -238,4 +235,3 @@ window.addEventListener("load", function () {
   }
   */
 })
-

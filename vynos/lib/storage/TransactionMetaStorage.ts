@@ -1,7 +1,7 @@
 import Datastore = require('nedb')
-import TransactionMeta from "../TransactionMeta";
-import TransactionState from "../TransactionState";
-import Storage from "../Storage";
+import TransactionMeta from '../TransactionMeta'
+import TransactionState from '../TransactionState'
+import Storage from '../Storage'
 import bus from '../../lib/bus'
 import * as events from '../events'
 
@@ -10,7 +10,7 @@ export default class TransactionMetaStorage {
 
   constructor () {
     let d = new Storage('transactions')
-    this.datastore = d.ready();
+    this.datastore = d.ready()
   }
 
   add (transaction: TransactionMeta): Promise<TransactionMeta> {
@@ -94,7 +94,7 @@ export default class TransactionMetaStorage {
       this.datastore.then((datastore) => {
         datastore.loadDatabase(() => {
           this.find({}).then(transactions => {
-            return resolve(transactions);
+            return resolve(transactions)
           })
         })
       })

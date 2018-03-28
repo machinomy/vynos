@@ -1,4 +1,4 @@
-import TransactionKind from "./TransactionKind";
+import TransactionKind from './TransactionKind'
 
 export default interface TransactionMeta {
   id: string

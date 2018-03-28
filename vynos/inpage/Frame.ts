@@ -29,26 +29,26 @@ export default class Frame {
       this.element.style.boxShadow = 'rgba(0, 0, 0, 0.1) 7px 10px 60px 10px'
 
       this.closeButton = document.createElement('div')
-      this.closeButton.id = 'vynos_frame_close_button';
+      this.closeButton.id = 'vynos_frame_close_button'
       this.closeButton.innerHTML = '<img id="vynos_frame_img_close_button" src="' + srcCloseButton + '">'
       this.closeButton.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT) + 'px'
       this.closeButton.style.cursor = 'pointer'
-      this.closeButton.style.width = CLOSE_WIDTH + '%';
-      this.closeButton.style.margin = '-' + FRAME_HEIGHT + 'px 0 0 -' + ((CLOSE_WIDTH - 100) / 2) + '%';
+      this.closeButton.style.width = CLOSE_WIDTH + '%'
+      this.closeButton.style.margin = '-' + FRAME_HEIGHT + 'px 0 0 -' + ((CLOSE_WIDTH - 100) / 2) + '%'
       this.closeButton.setAttribute('title', 'Hide Vynos')
       this.closeButton.appendChild(document.createTextNode(''))
       this.closeButton.addEventListener('click', () => {
         this.hide()
       })
 
-      var style = '#vynos_frame_img_close_button{width: 40px;bottom: 3px;position: absolute;left: 50%;margin-left: -20px;opacity:0;transition: opacity 1s}' +
-        '#vynos_frame_close_button:hover > #vynos_frame_img_close_button{opacity: 1}';
-      this.style = document.createElement('style');
-      this.style.appendChild(document.createTextNode(style));
+      const style = '#vynos_frame_img_close_button{width: 40px;bottom: 3px;position: absolute;left: 50%;margin-left: -20px;opacity:0;transition: opacity 1s}' +
+        '#vynos_frame_close_button:hover > #vynos_frame_img_close_button{opacity: 1}'
+      this.style = document.createElement('style')
+      this.style.appendChild(document.createTextNode(style))
 
-      this.notifications = document.createElement('div');
-      this.notifications.id = 'vynos_notifications';
-      this.notifications.style.marginTop = '25px';
+      this.notifications = document.createElement('div')
+      this.notifications.id = 'vynos_notifications'
+      this.notifications.style.marginTop = '25px'
 
       this.containerElement.appendChild(this.element)
       this.containerElement.appendChild(this.closeButton)
@@ -60,16 +60,16 @@ export default class Frame {
       this.containerElement.style.right = '110px'
       this.containerElement.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT).toString() + 'px'
       this.containerElement.style.width = FRAME_WIDTH + 'px'
-      this.containerElement.style.zIndex = '9999999';
+      this.containerElement.style.zIndex = '9999999'
 
       this.hide()
 
       this.containerElement.style.transition = 'margin-top 0.7s'
       this.element.style.transition = 'opacity 1s'
     }
-    var frameSrc = this.vynosScriptAddress.replace(/vynos.js/, 'frame.html')
+    const frameSrc = this.vynosScriptAddress.replace(/vynos.js/, 'frame.html')
     this.element.src = window.location.href.match(/dev=true/) ? frameSrc + '?dev=true' : frameSrc
-    this.element.setAttribute("sandbox", "allow-scripts allow-modals allow-same-origin allow-popups allow-forms");
+    this.element.setAttribute('sandbox', 'allow-scripts allow-modals allow-same-origin allow-popups allow-forms')
   }
 
   attach (document: HTMLDocument) {
@@ -81,10 +81,21 @@ export default class Frame {
   }
 
   setContainerStyle (containerStyle: CSSStyleDeclaration) {
-    if(containerStyle.right) this.containerElement.style.right = containerStyle.right
-    if(containerStyle.top) this.containerElement.style.top = containerStyle.top
-    if(containerStyle.left) this.containerElement.style.left = containerStyle.left
-    if(containerStyle.bottom) this.containerElement.style.bottom = containerStyle.bottom
+    if (containerStyle.right) {
+      this.containerElement.style.right = containerStyle.right
+    }
+
+    if (containerStyle.top) {
+      this.containerElement.style.top = containerStyle.top
+    }
+
+    if (containerStyle.left) {
+      this.containerElement.style.left = containerStyle.left
+    }
+
+    if (containerStyle.bottom) {
+      this.containerElement.style.bottom = containerStyle.bottom
+    }
   }
 
   display () {
@@ -93,7 +104,7 @@ export default class Frame {
   }
 
   hide () {
-    this.containerElement.style.marginTop = '-500px';
+    this.containerElement.style.marginTop = '-500px'
     this.element.style.opacity = '0'
   }
 }

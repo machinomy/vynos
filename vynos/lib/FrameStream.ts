@@ -1,12 +1,12 @@
-import PostStream from "./PostStream";
-import duplexify = require("duplexify");
-import {Duplex} from "readable-stream";
+import PostStream from './PostStream'
+import duplexify = require('duplexify')
+import { Duplex } from 'readable-stream'
 
 export default class FrameStream {
-  name: string;
+  name: string
 
   constructor (name?: string) {
-    this.name = name || "frame"
+    this.name = name || 'frame'
   }
 
   parentName () {
@@ -18,16 +18,16 @@ export default class FrameStream {
   }
 
   toFrame (frame: HTMLIFrameElement): Duplex {
-    let result = duplexify.obj();
-    frame.addEventListener("load", () => {
+    let result = duplexify.obj()
+    frame.addEventListener('load', () => {
       let postStream = new PostStream({
         sourceName: this.parentName(),
         targetName: this.childName(),
         target: frame.contentWindow
-      });
-      result.setWritable(postStream);
+      })
+      result.setWritable(postStream)
       result.setReadable(postStream)
-    });
+    })
     return result
   }
 

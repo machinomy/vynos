@@ -157,7 +157,9 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
   }
 
   renderSeedInput () {
-    if (this.state.fileIsHex || this.state.fileIsJSON) return null
+    if (this.state.fileIsHex || this.state.fileIsJSON) {
+      return null
+    }
 
     let className = style.mnemonicInput + ' ' + (this.state.seedError ? style.inputError : '')
     return (
@@ -171,7 +173,9 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
   }
 
   renderSeedHint () {
-    if (this.state.fileIsHex || this.state.fileIsJSON) return null
+    if (this.state.fileIsHex || this.state.fileIsJSON) {
+      return null
+    }
 
     if (this.state.seedError) {
       return <span className={style.errorText}><i className={style.vynosInfo}/> {this.state.seedError}</span>
