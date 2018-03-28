@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Container, Form, Button, Input, Label, Dropdown } from 'semantic-ui-react'
-import { FrameState } from "../../../redux/FrameState";
-import { connect } from "react-redux";
-import WorkerProxy from "../../../WorkerProxy";
-import {Preferences as PreferencesType}  from "../../../../worker/WorkerState";
-const fixer = require('fixer-api');
-const style = require("../../../styles/ynos.css");
+import * as React from 'react'
+import { Container, Form } from 'semantic-ui-react'
+import { FrameState } from '../../../redux/FrameState'
+import { connect } from 'react-redux'
+import WorkerProxy from '../../../WorkerProxy'
+import { Preferences as PreferencesType } from '../../../../worker/WorkerState'
+const fixer = require('fixer-api')
+const style = require('../../../styles/ynos.css')
 
 
 export interface PreferencesStateProps {
@@ -23,23 +23,6 @@ export interface PreferencesProps {
   workerProxy: WorkerProxy
   preferences: PreferencesType
 }
-
-// export interface CryptonatorCurrencyData {
-//   code: string
-//   name: string
-//   statuses: string[]
-// }
-//
-// export interface ServerCurrencyData {
-//   code: string
-//   symbol?: string
-//   name_plural: string
-// }
-//
-// export interface FixerCurrencyData {
-//   code: string
-//   name_plural: string
-// }
 
 export interface DropdownCurrencyData {
   key?: string
