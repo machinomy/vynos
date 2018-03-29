@@ -34,7 +34,7 @@ export default class BackgroundController {
     this.store = redux.createStore(reducers, INITIAL_STATE, middleware) as redux.Store<WorkerState>
     this.events = new EventEmitter()
     this.hydrated = false
-    localForage.config({driver: localForage.INDEXEDDB})
+    localForage.config({ driver: localForage.INDEXEDDB })
     persistStore(this.store, { blacklist: ['runtime', 'shared'], storage: localForage }, (error, result) => {
       this.hydrated = true
       this.events.emit(STATE_UPDATED_EVENT)

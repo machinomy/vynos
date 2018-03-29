@@ -8,6 +8,8 @@
     "jsx-no-bind": [false], // TODO Remove it
     "jsx-no-multiline-js": [false], // TODO Remove it
     "jsx-no-lambda": [false], // TODO Remove it
-    "block-spacing": [false] // TODO Remove it
+    "block-spacing": [false], // TODO Remove it
+    "jsx-no-string-ref": [false], // TODO Remove it
+    "handle-callback-err": [false] // TODO Remove it
   }
 }

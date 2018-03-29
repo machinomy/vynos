@@ -1,4 +1,4 @@
-import actionCreatorFactory, {ActionCreator} from 'typescript-fsa'
+import actionCreatorFactory, { ActionCreator } from 'typescript-fsa'
 import { Preferences, WorkerState } from './WorkerState'
 import Wallet from 'ethereumjs-wallet'
 
@@ -71,7 +71,7 @@ export const setLastUpdateDb = actionCreator<number>('runtime/setLastUpdateDb')
 export function setLastUpdateDbHandler (state: WorkerState, timestamp: number): WorkerState {
   return {
     ...state,
-    runtime: {...state.runtime, lastUpdateDb: timestamp}
+    runtime: { ...state.runtime, lastUpdateDb: timestamp }
   }
 }
 

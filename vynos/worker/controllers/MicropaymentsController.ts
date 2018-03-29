@@ -11,15 +11,14 @@ import Web3 = require('web3')
 import TransactionService from '../TransactionService'
 import * as transactions from '../../lib/transactions'
 import PurchaseMeta from '../../lib/PurchaseMeta'
-import ChannelMetaStorage, { ChannelMeta } from '../../lib/storage/ChannelMetaStorage'
+import ChannelMetaStorage from '../../lib/storage/ChannelMetaStorage'
 import TransactionState from '../../lib/TransactionState'
 import TransactionMeta from '../../lib/TransactionMeta'
 import * as actions from '../actions'
 import bus from '../../lib/bus'
-import { CHANGE_NETWORK } from '../../lib/constants'
 import { SharedState } from '../WorkerState'
 import * as events from '../../lib/events'
-import { BuyProcessEvent, buyProcessEvent } from '../../lib/rpc/buyProcessEventBroadcast'
+import { BuyProcessEvent } from '../../lib/rpc/buyProcessEventBroadcast'
 import { WalletBuyArguments } from '../../lib/Vynos'
 
 const timeparse = require('timeparse')
@@ -62,7 +61,7 @@ export default class MicropaymentsController {
           let account = accounts[0]
           let machinomy = new Machinomy(account, this.web3, { engine: 'nedb', databaseFile: 'vynos' })
           machinomy.close(channelId).then(() => {
-            let channelDescription = JSON.stringify({channelId: channelId.toString()})
+            let channelDescription = JSON.stringify({ channelId: channelId.toString() })
             let transaction = transactions.closeChannel(channelDescription)
             return this.transactions.addTransaction(transaction).then(() => {
               resolve(channelId)
@@ -91,9 +90,9 @@ export default class MicropaymentsController {
             let account = accounts[0]
             let options: any
             if (channelValue !== undefined) {
-              options = {engine: 'nedb', databaseFile: 'vynos', minimumChannelAmount: channelValue}
+              options = { engine: 'nedb', databaseFile: 'vynos', minimumChannelAmount: channelValue }
             } else {
-              options = {engine: 'nedb', databaseFile: 'vynos'}
+              options = { engine: 'nedb', databaseFile: 'vynos' }
             }
             let machinomy = new Machinomy(account, this.web3, options)
             let response: VynosBuyResponse = await machinomy.buy({
@@ -118,7 +117,7 @@ export default class MicropaymentsController {
                 openingTime: Date.now()
               }
               await this.channels.save(newChannelMeta)
-              let channelDescription = JSON.stringify({channelId: response.channelId.toString()})
+              let channelDescription = JSON.stringify({ channelId: response.channelId.toString() })
               let transaction = transactions.openChannel('Opening of channel', channelDescription, account, receiver, channelValue ? channelValue : amount * 10)
               await this.transactions.addTransaction(transaction)
               bus.emit(BuyProcessEvent.OPENING_CHANNEL_FINISHED, walletBuyArguments, newChannelMeta)

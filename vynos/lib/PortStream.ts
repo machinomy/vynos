@@ -36,7 +36,7 @@ export class PortStream extends Duplex {
   _write (message: any, encoding: string, next: (datum?: any) => void) {
     try {
       if (Buffer.isBuffer(message)) {
-        let data = Object.assign({_isBuffer: true}, message.toJSON())
+        let data = Object.assign({ _isBuffer: true }, message.toJSON())
         data._isBuffer = true
         this.port.postMessage(data)
       } else {

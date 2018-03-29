@@ -32,7 +32,9 @@ export default class StreamServer extends Duplex {
           error: (error || '').toString()
         })
       } else {
-        if (response) this.push(response)
+        if (response) {
+          this.push(response)
+        }
       }
     }
 
@@ -42,7 +44,9 @@ export default class StreamServer extends Duplex {
       if (head) {
         head(payload, next, end)
       } else {
-        if (this.verbose) console.log(`${this.name}: No response for message`, payload)
+        if (this.verbose) {
+          console.log(`${this.name}: No response for message`, payload)
+        }
       }
     }
 

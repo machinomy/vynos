@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-unused-variable
 import * as React from 'react'
 import { Image } from 'semantic-ui-react'
 

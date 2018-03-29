@@ -153,7 +153,7 @@ export default class BackgroundHandler {
     end(null)
   }
 
-changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) {
+  changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) {
     let response: ChangeNetworkResponse = {
       id: message.id,
       jsonrpc: message.jsonrpc,
@@ -161,7 +161,7 @@ changeNetwork (message: ChangeNetworkRequest, next: Function, end: EndFunction) 
     }
 
     this.controller.changeNetwork().then(() => {
-      end(null, response)
+        end(null, response)
     }).catch(end)
   }
 

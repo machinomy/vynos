@@ -1,12 +1,12 @@
 import { DevWindow, VynosWindow } from '../vynos/window'
-import { PaymentChannel } from 'machinomy/lib/channel'
-import { inspect } from 'util'
-import Namespace from '../vynos/inpage/Namespace'
+// import { PaymentChannel } from 'machinomy/lib/channel'
+// import { inspect } from 'util'
+// import Namespace from '../vynos/inpage/Namespace'
 import Web3 = require('web3')
 import VynosBuyResponse from '../vynos/lib/VynosBuyResponse'
-import * as BigNumber from 'bignumber.js'
+// import * as BigNumber from 'bignumber.js'
 import { WalletBuyArguments } from '../vynos/lib/Vynos'
-import { buyProcessEvent, BuyProcessEvent } from '../vynos/lib/rpc/buyProcessEventBroadcast'
+import { /* buyProcessEvent, */ BuyProcessEvent } from '../vynos/lib/rpc/buyProcessEventBroadcast'
 import { ChannelMeta } from '../vynos/lib/storage/ChannelMetaStorage'
 
 let _window = (window as VynosWindow)
@@ -134,34 +134,34 @@ window.addEventListener('load', function () {
       vynos.ready().then((wallet) => {
         let web3 = new Web3(wallet.provider)
 
-          let receiverAccount = ''
-          let receiverInput = document.getElementById('receiver_address')
-          if (receiverInput) {
-            receiverAccount = (receiverInput as HTMLInputElement).value
-          }
-          console.log(receiverAccount)
-          let amount = web3.toWei(0.0001, 'ether')
-          let resultSpan = document.getElementById('open_channel_id')
-          if (resultSpan) {
-            resultSpan.textContent = 'Loading...'
-          }
-          wallet.buyPromised(receiverAccount!, parseInt(amount, 10), gateway, Date.now().toString())
-            .on(BuyProcessEvent.SENT_PAYMENT,
-              (args: WalletBuyArguments) => {
-                  console.log('PAYMENT WAS SENT!')
-                }).on(BuyProcessEvent.RECEIVED_TOKEN, (args: WalletBuyArguments, token: string) => {
-                  console.log('Token is ' + token)
-                }).on(BuyProcessEvent.OPENING_CHANNEL_FINISHED, (args: WalletBuyArguments, channel: ChannelMeta) => {
-                  console.log('Channel meta: ')
-                  console.log(channel)
-                }).result.then((buyResponse: VynosBuyResponse) => {
-                  console.log(buyResponse)
-                  updateRecentVynosBuyResponse(buyResponse)
-                  let resultSpan = document.getElementById('open_channel_id')
-                  if (resultSpan) {
-                    resultSpan.textContent = recentBuyResponse!.channelId.toString()
-                  }
-                })
+        let receiverAccount = ''
+        let receiverInput = document.getElementById('receiver_address')
+        if (receiverInput) {
+          receiverAccount = (receiverInput as HTMLInputElement).value
+        }
+        console.log(receiverAccount)
+        let amount = web3.toWei(0.0001, 'ether')
+        let resultSpan = document.getElementById('open_channel_id')
+        if (resultSpan) {
+          resultSpan.textContent = 'Loading...'
+        }
+        wallet.buyPromised(receiverAccount!, parseInt(amount, 10), gateway, Date.now().toString())
+        .on(BuyProcessEvent.SENT_PAYMENT,
+          (args: WalletBuyArguments) => {
+              console.log('PAYMENT WAS SENT!')
+            }).on(BuyProcessEvent.RECEIVED_TOKEN, (args: WalletBuyArguments, token: string) => {
+              console.log('Token is ' + token)
+            }).on(BuyProcessEvent.OPENING_CHANNEL_FINISHED, (args: WalletBuyArguments, channel: ChannelMeta) => {
+              console.log('Channel meta: ')
+              console.log(channel)
+            }).result.then((buyResponse: VynosBuyResponse) => {
+              console.log(buyResponse)
+              updateRecentVynosBuyResponse(buyResponse)
+              let resultSpan = document.getElementById('open_channel_id')
+              if (resultSpan) {
+                resultSpan.textContent = recentBuyResponse!.channelId.toString()
+              }
+            })
 
       })
     }

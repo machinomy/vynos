@@ -6,14 +6,12 @@ import BackgroundHandler from './worker/controllers/BackgroundHandler'
 import NetworkController from './worker/controllers/NetworkController'
 import MicropaymentsHandler from './worker/controllers/MicropaymentsHandler'
 import MicropaymentsController from './worker/controllers/MicropaymentsController'
-import _ = require('lodash')
 import TransactionService from './worker/TransactionService'
 
 asServiceWorker(self => {
   if (self.registration.active) {
     let scriptUrl = self.registration.active.scriptURL
     let scriptQuery = scriptUrl.replace(/.*\?/, '')
-    let query = _.chain(scriptQuery).replace('?', '').split('&').map(_.ary(_.partial(_.split, _, '='), 1)).fromPairs().value()
   }
 
   let backgroundController = new BackgroundController()

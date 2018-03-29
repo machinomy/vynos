@@ -13,19 +13,21 @@ export interface RoutesProps {
 }
 
 const routes: React.SFC<RoutesProps> = (props: RoutesProps) => {
-  return <ConnectedRouter history={props.history}>
-    <Switch>
-      <Route path="/approve" component={ApprovePage} />
-
+  return (
+    <ConnectedRouter history={props.history}>
       <Switch>
-          <Route exact path="/wallet" component={Wallet}/>
-          <Route path="/wallet/channels" component={Channels}/>
-          <Route path="/wallet/preferences" component={Preferences}/>
-          <Route path="/wallet/network" component={Network} />
-      </Switch>
+        <Route path="/approve" component={ApprovePage} />
 
-    </Switch>
-  </ConnectedRouter>
+        <Switch>
+            <Route exact={true} path="/wallet" component={Wallet}/>
+            <Route path="/wallet/channels" component={Channels}/>
+            <Route path="/wallet/preferences" component={Preferences}/>
+            <Route path="/wallet/network" component={Network} />
+        </Switch>
+
+      </Switch>
+    </ConnectedRouter>
+  )
 }
 
 export default routes

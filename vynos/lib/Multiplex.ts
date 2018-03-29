@@ -1,4 +1,4 @@
-import {Duplex, Transform} from 'readable-stream'
+import { Duplex, Transform } from 'readable-stream'
 
 export class Substream extends Transform {
   superstream: Multiplex

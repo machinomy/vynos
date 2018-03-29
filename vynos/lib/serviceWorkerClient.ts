@@ -38,7 +38,7 @@ export function register (client: ServiceWorkerClient) {
     const workerSrc = 'worker.js'
     const src = window.location.href.match(/dev=true/) ? workerSrc.replace('.js', '.dev.js') : workerSrc
     const scriptUrl = window.location.href.replace('frame.html', src)
-    navigator.serviceWorker.register(scriptUrl, {scope: './'}).then(registration => {
+    navigator.serviceWorker.register(scriptUrl, { scope: './' }).then(registration => {
       install(client, registration)
     }).catch(error => {
       console.error(error)

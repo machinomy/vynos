@@ -72,7 +72,7 @@ export default class TransactionMetaStorage {
         let eventName = events.txRejected(id)
         bus.emit(eventName)
         return array
-    })
+      })
   }
 
   update (query: object, update: object): Promise<Array<TransactionMeta>> {
