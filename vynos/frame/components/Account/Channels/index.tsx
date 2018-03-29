@@ -1,5 +1,5 @@
 // tslint:disable-next-line:no-unused-variable
-import { default as React, Component } from 'react'
+import * as React from 'react'
 import { List, Image } from 'semantic-ui-react'
 import Web3 = require('web3')
 import Machinomy from 'machinomy'
@@ -21,7 +21,7 @@ export interface ChannelsSubpageState {
   activeChannel: string
 }
 
-export class ChannelsSubpage extends Component<ChannelsSubpageProps, ChannelsSubpageState> {
+export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, ChannelsSubpageState> {
   channelMetaStorage: ChannelMetaStorage
   machinomy: Machinomy | null
   localLastUpdateDb: number
@@ -193,4 +193,4 @@ function mapStateToProps (state: FrameState, ownProps: ChannelsSubpageProps): Ch
   }
 }
 
-export default connect<ChannelsSubpageProps, undefined, ChannelsSubpageProps, FrameState>(mapStateToProps)(ChannelsSubpage as ComponentClass<ChannelsSubpageProps> )
+export default connect<ChannelsSubpageProps, undefined, ChannelsSubpageProps>(mapStateToProps)(ChannelsSubpage)
