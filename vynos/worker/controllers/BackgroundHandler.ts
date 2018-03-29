@@ -161,7 +161,7 @@ export default class BackgroundHandler {
     }
 
     this.controller.changeNetwork().then(() => {
-        end(null, response)
+      end(null, response)
     }).catch(end)
   }
 

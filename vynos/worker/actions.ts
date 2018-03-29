@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-unused-variable
 import actionCreatorFactory, { ActionCreator } from 'typescript-fsa'
 import { Preferences, WorkerState } from './WorkerState'
 import Wallet from 'ethereumjs-wallet'

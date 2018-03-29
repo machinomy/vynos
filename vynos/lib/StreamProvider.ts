@@ -8,7 +8,7 @@ export default class StreamProvider extends Duplex implements Web3.Provider {
   strict: boolean
 
   constructor (name?: string, strict?: boolean) {
-    super({objectMode: true})
+    super({ objectMode: true })
     this._callbacks = new Map()
     this.name = `StreamProvider at ${name}` || 'StreamProvider'
     this.strict = strict || false
@@ -43,7 +43,9 @@ export default class StreamProvider extends Duplex implements Web3.Provider {
 
       if (timeout > 0) {
         setTimeout(() => {
-          if (!resolved) reject(new Error('Timeout'))
+          if (!resolved) {
+            reject(new Error('Timeout'))
+          }
         }, timeout)
       }
     })

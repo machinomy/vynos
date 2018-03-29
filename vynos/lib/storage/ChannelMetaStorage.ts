@@ -19,7 +19,7 @@ export default class ChannelMetaStorage {
 
   constructor () {
     let d = new Storage(CHANGE_NETWORK)
-    this.datastore = d.ready();
+    this.datastore = d.ready()
     this.datastore.then()
   }
 
@@ -56,7 +56,7 @@ export default class ChannelMetaStorage {
       if (!found) {
         return this.save(meta)
       }
-      return;
+      return
     })
   }
 

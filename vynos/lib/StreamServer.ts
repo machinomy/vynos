@@ -11,7 +11,7 @@ export default class StreamServer extends Duplex {
   name: string
 
   constructor (name?: string, verbose: boolean = false) {
-    super({objectMode: true})
+    super({ objectMode: true })
     this._handlers = []
     this.name = `StreamServer at ${name}` || 'StreamServer'
     this.verbose = verbose

@@ -12,7 +12,7 @@ export default class ServiceWorkerStream extends Duplex {
   sourceName: string
 
   constructor (options: ServiceWorkerStreamOptions) {
-    super({objectMode: true})
+    super({ objectMode: true })
     this.source = options.source
     this.targetName = options.targetName
     this.sourceName = options.sourceName
@@ -40,7 +40,7 @@ export default class ServiceWorkerStream extends Duplex {
       target: this.targetName,
       data: data
     }
-    this.source.clients.matchAll({includeUncontrolled: true}).then(clients => {
+    this.source.clients.matchAll({ includeUncontrolled: true }).then(clients => {
       clients.forEach(client => {
         client.postMessage(message)
       })

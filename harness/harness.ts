@@ -146,23 +146,21 @@ window.addEventListener('load', function () {
           resultSpan.textContent = 'Loading...'
         }
         wallet.buyPromised(receiverAccount!, parseInt(amount, 10), gateway, Date.now().toString())
-        .on(BuyProcessEvent.SENT_PAYMENT,
-          (args: WalletBuyArguments) => {
-              console.log('PAYMENT WAS SENT!')
-            }).on(BuyProcessEvent.RECEIVED_TOKEN, (args: WalletBuyArguments, token: string) => {
-              console.log('Token is ' + token)
-            }).on(BuyProcessEvent.OPENING_CHANNEL_FINISHED, (args: WalletBuyArguments, channel: ChannelMeta) => {
-              console.log('Channel meta: ')
-              console.log(channel)
-            }).result.then((buyResponse: VynosBuyResponse) => {
-              console.log(buyResponse)
-              updateRecentVynosBuyResponse(buyResponse)
-              let resultSpan = document.getElementById('open_channel_id')
-              if (resultSpan) {
-                resultSpan.textContent = recentBuyResponse!.channelId.toString()
-              }
-            })
-
+        .on(BuyProcessEvent.SENT_PAYMENT, (args: WalletBuyArguments) => {
+          console.log('PAYMENT WAS SENT!')
+        }).on(BuyProcessEvent.RECEIVED_TOKEN, (args: WalletBuyArguments, token: string) => {
+          console.log('Token is ' + token)
+        }).on(BuyProcessEvent.OPENING_CHANNEL_FINISHED, (args: WalletBuyArguments, channel: ChannelMeta) => {
+          console.log('Channel meta: ')
+          console.log(channel)
+        }).result.then((buyResponse: VynosBuyResponse) => {
+          console.log(buyResponse)
+          updateRecentVynosBuyResponse(buyResponse)
+          let resultSpan = document.getElementById('open_channel_id')
+          if (resultSpan) {
+            resultSpan.textContent = recentBuyResponse!.channelId.toString()
+          }
+        })
       })
     }
   }
