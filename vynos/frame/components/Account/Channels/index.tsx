@@ -1,10 +1,10 @@
-import * as React from 'react'
+import { default as React, Component } from 'react'
 import { List, Image } from 'semantic-ui-react'
 import Web3 = require('web3')
 import Machinomy from 'machinomy'
 import BlockieComponent from '../../BlockieComponent'
 import ChannelMetaStorage from '../../../../lib/storage/ChannelMetaStorage'
-import { connect } from 'react-redux'
+import { connect, ComponentClass } from 'react-redux'
 import { FrameState } from '../../../redux/FrameState'
 import { isUndefined } from 'util'
 
@@ -20,20 +20,20 @@ export interface ChannelsSubpageState {
   activeChannel: string
 }
 
-export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, ChannelsSubpageState> {
+export class ChannelsSubpage extends Component<ChannelsSubpageProps, ChannelsSubpageState>  {
   channelMetaStorage: ChannelMetaStorage
   machinomy: Machinomy | null
   localLastUpdateDb: number
 
-  constructor (props: ChannelsSubpageProps) {
-    super(props)
+  constructor (props?: ChannelsSubpageProps | undefined, context?: any) {
+    super(props!, context)
     this.state = {
       channels: [],
       activeChannel: ''
     }
     this.channelMetaStorage = new ChannelMetaStorage()
     this.machinomy = null
-    this.localLastUpdateDb = props.lastUpdateDb
+    this.localLastUpdateDb = props!.lastUpdateDb
   }
 
   getMachinomy () {
@@ -185,11 +185,11 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
   }
 }
 
-function mapStateToProps (state: FrameState): ChannelsSubpageProps {
+function mapStateToProps (state: FrameState, ownProps: ChannelsSubpageProps): ChannelsSubpageProps {
   return {
     lastUpdateDb: state.shared.lastUpdateDb,
     web3: state.temp.workerProxy.web3
   }
 }
 
-export default connect(mapStateToProps)(ChannelsSubpage)
+export default connect<ChannelsSubpageProps, undefined, ChannelsSubpageProps, FrameState>(mapStateToProps)(ChannelsSubpage as ComponentClass<ChannelsSubpageProps> )

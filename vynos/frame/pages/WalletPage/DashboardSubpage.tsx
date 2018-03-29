@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
+import {connect, ComponentClass} from 'react-redux'
 import Web3 = require('web3')
 import { FrameState } from '../../redux/FrameState'
 
@@ -76,4 +76,4 @@ function mapStateToProps (state: FrameState): DashboardSubpageProps {
   }
 }
 
-export default connect(mapStateToProps)(DashboardSubpage)
+export default connect<DashboardSubpageProps, undefined, DashboardSubpageProps, FrameState>(mapStateToProps)(DashboardSubpage as ComponentClass<DashboardSubpageProps> )

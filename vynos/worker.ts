@@ -1,6 +1,6 @@
 import { asServiceWorker } from './worker/window'
 import BackgroundController from './worker/controllers/BackgroundController'
-import StreamServer from './lib/StreamServer'
+import { default as StreamServer, Handler as StreamServerHandler } from './lib/StreamServer'
 import ServiceWorkerStream from './lib/ServiceWorkerStream'
 import BackgroundHandler from './worker/controllers/BackgroundHandler'
 import NetworkController from './worker/controllers/NetworkController'
@@ -17,9 +17,9 @@ asServiceWorker(self => {
 
   let background = new BackgroundHandler(backgroundController)
   let server = new StreamServer('Worker', true)
-    .add(background.handler)
-    .add(micropaymentsHandler.handler)
-    .add(networkController.handler)
+    .add(background.handler as StreamServerHandler)
+    .add(micropaymentsHandler.handler as StreamServerHandler)
+    .add(networkController.handler as StreamServerHandler)
 
   let stream = new ServiceWorkerStream({
     sourceName: 'worker',

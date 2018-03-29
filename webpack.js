@@ -40,7 +40,7 @@ function webpackConfig (entry, devSupplement) {
       rules: [
         {
           test: /\.tsx?$/,
-          loaders: process.env.NODE_ENV === 'production' ? ["ts-loader"] : ["react-hot-loader/webpack", "ts-loader"]
+          loaders: process.env.NODE_ENV === 'production' ? ["ts-loader"] : ["babel-loader", "ts-loader"]
         },
         { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
         {
