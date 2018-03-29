@@ -1,4 +1,4 @@
-# Vynos
+# Vynos [![Build Status](https://travis-ci.com/machinomy/vynos.svg?token=K1HKiXykkAKA6zQXxNvq&branch=master)](https://travis-ci.com/machinomy/vynos)
 
 > In-browser micropayments wallet.
 
