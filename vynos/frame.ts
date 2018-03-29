@@ -6,13 +6,14 @@ import renderApplication from './frame/renderApplication'
 import { Duplex } from 'readable-stream'
 
 class Client implements ServiceWorkerClient {
-  workerStream: PostStream
+  workerStream: PostStream | undefined
   windowStream: Duplex
   workerProxy: WorkerProxy
 
   constructor () {
     this.workerProxy = new WorkerProxy()
     this.windowStream = new FrameStream('vynos').toParent()
+    this.workerStream = undefined
   }
 
   load (serviceWorker: ServiceWorker) {
@@ -32,10 +33,10 @@ class Client implements ServiceWorkerClient {
 
   unload () {
     this.windowStream.unpipe(this.workerStream)
-    this.workerStream.unpipe(this.windowStream)
-    this.workerStream.unpipe(this.workerProxy.provider)
+    this.workerStream!.unpipe(this.windowStream)
+    this.workerStream!.unpipe(this.workerProxy.provider)
     this.workerProxy.provider.unpipe(this.workerStream)
-    this.workerStream.end()
+    this.workerStream!.end()
   }
 }
 

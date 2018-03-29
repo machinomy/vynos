@@ -207,7 +207,7 @@ export default class BackgroundController {
     })
   }
 
-  onBuyProcessEvent (fn: (typeOfMessage: string, args: WalletBuyArguments, token?: string, channelId?: ChannelMeta) => void): void {
+  onBuyProcessEvent (fn: (typeOfMessage: BuyProcessEvent, args: WalletBuyArguments, token?: string, channelId?: ChannelMeta) => void): void {
     bus.on(BuyProcessEvent.NO_CHANNEL_FOUND, (args: WalletBuyArguments) => {
       fn(BuyProcessEvent.NO_CHANNEL_FOUND, args)
     })

@@ -78,7 +78,8 @@ export default class WorkerProxy extends EventEmitter {
       id: randomId(),
       jsonrpc: JSONRPC,
       method: RestoreWalletRequest.method,
-      params: [password, type, value]
+      // TODO params: [password, type, value] was here. But in yns.ts declared only 2 elements
+      params: [password, type]
     }
     return this.provider.ask(request).then((response: RestoreWalletResponse) => {
       return response.result

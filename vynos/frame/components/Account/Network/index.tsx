@@ -21,8 +21,8 @@ export class Network extends React.Component<NetworkProps, NetworkState> {
   settingStorage: SettingStorage
   networkNames: string[]
 
-  constructor () {
-    super()
+  constructor (props?: NetworkProps | undefined, context?: any) {
+    super(props, context)
     this.settingStorage = new SettingStorage()
     this.networkNames = []
     this.state = { value: '0', customNetwork: '', savedCustomNetwork: '' }

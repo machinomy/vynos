@@ -6,11 +6,12 @@ import { CHANGE_NETWORK } from './constants'
 const settingStorage = new SettingStorage()
 
 export default class Storage {
-  datastore: Datastore
+  datastore: Datastore | undefined
   name: string
 
   constructor (name: string) {
     this.name = name
+    this.datastore = undefined
     this.load().catch(console.error)
     bus.on(CHANGE_NETWORK, () => {
       this.load().catch(console.error)

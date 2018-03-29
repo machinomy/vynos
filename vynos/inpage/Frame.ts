@@ -7,15 +7,19 @@ const imgUpArrow = require('../frame/styles/images/up-arrow.svg')
 
 export default class Frame {
   element: HTMLIFrameElement
-  containerElement: HTMLDivElement
-  closeButton: HTMLDivElement
-  style: HTMLStyleElement
+  containerElement: HTMLDivElement | undefined
+  closeButton: HTMLDivElement | undefined
+  style: HTMLStyleElement | undefined
   vynosScriptAddress: string
-  notifications: HTMLDivElement
+  notifications: HTMLDivElement | undefined
 
   constructor (scriptAddress: string, frameElement?: HTMLIFrameElement) {
     this.vynosScriptAddress = scriptAddress
     let srcCloseButton = this.vynosScriptAddress.replace(/vynos(.|.dev.)js/, imgUpArrow)
+    this.containerElement = undefined
+    this.closeButton = undefined
+    this.style = undefined
+    this.notifications = undefined
 
     if (frameElement) {
       this.element = frameElement
@@ -76,35 +80,35 @@ export default class Frame {
     if (this.containerElement && !this.containerElement.parentElement) {
       document.body.insertBefore(this.containerElement, document.body.firstChild)
     } else if (!this.element.parentElement) {
-      document.body.insertBefore(this.containerElement, document.body.firstChild)
+      document.body.insertBefore(this.containerElement!, document.body.firstChild)
     }
   }
 
   setContainerStyle (containerStyle: CSSStyleDeclaration) {
     if (containerStyle.right) {
-      this.containerElement.style.right = containerStyle.right
+      this.containerElement!.style.right = containerStyle.right
     }
 
     if (containerStyle.top) {
-      this.containerElement.style.top = containerStyle.top
+      this.containerElement!.style.top = containerStyle.top
     }
 
     if (containerStyle.left) {
-      this.containerElement.style.left = containerStyle.left
+      this.containerElement!.style.left = containerStyle.left
     }
 
     if (containerStyle.bottom) {
-      this.containerElement.style.bottom = containerStyle.bottom
+      this.containerElement!.style.bottom = containerStyle.bottom
     }
   }
 
   display () {
-    this.containerElement.style.marginTop = '0px'
+    this.containerElement!.style.marginTop = '0px'
     this.element.style.opacity = '1'
   }
 
   hide () {
-    this.containerElement.style.marginTop = '-500px'
+    this.containerElement!.style.marginTop = '-500px'
     this.element.style.opacity = '0'
   }
 }

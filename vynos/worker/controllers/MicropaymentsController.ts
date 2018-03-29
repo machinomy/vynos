@@ -28,13 +28,14 @@ export default class MicropaymentsController {
   background: BackgroundController
   transactions: TransactionService
   channels: ChannelMetaStorage
-  web3: Web3
+  web3: Web3 | undefined
 
   constructor (network: NetworkController, background: BackgroundController, transactions: TransactionService) {
     this.network = network
     this.background = background
     this.transactions = transactions
     this.channels = new ChannelMetaStorage()
+    this.web3 = undefined
     this.background.awaitUnlock(() => {
       this.background.getAccounts().then(accounts => {
         let provider = ZeroClientProvider(this.providerOpts(network.rpcUrl))
@@ -59,7 +60,7 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.web3, { engine: 'nedb', databaseFile: 'vynos' })
+          let machinomy = new Machinomy(account, this.web3!, { engine: 'nedb', databaseFile: 'vynos' })
           machinomy.close(channelId).then(() => {
             let channelDescription = JSON.stringify({ channelId: channelId.toString() })
             let transaction = transactions.closeChannel(channelDescription)
@@ -94,7 +95,7 @@ export default class MicropaymentsController {
             } else {
               options = { engine: 'nedb', databaseFile: 'vynos' }
             }
-            let machinomy = new Machinomy(account, this.web3, options)
+            let machinomy = new Machinomy(account, this.web3!, options)
             let response: VynosBuyResponse = await machinomy.buy({
               receiver: receiver,
               price: amount,
@@ -145,7 +146,7 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.web3, { engine: 'nedb', databaseFile: 'vynos' })
+          let machinomy = new Machinomy(account, this.web3!, { engine: 'nedb', databaseFile: 'vynos' })
           machinomy.channels().then(resolve).catch(reject)
         })
       })

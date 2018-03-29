@@ -21,12 +21,13 @@ export default class Multiplex extends Transform {
   emitErrors: boolean
 
   private streams: Map<string, Duplex>
-  private ignored: Set<string>
+  private ignored: Set<string> | undefined
 
   constructor (emitErrors: boolean = false) {
     super()
     this.streams = new Map()
     this.emitErrors = emitErrors
+    this.ignored = undefined
   }
 
   _transform (chunk: any, encoding: any, next: (err?: any) => void): void {
@@ -36,7 +37,7 @@ export default class Multiplex extends Transform {
     if (substream) {
       substream.push(data)
     } else {
-      if (!this.ignored.has(name)) {
+      if (!this.ignored!.has(name)) {
         console.warn(`Orphaned data for stream '${name}'`)
       }
     }
@@ -58,6 +59,6 @@ export default class Multiplex extends Transform {
   }
 
   ignoreStream (name: string) {
-    this.ignored.add(name)
+    this.ignored!.add(name)
   }
 }

@@ -1,4 +1,4 @@
-export const JSONRPC = '2.0'
+export const JSONRPC: string = '2.0'
 
 export interface Payload {
   id: number | string

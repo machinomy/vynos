@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-unused-variable
 import { default as React, Component } from 'react'
 import { List, Image } from 'semantic-ui-react'
 import Web3 = require('web3')
@@ -20,7 +21,7 @@ export interface ChannelsSubpageState {
   activeChannel: string
 }
 
-export class ChannelsSubpage extends Component<ChannelsSubpageProps, ChannelsSubpageState>  {
+export class ChannelsSubpage extends Component<ChannelsSubpageProps, ChannelsSubpageState> {
   channelMetaStorage: ChannelMetaStorage
   machinomy: Machinomy | null
   localLastUpdateDb: number

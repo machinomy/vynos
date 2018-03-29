@@ -29,6 +29,7 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
       preferences : props.preferences,
       throttlingTimeFormatted: props.preferences.micropaymentThrottlingHumanReadable
     }
+    this.privateKeyHex = ''
   }
 
   async componentWillMount () {

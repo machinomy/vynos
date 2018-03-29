@@ -22,6 +22,7 @@ export class VerifiablePage extends React.Component<VerifiablePageProps, Verifia
     let randNumber = VerifiablePage.getRandomNumber(1000, 9999)
     localStorage.setItem('randNumber', randNumber.toString())
     this.state = { randNumber }
+    this.win = null
   }
 
   static getRandomNumber (min: number, max: number): number {
@@ -30,7 +31,7 @@ export class VerifiablePage extends React.Component<VerifiablePageProps, Verifia
 
   show () {
     this.win = window.open('/check.html', '', 'width=300,height=200')
-    this.win.onbeforeunload = () => {
+    this.win!.onbeforeunload = () => {
       this.props.hideVerifiable()
     }
   }
