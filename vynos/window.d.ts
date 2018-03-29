@@ -2,7 +2,7 @@ import Namespace from './inpage/Namespace'
 
 export interface DevWindow extends Window {
   RPC_URL: string
-  signMessage: (message : string) => void
+  signMessage: (message: string) => void
 }
 
 export interface VynosWindow extends Window {
@@ -10,4 +10,4 @@ export interface VynosWindow extends Window {
   showVynosNotification: any
 }
 
-declare var window: DevWindow & VynosWindow;
+declare var window: DevWindow & VynosWindow

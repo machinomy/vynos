@@ -9,13 +9,7 @@ import MicropaymentsController from './worker/controllers/MicropaymentsControlle
 import TransactionService from './worker/TransactionService'
 
 asServiceWorker(self => {
-  if (self.registration.active) {
-    let scriptUrl = self.registration.active.scriptURL
-    let scriptQuery = scriptUrl.replace(/.*\?/, '')
-  }
-
   let backgroundController = new BackgroundController()
-
   let transactionService = new TransactionService(backgroundController.store)
   let networkController = new NetworkController(backgroundController, transactionService)
   let micropaymentsController = new MicropaymentsController(networkController, backgroundController, transactionService)
