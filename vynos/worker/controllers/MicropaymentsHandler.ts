@@ -17,8 +17,9 @@ import {
   SetRejectByIdRequest,
   SetRejectByIdResponse
 } from '../../lib/rpc/yns'
-import { PaymentChannel } from 'machinomy/lib/channel'
-import Payment from 'machinomy/lib/Payment'
+import { PaymentChannel } from 'machinomy/dist/lib/channel'
+import Payment from 'machinomy/dist/lib/Payment'
+import { PaymentChannelSerde } from 'machinomy/dist/lib/payment_channel'
 
 export default class MicropaymentsHandler {
   controller: MicropaymentsController
@@ -35,7 +36,7 @@ export default class MicropaymentsHandler {
       let response: OpenChannelResponse = {
         id: message.id,
         jsonrpc: message.jsonrpc,
-        result: [channel.toJSON()]
+        result: [PaymentChannelSerde.instance.serialize(channel)]
       }
       end(null, response)
     }).catch(end)
@@ -54,7 +55,7 @@ export default class MicropaymentsHandler {
   }
 
   payInChannel (message: PayInChannelRequest, next: Function, end: EndFunction) {
-    let channel = PaymentChannel.fromDocument(message.params[0])
+    let channel = PaymentChannelSerde.instance.deserialize(message.params[0])
     let amount = message.params[1]
     let override = message.params[2]
     this.controller.payInChannel(channel, amount, override).then(tuple => {
@@ -63,7 +64,7 @@ export default class MicropaymentsHandler {
       let response: PayInChannelResponse = {
         id: message.id,
         jsonrpc: message.jsonrpc,
-        result: [channel.toJSON(), payment]
+        result: [PaymentChannelSerde.instance.serialize(channel), payment]
       }
       end(null, response)
     }).catch(end)
@@ -74,7 +75,7 @@ export default class MicropaymentsHandler {
       let response: ListChannelsResponse = {
         id: message.id,
         jsonrpc: message.jsonrpc,
-        result: channels.map(pc => pc.toJSON())
+        result: channels.map(pc => PaymentChannelSerde.instance.serialize(pc))
       }
       end(null, response)
     }).catch(end)

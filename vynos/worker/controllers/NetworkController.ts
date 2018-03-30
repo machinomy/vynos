@@ -15,15 +15,19 @@ const settingStorage = new SettingStorage()
 
 export default class NetworkController {
   background: BackgroundController
-  provider: Engine
-  web3: Web3
+  provider: Engine | undefined
+  web3: Web3 | undefined
   transactions: TransactionService
   rpcUrl: string
-  ready: Promise<void>
+  ready: Promise<void> | undefined
 
   constructor (backgroundController: BackgroundController, transactions: TransactionService) {
     this.background = backgroundController
     this.transactions = transactions
+    this.web3 = undefined
+    this.provider = undefined
+    this.rpcUrl = ''
+    this.ready = undefined
     this.handler = this.handler.bind(this)
     this.getNetwork()
 
@@ -33,8 +37,8 @@ export default class NetworkController {
   }
 
   handler (message: Payload, next: Function, end: EndFunction) {
-    this.ready.then(() => {
-      this.provider.sendAsync(message, (error, response) => {
+    this.ready!.then(() => {
+      this.provider!.sendAsync(message, (error, response) => {
         if (error) {
           end(error)
         } else {

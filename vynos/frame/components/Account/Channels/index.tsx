@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-unused-variable
 import * as React from 'react'
 import { List, Image } from 'semantic-ui-react'
 import Web3 = require('web3')
@@ -11,8 +12,8 @@ import { isUndefined } from 'util'
 const style = require('../../../styles/ynos.css')
 
 export interface ChannelsSubpageProps {
-  lastUpdateDb: number,
-  web3: Web3
+  lastUpdateDb?: number,
+  web3?: Web3
 }
 
 export interface ChannelsSubpageState {
@@ -25,25 +26,26 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
   machinomy: Machinomy | null
   localLastUpdateDb: number
 
-  constructor (props: ChannelsSubpageProps) {
-    super(props)
+  constructor (props?: ChannelsSubpageProps | undefined, context?: any) {
+    super(props!, context)
     this.state = {
       channels: [],
       activeChannel: ''
     }
     this.channelMetaStorage = new ChannelMetaStorage()
     this.machinomy = null
-    this.localLastUpdateDb = props.lastUpdateDb
+    this.localLastUpdateDb = props!.lastUpdateDb!
   }
 
   getMachinomy () {
-    return new Promise((resolve, reject) => {
+    return new Promise<Machinomy>((resolve, reject) => {
       if (this.machinomy !== null) {
         resolve(this.machinomy)
       } else {
         let web3 = this.props.web3
-        web3.eth.getAccounts((err, accounts) => {
-          this.machinomy = new Machinomy(accounts[0], web3, { engine: 'nedb', databaseFile: 'vynos' })
+        web3!.eth.getAccounts((err, accounts) => {
+          // TODO Next line may cause bug - new Machinomy's interface 1.7.0
+          this.machinomy = new Machinomy(accounts[0], web3!, { databaseUrl: 'vynos' })
           resolve(this.machinomy)
         })
       }
@@ -55,8 +57,8 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
   }
 
   shouldComponentUpdate (nextProps: ChannelsSubpageProps) {
-    if (this.localLastUpdateDb < nextProps.lastUpdateDb) {
-      this.localLastUpdateDb = nextProps.lastUpdateDb
+    if (this.localLastUpdateDb < nextProps.lastUpdateDb!) {
+      this.localLastUpdateDb = nextProps.lastUpdateDb!
       this.updateListChannels({})
       return false
     }
@@ -185,7 +187,7 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
   }
 }
 
-function mapStateToProps (state: FrameState): ChannelsSubpageProps {
+function mapStateToProps (state: FrameState, ownProps: ChannelsSubpageProps): ChannelsSubpageProps {
   return {
     lastUpdateDb: state.shared.lastUpdateDb,
     web3: state.temp.workerProxy.web3

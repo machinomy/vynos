@@ -14,7 +14,7 @@ import { FrameState } from '../redux/FrameState'
 import bip39 = require('bip39')
 
 export interface OwnRestorePageProps {
-  showVerifiable: () => void
+  showVerifiable?: () => void
 }
 
 export interface RestorePageStateProps {
@@ -338,4 +338,4 @@ function mapStateToProps (state: FrameState, props: OwnRestorePageProps): Restor
   }
 }
 
-export default connect<RestorePageStateProps, undefined, any>(mapStateToProps)(RestorePage)
+export default connect(mapStateToProps)(RestorePage)

@@ -230,12 +230,18 @@ export default class BackgroundHandler {
   }
 
   broadcastBuyProcessEvent (stream: Writable) {
-    this.controller.onBuyProcessEvent((typeOfMessage: BuyProcessEvent, args: WalletBuyArguments, token: string, channel: ChannelMeta) => {
+    this.controller.onBuyProcessEvent((typeOfMessage: BuyProcessEvent, args: WalletBuyArguments, token?: string, channel?: ChannelMeta) => {
       let message: BuyProcessEventBroadcast = {
         id: buyProcessEventBroadcastType,
         jsonrpc: JSONRPC,
         type: typeOfMessage,
-        result: [args, token, channel]
+        result: [args, token || '',
+          channel ||
+            {
+              channelId: '',
+              title: '',
+              host: ''
+            }]
       }
       stream.write(message)
     })

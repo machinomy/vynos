@@ -4,13 +4,13 @@
   "rules": {
     "no-trailing-whitespace": [true, "ignore-jsdoc"],
     "indent": [true, "spaces", 2],
-    "quotemark": [false, "single", "jsx-double"], // TODO Make it true
+    "quotemark": [true, "single", "jsx-double"], // TODO Make it true
     "jsx-no-bind": [false], // TODO Remove it
     "jsx-no-multiline-js": [false], // TODO Remove it
     "jsx-no-lambda": [false], // TODO Remove it
     "block-spacing": [false], // TODO Remove it
     "jsx-no-string-ref": [false], // TODO Remove it
     "handle-callback-err": [false], // TODO Remove it
-    "eofline": [false] // TODO Remove it
+    "no-floating-promises": [false] // TODO Remove it
   }
 }

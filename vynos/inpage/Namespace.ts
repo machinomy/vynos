@@ -20,11 +20,12 @@ export default class Namespace {
   scriptAddress: string
   window: Window
   client?: Promise<VynosClient>
-  frame: Frame
+  frame: Frame | undefined
 
   constructor (scriptElement: HTMLScriptElement, window: Window) {
     this.scriptAddress = scriptElement.src
     this.window = window
+    this.frame = undefined
   }
 
   // Initialize frame container for the Wallet.
@@ -50,17 +51,17 @@ export default class Namespace {
 
   display (): void {
     this.ready().then(() => {
-      this.frame.display()
+      this.frame!.display()
     })
   }
 
   setContainerStyle (style: CSSStyleDeclaration): void {
-    this.frame.setContainerStyle(style)
+    this.frame!.setContainerStyle(style)
   }
 
   hide (): void {
     this.ready().then(() => {
-      this.frame.hide()
+      this.frame!.hide()
     })
   }
 

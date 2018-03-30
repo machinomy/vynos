@@ -1,6 +1,4 @@
-import { ChannelId } from 'machinomy/lib/channel'
-
 export default interface VynosBuyResponse {
-  channelId: ChannelId
+  channelId: string
   token: string
 }

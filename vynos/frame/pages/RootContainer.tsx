@@ -24,10 +24,10 @@ export interface RootStateState {
 
 export type RootContainerProps = RootStateProps
 
-export class RootContainer extends React.Component<RootContainerProps, any> {
+export class RootContainer extends React.Component<RootContainerProps, RootStateState> {
 
-  constructor () {
-    super()
+  constructor (props?: RootStateProps | undefined, context?: any) {
+    super(props!, context)
     this.state = { showingVerifiable: false }
     this.showVerifiable = this.showVerifiable.bind(this)
     this.hideVerifiable = this.hideVerifiable.bind(this)
@@ -79,4 +79,4 @@ function mapStateToProps (state: FrameState): RootStateProps {
   }
 }
 
-export default connect<RootStateProps, undefined, any>(mapStateToProps)(RootContainer)
+export default connect(mapStateToProps)(RootContainer)

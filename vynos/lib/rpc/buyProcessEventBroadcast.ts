@@ -22,7 +22,7 @@ export function buyProcessEvent (buyProcessEvent: BuyProcessEvent, args: WalletB
 export interface BuyProcessEventBroadcast extends ResponsePayload {
   id: string,
   type: BuyProcessEvent,
-  result: [WalletBuyArguments, string, ChannelMeta]
+  result: [WalletBuyArguments, string | undefined, ChannelMeta | undefined]
 }
 
 export function isBuyProcessEventBroadcast (data: Object): data is BuyProcessEventBroadcast {
