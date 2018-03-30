@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { FrameState } from '../../redux/FrameState'
 import WorkerProxy from '../../WorkerProxy'
-import { connect } from 'react-redux'
+import { connect, Dispatch } from 'react-redux'
 import { Button, Container, Divider, Form, Header, Icon } from 'semantic-ui-react'
 import { MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT } from '../../constants'
 import RestorePage from '../RestorePage'
 import Logo from '../../components/Logo'
+import * as actions from "../../redux/actions";
 
 const style = require('../../styles/ynos.css')
 
@@ -182,4 +183,14 @@ function mapStateToProps (state: FrameState, props: OwnPasswordProps): PasswordS
   }
 }
 
-export default connect(mapStateToProps)(Password)
+function mapDispatchToProps(dispatch: Dispatch<FrameState>): PasswordSubpageDispatchProps {
+  return {
+    genKeyring: (workerProxy, password) => {
+      workerProxy.genKeyring(password).then(mnemonic => {
+        dispatch(actions.didReceiveMnemonic(mnemonic))
+      })
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Password)

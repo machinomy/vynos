@@ -133,13 +133,13 @@ export class RestoreWalletRequest implements RequestPayload {
   id: number
   jsonrpc: typeof JSONRPC
   method: typeof RestoreWalletRequest.method
-  params: [string, string]
+  params: [string, string, string]
 
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
-    this.params = ['', '']
+    this.params = ['', '', '']
   }
 
   static match (payload: RequestPayload): payload is RestoreWalletRequest {
