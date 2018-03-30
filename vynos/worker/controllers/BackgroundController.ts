@@ -31,7 +31,7 @@ export default class BackgroundController {
 
   constructor () {
     let middleware: redux.GenericStoreEnhancer = redux.compose(redux.applyMiddleware(createLogger()), autoRehydrate())
-    this.store = redux.createStore(reducers, INITIAL_STATE, middleware) as redux.Store<WorkerState>
+    this.store = redux.createStore(reducers, INITIAL_STATE, middleware)
     this.events = new EventEmitter()
     this.hydrated = false
     localForage.config({ driver: localForage.INDEXEDDB })

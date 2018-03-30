@@ -76,4 +76,4 @@ function mapStateToProps (state: FrameState): DashboardSubpageProps {
   }
 }
 
-export default connect<DashboardSubpageProps, undefined, DashboardSubpageProps, FrameState>(mapStateToProps)(DashboardSubpage as ComponentClass<DashboardSubpageProps> )
+export default connect<DashboardSubpageProps, undefined, DashboardSubpageProps, FrameState>(mapStateToProps)(DashboardSubpage as ComponentClass<DashboardSubpageProps>)

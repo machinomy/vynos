@@ -56,7 +56,7 @@ export default class ChannelMetaStorage {
       if (!found) {
         return this.save(meta)
       }
-      return
+      return undefined
     })
   }
 

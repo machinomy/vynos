@@ -159,8 +159,8 @@ export default class VynosClient implements Vynos {
     this.provider.listen<BuyProcessEventBroadcast>(buyProcessEventBroadcastType, (data: BuyProcessEventBroadcast) => {
       if (isBuyProcessEventBroadcast(data)) {
         let walletArgs: WalletBuyArguments = data.result[0]
-        let token: string = data.result[1]
-        let channel: ChannelMeta = data.result[2]
+        let token: string | undefined = data.result[1]
+        let channel: ChannelMeta | undefined = data.result[2]
         if (this.buyProcessCallbacks.has(buyProcessEvent(data.type, data.result[0]))) {
           let callback = this.buyProcessCallbacks.get(buyProcessEvent(data.type, data.result[0]))
           if (token !== undefined) {
