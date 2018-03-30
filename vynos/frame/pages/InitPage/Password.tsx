@@ -6,7 +6,7 @@ import { Button, Container, Divider, Form, Header, Icon } from 'semantic-ui-reac
 import { MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT } from '../../constants'
 import RestorePage from '../RestorePage'
 import Logo from '../../components/Logo'
-import * as actions from "../../redux/actions";
+import * as actions from '../../redux/actions'
 
 const style = require('../../styles/ynos.css')
 
@@ -183,7 +183,7 @@ function mapStateToProps (state: FrameState, props: OwnPasswordProps): PasswordS
   }
 }
 
-function mapDispatchToProps(dispatch: Dispatch<FrameState>): PasswordSubpageDispatchProps {
+function mapDispatchToProps (dispatch: Dispatch<FrameState>): PasswordSubpageDispatchProps {
   return {
     genKeyring: (workerProxy, password) => {
       workerProxy.genKeyring(password).then(mnemonic => {
