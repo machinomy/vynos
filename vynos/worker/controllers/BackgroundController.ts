@@ -30,7 +30,7 @@ export default class BackgroundController {
   hydrated: boolean
 
   constructor () {
-    let middleware = redux.compose(redux.applyMiddleware(createLogger()), autoRehydrate())
+    let middleware: redux.GenericStoreEnhancer = redux.compose(redux.applyMiddleware(createLogger()), autoRehydrate())
     this.store = redux.createStore(reducers, INITIAL_STATE, middleware) as redux.Store<WorkerState>
     this.events = new EventEmitter()
     this.hydrated = false

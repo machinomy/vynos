@@ -5,15 +5,15 @@ import Web3 = require('web3')
 import Machinomy from 'machinomy'
 import BlockieComponent from '../../BlockieComponent'
 import ChannelMetaStorage from '../../../../lib/storage/ChannelMetaStorage'
-import { connect, ComponentClass } from 'react-redux'
+import { connect } from 'react-redux'
 import { FrameState } from '../../../redux/FrameState'
 import { isUndefined } from 'util'
 
 const style = require('../../../styles/ynos.css')
 
 export interface ChannelsSubpageProps {
-  lastUpdateDb: number,
-  web3: Web3
+  lastUpdateDb?: number,
+  web3?: Web3
 }
 
 export interface ChannelsSubpageState {
@@ -34,18 +34,19 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
     }
     this.channelMetaStorage = new ChannelMetaStorage()
     this.machinomy = null
-    this.localLastUpdateDb = props!.lastUpdateDb
+    this.localLastUpdateDb = props!.lastUpdateDb!
   }
 
   getMachinomy () {
-    return new Promise((resolve, reject) => {
+    return new Promise<Machinomy>((resolve, reject) => {
       if (this.machinomy !== null) {
         resolve(this.machinomy)
       } else {
         let web3 = this.props.web3
-        web3.eth.getAccounts((err, accounts) => {
-          this.machinomy = new Machinomy(accounts[0], web3, { engine: 'nedb', databaseFile: 'vynos' })
-          resolve(this.machinomy)
+        web3!.eth.getAccounts((err, accounts) => {
+          // TODO Next line may cause bug - new Machinomy's interface 1.7.0
+          this.machinomy = new Machinomy(accounts[0], web3!, { databaseUrl: 'vynos' })
+          resolve(this.machinomy!)
         })
       }
     })
@@ -56,8 +57,8 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
   }
 
   shouldComponentUpdate (nextProps: ChannelsSubpageProps) {
-    if (this.localLastUpdateDb < nextProps.lastUpdateDb) {
-      this.localLastUpdateDb = nextProps.lastUpdateDb
+    if (this.localLastUpdateDb < nextProps.lastUpdateDb!) {
+      this.localLastUpdateDb = nextProps.lastUpdateDb!
       this.updateListChannels({})
       return false
     }
@@ -193,4 +194,7 @@ function mapStateToProps (state: FrameState, ownProps: ChannelsSubpageProps): Ch
   }
 }
 
-export default connect<ChannelsSubpageProps, undefined, ChannelsSubpageProps>(mapStateToProps)(ChannelsSubpage)
+//export default connect<ChannelsSubpageProps, undefined, ChannelsSubpageProps, FrameState>(mapStateToProps)(ChannelsSubpage as ComponentClass<ChannelsSubpageProps> )
+// export default connect<ChannelsSubpageProps, undefined, ChannelsSubpageProps>(mapStateToProps)(ChannelsSubpage)
+export default connect(mapStateToProps)(ChannelsSubpage)
+

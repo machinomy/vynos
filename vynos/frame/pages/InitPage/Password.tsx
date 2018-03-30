@@ -194,4 +194,4 @@ function mapDispatchToProps (dispatch: Dispatch<FrameState>): PasswordSubpageDis
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Password)
+export default connect(mapStateToProps)(Password)

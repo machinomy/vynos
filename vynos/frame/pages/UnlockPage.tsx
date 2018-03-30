@@ -125,4 +125,4 @@ function mapStateToProps (state: FrameState, props: OwnUnlockProps): UnlockPageP
   }
 }
 
-export default connect<UnlockPageProps, undefined, any>(mapStateToProps)(UnlockPage)
+export default connect(mapStateToProps)(UnlockPage)

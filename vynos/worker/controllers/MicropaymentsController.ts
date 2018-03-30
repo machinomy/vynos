@@ -60,7 +60,7 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.web3!, { engine: 'nedb', databaseFile: 'vynos' })
+          let machinomy = new Machinomy(account, this.web3!, { databaseUrl: 'vynos' })
           machinomy.close(channelId).then(() => {
             let channelDescription = JSON.stringify({ channelId: channelId.toString() })
             let transaction = transactions.closeChannel(channelDescription)
@@ -91,9 +91,9 @@ export default class MicropaymentsController {
             let account = accounts[0]
             let options: any
             if (channelValue !== undefined) {
-              options = { engine: 'nedb', databaseFile: 'vynos', minimumChannelAmount: channelValue }
+              options = { databaseUrl: 'vynos', minimumChannelAmount: channelValue }
             } else {
-              options = { engine: 'nedb', databaseFile: 'vynos' }
+              options = { databaseUrl: 'vynos' }
             }
             let machinomy = new Machinomy(account, this.web3!, options)
             let response: VynosBuyResponse = await machinomy.buy({
@@ -146,7 +146,7 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.web3!, { engine: 'nedb', databaseFile: 'vynos' })
+          let machinomy = new Machinomy(account, this.web3!, { databaseUrl: 'vynos' })
           machinomy.channels().then(resolve).catch(reject)
         })
       })

@@ -79,4 +79,4 @@ function mapStateToProps (state: FrameState): RootStateProps {
   }
 }
 
-export default connect<RootStateProps, undefined, any>(mapStateToProps)(RootContainer)
+export default connect(mapStateToProps)(RootContainer)

@@ -7,12 +7,12 @@ const style = require('../../styles/ynos.css')
 import * as qr from 'qr-image'
 
 export interface MnemonicStateProps {
-  workerProxy: WorkerProxy
-  showVerifiable: () => void
+  workerProxy?: WorkerProxy
+  showVerifiable?: () => void
 }
 
 export interface MnemonicProps extends MnemonicStateProps {
-  mnemonic: string
+  mnemonic?: string
 }
 
 export class Mnemonic extends React.Component<MnemonicProps, {}> {
@@ -48,12 +48,12 @@ export class Mnemonic extends React.Component<MnemonicProps, {}> {
 
   handleSubmit (ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault()
-    this.props.workerProxy.didStoreMnemonic()
+    this.props.workerProxy!.didStoreMnemonic()
   }
 
   renderQR () {
     let mnemonic = this.props.mnemonic
-    let pngBuffer = qr.imageSync(mnemonic, { type: 'png', margin: 1 }) as Buffer
+    let pngBuffer = qr.imageSync(mnemonic!, { type: 'png', margin: 1 }) as Buffer
     let dataURI = 'data:image/png;base64,' + pngBuffer.toString('base64')
     return <img className="react-qr mnemonic-qr" src={dataURI} />
   }
@@ -94,4 +94,4 @@ function mapStateToProps (state: FrameState, props: MnemonicProps): MnemonicStat
   }
 }
 
-export default connect<MnemonicStateProps, undefined, any>(mapStateToProps)(Mnemonic)
+export default connect(mapStateToProps)(Mnemonic)

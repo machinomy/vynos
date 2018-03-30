@@ -1,6 +1,6 @@
 import { JSONRPC, RequestPayload, ResponsePayload } from '../Payload'
 import { SharedState, Preferences } from '../../worker/WorkerState'
-import { PaymentChannelJSON } from 'machinomy/lib/channel'
+import { SerializedPaymentChannel } from 'machinomy/lib/payment_channel'
 import Payment from 'machinomy/lib/Payment'
 import VynosBuyResponse from '../VynosBuyResponse'
 import PurchaseMeta from '../PurchaseMeta'
@@ -222,7 +222,7 @@ export class OpenChannelRequest implements RequestPayload {
 }
 
 export interface OpenChannelResponse extends ResponsePayload {
-  result: [PaymentChannelJSON]
+  result: [SerializedPaymentChannel]
 }
 
 export class CloseChannelRequest implements RequestPayload {
@@ -255,7 +255,7 @@ export class PayInChannelRequest implements RequestPayload {
   id: number
   jsonrpc: typeof JSONRPC
   method: typeof PayInChannelRequest.method
-  params: [PaymentChannelJSON, number, boolean]
+  params: [SerializedPaymentChannel, number, boolean]
 
   static match (payload: RequestPayload): payload is PayInChannelRequest {
     return payload.method === PayInChannelRequest.method
@@ -270,8 +270,8 @@ export class PayInChannelRequest implements RequestPayload {
         sender: '',
         receiver: '',
         channelId: '',
-        value: new BigNumber.BigNumber(-1),
-        spent: new BigNumber.BigNumber(-1),
+        value: '',
+        spent: '',
         state: -1,
         contractAddress: undefined
       }, -1, false]
@@ -281,7 +281,7 @@ export class PayInChannelRequest implements RequestPayload {
 }
 
 export interface PayInChannelResponse extends ResponsePayload {
-  result: [PaymentChannelJSON, Payment]
+  result: [SerializedPaymentChannel, Payment]
 }
 
 export class BuyRequest implements RequestPayload {
@@ -356,7 +356,7 @@ export class ListChannelsRequest implements RequestPayload {
 }
 
 export interface ListChannelsResponse extends ResponsePayload {
-  result: Array<PaymentChannelJSON>
+  result: Array<SerializedPaymentChannel>
 }
 
 export class ChangeNetworkRequest implements RequestPayload {

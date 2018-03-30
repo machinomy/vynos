@@ -14,18 +14,18 @@ import ApproveMicropayment from './ApproveMicropayment'
 
 const style = require('../../styles/ynos.css')
 
+export interface ApprovePageStateProps {
+  workerProxy?: WorkerProxy
+  isTransactionPending?: number
+}
+
 export interface ApprovePageState {
   transaction?: TransactionMeta
   pendingCount: number,
 }
 
-export interface ApprovePageStateProps {
-  workerProxy: WorkerProxy
-  isTransactionPending: number
-}
-
 export interface ApprovePageDispatchProps {
-  setPending: (state: boolean) => void
+  setPending?: (state: boolean) => void
 }
 
 export type ApprovePageProps = ApprovePageStateProps & ApprovePageDispatchProps
@@ -66,7 +66,7 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
           pendingCount: pending.length
         })
       } else {
-        this.props.setPending(false)
+        this.props.setPending!(false)
       }
     })
   }
@@ -74,8 +74,8 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
   approve (transaction: TransactionMeta) {
     this.storage.approve(transaction.id).then((result) => {
       transaction.state = TransactionState.APPROVED
-      this.props.workerProxy.resolveTransaction()
-      this.props.workerProxy.setApproveById(transaction.id)
+      this.props.workerProxy!.resolveTransaction()
+      this.props.workerProxy!.setApproveById(transaction.id)
       this.update()
     })
   }
@@ -83,8 +83,8 @@ export class ApprovePage extends React.Component<ApprovePageProps, ApprovePageSt
   reject (transaction: TransactionMeta) {
     this.storage.reject(transaction.id).then(() => {
       transaction.state = TransactionState.REJECTED
-      this.props.workerProxy.resolveTransaction()
-      this.props.workerProxy.setRejectById(transaction.id)
+      this.props.workerProxy!.resolveTransaction()
+      this.props.workerProxy!.setRejectById(transaction.id)
       this.update()
     })
   }

@@ -14,7 +14,6 @@ import {
   PayInChannelResponse
 } from '../lib/rpc/yns'
 import { JSONRPC, randomId } from '../lib/Payload'
-import { PaymentChannel, PaymentChannelJSON } from 'machinomy/lib/channel'
 import VynosPayInChannelResponse from '../lib/VynosPayInChannelResponse'
 import Vynos, { WalletBuyArguments } from '../lib/Vynos'
 import VynosBuyResponse from '../lib/VynosBuyResponse'
@@ -30,9 +29,10 @@ import {
 import { default as PromisedWalletResponse } from '../lib/promised'
 import bus from '../lib/bus'
 import { ChannelMeta } from '../lib/storage/ChannelMetaStorage'
+import { PaymentChannel, PaymentChannelSerde } from 'machinomy/lib/payment_channel'
 
-function isPaymentChannel (pc: PaymentChannel | PaymentChannelJSON): pc is PaymentChannel {
-  return !!((pc as PaymentChannel).toJSON)
+function isPaymentChannel (pc: PaymentChannel): pc is PaymentChannel {
+  return !!(PaymentChannelSerde.instance.serialize(pc))
 }
 
 export default class VynosClient implements Vynos {
@@ -74,7 +74,7 @@ export default class VynosClient implements Vynos {
       params: [receiverAccount, channelValue.toString()]
     }
     return this.provider.ask(request).then((response: OpenChannelResponse) => {
-      return PaymentChannel.fromDocument(response.result[0])
+      return PaymentChannelSerde.instance.deserialize(response.result[0])
     })
   }
 
@@ -88,18 +88,18 @@ export default class VynosClient implements Vynos {
     return this.provider.ask<CloseChannelRequest, any>(request)
   }
 
-  payInChannel (channel: PaymentChannel | PaymentChannelJSON, amount: number, override?: boolean): Promise<VynosPayInChannelResponse> {
+  payInChannel (channel: PaymentChannel, amount: number, override?: boolean): Promise<VynosPayInChannelResponse> {
     let request: PayInChannelRequest = {
       id: randomId(),
       method: PayInChannelRequest.method,
       jsonrpc: JSONRPC,
-      params: [channel, amount, override as boolean]
+      params: [PaymentChannelSerde.instance.serialize(channel), amount, override as boolean]
     }
     if (isPaymentChannel(channel)) {
-      request.params = [channel.toJSON(), amount, override as boolean]
+      request.params = [PaymentChannelSerde.instance.serialize(channel), amount, override as boolean]
     }
     return this.provider.ask(request).then((response: PayInChannelResponse) => {
-      let paymentChannel = PaymentChannel.fromDocument(response.result[0])
+      let paymentChannel = PaymentChannelSerde.instance.deserialize(response.result[0])
       let payment = response.result[1]
       return {
         channel: paymentChannel,
@@ -144,7 +144,7 @@ export default class VynosClient implements Vynos {
       params: []
     }
     return this.provider.ask(request).then((response: ListChannelsResponse) => {
-      return response.result.map(pc => PaymentChannel.fromDocument(pc))
+      return response.result.map(pc => PaymentChannelSerde.instance.deserialize(pc))
     })
   }
 
