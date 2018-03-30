@@ -29,7 +29,7 @@ import {
 import { default as PromisedWalletResponse } from '../lib/promised'
 import bus from '../lib/bus'
 import { ChannelMeta } from '../lib/storage/ChannelMetaStorage'
-import { PaymentChannel, PaymentChannelSerde } from 'machinomy/lib/payment_channel'
+import { PaymentChannel, PaymentChannelSerde } from 'machinomy/dist/lib/payment_channel'
 
 function isPaymentChannel (pc: PaymentChannel): pc is PaymentChannel {
   return !!(PaymentChannelSerde.instance.serialize(pc))

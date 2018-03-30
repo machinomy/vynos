@@ -42,7 +42,12 @@ function webpackConfig (entry, devSupplement) {
           test: /\.tsx?$/,
           loaders: process.env.NODE_ENV === 'production' ? ["ts-loader"] : ["babel-loader", "ts-loader"]
         },
-        { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+        {
+          enforce: "pre",
+          test: /\.js$/,
+          loader: "source-map-loader",
+          exclude: [/node_modules/]
+        },
         {
           test: /\.s?css$/i,
           exclude: [/node_modules/],

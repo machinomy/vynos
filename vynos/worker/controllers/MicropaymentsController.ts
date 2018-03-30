@@ -1,7 +1,7 @@
 import NetworkController from './NetworkController'
 import BackgroundController from './BackgroundController'
-import { PaymentChannel } from 'machinomy/lib/channel'
-import Payment from 'machinomy/lib/Payment'
+import { PaymentChannel } from 'machinomy/dist/lib/channel'
+import Payment from 'machinomy/dist/lib/Payment'
 import VynosBuyResponse from '../../lib/VynosBuyResponse'
 import Machinomy from 'machinomy'
 import ZeroClientProvider = require('web3-provider-engine/zero')
