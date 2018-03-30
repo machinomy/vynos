@@ -237,11 +237,11 @@ export default class BackgroundHandler {
         type: typeOfMessage,
         result: [args, token || '',
           channel ||
-          {
-            channelId: '',
-            title: '',
-            host: ''
-          }]
+            {
+              channelId: '',
+              title: '',
+              host: ''
+            }]
       }
       stream.write(message)
     })

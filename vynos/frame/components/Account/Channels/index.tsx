@@ -194,7 +194,4 @@ function mapStateToProps (state: FrameState, ownProps: ChannelsSubpageProps): Ch
   }
 }
 
-//export default connect<ChannelsSubpageProps, undefined, ChannelsSubpageProps, FrameState>(mapStateToProps)(ChannelsSubpage as ComponentClass<ChannelsSubpageProps> )
-// export default connect<ChannelsSubpageProps, undefined, ChannelsSubpageProps>(mapStateToProps)(ChannelsSubpage)
 export default connect(mapStateToProps)(ChannelsSubpage)
-

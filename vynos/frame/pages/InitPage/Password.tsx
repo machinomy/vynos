@@ -184,14 +184,4 @@ function mapStateToProps (state: FrameState, props: OwnPasswordProps): PasswordS
   }
 }
 
-function mapDispatchToProps (dispatch: Dispatch<FrameState>): PasswordSubpageDispatchProps {
-  return {
-    genKeyring: (workerProxy, password) => {
-      workerProxy.genKeyring(password).then(mnemonic => {
-        dispatch(actions.didReceiveMnemonic(mnemonic))
-      })
-    }
-  }
-}
-
 export default connect(mapStateToProps)(Password)

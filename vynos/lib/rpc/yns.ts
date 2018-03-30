@@ -4,7 +4,6 @@ import { SerializedPaymentChannel } from 'machinomy/lib/payment_channel'
 import Payment from 'machinomy/lib/Payment'
 import VynosBuyResponse from '../VynosBuyResponse'
 import PurchaseMeta from '../PurchaseMeta'
-import BigNumber = require('bignumber.js')
 
 export class InitAccountRequest implements RequestPayload {
   static method = 'yns_initAccount'
@@ -14,15 +13,15 @@ export class InitAccountRequest implements RequestPayload {
   method: typeof InitAccountRequest.method
   params: any[]
 
-  static match (payload: RequestPayload): payload is InitAccountRequest {
-    return payload.method === InitAccountRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is InitAccountRequest {
+    return payload.method === InitAccountRequest.method
   }
 }
 
@@ -38,15 +37,15 @@ export class GetSharedStateRequest implements RequestPayload {
   method: typeof GetSharedStateRequest.method
   params: any[]
 
-  static match (payload: RequestPayload): payload is GetSharedStateRequest {
-    return payload.method === GetSharedStateRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is GetSharedStateRequest {
+    return payload.method === GetSharedStateRequest.method
   }
 }
 
@@ -62,15 +61,15 @@ export class DidStoreMnemonicRequest implements RequestPayload {
   method: typeof DidStoreMnemonicRequest.method
   params: any[]
 
-  static match (payload: RequestPayload): payload is DidStoreMnemonicRequest {
-    return payload.method === DidStoreMnemonicRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is DidStoreMnemonicRequest {
+    return payload.method === DidStoreMnemonicRequest.method
   }
 }
 
@@ -86,15 +85,15 @@ export class RememberPageRequest implements RequestPayload {
   method: typeof RememberPageRequest.method
   params: [string]
 
-  static match (payload: RequestPayload): payload is RememberPageRequest {
-    return payload.method === RememberPageRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is RememberPageRequest {
+    return payload.method === RememberPageRequest.method
   }
 }
 
@@ -110,15 +109,15 @@ export class GenKeyringRequest implements RequestPayload {
   method: typeof GenKeyringRequest.method
   params: string[]
 
-  static match (payload: RequestPayload): payload is GenKeyringRequest {
-    return payload.method === GenKeyringRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is GenKeyringRequest {
+    return payload.method === GenKeyringRequest.method
   }
 }
 
@@ -136,15 +135,15 @@ export class RestoreWalletRequest implements RequestPayload {
   method: typeof RestoreWalletRequest.method
   params: [string, string]
 
-  static match (payload: RequestPayload): payload is RestoreWalletRequest {
-    return payload.method === RestoreWalletRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['', '']
+  }
+
+  static match (payload: RequestPayload): payload is RestoreWalletRequest {
+    return payload.method === RestoreWalletRequest.method
   }
 }
 
@@ -160,15 +159,15 @@ export class UnlockWalletRequest implements RequestPayload {
   method: typeof UnlockWalletRequest.method
   params: string[]
 
-  static match (payload: RequestPayload): payload is UnlockWalletRequest {
-    return payload.method === UnlockWalletRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is UnlockWalletRequest {
+    return payload.method === UnlockWalletRequest.method
   }
 }
 
@@ -185,15 +184,15 @@ export class LockWalletRequest implements RequestPayload {
   method: typeof LockWalletRequest.method
   params: string[]
 
-  static match (payload: RequestPayload): payload is LockWalletRequest {
-    return payload.method === LockWalletRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is LockWalletRequest {
+    return payload.method === LockWalletRequest.method
   }
 }
 
@@ -209,15 +208,15 @@ export class OpenChannelRequest implements RequestPayload {
   method: typeof OpenChannelRequest.method
   params: [string, string]
 
-  static match (payload: RequestPayload): payload is OpenChannelRequest {
-    return payload.method === OpenChannelRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['', '']
+  }
+
+  static match (payload: RequestPayload): payload is OpenChannelRequest {
+    return payload.method === OpenChannelRequest.method
   }
 }
 
@@ -233,15 +232,15 @@ export class CloseChannelRequest implements RequestPayload {
   method: typeof CloseChannelRequest.method
   params: [string]
 
-  static match (payload: RequestPayload): payload is CloseChannelRequest {
-    return payload.method === CloseChannelRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is CloseChannelRequest {
+    return payload.method === CloseChannelRequest.method
   }
 }
 
@@ -256,10 +255,6 @@ export class PayInChannelRequest implements RequestPayload {
   jsonrpc: typeof JSONRPC
   method: typeof PayInChannelRequest.method
   params: [SerializedPaymentChannel, number, boolean]
-
-  static match (payload: RequestPayload): payload is PayInChannelRequest {
-    return payload.method === PayInChannelRequest.method
-  }
 
   constructor () {
     this.id = -1
@@ -277,7 +272,9 @@ export class PayInChannelRequest implements RequestPayload {
       }, -1, false]
   }
 
-
+  static match (payload: RequestPayload): payload is PayInChannelRequest {
+    return payload.method === PayInChannelRequest.method
+  }
 }
 
 export interface PayInChannelResponse extends ResponsePayload {
@@ -292,10 +289,6 @@ export class BuyRequest implements RequestPayload {
   method: typeof BuyRequest.method
   params: [string, number, string, string, PurchaseMeta, number]
 
-  static match (payload: RequestPayload): payload is BuyRequest {
-    return payload.method === BuyRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
@@ -309,6 +302,10 @@ export class BuyRequest implements RequestPayload {
         origin: ''
       }, -1]
   }
+
+  static match (payload: RequestPayload): payload is BuyRequest {
+    return payload.method === BuyRequest.method
+  }
 }
 
 export class TransactonResolved implements RequestPayload {
@@ -319,15 +316,15 @@ export class TransactonResolved implements RequestPayload {
   method: typeof TransactonResolved.method
   params: never[]
 
-  static match (payload: RequestPayload): payload is TransactonResolved {
-    return payload.method === TransactonResolved.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = []
+  }
+
+  static match (payload: RequestPayload): payload is TransactonResolved {
+    return payload.method === TransactonResolved.method
   }
 }
 
@@ -343,15 +340,15 @@ export class ListChannelsRequest implements RequestPayload {
   method: typeof ListChannelsRequest.method
   params: any[]
 
-  static match (payload: RequestPayload): payload is ListChannelsRequest {
-    return payload.method === ListChannelsRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is ListChannelsRequest {
+    return payload.method === ListChannelsRequest.method
   }
 }
 
@@ -367,15 +364,15 @@ export class ChangeNetworkRequest implements RequestPayload {
   method: typeof ChangeNetworkRequest.method
   params: any[]
 
-  static match (payload: RequestPayload): payload is ChangeNetworkRequest {
-    return payload.method === ChangeNetworkRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is ChangeNetworkRequest {
+    return payload.method === ChangeNetworkRequest.method
   }
 }
 
@@ -391,15 +388,15 @@ export class GetPrivateKeyHexRequest implements RequestPayload {
   method: typeof GetPrivateKeyHexRequest.method
   params: never[]
 
-  static match (payload: RequestPayload): payload is GetPrivateKeyHexRequest {
-    return payload.method === GetPrivateKeyHexRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = []
+  }
+
+  static match (payload: RequestPayload): payload is GetPrivateKeyHexRequest {
+    return payload.method === GetPrivateKeyHexRequest.method
   }
 }
 
@@ -415,10 +412,6 @@ export class SetPreferencesRequest implements RequestPayload {
   method: typeof SetPreferencesRequest.method
   params: [Preferences]
 
-  static match (payload: RequestPayload): payload is SetPreferencesRequest {
-    return payload.method === SetPreferencesRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
@@ -428,7 +421,11 @@ export class SetPreferencesRequest implements RequestPayload {
         micropaymentThreshold: -1,
         micropaymentThrottlingHumanReadable: ''
       }
-      ]
+    ]
+  }
+
+  static match (payload: RequestPayload): payload is SetPreferencesRequest {
+    return payload.method === SetPreferencesRequest.method
   }
 }
 
@@ -444,15 +441,15 @@ export class SetApproveByIdRequest implements RequestPayload {
   method: typeof SetApproveByIdRequest.method
   params: [string]
 
-  static match (payload: RequestPayload): payload is SetApproveByIdRequest {
-    return payload.method === SetApproveByIdRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is SetApproveByIdRequest {
+    return payload.method === SetApproveByIdRequest.method
   }
 }
 
@@ -468,15 +465,15 @@ export class SetRejectByIdRequest implements RequestPayload {
   method: typeof SetRejectByIdRequest.method
   params: [string]
 
-  static match (payload: RequestPayload): payload is SetRejectByIdRequest {
-    return payload.method === SetRejectByIdRequest.method
-  }
-
   constructor () {
     this.id = -1
     this.jsonrpc = ''
     this.method = ''
     this.params = ['']
+  }
+
+  static match (payload: RequestPayload): payload is SetRejectByIdRequest {
+    return payload.method === SetRejectByIdRequest.method
   }
 }
 
