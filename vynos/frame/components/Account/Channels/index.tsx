@@ -48,7 +48,7 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
             console.error(err)
           } else {
             // TODO Next line may cause bug - new Machinomy's interface 1.7.0
-            this.machinomy = new Machinomy(accounts[0], web3!, { databaseUrl: 'vynos' })
+            this.machinomy = new Machinomy(accounts[0], web3!, { databaseUrl: 'nedb://vynos' })
             resolve(this.machinomy)
           }
         })
