@@ -149,6 +149,20 @@ Wallet page
   padding: 0.3ex 0;
 }
 
+/* In Firefox only */
+@-moz-document url-prefix() {
+  .wallet-address {
+    font-family: 'Alegreya Sans', sans-serif !important;
+    font-weight: 400 !important;
+    font-size: 26px !important;
+    color: #333 !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 0.3ex 0;
+    width: 51%;
+  }
+}
+
 .wallet-address-subpage {
   background-color: #fafafa;
   height: 100%;
