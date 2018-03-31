@@ -57,7 +57,8 @@
     "web3-typescript-typings": "https://github.com/machinomy/web3-typescript-typings",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5",
-    "webpack-package-loaders-plugin": "^3.0.0"
+    "webpack-package-loaders-plugin": "^3.0.0",
+    "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {
     "bip39": "^2.3.1",

@@ -44,9 +44,13 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
       } else {
         let web3 = this.props.web3
         web3!.eth.getAccounts((err, accounts) => {
-          // TODO Next line may cause bug - new Machinomy's interface 1.7.0
-          this.machinomy = new Machinomy(accounts[0], web3!, { databaseUrl: 'vynos' })
-          resolve(this.machinomy)
+          if (err) {
+            console.error(err)
+          } else {
+            // TODO Next line may cause bug - new Machinomy's interface 1.7.0
+            this.machinomy = new Machinomy(accounts[0], web3!, { databaseUrl: 'vynos' })
+            resolve(this.machinomy)
+          }
         })
       }
     })

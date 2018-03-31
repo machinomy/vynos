@@ -5,7 +5,7 @@ const path = require("path"),
   UglifyJSPlugin = require('uglifyjs-webpack-plugin')
   CopyWebpackPlugin = require('copy-webpack-plugin')
 
-
+const nodeExternals = require('webpack-node-externals')
 require('dotenv').config({ path: '.env' });
 
 
@@ -17,6 +17,7 @@ function webpackConfig (entry, devSupplement) {
   let config = {
     entry: entry,
     devtool: "source-map",
+    externals: [nodeExternals({whitelist: [/^(?!(require_optional|bindings)).*$/]})],
     output: {
       filename: devSupplement ? "[name].dev.js" : "[name].js",
       path: DIST_PATH
