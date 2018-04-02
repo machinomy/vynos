@@ -82,7 +82,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
               this.setState({
                 balance: web3.fromWei(balance, 'ether').toString(),
                 displayedBalance: (await Currency.instance().convertCryptoOrCurrencyToCurrency(balanceInETH, 'ETH', this.props.displayCurrencyCode!)).toString()
-            })
+              })
               if (this.props.onChangeBalance) {
                 this.props.onChangeBalance(parseFloat(this.state.balance))
               }
