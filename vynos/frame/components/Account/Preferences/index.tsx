@@ -47,6 +47,7 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
     this.privateKeyHex = await this.props.workerProxy.getPrivateKeyHex()
     let response = await fixer.latest()
     let listOfCurrencies: Array<DropdownCurrencyData> = []
+    listOfCurrencies.push({ 'value': 'ETH', 'text': 'ETH' })
     for (const key of Object.keys(response.rates)) {
       listOfCurrencies.push({ 'value': key, 'text': key })
     }
@@ -88,7 +89,7 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
             <p>
               <label>Display balance currency</label>
             </p>
-            <select value={this.state.currentCurrency} onChange={(event) => { this.handleChangeCurrency(event.target.value as string) }}>
+            <select value={this.state.currentCurrency} onChange={(event) => { this.handleChangeCurrency(event.target.value) }}>
             {
               this.state.currencies.map((currency) => {
                 return <option key={currency.value} value={currency.value}>{currency.text}</option>
@@ -107,6 +108,7 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
 
   handleChangeCurrency (newCurrency: string) {
     this.state = { ...this.state, currentCurrency: newCurrency, preferences: { ...this.state.preferences, currency: newCurrency } }
+    this.setState(this.state)
     this.props.workerProxy.setPreferences(this.state.preferences)
   }
 

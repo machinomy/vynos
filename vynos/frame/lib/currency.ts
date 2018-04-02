@@ -26,6 +26,7 @@ export default class Currency {
   }
 
   static instance (): Currency {
+    // tslint:disable-next-line:strict-type-predicates
     if (Currency._instance === undefined) {
       Currency._instance = new Currency()
     }
@@ -34,11 +35,11 @@ export default class Currency {
 
   async runInterval (interval: number) {
     this._timer = setInterval(async () => {
-      await this._toCacheArray.forEach(async (_, key) => {
+      this._toCacheArray.forEach(async (_, key) => {
         this._toCacheArray.set(key, await this.getFixerRate(key))
       })
 
-      await this._fromCacheArray.forEach(async (_, key) => {
+      this._fromCacheArray.forEach(async (_, key) => {
         this._fromCacheArray.set(key, await this.getCryptoPriceRate(key))
       })
     }, interval)

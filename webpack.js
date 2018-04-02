@@ -17,7 +17,7 @@ function webpackConfig (entry, devSupplement) {
   let config = {
     entry: entry,
     devtool: "source-map",
-    externals: [nodeExternals({whitelist: [/^(?!(require_optional|bindings|ajv)).*$/]})],
+    externals: [nodeExternals({whitelist: [/^(?!(require_optional|bindings)).*$/]})],
     output: {
       filename: devSupplement ? "[name].dev.js" : "[name].js",
       path: DIST_PATH

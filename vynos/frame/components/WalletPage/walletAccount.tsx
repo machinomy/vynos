@@ -66,18 +66,29 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
         let address = accounts[0]
         this.updateBalanceTimer = setInterval(() => {
           web3.eth.getBalance(address, async (err, balance) => {
-            let balanceInETH = parseFloat(web3.fromWei(balance, 'ether').toFixed(14))
-            if (balanceInETH.toFixed(2) !== this.state.displayedBalance) {
+            let balanceInETH = parseFloat(web3.fromWei(balance, 'ether').toFixed(10))
+
+            if (this.props.displayCurrencyCode! === 'ETH') {
+              if (balanceInETH.toString() !== this.state.displayedBalance) {
+                this.setState({
+                  balance: web3.fromWei(balance, 'ether').toString(),
+                  displayedBalance: balanceInETH.toString()
+                })
+                if (this.props.onChangeBalance) {
+                  this.props.onChangeBalance(parseFloat(this.state.balance))
+                }
+              }
+            } else if (balanceInETH.toFixed(2) !== this.state.displayedBalance) {
               this.setState({
                 balance: web3.fromWei(balance, 'ether').toString(),
                 displayedBalance: (await Currency.instance().convertCryptoOrCurrencyToCurrency(balanceInETH, 'ETH', this.props.displayCurrencyCode!)).toString()
-              })
+            })
               if (this.props.onChangeBalance) {
                 this.props.onChangeBalance(parseFloat(this.state.balance))
               }
             }
           })
-        }, 3000)
+        }, 1000)
         this.setState({ address: address })
         if (this.props.onChangeAddress) {
           this.props.onChangeAddress(address)
@@ -114,7 +125,9 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
           <div className={style.walletBalance}>
             <span className={style.ethBalance}>
               {
-                new BigNumber.BigNumber(this.state.displayedBalance).toFixed(2) + ' ' + this.props.displayCurrencyCode
+                this.props.displayCurrencyCode === 'ETH'
+                  ? this.state.displayedBalance + ' ' + this.props.displayCurrencyCode
+                  : new BigNumber.BigNumber(this.state.displayedBalance).toFixed(2) + ' ' + this.props.displayCurrencyCode
               }
             </span>
           </div>
