@@ -419,7 +419,8 @@ export class SetPreferencesRequest implements RequestPayload {
     this.params = [
       {
         micropaymentThreshold: -1,
-        micropaymentThrottlingHumanReadable: ''
+        micropaymentThrottlingHumanReadable: '',
+        currency: ''
       }
     ]
   }
@@ -478,5 +479,77 @@ export class SetRejectByIdRequest implements RequestPayload {
 }
 
 export interface SetRejectByIdResponse extends ResponsePayload {
+  result: null
+}
+
+export class ClearTransactionMetastorageRequest implements RequestPayload {
+  static method = 'yns_clearTransactionMetastorageRequest'
+
+  id: number
+  jsonrpc: typeof JSONRPC
+  method: typeof ClearTransactionMetastorageRequest.method
+  params: never[]
+
+  constructor () {
+    this.id = -1
+    this.jsonrpc = ''
+    this.method = ''
+    this.params = []
+  }
+
+  static match (payload: RequestPayload): payload is ClearTransactionMetastorageRequest {
+    return payload.method === ClearTransactionMetastorageRequest.method
+  }
+}
+
+export interface ClearTransactionMetastorageResponse extends ResponsePayload {
+  result: null
+}
+
+export class ClearChannelMetastorageRequest implements RequestPayload {
+  static method = 'yns_clearChannelMetastorageRequest'
+
+  id: number
+  jsonrpc: typeof JSONRPC
+  method: typeof ClearChannelMetastorageRequest.method
+  params: never[]
+
+  constructor () {
+    this.id = -1
+    this.jsonrpc = ''
+    this.method = ''
+    this.params = []
+  }
+
+  static match (payload: RequestPayload): payload is ClearChannelMetastorageRequest {
+    return payload.method === ClearChannelMetastorageRequest.method
+  }
+}
+
+export interface ClearChannelMetastorageResponse extends ResponsePayload {
+  result: null
+}
+
+export class ClearReduxPersistentStorageRequest implements RequestPayload {
+  static method = 'yns_clearReduxPersistentStorageRequest'
+
+  id: number
+  jsonrpc: typeof JSONRPC
+  method: typeof ClearReduxPersistentStorageRequest.method
+  params: never[]
+
+  constructor () {
+    this.id = -1
+    this.jsonrpc = ''
+    this.method = ''
+    this.params = []
+  }
+
+  static match (payload: RequestPayload): payload is ClearReduxPersistentStorageRequest {
+    return payload.method === ClearReduxPersistentStorageRequest.method
+  }
+}
+
+export interface ClearReduxPersistentStorageResponse extends ResponsePayload {
   result: null
 }

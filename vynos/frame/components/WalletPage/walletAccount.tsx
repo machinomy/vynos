@@ -2,10 +2,10 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import Web3 = require('web3')
 import { FrameState } from '../../redux/FrameState'
-
+import BigNumber = require('bignumber.js')
 import { Image } from 'semantic-ui-react'
 import BlockieComponent from '../../components/BlockieComponent'
-
+import Currency from '../../lib/currency'
 const style = require('../../styles/ynos.css')
 
 export interface WalletAccountProps {
@@ -13,11 +13,13 @@ export interface WalletAccountProps {
   onChangeAddress?: (address: string) => void
   onChangeDetailsDisplayed?: (value: boolean) => void
   onChangeBalance?: (balance: number) => void
+  displayCurrencyCode?: string
 }
 
 export interface WalletAccountState {
   address: string | null
   balance: string
+  displayedBalance: string
   isDetailsDisplayed: boolean
 }
 
@@ -29,6 +31,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     this.state = {
       address: null,
       balance: '0',
+      displayedBalance: '0',
       isDetailsDisplayed: false
     }
   }
@@ -62,15 +65,30 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
       web3.eth.getAccounts((err, accounts) => {
         let address = accounts[0]
         this.updateBalanceTimer = setInterval(() => {
-          web3.eth.getBalance(address, (err, balance) => {
-            this.setState({
-              balance: web3.fromWei(balance, 'ether').toString()
-            })
-            if (this.props.onChangeBalance) {
-              this.props.onChangeBalance(parseFloat(this.state.balance))
+          web3.eth.getBalance(address, async (err, balance) => {
+            let balanceInETH = parseFloat(web3.fromWei(balance, 'ether').toFixed(10))
+
+            if (this.props.displayCurrencyCode! === 'ETH') {
+              if (balanceInETH.toString() !== this.state.displayedBalance) {
+                this.setState({
+                  balance: web3.fromWei(balance, 'ether').toString(),
+                  displayedBalance: balanceInETH.toString()
+                })
+                if (this.props.onChangeBalance) {
+                  this.props.onChangeBalance(parseFloat(this.state.balance))
+                }
+              }
+            } else if (balanceInETH.toFixed(2) !== this.state.displayedBalance) {
+              this.setState({
+                balance: web3.fromWei(balance, 'ether').toString(),
+                displayedBalance: (await Currency.instance().convertCryptoOrCurrencyToCurrency(balanceInETH, 'ETH', this.props.displayCurrencyCode!)).toString()
+              })
+              if (this.props.onChangeBalance) {
+                this.props.onChangeBalance(parseFloat(this.state.balance))
+              }
             }
           })
-        }, 500)
+        }, 1000)
         this.setState({ address: address })
         if (this.props.onChangeAddress) {
           this.props.onChangeAddress(address)
@@ -105,7 +123,13 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
             {this.state.address}
           </div>
           <div className={style.walletBalance}>
-            <span className={style.ethBalance}>{this.state.balance}</span>
+            <span className={style.ethBalance}>
+              {
+                this.props.displayCurrencyCode === 'ETH'
+                  ? this.state.displayedBalance + ' ' + this.props.displayCurrencyCode
+                  : new BigNumber.BigNumber(this.state.displayedBalance).toFixed(2) + ' ' + this.props.displayCurrencyCode
+              }
+            </span>
           </div>
         </div>
       </div>
@@ -118,7 +142,8 @@ function mapStateToProps (state: FrameState, ownProps: WalletAccountProps): Wall
     web3: state.temp.workerProxy.web3,
     onChangeAddress: ownProps.onChangeAddress,
     onChangeDetailsDisplayed: ownProps.onChangeDetailsDisplayed,
-    onChangeBalance: ownProps.onChangeBalance
+    onChangeBalance: ownProps.onChangeBalance,
+    displayCurrencyCode: state.shared.preferences ? state.shared.preferences.currency : 'ETH'
   }
 }
 
