@@ -30,7 +30,8 @@ function webpackConfig (entry, devSupplement) {
         "self.CONTRACT_ADDRESS": JSON.stringify(CONTRACT_ADDRESS),
         "process.env": {
           "NODE_ENV": JSON.stringify(process.env.NODE_ENV || 'development') // This has effect on the react lib size
-        }
+        },
+        "global.XMLHttpRequest": global.XMLHttpRequest
       }),
       new PackageLoadersPlugin()
     ],
