@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Container, Form } from 'semantic-ui-react'
+import { Container, Form, Button } from 'semantic-ui-react'
 import { FrameState } from '../../../redux/FrameState'
 import { connect } from 'react-redux'
 import WorkerProxy from '../../../WorkerProxy'
@@ -36,7 +36,7 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
     super(props)
     this.state = {
       preferences : props.preferences,
-      throttlingTimeFormatted: props.preferences.micropaymentThrottlingHumanReadable,
+      throttlingTimeFormatted: props.preferences && props.preferences.micropaymentThrottlingHumanReadable ? props.preferences.micropaymentThrottlingHumanReadable : '-1ms',
       currencies: [],
       currentCurrency: props.preferences.currency
     }
@@ -97,6 +97,9 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
             }
             </select>
           </Form.Group>
+          <p className={style.forgetAccount}>
+            <Button content="Forget account" primary={true} onClick={() => { this.handleForgetAccount() }}/>
+          </p>
           {/*<p className={style.buttonNav}>*/}
             {/*<Button type='submit' content="Save" primary disabled/>*/}
           {/*</p>*/}
@@ -135,6 +138,11 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
     })
   }
 
+  handleForgetAccount () {
+    this.props.workerProxy.clearTransactionMetastorage()
+    this.props.workerProxy.clearReduxPersistentStorage()
+  }
+
   handleSavePrivateKeyToFile () {
     const blob = new Blob([this.privateKeyHex], { type: 'text/plain' })
     const filename = 'secretPrivateKey.txt'
@@ -157,6 +165,12 @@ function mapStateToProps (state: FrameState, props: OwnPreferencesProps): Prefer
     workerProxy: workerProxy,
     showVerifiable: props.showVerifiable,
     preferences: state.shared.preferences
+      ? state.shared.preferences
+      : {
+        micropaymentThreshold: 1000000,
+        micropaymentThrottlingHumanReadable: '-1ms',
+        currency: 'ETH'
+      }
   }
 }
 

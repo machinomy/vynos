@@ -143,7 +143,7 @@ function mapStateToProps (state: FrameState, ownProps: WalletAccountProps): Wall
     onChangeAddress: ownProps.onChangeAddress,
     onChangeDetailsDisplayed: ownProps.onChangeDetailsDisplayed,
     onChangeBalance: ownProps.onChangeBalance,
-    displayCurrencyCode: state.shared.preferences.currency
+    displayCurrencyCode: state.shared.preferences ? state.shared.preferences.currency : 'ETH'
   }
 }
 

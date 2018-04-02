@@ -101,6 +101,20 @@ export default class TransactionMetaStorage {
     })
   }
 
+  clear () {
+    this.datastore.then(datastore => {
+      // https://github.com/louischatriot/nedb/issues/84
+      datastore.remove({ }, { multi: true }, function (err, numRemoved) {
+        datastore.loadDatabase(function (err) {
+          if (err) {
+            console.error('Error while deleting transactions local database')
+            console.error(err)
+          }
+        })
+      })
+    })
+  }
+
   protected find (query: any): Promise<Array<TransactionMeta>> {
     return new Promise((resolve, reject) => {
       this.datastore.then((datastore) => {

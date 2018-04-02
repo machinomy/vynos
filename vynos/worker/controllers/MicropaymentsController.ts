@@ -60,9 +60,9 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.web3!, { databaseUrl: 'vynos' })
+          let machinomy = new Machinomy(account, this.web3!, { databaseUrl: 'nedb://vynos' })
           machinomy.close(channelId).then(() => {
-            let channelDescription = JSON.stringify({ channelId: channelId.toString() })
+            let channelDescription = JSON.stringify({ channelId: channelId })
             let transaction = transactions.closeChannel(channelDescription)
             return this.transactions.addTransaction(transaction).then(() => {
               resolve(channelId)
@@ -91,9 +91,9 @@ export default class MicropaymentsController {
             let account = accounts[0]
             let options: any
             if (channelValue !== undefined) {
-              options = { databaseUrl: 'vynos', minimumChannelAmount: channelValue }
+              options = { databaseUrl: 'nedb://vynos', minimumChannelAmount: channelValue }
             } else {
-              options = { databaseUrl: 'vynos' }
+              options = { databaseUrl: 'nedb://vynos' }
             }
             let machinomy = new Machinomy(account, this.web3!, options)
             let response: VynosBuyResponse = await machinomy.buy({
@@ -105,20 +105,20 @@ export default class MicropaymentsController {
             bus.emit(BuyProcessEvent.SENT_PAYMENT, walletBuyArguments)
             bus.emit(BuyProcessEvent.RECEIVED_TOKEN, walletBuyArguments, response.token)
 
-            let channelFound = await this.channels.firstById(response.channelId.toString())
+            let channelFound = await this.channels.firstById(response.channelId)
             if (!channelFound) {
               bus.emit(BuyProcessEvent.NO_CHANNEL_FOUND, walletBuyArguments)
               bus.emit(BuyProcessEvent.OPENING_CHANNEL_STARTED, walletBuyArguments)
 
               let newChannelMeta = {
-                channelId: response.channelId.toString(),
+                channelId: response.channelId,
                 title: purchaseMeta.siteName,
                 host: purchaseMeta.origin,
                 icon: '/frame/styles/images/channel.png',
                 openingTime: Date.now()
               }
               await this.channels.save(newChannelMeta)
-              let channelDescription = JSON.stringify({ channelId: response.channelId.toString() })
+              let channelDescription = JSON.stringify({ channelId: response.channelId })
               let transaction = transactions.openChannel('Opening of channel', channelDescription, account, receiver, channelValue ? channelValue : amount * 10)
               await this.transactions.addTransaction(transaction)
               bus.emit(BuyProcessEvent.OPENING_CHANNEL_FINISHED, walletBuyArguments, newChannelMeta)
@@ -146,7 +146,7 @@ export default class MicropaymentsController {
       this.background.awaitUnlock(() => {
         this.background.getAccounts().then(accounts => {
           let account = accounts[0]
-          let machinomy = new Machinomy(account, this.web3!, { databaseUrl: 'vynos' })
+          let machinomy = new Machinomy(account, this.web3!, { databaseUrl: 'nedb://vynos' })
           machinomy.channels().then(resolve).catch(reject)
         })
       })
