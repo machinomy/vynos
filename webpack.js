@@ -142,7 +142,8 @@ function webpackConfig (entry, devSupplement) {
       }
     }))
     config.plugins.push(new CopyWebpackPlugin([
-      path.resolve(__dirname,'vynos', 'frame.html')
+      path.resolve(__dirname,'vynos', 'frame.html'),
+      path.resolve(__dirname,'vynos', 'check.html'),
     ]))
   }
 
