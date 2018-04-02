@@ -46,12 +46,12 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
   async componentWillMount () {
     this.privateKeyHex = await this.props.workerProxy.getPrivateKeyHex()
     let response = await fixer.latest()
-    let listOfCurrencies : Array<DropdownCurrencyData> = []
+    let listOfCurrencies: Array<DropdownCurrencyData> = []
     for (const key of Object.keys(response.rates)) {
-      listOfCurrencies.push({'value': key, 'text': key})
+      listOfCurrencies.push({ 'value': key, 'text': key })
     }
 
-    this.setState( { ...this.state, currencies: listOfCurrencies })
+    this.setState({ ...this.state, currencies: listOfCurrencies })
   }
 
   render () {
@@ -59,33 +59,36 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
       <div style={{ overflow: 'auto', paddingBottom: '20px', position: 'absolute', top: '56px', bottom: '0' }}>
         <Container className={`${style.clearBorder}`}>
         <Form>
-          <Form.Group grouped>
+          <Form.Group grouped={true}>
             <label>Channels</label>
-            <Form.Checkbox label='Ask to create' disabled/>
-            <Form.Checkbox label='Throttling' disabled/>
+            <Form.Checkbox label="Ask to create" disabled={true}/>
+            <Form.Checkbox label="Throttling" disabled={true}/>
           </Form.Group>
-          <Form.Group grouped>
+          <Form.Group grouped={true}>
             <label>Micropayments (threshold in wei)</label>
-            <Form.Input placeholder='Maximum micropayment' className={'micropaymentThreshold'} value={this.state.preferences.micropaymentThreshold} onChange={()=>{this.handleChangeMicropaymentThreshold()}}/>
+            <Form.Input placeholder="Maximum micropayment" className={'micropaymentThreshold'} value={this.state.preferences.micropaymentThreshold} onChange={() => { this.handleChangeMicropaymentThreshold() }}/>
             <label>Throttling (in ms, s, m, h, d, w or empty for none, eg 2h5m)</label>
-            <Form.Input className={'micropaymentThrottling'} value={this.state.throttlingTimeFormatted}
-                        onChange={()=>{this.handleChangeMicropaymentThrottling()}}/>
+            <Form.Input
+              className={'micropaymentThrottling'}
+              value={this.state.throttlingTimeFormatted}
+              onChange={() => { this.handleChangeMicropaymentThrottling() }}
+            />
           </Form.Group>
-          <Form.Group grouped>
+          <Form.Group grouped={true}>
             <label>Security</label>
             <p>
-              <a onClick={() => {this.handleSavePrivateKeyToFile()}}>Save private key to file</a>
+              <a onClick={() => { this.handleSavePrivateKeyToFile() }}>Save private key to file</a>
             </p>
             <p>
               <a onClick={this.props.showVerifiable}>Verify authenticity Vynos</a>
             </p>
           </Form.Group>
-          <Form.Group grouped>
+          <Form.Group grouped={true}>
             <label>Other</label>
             <p>
               <label>Display balance currency</label>
             </p>
-            <select value={this.state.currentCurrency} onChange={(event)=>{this.handleChangeCurrency(event.target.value as string)}}>
+            <select value={this.state.currentCurrency} onChange={(event) => { this.handleChangeCurrency(event.target.value as string) }}>
             {
               this.state.currencies.map((currency) => {
                 return <option key={currency.value} value={currency.value}>{currency.text}</option>
@@ -102,12 +105,12 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
     )
   }
 
-  handleChangeCurrency(newCurrency : string) {
-    this.state = {...this.state, currentCurrency: newCurrency,  preferences: {...this.state.preferences, currency: newCurrency}}
+  handleChangeCurrency (newCurrency: string) {
+    this.state = { ...this.state, currentCurrency: newCurrency, preferences: { ...this.state.preferences, currency: newCurrency } }
     this.props.workerProxy.setPreferences(this.state.preferences)
   }
 
-  handleChangeMicropaymentThrottling() {
+  handleChangeMicropaymentThrottling () {
     let newValueAsString = (document.querySelector('.micropaymentThrottling input') as HTMLInputElement)
       ? (document.querySelector('.micropaymentThrottling input') as HTMLInputElement) .value
       : '0'

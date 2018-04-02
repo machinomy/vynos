@@ -72,14 +72,14 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
                 balance: web3.fromWei(balance, 'ether').toString(),
                 displayedBalance: (await Currency.instance().convertCryptoOrCurrencyToCurrency(balanceInETH, 'ETH', this.props.displayCurrencyCode!)).toString()
               })
-              if(this.props.onChangeBalance) {
+              if (this.props.onChangeBalance) {
                 this.props.onChangeBalance(parseFloat(this.state.balance))
               }
             }
           })
         }, 3000)
-        this.setState({address: address})
-        if(this.props.onChangeAddress) {
+        this.setState({ address: address })
+        if (this.props.onChangeAddress) {
           this.props.onChangeAddress(address)
         }
       })
@@ -103,7 +103,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     }
   }
 
-  render() {
+  render () {
     return (
       <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
         {this.renderAvatar()}

@@ -1,17 +1,18 @@
 import BigNumber = require('bignumber.js')
 const price = require('crypto-price')
-const fixer = require('fixer-api');
+const fixer = require('fixer-api')
 
 export default class Currency {
   private static _instance: Currency
-  private _timer : any
 
-  _cacheTime : number
-  _toCacheArray : Map<string, number>
-  _fromCacheArray : Map<string, number>
+  _cacheTime: number
+  _toCacheArray: Map<string, number>
+  _fromCacheArray: Map<string, number>
 
-  constructor(cacheTime ?: number) {
-    let cacheTimeInMs : number = 30000
+  private _timer: any
+
+  constructor (cacheTime?: number) {
+    let cacheTimeInMs: number = 30000
     if (cacheTime !== undefined) {
       if (cacheTime < 1) {
         cacheTime = 1
@@ -24,13 +25,20 @@ export default class Currency {
     this.runInterval(cacheTimeInMs)
   }
 
-  async runInterval(interval: number) {
+  static instance (): Currency {
+    if (Currency._instance === undefined) {
+      Currency._instance = new Currency()
+    }
+    return Currency._instance
+  }
+
+  async runInterval (interval: number) {
     this._timer = setInterval(async () => {
-      await this._toCacheArray.forEach(async (_, key) =>{
+      await this._toCacheArray.forEach(async (_, key) => {
         this._toCacheArray.set(key, await this.getFixerRate(key))
       })
 
-      await this._fromCacheArray.forEach(async (_, key) =>{
+      await this._fromCacheArray.forEach(async (_, key) => {
         this._fromCacheArray.set(key, await this.getCryptoPriceRate(key))
       })
     }, interval)
@@ -38,15 +46,8 @@ export default class Currency {
     return this._timer
   }
 
-  static instance(): Currency {
-    if (Currency._instance === undefined) {
-      Currency._instance = new Currency()
-    }
-    return Currency._instance
-  }
-
-  async convertCryptoOrCurrencyToCurrency(amount : BigNumber.BigNumber | number, fromCurrencyCode : string, toCurrencyCode : string) : Promise<BigNumber.BigNumber> {
-    let result : BigNumber.BigNumber = new BigNumber.BigNumber(0)
+  async convertCryptoOrCurrencyToCurrency (amount: BigNumber.BigNumber | number, fromCurrencyCode: string, toCurrencyCode: string): Promise<BigNumber.BigNumber> {
+    let result: BigNumber.BigNumber = new BigNumber.BigNumber(0)
     if (!this._fromCacheArray.has(fromCurrencyCode)) {
       this._fromCacheArray.set(fromCurrencyCode, await this.getCryptoPriceRate(fromCurrencyCode))
     }
@@ -67,13 +68,13 @@ export default class Currency {
     return new Promise<BigNumber.BigNumber>(resolve => {resolve(result)})
   }
 
-  async getFixerRate(toCurrencyCode: string) : Promise<number> {
+  async getFixerRate (toCurrencyCode: string): Promise<number> {
     let result: number
     try {
       if (toCurrencyCode === 'USD') {
         result = 1.0
       } else {
-        result = (await fixer.latest({base: 'USD', symbols: [toCurrencyCode]})).rates[toCurrencyCode]
+        result = (await fixer.latest({ base: 'USD', symbols: [toCurrencyCode] })).rates[toCurrencyCode]
       }
     } catch (e) {
       console.error(e)
@@ -81,8 +82,8 @@ export default class Currency {
     return new Promise<number>(resolve => {resolve(result)})
   }
 
-  async getCryptoPriceRate(fromCurrencyCode: string) : Promise<number> {
-    let result : number
+  async getCryptoPriceRate (fromCurrencyCode: string): Promise<number> {
+    let result: number
     try {
       result = parseFloat((await price.getBasePrice(fromCurrencyCode, 'USD')).price)
     } catch (e) {
