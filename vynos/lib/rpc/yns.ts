@@ -419,7 +419,8 @@ export class SetPreferencesRequest implements RequestPayload {
     this.params = [
       {
         micropaymentThreshold: -1,
-        micropaymentThrottlingHumanReadable: ''
+        micropaymentThrottlingHumanReadable: '',
+        currency: 'ETH'
       }
     ]
   }
