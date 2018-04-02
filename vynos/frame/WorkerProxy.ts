@@ -5,15 +5,26 @@ import { JSONRPC, randomId } from '../lib/Payload'
 import { isSharedStateBroadcast, SharedStateBroadcastType } from '../lib/rpc/SharedStateBroadcast'
 import {
   DidStoreMnemonicRequest,
-  GenKeyringRequest, GenKeyringResponse, GetSharedStateRequest, GetSharedStateResponse, LockWalletRequest,
-  RestoreWalletRequest, RestoreWalletResponse, RememberPageRequest,
+  GenKeyringRequest,
+  GenKeyringResponse,
+  GetSharedStateRequest,
+  GetSharedStateResponse,
+  LockWalletRequest,
+  RestoreWalletRequest,
+  RestoreWalletResponse,
+  RememberPageRequest,
   UnlockWalletRequest,
   UnlockWalletResponse,
   TransactonResolved,
   ChangeNetworkRequest,
-  GetPrivateKeyHexRequest, GetPrivateKeyHexResponse,
+  GetPrivateKeyHexRequest,
+  GetPrivateKeyHexResponse,
   SetPreferencesRequest,
-  SetApproveByIdRequest, SetRejectByIdRequest
+  SetApproveByIdRequest,
+  SetRejectByIdRequest,
+  ClearTransactionMetastorageRequest,
+  ClearReduxPersistentStorageRequest,
+  ClearChannelMetastorageRequest
 } from '../lib/rpc/yns'
 import { Action } from 'redux'
 import Web3 = require('web3')
@@ -195,6 +206,42 @@ export default class WorkerProxy extends EventEmitter {
     }
     this.provider.ask(request).then(() => {
       // Do Nothing
+    })
+  }
+
+  clearTransactionMetastorage (): void {
+    let request: ClearTransactionMetastorageRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ClearTransactionMetastorageRequest.method,
+      params: []
+    }
+    this.provider.ask(request).then(() => {
+      // Do nothing
+    })
+  }
+
+  clearChannelMetastorage (): void {
+    let request: ClearChannelMetastorageRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ClearChannelMetastorageRequest.method,
+      params: []
+    }
+    this.provider.ask(request).then(() => {
+      // Do nothing
+    })
+  }
+
+  clearReduxPersistentStorage (): void {
+    let request: ClearReduxPersistentStorageRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ClearReduxPersistentStorageRequest.method,
+      params: []
+    }
+    this.provider.ask(request).then(() => {
+      // Do nothing
     })
   }
 }

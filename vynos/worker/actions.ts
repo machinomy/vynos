@@ -1,6 +1,6 @@
 // tslint:disable-next-line:no-unused-variable
 import actionCreatorFactory, { ActionCreator } from 'typescript-fsa'
-import { Preferences, WorkerState } from './WorkerState'
+import { Preferences, WorkerState, PersistentState } from './WorkerState'
 import Wallet from 'ethereumjs-wallet'
 
 const actionCreator = actionCreatorFactory('worker')
@@ -80,5 +80,12 @@ export const setPreferences = actionCreator<Preferences>('persistent/setPreferen
 export function setPreferencesHandler (state: WorkerState, preferences: Preferences): WorkerState {
   return { ...state,
     persistent: { ...state.persistent, preferences }
+  }
+}
+
+export const setPersistentState = actionCreator<PersistentState>('persistent/setPersistentState')
+export function setPersistentStateHandler (state: WorkerState, persistentState: PersistentState): WorkerState {
+  return { ...state,
+    persistent: persistentState
   }
 }
