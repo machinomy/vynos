@@ -21,7 +21,7 @@ import bus from '../../lib/bus'
 import { CHANGE_NETWORK } from '../../lib/constants'
 import { WalletBuyArguments } from '../../lib/Vynos'
 import { BuyProcessEvent } from '../../lib/rpc/buyProcessEventBroadcast'
-import { ChannelMeta, ChannelMetaStorage } from '../../lib/storage/ChannelMetaStorage'
+import { ChannelMeta, default as ChannelMetaStorage } from '../../lib/storage/ChannelMetaStorage'
 import TransactionService from '../TransactionService'
 
 const STATE_UPDATED_EVENT = 'stateUpdated'
@@ -199,7 +199,7 @@ export default class BackgroundController {
   }
 
   clearChannelMetastorage () {
-    this.channels.clear()
+    this.channels!.clear()
   }
 
   clearTransactionMetastorage () {
