@@ -13,7 +13,7 @@ export default function reducers (workerProxy: WorkerProxy): redux.Reducer<Frame
     .case(actions.didAcceptTerms, actions.didAcceptTermsHandler)
     .case(actions.didReceiveMnemonic, actions.didReceiveMnemonicHandler)
     .case(actions.setWorkerProxy, actions.setWorkerProxyHandler)
-    .case(actions.clearTemp, actions.clearTempHandler)
+    .case(actions.clearTempState, actions.clearTempStateHandler)
 
   const sharedReducer = reducerWithInitialState(state.shared)
     .case(actions.setSharedState, actions.setSharedStateHandler)

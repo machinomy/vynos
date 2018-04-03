@@ -20,7 +20,7 @@ export interface OwnPreferencesProps {
 }
 
 export interface DispatchPreferencesProps {
-  clearTemp?: () => void
+  clearTempState?: () => void
 }
 
 export interface PreferencesProps {
@@ -105,9 +105,6 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
           <p className={style.forgetAccount}>
             <Button content="Forget account" primary={true} onClick={() => { this.handleForgetAccount() }}/>
           </p>
-          {/*<p className={style.buttonNav}>*/}
-            {/*<Button type='submit' content="Save" primary disabled/>*/}
-          {/*</p>*/}
         </Form>
         </Container>
       </div>
@@ -146,7 +143,7 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
   handleForgetAccount () {
     this.props.workerProxy!.clearTransactionMetastorage()
     this.props.workerProxy!.clearReduxPersistentStorage()
-    this.props.clearTemp!()
+    this.props.clearTempState!()
     localStorage.setItem('mc_wallet_avatar', '')
   }
 
@@ -181,10 +178,10 @@ function mapStateToProps (state: FrameState, props: OwnPreferencesProps): Prefer
   }
 }
 
-function mapDispatchToProps (dispatch: Dispatch<FrameState>): any {
+function mapDispatchToProps (dispatch: Dispatch<FrameState>): DispatchPreferencesProps {
   return {
-    clearTemp: () => {
-      dispatch(actions.clearTemp(true))
+    clearTempState: () => {
+      dispatch(actions.clearTempState(true))
     }
   }
 }
