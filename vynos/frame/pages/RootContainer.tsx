@@ -41,7 +41,7 @@ export class RootContainer extends React.Component<RootContainerProps, RootState
     this.setState({ showingVerifiable: false })
   }
 
-  renderVerifable () {
+  renderVerifiable () {
     if (this.state.showingVerifiable) {
       return <VerifiablePage showVerifiable={this.showVerifiable} hideVerifiable={this.hideVerifiable}/>
     }
@@ -63,7 +63,7 @@ export class RootContainer extends React.Component<RootContainerProps, RootState
   render () {
     return (
       <div>
-        {this.renderVerifable()}
+        {this.renderVerifiable()}
         {this.renderOther()}
       </div>
     )

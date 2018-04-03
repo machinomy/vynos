@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { Container, Form, Button } from 'semantic-ui-react'
 import { FrameState } from '../../../redux/FrameState'
-import { connect } from 'react-redux'
+import { connect, Dispatch } from 'react-redux'
 import WorkerProxy from '../../../WorkerProxy'
 import { Preferences as PreferencesType } from '../../../../worker/WorkerState'
+import * as actions from '../../../redux/actions'
 const fixer = require('fixer-api')
 const style = require('../../../styles/ynos.css')
 
@@ -15,12 +16,16 @@ export interface PreferencesStateProps {
 }
 
 export interface OwnPreferencesProps {
-  showVerifiable: () => void
+  showVerifiable?: () => void
+}
+
+export interface DispatchPreferencesProps {
+  clearTemp?: () => void
 }
 
 export interface PreferencesProps {
-  workerProxy: WorkerProxy
-  preferences: PreferencesType
+  workerProxy?: WorkerProxy
+  preferences?: PreferencesType
 }
 
 export interface DropdownCurrencyData {
@@ -29,22 +34,22 @@ export interface DropdownCurrencyData {
   text?: string
 }
 
-export class Preferences extends React.Component<PreferencesProps & OwnPreferencesProps, PreferencesStateProps> {
+export class Preferences extends React.Component<PreferencesProps & OwnPreferencesProps & DispatchPreferencesProps, PreferencesStateProps> {
   privateKeyHex: string
 
   constructor (props: PreferencesProps & OwnPreferencesProps) {
     super(props)
     this.state = {
-      preferences : props.preferences,
+      preferences : props.preferences!,
       throttlingTimeFormatted: props.preferences && props.preferences.micropaymentThrottlingHumanReadable ? props.preferences.micropaymentThrottlingHumanReadable : '-1ms',
       currencies: [],
-      currentCurrency: props.preferences.currency
+      currentCurrency: props.preferences!.currency
     }
     this.privateKeyHex = ''
   }
 
   async componentWillMount () {
-    this.privateKeyHex = await this.props.workerProxy.getPrivateKeyHex()
+    this.privateKeyHex = await this.props.workerProxy!.getPrivateKeyHex()
     let response = await fixer.latest()
     let listOfCurrencies: Array<DropdownCurrencyData> = []
     listOfCurrencies.push({ 'value': 'ETH', 'text': 'ETH' })
@@ -112,7 +117,7 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
   handleChangeCurrency (newCurrency: string) {
     this.state = { ...this.state, currentCurrency: newCurrency, preferences: { ...this.state.preferences, currency: newCurrency } }
     this.setState(this.state)
-    this.props.workerProxy.setPreferences(this.state.preferences)
+    this.props.workerProxy!.setPreferences(this.state.preferences)
   }
 
   handleChangeMicropaymentThrottling () {
@@ -121,7 +126,7 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
       : '0'
     this.state = { ...this.state, throttlingTimeFormatted: newValueAsString }
     this.state.preferences.micropaymentThrottlingHumanReadable = this.state.throttlingTimeFormatted
-    this.props.workerProxy.setPreferences(this.state.preferences).then(() => {
+    this.props.workerProxy!.setPreferences(this.state.preferences).then(() => {
       // Do nothing
     })
   }
@@ -133,14 +138,16 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
       newValue = 0
     }
     this.state.preferences.micropaymentThreshold = newValue
-    this.props.workerProxy.setPreferences(this.state.preferences).then(() => {
+    this.props.workerProxy!.setPreferences(this.state.preferences).then(() => {
       // Do nothing
     })
   }
 
   handleForgetAccount () {
-    this.props.workerProxy.clearTransactionMetastorage()
-    this.props.workerProxy.clearReduxPersistentStorage()
+    this.props.workerProxy!.clearTransactionMetastorage()
+    this.props.workerProxy!.clearReduxPersistentStorage()
+    this.props.clearTemp!()
+    localStorage.setItem('mc_wallet_avatar', '')
   }
 
   handleSavePrivateKeyToFile () {
@@ -174,4 +181,12 @@ function mapStateToProps (state: FrameState, props: OwnPreferencesProps): Prefer
   }
 }
 
-export default connect(mapStateToProps)(Preferences)
+function mapDispatchToProps (dispatch: Dispatch<FrameState>): any {
+  return {
+    clearTemp: () => {
+      dispatch(actions.clearTemp(true))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Preferences)
