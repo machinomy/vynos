@@ -1,11 +1,5 @@
 declare module "bip39" {
-  function generateMnemonic(): string
-  function mnemonicToSeed(mnemonic: string, password: string): string
-  function validateMnemonic(mnemonic: string): boolean
-
-  export = {
-    generateMnemonic,
-    mnemonicToSeed,
-    validateMnemonic
-  }
+  export function generateMnemonic(): string
+  export function mnemonicToSeed(mnemonic: string): string
+  export function validateMnemonic(mnemonic: string): boolean
 }

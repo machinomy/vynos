@@ -11,7 +11,7 @@ const MAX_FILE_SIZE = 1048576 // 1mb
 import { MINIMUM_PASSWORD_LENGTH, PASSWORD_CONFIRMATION_HINT_TEXT, PASSWORD_HINT_TEXT } from '../constants'
 import WorkerProxy from '../WorkerProxy'
 import { FrameState } from '../redux/FrameState'
-import bip39 = require('bip39')
+import * as bip39 from 'bip39'
 
 export interface OwnRestorePageProps {
   showVerifiable?: () => void
