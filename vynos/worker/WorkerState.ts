@@ -73,7 +73,13 @@ export function buildSharedState (state: WorkerState): SharedState {
     isTransactionPending: state.runtime.isTransactionPending,
     rememberPath: state.persistent.rememberPath,
     lastUpdateDb: state.runtime.lastUpdateDb,
-    preferences: state.persistent.preferences,
+    preferences: state.persistent.preferences
+      ? state.persistent.preferences
+      : {
+        micropaymentThreshold: 1000000,
+        micropaymentThrottlingHumanReadable: '-1ms',
+        currency: 'ETH'
+      },
     lastMicropaymentTime: state.runtime.lastMicropaymentTime
   }
 }
