@@ -1,4 +1,4 @@
-import { PaymentChannel } from 'machinomy/dist/lib/channel'
+import { PaymentChannel } from 'machinomy/dist/lib/payment_channel'
 import YnosPayInChannelResponse from './VynosPayInChannelResponse'
 import Web3 = require('web3')
 import VynosBuyResponse from './VynosBuyResponse'
