@@ -61,7 +61,11 @@ export default class ProviderOptions {
   signMessageAlways (messageParams: any, callback: ApproveSignCallback) {
     this.background.getPrivateKey().then(privateKey => {
       let message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
-      let msgSig = ethUtil.ecsign(message, privateKey)
+      let prefix = Buffer.from('\x19Ethereum Signed Message:\n')
+      let messageLength = Buffer.from(message.length.toString())
+      let signed = Buffer.concat([prefix, messageLength, message])
+      let sha3edSigned = ethUtil.sha3(signed).toString('hex')
+      let msgSig = ethUtil.ecsign(Buffer.from(sha3edSigned, 'hex'), privateKey)
       let rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
       callback(null, rawMsgSig)
     }).catch(error => {
