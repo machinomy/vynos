@@ -12,6 +12,38 @@
     truffle-contract "^3.0.0"
     web3 "^0.20.1"
 
+"@machinomy/types-browser-passworder@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@machinomy/types-browser-passworder/-/types-browser-passworder-0.0.4.tgz#bebef2f0c6120b367feb840449396bae05b4932f"
+  dependencies:
+    "@machinomy/types-buffer" "^0.0.4"
+    buffer "^5.1.0"
+
+"@machinomy/types-buffer@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@machinomy/types-buffer/-/types-buffer-0.0.4.tgz#766ac4d29deb63f694b743af19cc22be79943cdd"
+
+"@machinomy/types-eth-sig-util@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@machinomy/types-eth-sig-util/-/types-eth-sig-util-0.0.4.tgz#ae80eab0139f7e9a6a6d5311911dc155b8483974"
+  dependencies:
+    "@machinomy/types-buffer" "^0.0.4"
+    buffer "^5.1.0"
+
+"@machinomy/types-ethereumjs-tx@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@machinomy/types-ethereumjs-tx/-/types-ethereumjs-tx-0.0.4.tgz#2057281380ec21b66583c0d6c3509b29a6c0da41"
+  dependencies:
+    "@machinomy/types-buffer" "^0.0.4"
+    buffer "^5.1.0"
+
+"@machinomy/types-ethereumjs-wallet@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@machinomy/types-ethereumjs-wallet/-/types-ethereumjs-wallet-0.0.4.tgz#4951a40fc0e6d4f6b99144df1879dc1faef2fc47"
+  dependencies:
+    "@machinomy/types-buffer" "^0.0.4"
+    buffer "^5.1.0"
+
 "@machinomy/types-truffle-contract@https://github.com/machinomy/types-truffle-contract":
   version "0.0.1"
   resolved "https://github.com/machinomy/types-truffle-contract#112f61ec4527a0fbf7c1b9bcc0bedaa6be42caa7"
@@ -23,6 +55,12 @@
 "@types/bignumber.js@^4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/bignumber.js/-/bignumber.js-4.0.2.tgz#22a16946c9faa9f2c9c0ad4c7c3734a3033320ae"
+
+"@types/bip39@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@types/bip39/-/bip39-2.4.0.tgz#eee31a14abc8ebbb41a1ff14575c447b18346cbc"
+  dependencies:
+    "@types/node" "*"
 
 "@types/body-parser@*", "@types/body-parser@^1.16.4":
   version "1.16.7"
@@ -44,6 +82,12 @@
 "@types/debug@^0.0.30":
   version "0.0.30"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-0.0.30.tgz#dc1e40f7af3b9c815013a7860e6252f6352a84df"
+
+"@types/duplexify@^3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@types/duplexify/-/duplexify-3.5.0.tgz#c1e8a2c4e05f2a5545c61c31283b76f92d48b007"
+  dependencies:
+    "@types/node" "*"
 
 "@types/expect@^1.20.2":
   version "1.20.2"
@@ -162,6 +206,10 @@
   dependencies:
     "@types/history" "*"
     "@types/react" "*"
+
+"@types/react-tap-event-plugin@^0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@types/react-tap-event-plugin/-/react-tap-event-plugin-0.0.30.tgz#123f35080412f489b6770c5a65c159ff96654cb5"
 
 "@types/react-transition-group@2.0.7":
   version "2.0.7"
@@ -1356,6 +1404,13 @@ buffer@^5.0.6:
 buffer@^5.0.7:
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.0.8.tgz#84daa52e7cf2fa8ce4195bc5cf0f7809e0930b24"
+  dependencies:
+    base64-js "^1.0.2"
+    ieee754 "^1.1.4"
+
+buffer@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.1.0.tgz#c913e43678c7cb7c8bd16afbcddb6c5505e8f9fe"
   dependencies:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
