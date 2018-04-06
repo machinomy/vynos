@@ -2,6 +2,11 @@
   "name": "ynos",
   "version": "0.0.1",
   "license": "Apache-2.0",
+  "types": "./dist/dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "main": "./dist/index.js",
   "scripts": {
     "start": "gulp serve:built",
     "build": "gulp build",
