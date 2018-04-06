@@ -69,6 +69,7 @@
   },
   "dependencies": {
     "@machinomy/types-browser-passworder": "^0.0.4",
+    "@machinomy/types-buffer": "^0.0.4",
     "@machinomy/types-eth-sig-util": "^0.0.4",
     "@machinomy/types-ethereumjs-tx": "^0.0.4",
     "@machinomy/types-ethereumjs-wallet": "^0.0.4",
