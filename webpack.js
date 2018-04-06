@@ -171,13 +171,15 @@ const VYNOS_LIVE = webpackConfig({
 const VYNOS = webpackConfig({
   vynos: path.resolve(__dirname, "vynos/vynos.ts"),
   frame: path.resolve(__dirname, "vynos/frame.ts"),
-  worker: path.resolve(__dirname, "vynos/worker.ts")
+  worker: path.resolve(__dirname, "vynos/worker.ts"),
+  index: path.resolve(__dirname, "vynos/index.ts")
 });
 
 const VYNOS_DEV = webpackConfig({
   vynos: path.resolve(__dirname, "vynos/vynos.ts"),
   frame: path.resolve(__dirname, "vynos/frame.ts"),
-  worker: path.resolve(__dirname, "vynos/worker.ts")
+  worker: path.resolve(__dirname, "vynos/worker.ts"),
+  index: path.resolve(__dirname, "vynos/index.ts")
 }, true);
 
 const HARNESS = webpackConfig({
