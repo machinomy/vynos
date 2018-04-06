@@ -1,4 +1,4 @@
-import Wallet from 'ethereumjs-wallet'
+import * as Wallet from 'ethereumjs-wallet'
 
 export interface Preferences {
   micropaymentThreshold: number

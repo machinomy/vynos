@@ -34,13 +34,14 @@
     "node_modules/@machinomy/types-eth-sig-util/index.d.ts",
     "node_modules/@machinomy/types-ethereumjs-tx/index.d.ts",
     "node_modules/@machinomy/types-ethereumjs-wallet/index.d.ts",
-    "node_modules/@machinomy/types-ethereumjs-wallet/index.d.ts",
     "node_modules/@machinomy/types-safe-buffer/index.d.ts",
     "node_modules/@machinomy/types-duplexify/index.d.ts"
   ],
   "exclude": [
     "node_modules/homedir/index.d.ts",
-    "node_modules/@types/jasmine/index.d.ts"
+    "node_modules/@types/jasmine/index.d.ts",
+    "node_modules/@types/lodash/index.d.ts",
+    "node_modules/@types/react-hot-loader/index.d.ts"
   ],
   "typeRoots": [
     "node_modules/@types",
