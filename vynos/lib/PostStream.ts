@@ -75,26 +75,6 @@ export default class PostStream extends Duplex implements Writable, Readable {
     callback()
   }
 
-  _final(callback: Function) {
-    callback()
-  }
-
-  cork () {
-    // Do Nothing
-  }
-
-  uncork () {
-    // Do Nothing
-  }
-
-  destroy(error?: Error) {
-    // Do Nothing
-  }
-
-  setDefaultEncoding(encoding: string): this {
-    return this
-  }
-
   _write (data: any, encoding: string, next: () => void) {
     let message = {
       target: this.targetName,
