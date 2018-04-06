@@ -15,10 +15,10 @@
     "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'"
   },
   "devDependencies": {
+    "@machinomy/types-duplexify": "^0.0.1",
     "@machinomy/types-truffle-contract": "https://github.com/machinomy/types-truffle-contract",
     "@types/bignumber.js": "^4.0.2",
     "@types/bip39": "^2.4.0",
-    "@types/duplexify": "^3.5.0",
     "@types/html2canvas": "^0.5.35",
     "@types/jasmine": "^2.5.52",
     "@types/lodash": "^4.14.77",
