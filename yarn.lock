@@ -44,6 +44,15 @@
     "@machinomy/types-buffer" "^0.0.4"
     buffer "^5.1.0"
 
+"@machinomy/types-readable-stream@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@machinomy/types-readable-stream/-/types-readable-stream-0.0.1.tgz#0ffe92092c7ef583219932f14391605b359c6e87"
+  dependencies:
+    "@machinomy/types-buffer" "^0.0.4"
+    "@types/events" "^1.2.0"
+    buffer "^5.1.0"
+    readable-stream "^2.3.2"
+
 "@machinomy/types-truffle-contract@https://github.com/machinomy/types-truffle-contract":
   version "0.0.1"
   resolved "https://github.com/machinomy/types-truffle-contract#112f61ec4527a0fbf7c1b9bcc0bedaa6be42caa7"
@@ -88,6 +97,10 @@
   resolved "https://registry.yarnpkg.com/@types/duplexify/-/duplexify-3.5.0.tgz#c1e8a2c4e05f2a5545c61c31283b76f92d48b007"
   dependencies:
     "@types/node" "*"
+
+"@types/events@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/events/-/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
 
 "@types/expect@^1.20.2":
   version "1.20.2"
