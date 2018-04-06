@@ -1,6 +1,6 @@
 import { PaymentChannel } from 'machinomy/dist/lib/payment_channel'
 import YnosPayInChannelResponse from './VynosPayInChannelResponse'
-import Web3 = require('web3')
+import * as Web3 from 'web3'
 import VynosBuyResponse from './VynosBuyResponse'
 import PurchaseMeta from './PurchaseMeta'
 import { default as PromisedWalletResponse } from './promised'
