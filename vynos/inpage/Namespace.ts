@@ -18,9 +18,9 @@ export function isReady (callback: () => void) {
 
 export default class Namespace {
   scriptAddress: string
-  window: Window
-  client?: Promise<VynosClient>
-  frame: Frame | undefined
+  private window: Window
+  private client?: Promise<VynosClient>
+  private frame: Frame | undefined
 
   constructor (scriptElement: HTMLScriptElement, window: Window) {
     this.scriptAddress = scriptElement.src
