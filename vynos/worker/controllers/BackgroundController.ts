@@ -1,5 +1,5 @@
 import * as redux from 'redux'
-import { Buffer } from 'buffer'
+import { Buffer } from 'safe-buffer'
 import reducers from '../reducers'
 import {
   buildSharedState,

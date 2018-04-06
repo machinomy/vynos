@@ -35,7 +35,7 @@
     "node_modules/@machinomy/types-ethereumjs-tx/index.d.ts",
     "node_modules/@machinomy/types-ethereumjs-wallet/index.d.ts",
     "node_modules/@machinomy/types-ethereumjs-wallet/index.d.ts",
-    "node_modules/@machinomy/types-buffer/index.d.ts",
+    "node_modules/@machinomy/types-safe-buffer/index.d.ts",
     "node_modules/@machinomy/types-duplexify/index.d.ts"
   ],
   "exclude": [

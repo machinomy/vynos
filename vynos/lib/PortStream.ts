@@ -1,5 +1,5 @@
 import { Duplex } from 'readable-stream'
-import { Buffer } from 'buffer'
+import { Buffer } from 'safe-buffer'
 
 interface KindaBuffer extends Buffer {
   _isBuffer: boolean
