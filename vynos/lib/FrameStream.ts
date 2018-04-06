@@ -1,5 +1,5 @@
 import PostStream from './PostStream'
-import duplexify = require('duplexify')
+import * as Duplexify from 'duplexify'
 import { Duplex } from 'readable-stream'
 
 export default class FrameStream {
@@ -18,7 +18,7 @@ export default class FrameStream {
   }
 
   toFrame (frame: HTMLIFrameElement): Duplex {
-    let result = duplexify.obj()
+    let result = new Duplexify()
     frame.addEventListener('load', () => {
       let postStream = new PostStream({
         sourceName: this.parentName(),

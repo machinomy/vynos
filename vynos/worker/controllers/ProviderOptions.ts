@@ -3,6 +3,7 @@ import { ProviderOpts } from 'web3-provider-engine'
 import ethUtil = require('ethereumjs-util')
 import sigUtil = require('eth-sig-util')
 import Tx = require('ethereumjs-tx')
+import { Buffer } from 'buffer'
 import TransactionService from '../TransactionService'
 import { randomId } from '../../lib/Payload'
 import * as transactions from '../../lib/transactions'
