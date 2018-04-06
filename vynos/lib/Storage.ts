@@ -1,5 +1,5 @@
 import Datastore = require('nedb')
-import SettingStorage from './storage/SettingStorage'
+import { default as SettingStorage, NetworkSetting } from './storage/SettingStorage'
 import { default as bus } from './bus'
 import { CHANGE_NETWORK } from './constants'
 
@@ -13,14 +13,14 @@ export default class Storage {
     this.name = name
     this.datastore = undefined
     this.load().catch(console.error)
-    bus.on(CHANGE_NETWORK, () => {
-      this.load().catch(console.error)
+    bus.on(CHANGE_NETWORK, async () => {
+      await this.load()
     })
   }
 
   load (): Promise<void> {
     return new Promise(resolve => {
-      settingStorage.getNetwork().then((network: any) => {
+      settingStorage.getNetwork().then((network: NetworkSetting) => {
         this.datastore = new Datastore({ filename: this.name + '_' + network.name, autoload: true })
         this.datastore.loadDatabase(() => {
           resolve()

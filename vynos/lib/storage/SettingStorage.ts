@@ -1,9 +1,14 @@
 import Datastore = require('nedb')
 
-const networks = require('../../networks')
+const networks = require('../../networks.json')
 const DEFAULT_NETWORK = 'Ropsten'
 
 export interface Setting {
+  name: string
+  value: string
+}
+
+export interface NetworkSetting {
   name: string
   value: string
 }
@@ -56,7 +61,7 @@ export default class SettingStorage {
     })
   }
 
-  getNetwork (): Promise<object> {
+  getNetwork (): Promise<NetworkSetting> {
     return new Promise((resolve, reject) => {
       this.datastore.loadDatabase(() => {
         this.datastore.findOne<Setting>({ name: 'network' }, (err, res) => {
