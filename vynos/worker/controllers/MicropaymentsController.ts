@@ -20,6 +20,7 @@ import { SharedState } from '../WorkerState'
 import * as events from '../../lib/events'
 import { BuyProcessEvent } from '../../lib/rpc/buyProcessEventBroadcast'
 import { WalletBuyArguments } from '../../lib/Vynos'
+import { CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER } from '../../lib/constants'
 
 const timeparse = require('timeparse')
 
@@ -41,6 +42,13 @@ export default class MicropaymentsController {
         let provider = ZeroClientProvider(this.providerOpts(network.rpcUrl))
         this.web3 = new Web3(provider)
       })
+    })
+
+    bus.on(CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER, async () => {
+      this.transactions.storage.changeNetwork().catch((error) => console.error(error))
+      this.channels.changeNetwork().catch((error) => console.error(error))
+      let provider = ZeroClientProvider(this.providerOpts(this.network.rpcUrl))
+      this.web3 = new Web3(provider)
     })
   }
 

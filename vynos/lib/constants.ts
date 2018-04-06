@@ -5,5 +5,6 @@ const networks = {
 }
 
 const CHANGE_NETWORK = 'changeNetwork'
+const CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER = 'changeNetworkForMicropaymentController'
 
-export { networks, CHANGE_NETWORK }
+export { networks, CHANGE_NETWORK, CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER }

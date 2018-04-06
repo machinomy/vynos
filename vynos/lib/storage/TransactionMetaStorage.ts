@@ -8,9 +8,11 @@ import * as events from '../events'
 export default class TransactionMetaStorage {
   datastore: Promise<Datastore>
 
+  private d: Storage | undefined
+
   constructor () {
-    let d = new Storage('transactions')
-    this.datastore = d.ready()
+    this.d = new Storage('transactions')
+    this.datastore = this.d.ready()
   }
 
   add (transaction: TransactionMeta): Promise<TransactionMeta> {
@@ -111,6 +113,14 @@ export default class TransactionMetaStorage {
             console.error(err)
           }
         })
+      })
+    })
+  }
+
+  changeNetwork (): Promise<void> {
+    return new Promise(() => {
+      this.d!.load().then(() => {
+        this.datastore = this.d!.ready()
       })
     })
   }
