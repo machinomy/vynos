@@ -23,9 +23,9 @@
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@machinomy/types-buffer/-/types-buffer-0.0.4.tgz#766ac4d29deb63f694b743af19cc22be79943cdd"
 
-"@machinomy/types-duplexify@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@machinomy/types-duplexify/-/types-duplexify-0.0.1.tgz#eb3a306e37327c1f7a1c534b0ddcc64d312ad58c"
+"@machinomy/types-duplexify@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@machinomy/types-duplexify/-/types-duplexify-0.0.3.tgz#9bc41dd990aedca6078e97ab7df5778ff84569f6"
   dependencies:
     "@machinomy/types-readable-stream" "^0.0.1"
 
