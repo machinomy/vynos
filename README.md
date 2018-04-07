@@ -68,19 +68,19 @@ cd vynos
 yarn install --pure-lockfile
 ```
 
-Rename example.env to .env and set some environment variables:
-```
-FRAME_PORT=9090
-HARNESS_PORT=9999
-```
-
 ## Run
 ```
 yarn run harness
 ```
 That command starts a web server to play with Vynos on localhost.
-Open browser on `http://localhost:9999` and click on some buttons.
+Open browser on `http://localhost:9000` and click on some buttons.
 It triggers the building process, so you should wait a little bit staring on the page.
+
+You could change the port via `.env` file:
+```
+HARNESS_PORT=9000
+BACKGROUND_PORT=9999
+```
 
 ## WTF is Harness
 It demonstrates Vynos work on localhost. It runs a web page (Vynos client) on localhost:8080.

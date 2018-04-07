@@ -5,10 +5,10 @@
   "types": "dist/types/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
-    "start": "gulp serve:built",
+    "start": "gulp serve:harness",
     "build": "gulp build",
     "build:harness": "gulp build:harness",
-    "harness": "gulp harness:serve",
+    "harness": "gulp serve:harness",
     "index": "tsc -p tsconfig.json --outDir dist/",
     "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'"
   },

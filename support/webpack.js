@@ -1,3 +1,5 @@
+'use strict'
+
 const path = require('path')
 const webpack = require('webpack')
 
@@ -6,27 +8,27 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const NodeExternalsPlugin = require('webpack-node-externals')
 
-require('dotenv').config({ path: '.env' });
-
+require('dotenv').config({ path: '.env' })
 const NODE_ENV = process.env.NODE_ENV || 'development'
-const DIST_PATH = path.resolve(__dirname, 'dist')
 
+const IS_OPTIMISED = NODE_ENV === 'production'
+const DIST_PATH = '/dist'
 const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg)).*$/
 
-function outputFilename(dev) {
-  if (dev) {
-    return '[name].dev.js'
-  } else {
-    return '[name].js'
-  }
+function outputFilename() {
+  return '[name].js'
 }
 
-function webpackConfig (entry, devSupplement) {
+function resolve(filePath) {
+  return path.resolve(__dirname, '..', ...filePath.split('/'))
+}
+
+function webpackConfig (entry) {
   let config = {
     entry: entry,
     output: {
-      filename: outputFilename(devSupplement),
-      path: DIST_PATH
+      filename: outputFilename(),
+      path: resolve(DIST_PATH)
     },
     devtool: 'source-map',
     externals: [NodeExternalsPlugin({whitelist: [EXTERNALS_WHITELIST]})],
@@ -90,7 +92,7 @@ function webpackConfig (entry, devSupplement) {
         },
         {
           test: /\.css$/i,
-          exclude: [path.resolve(__dirname, 'vynos'), path.resolve(__dirname, 'harness')],
+          exclude: [resolve('/vynos'), resolve('/harness')],
           use: [
             {
               loader: 'style-loader'
@@ -135,8 +137,7 @@ function webpackConfig (entry, devSupplement) {
     }
   }
 
-  const isOptimised = NODE_ENV === 'production' && !devSupplement
-  if (isOptimised) {
+  if (IS_OPTIMISED) {
     config.plugins.push(new UglifyJSPlugin({
       parallel: true,
       uglifyOptions: {
@@ -147,50 +148,23 @@ function webpackConfig (entry, devSupplement) {
       }
     }))
     config.plugins.push(new CopyPlugin([
-      path.resolve(__dirname,'vynos', 'frame.html'),
-      path.resolve(__dirname,'vynos', 'check.html'),
+      resolve('vynos/frame.html'),
+      resolve('vynos/check.html')
     ]))
   }
 
   return config
 }
 
-const VYNOS_LIVE = webpackConfig({
-  vynos: [
-    'react-hot-loader/patch',
-    `webpack-dev-server/client?http://localhost:${process.env.HARNESS_PORT}`,
-    'webpack/hot/only-dev-server',
-    path.resolve(__dirname, 'vynos/vynos.ts'),
-  ],
-  frame: [
-    'react-hot-loader/patch',
-    `webpack-dev-server/client?http://localhost:${process.env.FRAME_PORT}`,
-    'webpack/hot/only-dev-server',
-    path.resolve(__dirname, 'vynos/frame.ts')
-  ],
-  worker: [
-    path.resolve(__dirname, 'vynos/worker.ts')
-  ]
-});
+module.exports.HARNESS = webpackConfig({
+  harness: resolve('harness/harness.ts')
+})
 
-const VYNOS = webpackConfig({
-  vynos: path.resolve(__dirname, 'vynos/vynos.ts'),
-  frame: path.resolve(__dirname, 'vynos/frame.ts'),
-  worker: path.resolve(__dirname, 'vynos/worker.ts')
-});
+module.exports.EMBED = webpackConfig({
+  vynos: resolve('vynos/vynos.ts')
+})
 
-const VYNOS_DEV = webpackConfig({
-  vynos: path.resolve(__dirname, 'vynos/vynos.ts'),
-  frame: path.resolve(__dirname, 'vynos/frame.ts'),
-  worker: path.resolve(__dirname, 'vynos/worker.ts')
-}, true);
-
-const HARNESS = webpackConfig({
-  harness: path.resolve(__dirname, 'harness/harness.ts')
-});
-
-
-module.exports.HARNESS = HARNESS;
-module.exports.VYNOS_LIVE = VYNOS_LIVE;
-module.exports.VYNOS = VYNOS;
-module.exports.VYNOS_DEV = VYNOS_DEV;
+module.exports.BACKGROUND = webpackConfig({
+  frame: resolve('vynos/frame.ts'),
+  worker: resolve('vynos/worker.ts')
+})
