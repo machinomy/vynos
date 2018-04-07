@@ -8,23 +8,34 @@ const NodeExternalsPlugin = require('webpack-node-externals')
 
 require('dotenv').config({ path: '.env' });
 
+const NODE_ENV = process.env.NODE_ENV || 'development'
 const DIST_PATH = path.resolve(__dirname, 'dist')
+
+const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg)).*$/
+
+function outputFilename(dev) {
+  if (dev) {
+    return '[name].dev.js'
+  } else {
+    return '[name].js'
+  }
+}
 
 function webpackConfig (entry, devSupplement) {
   let config = {
     entry: entry,
-    devtool: 'source-map',
-    externals: [NodeExternalsPlugin({whitelist: [/^(?!(require_optional|bindings|pg)).*$/]})],
     output: {
-      filename: devSupplement ? '[name].dev.js' : '[name].js',
+      filename: outputFilename(devSupplement),
       path: DIST_PATH
     },
+    devtool: 'source-map',
+    externals: [NodeExternalsPlugin({whitelist: [EXTERNALS_WHITELIST})],
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
         'process.env': {
-          'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development') // This has effect on the react lib size
+          'NODE_ENV': JSON.stringify(NODE_ENV) // This has effect on the react lib size
         },
         'global.XMLHttpRequest': global.XMLHttpRequest
       }),
@@ -37,12 +48,12 @@ function webpackConfig (entry, devSupplement) {
       rules: [
         {
           test: /\.tsx?$/,
-          loaders: process.env.NODE_ENV === 'production' ? ['ts-loader'] : ['babel-loader', 'ts-loader']
+          loader: 'ts-loader'
         },
         {
-          enforce: 'pre',
           test: /\.js$/,
           loader: 'source-map-loader',
+          enforce: 'pre',
           exclude: [/node_modules/]
         },
         {
@@ -68,9 +79,7 @@ function webpackConfig (entry, devSupplement) {
               options: {
                 plugins: () => ([
                   require('postcss-import')(),
-                  // Following CSS Nesting Module Level 3: http://tabatkins.github.io/specs/css-nesting/
                   require('postcss-nesting')(),
-                  //https://github.com/ai/browserslist
                   require('autoprefixer')({
                     browsers: ['last 2 versions', 'ie >= 9']
                   })
@@ -126,7 +135,8 @@ function webpackConfig (entry, devSupplement) {
     }
   }
 
-  if (process.env.NODE_ENV === 'production' && !devSupplement) {
+  const isOptimised = NODE_ENV === 'production' && !devSupplement
+  if (isOptimised) {
     config.plugins.push(new UglifyJSPlugin({
       parallel: true,
       uglifyOptions: {
