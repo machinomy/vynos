@@ -12,7 +12,7 @@ require('dotenv').config({ path: '.env' })
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
 const IS_OPTIMISED = NODE_ENV === 'production'
-const DIST_PATH = '/dist'
+const DIST_PATH = 'dist'
 const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg)).*$/
 
 function outputFilename() {
@@ -92,7 +92,7 @@ function webpackConfig (entry) {
         },
         {
           test: /\.css$/i,
-          exclude: [resolve('/vynos'), resolve('/harness')],
+          exclude: [resolve('vynos'), resolve('harness')],
           use: [
             {
               loader: 'style-loader'
