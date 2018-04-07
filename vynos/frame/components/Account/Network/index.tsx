@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { FrameState } from '../../../redux/FrameState'
 
 const style = require('../../../styles/ynos.css')
-const networks = require('../../../../networks.json')
+const networks = require('../../../../../data/networks.json')
 
 export interface NetworkProps {
   changeNetwork: () => void
