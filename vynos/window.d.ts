@@ -1,7 +1,7 @@
-import Namespace from './embed/Namespace'
+import Wallet from './embed/Wallet'
 
 export interface VynosWindow extends Window {
-  vynos: Namespace,
+  vynos: Wallet,
   showVynosNotification: any
 }
 

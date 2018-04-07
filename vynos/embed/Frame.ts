@@ -13,7 +13,7 @@ export default class Frame {
   vynosScriptAddress: string
   notifications: HTMLDivElement | undefined
 
-  constructor (scriptAddress: string, frameElement?: HTMLIFrameElement) {
+  constructor (scriptAddress: string) {
     this.vynosScriptAddress = scriptAddress
     // let srcCloseButton = this.vynosScriptAddress.replace(/vynos(.|.dev.)js/, imgUpArrow) FIXME Prevents TS compilation
     this.containerElement = undefined
@@ -21,56 +21,52 @@ export default class Frame {
     this.style = undefined
     this.notifications = undefined
 
-    if (frameElement) {
-      this.element = frameElement
-    } else {
-      this.containerElement = document.createElement('div')
-      this.element = document.createElement('iframe')
-      this.element.id = 'ynos_frame'
-      this.element.style.borderWidth = '0px'
-      this.element.height = FRAME_HEIGHT + 'px'
-      this.element.width = FRAME_WIDTH + 'px'
-      this.element.style.boxShadow = 'rgba(0, 0, 0, 0.1) 7px 10px 60px 10px'
+    this.containerElement = document.createElement('div')
+    this.element = document.createElement('iframe')
+    this.element.id = 'ynos_frame'
+    this.element.style.borderWidth = '0px'
+    this.element.height = FRAME_HEIGHT + 'px'
+    this.element.width = FRAME_WIDTH + 'px'
+    this.element.style.boxShadow = 'rgba(0, 0, 0, 0.1) 7px 10px 60px 10px'
 
-      this.closeButton = document.createElement('div')
-      this.closeButton.id = 'vynos_frame_close_button'
-      // this.closeButton.innerHTML = '<img id="vynos_frame_img_close_button" src="' + srcCloseButton + '">' FIXME Prevents TS compilation
-      this.closeButton.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT) + 'px'
-      this.closeButton.style.cursor = 'pointer'
-      this.closeButton.style.width = CLOSE_WIDTH + '%'
-      this.closeButton.style.margin = '-' + FRAME_HEIGHT + 'px 0 0 -' + ((CLOSE_WIDTH - 100) / 2) + '%'
-      this.closeButton.setAttribute('title', 'Hide Vynos')
-      this.closeButton.appendChild(document.createTextNode(''))
-      this.closeButton.addEventListener('click', () => {
-        this.hide()
-      })
-
-      const style = '#vynos_frame_img_close_button{width: 40px;bottom: 3px;position: absolute;left: 50%;margin-left: -20px;opacity:0;transition: opacity 1s}' +
-        '#vynos_frame_close_button:hover > #vynos_frame_img_close_button{opacity: 1}'
-      this.style = document.createElement('style')
-      this.style.appendChild(document.createTextNode(style))
-
-      this.notifications = document.createElement('div')
-      this.notifications.id = 'vynos_notifications'
-      this.notifications.style.marginTop = '25px'
-
-      this.containerElement.appendChild(this.element)
-      this.containerElement.appendChild(this.closeButton)
-      this.containerElement.appendChild(this.style)
-      this.containerElement.appendChild(this.notifications)
-
-      this.containerElement.style.position = 'fixed'
-      this.containerElement.style.top = '0px'
-      this.containerElement.style.right = '110px'
-      this.containerElement.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT).toString() + 'px'
-      this.containerElement.style.width = FRAME_WIDTH + 'px'
-      this.containerElement.style.zIndex = '9999999'
-
+    this.closeButton = document.createElement('div')
+    this.closeButton.id = 'vynos_frame_close_button'
+    // this.closeButton.innerHTML = '<img id="vynos_frame_img_close_button" src="' + srcCloseButton + '">' FIXME Prevents TS compilation
+    this.closeButton.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT) + 'px'
+    this.closeButton.style.cursor = 'pointer'
+    this.closeButton.style.width = CLOSE_WIDTH + '%'
+    this.closeButton.style.margin = '-' + FRAME_HEIGHT + 'px 0 0 -' + ((CLOSE_WIDTH - 100) / 2) + '%'
+    this.closeButton.setAttribute('title', 'Hide Vynos')
+    this.closeButton.appendChild(document.createTextNode(''))
+    this.closeButton.addEventListener('click', () => {
       this.hide()
+    })
 
-      this.containerElement.style.transition = 'margin-top 0.7s'
-      this.element.style.transition = 'opacity 1s'
-    }
+    const style = '#vynos_frame_img_close_button{width: 40px;bottom: 3px;position: absolute;left: 50%;margin-left: -20px;opacity:0;transition: opacity 1s}' +
+      '#vynos_frame_close_button:hover > #vynos_frame_img_close_button{opacity: 1}'
+    this.style = document.createElement('style')
+    this.style.appendChild(document.createTextNode(style))
+
+    this.notifications = document.createElement('div')
+    this.notifications.id = 'vynos_notifications'
+    this.notifications.style.marginTop = '25px'
+
+    this.containerElement.appendChild(this.element)
+    this.containerElement.appendChild(this.closeButton)
+    this.containerElement.appendChild(this.style)
+    this.containerElement.appendChild(this.notifications)
+
+    this.containerElement.style.position = 'fixed'
+    this.containerElement.style.top = '0px'
+    this.containerElement.style.right = '110px'
+    this.containerElement.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT).toString() + 'px'
+    this.containerElement.style.width = FRAME_WIDTH + 'px'
+    this.containerElement.style.zIndex = '9999999'
+
+    this.hide()
+
+    this.containerElement.style.transition = 'margin-top 0.7s'
+    this.element.style.transition = 'opacity 1s'
     const frameSrc = this.vynosScriptAddress.replace(/vynos.js/, 'frame.html')
     this.element.src = window.location.href.match(/dev=true/) ? frameSrc + '?dev=true' : frameSrc
     this.element.setAttribute('sandbox', 'allow-scripts allow-modals allow-same-origin allow-popups allow-forms')

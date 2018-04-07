@@ -1,12 +1,12 @@
 import { VynosWindow } from './window'
-import Namespace from './embed/Namespace'
+import Wallet from './embed/Wallet'
 import { BROWSER_NOT_SUPPORTED_TEXT } from './frame/constants'
 import * as html2canvas from 'html2canvas'
 
 let global = window as VynosWindow
-let isVynosPresent = global.vynos && global.vynos instanceof Namespace
+let isVynosPresent = global.vynos && global.vynos instanceof Wallet
 if (!isVynosPresent) {
-  global.vynos = new Namespace(document.currentScript, window)
+  global.vynos = new Wallet(document.currentScript, window)
 }
 
 let _v = global.vynos

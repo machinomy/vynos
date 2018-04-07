@@ -1,7 +1,7 @@
 import { VynosWindow } from '../vynos/window'
 // import { PaymentChannel } from 'machinomy/lib/channel'
 // import { inspect } from 'util'
-// import Namespace from '../vynos/embed/Namespace'
+// import Wallet from '../vynos/embed/Wallet'
 import * as Web3 from 'web3'
 import VynosBuyResponse from '../vynos/lib/VynosBuyResponse'
 // import * as BigNumber from 'bignumber.js'
@@ -47,7 +47,7 @@ window.addEventListener('load', function () {
 
   let customFrame = document.getElementById('custom_frame')
   if (customFrame) {
-    vynos.init(customFrame as HTMLIFrameElement)
+    vynos.load(customFrame as HTMLIFrameElement)
   }
 
   vynos.ready().then(instance => {

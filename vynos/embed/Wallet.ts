@@ -26,9 +26,9 @@ function scriptAddress (scriptElement: HTMLScriptElement | SVGScriptElement | nu
   }
 }
 
-export default class Namespace {
-  scriptAddress: string
-  private window: Window
+export default class Wallet {
+  private readonly scriptAddress: string
+  private readonly window: Window
   private client?: Promise<VynosClient>
   private frame: Frame | undefined
 
@@ -38,12 +38,10 @@ export default class Namespace {
     this.frame = undefined
   }
 
-  // Initialize frame container for the Wallet.
-  // Optional to use.
-  init (frameElement?: HTMLIFrameElement, frame?: Frame): Promise<Vynos> {
+  load (): Promise<Vynos> {
     this.client = new Promise(resolve => {
       isReady(() => {
-        this.frame = frame ? frame : new Frame(this.scriptAddress, frameElement)
+        this.frame = new Frame(this.scriptAddress)
         this.frame.attach(this.window.document)
         let stream = new FrameStream('vynos').toFrame(this.frame.element)
         let client = new VynosClient(stream)
@@ -80,7 +78,7 @@ export default class Namespace {
       if (this.client) {
         return this.client
       } else {
-        return this.init()
+        return this.load()
       }
     } else {
       return Promise.reject(new Error(BROWSER_NOT_SUPPORTED_TEXT))
