@@ -29,7 +29,7 @@ function webpackConfig (entry, devSupplement) {
       path: DIST_PATH
     },
     devtool: 'source-map',
-    externals: [NodeExternalsPlugin({whitelist: [EXTERNALS_WHITELIST})],
+    externals: [NodeExternalsPlugin({whitelist: [EXTERNALS_WHITELIST]})],
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
