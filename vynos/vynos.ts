@@ -1,5 +1,5 @@
 import { VynosWindow } from './window'
-import Namespace from './inpage/Namespace'
+import Namespace from './embed/Namespace'
 import { BROWSER_NOT_SUPPORTED_TEXT } from './frame/constants'
 import * as html2canvas from 'html2canvas'
 

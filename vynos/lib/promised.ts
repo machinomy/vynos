@@ -1,7 +1,7 @@
 import { BuyProcessEvent, buyProcessEvent } from './rpc/buyProcessEventBroadcast'
 import { WalletBuyArguments } from './Vynos'
 import VynosBuyResponse from './VynosBuyResponse'
-import VynosClient from '../inpage/VynosClient'
+import VynosClient from '../embed/VynosClient'
 
 export default class PromisedWalletResponse {
   result: Promise<VynosBuyResponse>

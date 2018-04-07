@@ -1,4 +1,4 @@
-import Namespace from './inpage/Namespace'
+import Namespace from './embed/Namespace'
 
 export interface VynosWindow extends Window {
   vynos: Namespace,
