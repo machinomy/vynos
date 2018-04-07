@@ -17,9 +17,11 @@ export interface ChannelMeta {
 export default class ChannelMetaStorage {
   datastore: Promise<Datastore>
 
+  private d: Storage | undefined
+
   constructor () {
-    let d = new Storage(CHANGE_NETWORK)
-    this.datastore = d.ready()
+    this.d = new Storage(CHANGE_NETWORK)
+    this.datastore = this.d.ready()
     this.datastore.then()
   }
 
@@ -102,6 +104,14 @@ export default class ChannelMetaStorage {
             console.error(err)
           }
         })
+      })
+    })
+  }
+
+  changeNetwork (): Promise<void> {
+    return new Promise(() => {
+      this.d!.load().then(() => {
+        this.datastore = this.d!.ready()
       })
     })
   }

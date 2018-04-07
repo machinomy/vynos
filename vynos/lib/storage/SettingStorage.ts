@@ -8,6 +8,11 @@ export interface Setting {
   value: string
 }
 
+export interface NetworkSetting {
+  name: string
+  value: string
+}
+
 /**
  * Database layer for {MetaChannel}
  */
@@ -56,7 +61,7 @@ export default class SettingStorage {
     })
   }
 
-  getNetwork (): Promise<object> {
+  getNetwork (): Promise<NetworkSetting> {
     return new Promise((resolve, reject) => {
       this.datastore.loadDatabase(() => {
         this.datastore.findOne<Setting>({ name: 'network' }, (err, res) => {

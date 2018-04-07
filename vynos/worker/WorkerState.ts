@@ -46,7 +46,7 @@ export const INITIAL_SHARED_STATE: SharedState = {
     micropaymentThrottlingHumanReadable: '-1ms',
     currency: 'ETH'
   },
-  lastMicropaymentTime: 0
+  lastMicropaymentTime: -1
 }
 
 export const INITIAL_STATE: WorkerState = {
@@ -62,7 +62,7 @@ export const INITIAL_STATE: WorkerState = {
   runtime: {
     isTransactionPending: 0,
     lastUpdateDb: 0,
-    lastMicropaymentTime: 0
+    lastMicropaymentTime: -1
   }
 }
 
