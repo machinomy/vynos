@@ -20,7 +20,7 @@ function resolve(filePath) {
   return path.resolve(__dirname, '..', ...filePath.split('/'))
 }
 
-function webpackConfig (entry) {
+function bundle (entry) {
   let config = {
     entry: entry,
     output: {
@@ -148,15 +148,26 @@ function webpackConfig (entry) {
   return config
 }
 
-module.exports.HARNESS = webpackConfig({
+function index() {
+  let config = bundle({
+    index: resolve('vynos/index.ts')
+  })
+  config.output.library = 'vynos'
+  config.output.libraryTarget = 'umd'
+  return config
+}
+
+module.exports.HARNESS = bundle({
   harness: resolve('harness/harness.ts')
 })
 
-module.exports.EMBED = webpackConfig({
-  vynos: resolve('vynos/vynos.ts')
-})
-
-module.exports.BACKGROUND = webpackConfig({
+module.exports.BACKGROUND = bundle({
   frame: resolve('vynos/frame.ts'),
   worker: resolve('vynos/worker.ts')
 })
+
+module.exports.EMBED = bundle({
+  vynos: resolve('vynos/vynos.ts')
+})
+
+module.exports.INDEX = index()

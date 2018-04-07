@@ -16,14 +16,24 @@ export function isReady (callback: () => void) {
   })
 }
 
+function scriptAddress(scriptElement: HTMLScriptElement | SVGScriptElement | null): string {
+  if (scriptElement instanceof HTMLScriptElement) {
+    return scriptElement.src
+  } else if (scriptElement instanceof SVGScriptElement) {
+    return scriptElement.href.baseVal
+  } else {
+    return ''
+  }
+}
+
 export default class Namespace {
   scriptAddress: string
   private window: Window
   private client?: Promise<VynosClient>
   private frame: Frame | undefined
 
-  constructor (scriptElement: HTMLScriptElement, window: Window) {
-    this.scriptAddress = scriptElement.src
+  constructor (scriptElement: HTMLScriptElement | SVGScriptElement | null, window: Window) {
+    this.scriptAddress = scriptAddress(scriptElement)
     this.window = window
     this.frame = undefined
   }

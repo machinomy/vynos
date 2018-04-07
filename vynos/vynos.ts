@@ -6,7 +6,7 @@ import * as html2canvas from 'html2canvas'
 let global = window as VynosWindow
 let isVynosPresent = global.vynos && global.vynos instanceof Namespace
 if (!isVynosPresent) {
-  global.vynos = new Namespace(document.currentScript as HTMLScriptElement, window)
+  global.vynos = new Namespace(document.currentScript, window)
 }
 
 let _v = global.vynos

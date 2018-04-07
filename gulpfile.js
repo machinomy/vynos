@@ -11,10 +11,13 @@ const HARNESS_PORT = process.env.HARNESS_PORT || 9000
 
 const EMBED = require('./support/webpack').EMBED
 const BACKGROUND = require('./support/webpack').BACKGROUND
+const INDEX = require('./support/webpack').INDEX
 const HARNESS = require('./support/webpack').HARNESS
 
+const COMPONENTS = [EMBED, BACKGROUND, INDEX]
+
 gulp.task('build', callback => {
-  webpack([EMBED, BACKGROUND]).run((err, stats) => {
+  webpack(COMPONENTS).run((err, stats) => {
     if (err) throw new gutil.PluginError('build', err)
 
     gutil.log('build', stats.toString({
@@ -47,7 +50,7 @@ gulp.task('serve', () => {
     compress: true
   }
 
-  new WebpackDevServer(webpack([EMBED, BACKGROUND]), config).listen(BACKGROUND_PORT, 'localhost', (err) => {
+  new WebpackDevServer(webpack(COMPONENTS), config).listen(BACKGROUND_PORT, 'localhost', (err) => {
     if (err) throw new gutil.PluginError('serve', err)
   })
 })

@@ -2,7 +2,7 @@
   "name": "vynos",
   "version": "0.0.1",
   "license": "Apache-2.0",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/dist/types/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
     "start": "gulp serve:harness",
