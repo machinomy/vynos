@@ -1,23 +1,20 @@
-const path = require("path"),
-  webpack = require("webpack"),
-  DIST_PATH = path.resolve(__dirname, "dist"),
-  PackageLoadersPlugin = require('webpack-package-loaders-plugin'),
-  UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-  CopyWebpackPlugin = require('copy-webpack-plugin')
+const path = require("path")
+const webpack = require("webpack")
 
-const nodeExternals = require('webpack-node-externals')
+const PackageLoadersPlugin = require('webpack-package-loaders-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
+const NodeExternalsPlugin = require('webpack-node-externals')
+
 require('dotenv').config({ path: '.env' });
 
-
-const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS,
-  RPC_URL = process.env.RPC_URL;
-
+const DIST_PATH = path.resolve(__dirname, "dist")
 
 function webpackConfig (entry, devSupplement) {
   let config = {
     entry: entry,
     devtool: "source-map",
-    externals: [nodeExternals({whitelist: [/^(?!(require_optional|bindings|pg)).*$/]})],
+    externals: [NodeExternalsPlugin({whitelist: [/^(?!(require_optional|bindings|pg)).*$/]})],
     output: {
       filename: devSupplement ? "[name].dev.js" : "[name].js",
       path: DIST_PATH
@@ -26,8 +23,6 @@ function webpackConfig (entry, devSupplement) {
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
-        "window.RPC_URL": JSON.stringify(RPC_URL),
-        "self.CONTRACT_ADDRESS": JSON.stringify(CONTRACT_ADDRESS),
         "process.env": {
           "NODE_ENV": JSON.stringify(process.env.NODE_ENV || 'development') // This has effect on the react lib size
         },
@@ -141,7 +136,7 @@ function webpackConfig (entry, devSupplement) {
         }
       }
     }))
-    config.plugins.push(new CopyWebpackPlugin([
+    config.plugins.push(new CopyPlugin([
       path.resolve(__dirname,'vynos', 'frame.html'),
       path.resolve(__dirname,'vynos', 'check.html'),
     ]))

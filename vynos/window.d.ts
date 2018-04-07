@@ -1,7 +1,6 @@
 import Namespace from './inpage/Namespace'
 
 export interface DevWindow extends Window {
-  RPC_URL: string
   signMessage: (message: string) => void
 }
 
