@@ -24,7 +24,7 @@ export function formatAmount (wei: number): Amount {
   if (wei) {
     let web3 = new Web3()
     let bigNumberWei = new BigNumber.BigNumber(wei)
-    let shortestDenomination: string = ""
+    let shortestDenomination: string = ''
     let _min: number
     DENOMINATIONS.forEach(d => {
       let candidate = web3.fromWei(bigNumberWei, d as Web3.Unit).toString().length

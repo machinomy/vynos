@@ -2,7 +2,7 @@ import * as React from 'react'
 import Random from '../../lib/Random'
 
 export function stringToColor (str: string): null | string {
-  if (!str || str === "") {
+  if (!str || str === '') {
     return null
   } else {
     let hash = 0
