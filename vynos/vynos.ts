@@ -1,19 +1,22 @@
-import { DevWindow, VynosWindow } from './window'
+import { VynosWindow } from './window'
 import Namespace from './inpage/Namespace'
 import { BROWSER_NOT_SUPPORTED_TEXT } from './frame/constants'
 import * as html2canvas from 'html2canvas'
 
-let global = window as DevWindow & VynosWindow
-
+let global = window as VynosWindow
 let isVynosPresent = global.vynos && global.vynos instanceof Namespace
 if (!isVynosPresent) {
-  global.vynos = new Namespace(document.currentScript as HTMLScriptElement, window)
+  global.vynos = new Namespace(document.currentScript, window)
 }
 
+let _v = global.vynos
+export default _v
+
 if (!document.querySelectorAll('meta[property=\'og:image\']').length && document.body) {
+  let size = document.body.clientHeight
   html2canvas(document.body, {
-    width: document.body.clientHeight,
-    height: document.body.clientHeight,
+    width: size,
+    height: size,
     logging: false
   }).then(canvas => {
     let metaImageNode = document.createElement('meta')
@@ -25,9 +28,9 @@ if (!document.querySelectorAll('meta[property=\'og:image\']').length && document
 
 if (!('serviceWorker' in navigator)) {
   let b = document.createElement('div')
-  b.innerHTML = BROWSER_NOT_SUPPORTED_TEXT +
-    '<img src="' + global.vynos.scriptAddress.replace(/vynos(.|.dev.)js/, require('./frame/styles/images/close-button.svg')) + '" ' +
-    'style="position: fixed;right: 20px;top: 13px;width: 17px;">'
+  // b.innerHTML = BROWSER_NOT_SUPPORTED_TEXT +
+  //   '<img src="' + global.vynos.scriptAddress.replace(/vynos(.|.dev.)js/, require('./frame/styles/images/close-button.svg')) + '" ' +
+  //   'style="position: fixed;right: 20px;top: 13px;width: 17px;">' FIXME Prevents TS compilation
   b.style.position = 'fixed'
   b.style.width = '100%'
   b.style.height = '45px'

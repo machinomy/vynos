@@ -1,98 +1,71 @@
-'use strict';
+'use strict'
 
-const   gulp                        = require('gulp'),
-        gutil                       = require('gulp-util'),
-        webpack                     = require('webpack'),
-        WebpackDevServer            = require('webpack-dev-server'),
-        VYNOS                       = require('./webpack').VYNOS,
-        VYNOS_DEV                   = require('./webpack').VYNOS_DEV,
-        VYNOS_LIVE                  = require('./webpack').VYNOS_LIVE,
-        HARNESS                     = require('./webpack').HARNESS;
+const gulp = require('gulp')
+const gutil = require('gulp-util')
+const webpack = require('webpack')
+const WebpackDevServer = require('webpack-dev-server')
 
+require('dotenv').config({ path: '.env' })
+const BACKGROUND_PORT = process.env.BACKGROUND_PORT || 9999
+const HARNESS_PORT = process.env.HARNESS_PORT || 9000
 
-require('dotenv').config({ path: '.env' });
+const EMBED = require('./support/webpack').EMBED
+const BACKGROUND = require('./support/webpack').BACKGROUND
+const INDEX = require('./support/webpack').INDEX
+const HARNESS = require('./support/webpack').HARNESS
 
+const COMPONENTS = [EMBED, BACKGROUND, INDEX]
 
-// Build Vynos, Frame
-gulp.task("build", callback => {
-  webpack([VYNOS, VYNOS_DEV]).run(function(err, stats) {
-    if(err) throw new gutil.PluginError('build', err);
+gulp.task('build', callback => {
+  webpack(COMPONENTS).run((err, stats) => {
+    if (err) throw new gutil.PluginError('build', err)
+
     gutil.log('build', stats.toString({
       colors: true
-    }));
-    callback();
-  });
-});
+    }))
 
-gulp.task("build:harness", ["build"], callback => {
-  webpack(HARNESS).run(function(err, stats) {
-    if(err) throw new gutil.PluginError('build', err);
+    callback()
+  })
+})
+
+gulp.task('build:harness', ['build'], callback => {
+  webpack(HARNESS).run((err, stats) => {
+    if (err) throw new gutil.PluginError('build:harness', err)
+
     gutil.log('build:harness', stats.toString({
       colors: true
-    }));
-    callback();
-  });
-});
+    }))
 
-// Serve Vynos, Frame at http://localhost:9999/webpack-dev-server
-gulp.task("serve", () => {
-  new WebpackDevServer(webpack(VYNOS_LIVE), {
+    callback()
+  })
+})
+
+// Serve the Wallet at http://localhost:9999/webpack-dev-server
+gulp.task('serve', () => {
+  const config = {
     contentBase: 'vynos/',
     hot: true,
-    historyApiFallback: true,
-    quiet: false,
-    noInfo: false,
-    stats: {
-      // Config for minimal console.log mess.
-      assets: false,
-      colors: true,
-      version: false,
-      hash: false,
-      timings: false,
-      chunks: false,
-      chunkModules: false
-    },
+    stats: 'minimal',
+    lazy: false,
     compress: true
-  }).listen(process.env.FRAME_PORT, 'localhost', function(err) {
-    if(err) throw new gutil.PluginError('build:serve', err);
-    gutil.log('webpack-dev-server', `http://localhost:${process.env.FRAME_PORT}/webpack-dev-server/index.html`);
-  });
-});
+  }
 
-gulp.task("serve:built", () => {
-  new WebpackDevServer(webpack(VYNOS), {
-    contentBase: 'vynos/',
-    hot: true,
-    historyApiFallback: true,
-    quiet: false,
-    noInfo: false,
-    stats: {
-      // Config for minimal console.log mess.
-      assets: false,
-      colors: true,
-      version: false,
-      hash: false,
-      timings: false,
-      chunks: false,
-      chunkModules: false
-    }
-  }).listen(process.env.FRAME_PORT, 'localhost', function(err) {
-    if(err) throw new gutil.PluginError('serve:built', err);
-    gutil.log('webpack-dev-server', `http://localhost:${process.env.FRAME_PORT}/webpack-dev-server/index.html`);
-  });
-});
+  new WebpackDevServer(webpack(COMPONENTS), config).listen(BACKGROUND_PORT, 'localhost', (err) => {
+    if (err) throw new gutil.PluginError('serve', err)
+  })
+})
 
-gulp.task("serve:harness", ["serve"], () => {
-  new WebpackDevServer(webpack(HARNESS), {
-    stats: {
-      colors: true
-    },
+gulp.task('serve:harness', ['serve'], () => {
+  const config = {
     contentBase: 'harness/',
+    stats: 'minimal',
+    lazy: false,
     compress: true
-  }).listen(process.env.HARNESS_PORT, 'localhost', function(err) {
-    if(err) throw new gutil.PluginError('harness:serve', err);
-    gutil.log('webpack-dev-server', `http://localhost:${process.env.HARNESS_PORT}/webpack-dev-server/index.html`);
-  });
-});
+  }
 
-gulp.task("harness:serve", ["serve:harness"]);
+  new WebpackDevServer(webpack(HARNESS), config).listen(HARNESS_PORT, 'localhost', (err) => {
+    if(err) throw new gutil.PluginError('serve:harness', err)
+
+    gutil.log('webpack-dev-server', `The Wallet Harness runs on http://localhost:${HARNESS_PORT}`)
+  })
+})

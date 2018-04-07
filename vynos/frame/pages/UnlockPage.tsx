@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import _ = require('lodash')
 import WorkerProxy from '../WorkerProxy'
 import { Container, Form, Button, Divider, Icon } from 'semantic-ui-react'
 import Logo from '../components/Logo'
@@ -50,7 +49,7 @@ export class UnlockPage extends React.Component<UnlockPageProps & OwnUnlockProps
     this.setState({
       loading: true
     })
-    let password = _.toString(this.state.password)
+    let password = (this.state.password || '').toString()
     this.props.workerProxy.doUnlock(password).then((errorReason) => {
       if (errorReason) {
         this.setState({

@@ -37,6 +37,7 @@ import {
 } from '../../lib/rpc/buyProcessEventBroadcast'
 import { WalletBuyArguments } from '../../lib/Vynos'
 import { ChannelMeta } from '../../lib/storage/ChannelMetaStorage'
+import { Buffer } from 'safe-buffer'
 
 export default class BackgroundHandler {
   controller: BackgroundController

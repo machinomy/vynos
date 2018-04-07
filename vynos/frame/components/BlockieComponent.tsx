@@ -1,9 +1,8 @@
 import * as React from 'react'
 import Random from '../../lib/Random'
-import _ = require('lodash')
 
 export function stringToColor (str: string): null | string {
-  if (_.isEmpty(str)) {
+  if (!str || str === '') {
     return null
   } else {
     let hash = 0
@@ -56,7 +55,7 @@ export default class BlockieComponent extends React.Component<BlockieComponentPr
     this.size = this.props.size || 8
     this.scale = this.props.scale || 4
 
-    this.seed = this.props.seed || Math.floor((Math.random() * Math.pow(10,16))).toString(16)
+    this.seed = this.props.seed || Math.floor((Math.random() * Math.pow(10, 16))).toString(16)
     this.random = new Random(this.seed)
 
     this.canvasSize = this.size * this.scale
@@ -126,7 +125,7 @@ export default class BlockieComponent extends React.Component<BlockieComponentPr
   render () {
     return (
       <div style={this.props.style} className={this.props.classDiv}>
-        <canvas ref="canvas" width={this.canvasSize} height={this.canvasSize} className={this.props.classCanvas} />
+        <canvas ref="canvas" width={this.canvasSize} height={this.canvasSize} className={this.props.classCanvas}/>
       </div>
     )
   }

@@ -3,7 +3,7 @@ const FRAME_WIDTH = 320
 const CLOSE_HEIGHT = 40
 const CLOSE_WIDTH = 130 // %
 
-const imgUpArrow = require('../frame/styles/images/up-arrow.svg')
+// const imgUpArrow = require('../frame/styles/images/up-arrow.svg') FIXME Prevents TS compilation
 
 export default class Frame {
   element: HTMLIFrameElement
@@ -15,7 +15,7 @@ export default class Frame {
 
   constructor (scriptAddress: string, frameElement?: HTMLIFrameElement) {
     this.vynosScriptAddress = scriptAddress
-    let srcCloseButton = this.vynosScriptAddress.replace(/vynos(.|.dev.)js/, imgUpArrow)
+    // let srcCloseButton = this.vynosScriptAddress.replace(/vynos(.|.dev.)js/, imgUpArrow) FIXME Prevents TS compilation
     this.containerElement = undefined
     this.closeButton = undefined
     this.style = undefined
@@ -34,7 +34,7 @@ export default class Frame {
 
       this.closeButton = document.createElement('div')
       this.closeButton.id = 'vynos_frame_close_button'
-      this.closeButton.innerHTML = '<img id="vynos_frame_img_close_button" src="' + srcCloseButton + '">'
+      // this.closeButton.innerHTML = '<img id="vynos_frame_img_close_button" src="' + srcCloseButton + '">' FIXME Prevents TS compilation
       this.closeButton.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT) + 'px'
       this.closeButton.style.cursor = 'pointer'
       this.closeButton.style.width = CLOSE_WIDTH + '%'

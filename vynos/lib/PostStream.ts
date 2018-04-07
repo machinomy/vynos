@@ -1,4 +1,4 @@
-import { Duplex } from 'readable-stream'
+import { Duplex, Writable, Readable } from 'readable-stream'
 
 export type Target = Window | ServiceWorker | null
 
@@ -18,12 +18,17 @@ export type PostStreamOptions = {
   origin?: string
 }
 
-export default class PostStream extends Duplex {
+export default class PostStream extends Duplex implements Writable, Readable {
   sourceName: string
   targetName: string
   sourceWindow: EventTarget
   targetWindow: Target
   origin: string
+  highWaterMark: number
+  writableHighWaterMark: number
+  readableHighWaterMark: number
+  writableLength: number
+  readableLength: number
 
   constructor (options: PostStreamOptions) {
     super({ objectMode: true })
@@ -34,6 +39,12 @@ export default class PostStream extends Duplex {
     this.targetWindow = options.target || window
 
     this.origin = (options.target ? '*' : window.location.origin)
+
+    this.highWaterMark = 16
+    this.writableHighWaterMark = 16
+    this.readableHighWaterMark = 16
+    this.writableLength = 16
+    this.readableLength = 16
 
     this.sourceWindow.addEventListener('message', this.onMessage.bind(this))
   }
@@ -57,6 +68,11 @@ export default class PostStream extends Duplex {
 
   _read () {
     // Do Nothing
+  }
+
+  _destroy (err: Error, callback: Function) {
+    this.sourceWindow.removeEventListener('message', this.onMessage.bind(this))
+    callback()
   }
 
   _write (data: any, encoding: string, next: () => void) {
