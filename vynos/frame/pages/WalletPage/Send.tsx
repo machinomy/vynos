@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import Web3 = require('web3')
+import * as Web3 from 'web3'
 import { Menu, Button, Container, Form, Divider } from 'semantic-ui-react'
 import WalletAccount from '../../components/WalletPage/WalletAccount'
 import { FrameState } from '../../redux/FrameState'

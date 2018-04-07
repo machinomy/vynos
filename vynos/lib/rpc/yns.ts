@@ -1,7 +1,7 @@
 import { JSONRPC, RequestPayload, ResponsePayload } from '../Payload'
 import { SharedState, Preferences } from '../../worker/WorkerState'
 import { SerializedPaymentChannel } from 'machinomy/dist/lib/payment_channel'
-import Payment from 'machinomy/dist/lib/Payment'
+import Payment from 'machinomy/dist/lib/payment'
 import VynosBuyResponse from '../VynosBuyResponse'
 import PurchaseMeta from '../PurchaseMeta'
 

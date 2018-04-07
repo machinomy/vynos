@@ -1,9 +1,9 @@
-import { DevWindow, VynosWindow } from './window'
+import { VynosWindow } from './window'
 import Namespace from './inpage/Namespace'
 import { BROWSER_NOT_SUPPORTED_TEXT } from './frame/constants'
 import * as html2canvas from 'html2canvas'
 
-let global = window as DevWindow & VynosWindow
+let global = window as VynosWindow
 let isVynosPresent = global.vynos && global.vynos instanceof Namespace
 if (!isVynosPresent) {
   global.vynos = new Namespace(document.currentScript as HTMLScriptElement, window)

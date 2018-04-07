@@ -18,6 +18,7 @@
   "devDependencies": {
     "@machinomy/types-duplexify": "^0.0.4",
     "@machinomy/types-truffle-contract": "https://github.com/machinomy/types-truffle-contract",
+    "@machinomy/types-web3": "^0.0.4",
     "@types/bignumber.js": "^4.0.2",
     "@types/bip39": "^2.4.0",
     "@types/html2canvas": "^0.5.35",
@@ -60,7 +61,6 @@
     "types-web3-provider-engine": "^0.0.2",
     "typescript": "2.8.1",
     "uglifyjs-webpack-plugin": "^1.0.0-beta.3",
-    "web3-typescript-typings": "https://github.com/machinomy/web3-typescript-typings",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5",
     "webpack-node-externals": "^1.7.2",

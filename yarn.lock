@@ -63,6 +63,12 @@
     web3 "^0.20.2"
     web3-typescript-typings "https://github.com/0xProject/web3-typescript-typings"
 
+"@machinomy/types-web3@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@machinomy/types-web3/-/types-web3-0.0.4.tgz#aca033c0cabfc89757511410f5d5149af17fb497"
+  dependencies:
+    bignumber.js "^4.0.2"
+
 "@types/bignumber.js@^4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/bignumber.js/-/bignumber.js-4.0.2.tgz#22a16946c9faa9f2c9c0ad4c7c3734a3033320ae"
@@ -8587,12 +8593,6 @@ web3-typescript-typings@^0.9.7:
 "web3-typescript-typings@https://github.com/0xProject/web3-typescript-typings":
   version "0.7.1"
   resolved "https://github.com/0xProject/web3-typescript-typings#bceb42c44e30cc29f947f54672bef52e3c920ebd"
-  dependencies:
-    bignumber.js "^4.0.2"
-
-"web3-typescript-typings@https://github.com/machinomy/web3-typescript-typings":
-  version "0.6.2"
-  resolved "https://github.com/machinomy/web3-typescript-typings#9dc1b34664b08c5fdc9aba13c2546fb4d00bd2d3"
   dependencies:
     bignumber.js "^4.0.2"
 
