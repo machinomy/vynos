@@ -40,11 +40,11 @@ export function formatDate (timestamp: number): string {
   let date = new Date(timestamp)
   let result
   if (moment(date).isSame(new Date(), 'day')) {
-    result = 'just ' + moment(date).format('hh:mm:ss')
+    result = 'just ' + moment(date).format('HH:mm:ss')
   } else if (moment(date).isSame(new Date(), 'year')) {
-    result = moment(date).format('D MMM, hh:mm:ss')
+    result = moment(date).format('D MMM, HH:mm:ss')
   } else {
-    result = moment(date).format('D MMM YY, hh:mm:ss')
+    result = moment(date).format('D MMM YY, HH:mm:ss')
   }
   return result
 }
