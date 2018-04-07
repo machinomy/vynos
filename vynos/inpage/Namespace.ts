@@ -16,7 +16,7 @@ export function isReady (callback: () => void) {
   })
 }
 
-function scriptAddress(scriptElement: HTMLScriptElement | SVGScriptElement | null): string {
+function scriptAddress (scriptElement: HTMLScriptElement | SVGScriptElement | null): string {
   if (scriptElement instanceof HTMLScriptElement) {
     return scriptElement.src
   } else if (scriptElement instanceof SVGScriptElement) {
