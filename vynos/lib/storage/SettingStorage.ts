@@ -1,6 +1,6 @@
 import Datastore = require('nedb')
 
-const networks = require('../../networks')
+const networks = require('../../../data/networks.json')
 const DEFAULT_NETWORK = 'Ropsten'
 
 export interface Setting {
