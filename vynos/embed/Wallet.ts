@@ -63,10 +63,6 @@ export default class Wallet {
     })
   }
 
-  setContainerStyle (style: CSSStyleDeclaration): void {
-    this.frame!.setContainerStyle(style)
-  }
-
   hide (): void {
     this.ready().then(() => {
       this.frame!.hide()
