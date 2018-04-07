@@ -11,7 +11,6 @@ const NodeExternalsPlugin = require('webpack-node-externals')
 require('dotenv').config({ path: '.env' })
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
-const IS_OPTIMISED = NODE_ENV === 'production'
 const DIST_PATH = 'dist'
 const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg)).*$/
 
@@ -33,8 +32,6 @@ function webpackConfig (entry) {
     devtool: 'source-map',
     externals: [NodeExternalsPlugin({whitelist: [EXTERNALS_WHITELIST]})],
     plugins: [
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NamedModulesPlugin(),
       new webpack.DefinePlugin({
         'process.env': {
           'NODE_ENV': JSON.stringify(NODE_ENV) // This has effect on the react lib size
@@ -137,20 +134,25 @@ function webpackConfig (entry) {
     }
   }
 
-  if (IS_OPTIMISED) {
-    config.plugins.push(new UglifyJSPlugin({
-      parallel: true,
-      uglifyOptions: {
-        output: {
-          comments: false,
-          beautify: false
+  switch (NODE_ENV) {
+    case 'production':
+      config.plugins.push(new UglifyJSPlugin({
+        parallel: true,
+        uglifyOptions: {
+          output: {
+            comments: false,
+            beautify: false
+          }
         }
-      }
-    }))
-    config.plugins.push(new CopyPlugin([
-      resolve('vynos/frame.html'),
-      resolve('vynos/check.html')
-    ]))
+      }))
+      config.plugins.push(new CopyPlugin([
+        resolve('vynos/frame.html'),
+        resolve('vynos/check.html')
+      ]))
+      break
+    default:
+      config.plugins.push(new webpack.HotModuleReplacementPlugin())
+      config.plugins.push(new webpack.NamedModulesPlugin())
   }
 
   return config
