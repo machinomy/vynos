@@ -5,5 +5,6 @@ const networks = {
 }
 
 const CHANGE_NETWORK = 'changeNetwork'
+const DISPLAY_REQUEST = 'displayRequest'
 
-export { networks, CHANGE_NETWORK }
+export { networks, CHANGE_NETWORK, DISPLAY_REQUEST }

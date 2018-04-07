@@ -37,6 +37,9 @@ import {
 } from '../../lib/rpc/buyProcessEventBroadcast'
 import { WalletBuyArguments } from '../../lib/Vynos'
 import { ChannelMeta } from '../../lib/storage/ChannelMetaStorage'
+import bus from '../../lib/bus'
+import { DISPLAY_REQUEST } from '../../lib/constants'
+import { DisplayRequestBroadcast, DisplayRequestBroadcastType } from '../../lib/rpc/DisplayRequestBroadcast'
 
 export default class BackgroundHandler {
   controller: BackgroundController
@@ -248,6 +251,20 @@ export default class BackgroundHandler {
         id: SharedStateBroadcastType,
         jsonrpc: JSONRPC,
         result: sharedState
+      }
+      stream.write(message)
+    })
+  }
+
+  broadcastOnDisplayRequest (stream: Writable) {
+    bus.on(DISPLAY_REQUEST, (isDisplay?: boolean) => {
+      if (isDisplay === undefined) {
+        isDisplay = true
+      }
+      let message: DisplayRequestBroadcast = {
+        id: DisplayRequestBroadcastType,
+        jsonrpc: JSONRPC,
+        result: isDisplay
       }
       stream.write(message)
     })

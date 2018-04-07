@@ -30,6 +30,7 @@ import { default as PromisedWalletResponse } from '../lib/promised'
 import bus from '../lib/bus'
 import { ChannelMeta } from '../lib/storage/ChannelMetaStorage'
 import { PaymentChannel, PaymentChannelSerde } from 'machinomy/dist/lib/payment_channel'
+import { DisplayRequestBroadcast, DisplayRequestBroadcastType } from '../lib/rpc/DisplayRequestBroadcast'
 
 function isPaymentChannel (pc: PaymentChannel): pc is PaymentChannel {
   return !!(PaymentChannelSerde.instance.serialize(pc))
@@ -172,6 +173,12 @@ export default class VynosClient implements Vynos {
           }
         }
       }
+    })
+  }
+
+  onDisplayRequest (fn: (isDisplay: boolean) => void): void {
+    this.provider.listen<DisplayRequestBroadcast>(DisplayRequestBroadcastType, (message: DisplayRequestBroadcast) => {
+      fn(message.result)
     })
   }
 

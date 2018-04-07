@@ -42,6 +42,13 @@ export default class Namespace {
             this.display()
           }
         })
+        client.onDisplayRequest((isDisplay: boolean) => {
+          if (isDisplay) {
+            this.display()
+          } else {
+            this.hide()
+          }
+        })
         client.onBuyProcessEventReceived()
         resolve(client)
       })

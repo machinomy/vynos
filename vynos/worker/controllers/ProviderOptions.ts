@@ -6,6 +6,8 @@ import Tx = require('ethereumjs-tx')
 import TransactionService from '../TransactionService'
 import { randomId } from '../../lib/Payload'
 import * as transactions from '../../lib/transactions'
+import { DISPLAY_REQUEST } from '../../lib/constants'
+import bus from '../../lib/bus'
 
 export type ApproveTransactionCallback = (error: any, isApproved?: boolean) => void
 export type ApproveSignCallback = (error: any, rawMsgSig?: string) => void
@@ -22,8 +24,12 @@ export default class ProviderOptions {
   }
 
   getAccounts (callback: (err: any, accounts?: Array<string>) => void) {
-    this.background.getAccounts().then(accounts =>
+    this.background.getAccounts().then(accounts => {
+      if (accounts.length === 0) {
+        bus.emit(DISPLAY_REQUEST, true)
+      }
       callback(null, accounts)
+    }
     ).catch(error => {
       callback(error)
     })

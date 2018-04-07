@@ -32,6 +32,7 @@ asServiceWorker(self => {
   stream.pipe(server).pipe(stream)
   background.broadcastSharedState(stream)
   background.broadcastBuyProcessEvent(stream)
+  background.broadcastOnDisplayRequest(stream)
 
   self.oninstall = event => {
     event.waitUntil(self.skipWaiting())
