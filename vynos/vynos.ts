@@ -13,9 +13,10 @@ let _v = global.vynos
 export default _v
 
 if (!document.querySelectorAll('meta[property=\'og:image\']').length && document.body) {
+  let size = document.body.clientHeight
   html2canvas(document.body, {
-    width: document.body.clientHeight,
-    height: document.body.clientHeight,
+    width: size,
+    height: size,
     logging: false
   }).then(canvas => {
     let metaImageNode = document.createElement('meta')

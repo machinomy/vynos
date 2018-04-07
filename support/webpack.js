@@ -3,8 +3,6 @@
 const path = require('path')
 const webpack = require('webpack')
 
-const PackageLoadersPlugin = require('webpack-package-loaders-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const NodeExternalsPlugin = require('webpack-node-externals')
 
@@ -29,6 +27,7 @@ function webpackConfig (entry) {
       filename: outputFilename(),
       path: resolve(DIST_PATH)
     },
+    mode: 'development',
     devtool: 'source-map',
     externals: [NodeExternalsPlugin({whitelist: [EXTERNALS_WHITELIST]})],
     plugins: [
@@ -37,8 +36,7 @@ function webpackConfig (entry) {
           'NODE_ENV': JSON.stringify(NODE_ENV) // This has effect on the react lib size
         },
         'global.XMLHttpRequest': global.XMLHttpRequest
-      }),
-      new PackageLoadersPlugin()
+      })
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json']
@@ -136,15 +134,7 @@ function webpackConfig (entry) {
 
   switch (NODE_ENV) {
     case 'production':
-      config.plugins.push(new UglifyJSPlugin({
-        parallel: true,
-        uglifyOptions: {
-          output: {
-            comments: false,
-            beautify: false
-          }
-        }
-      }))
+      config.mode = 'production'
       config.plugins.push(new CopyPlugin([
         resolve('vynos/frame.html'),
         resolve('vynos/check.html')
