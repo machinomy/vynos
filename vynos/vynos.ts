@@ -10,6 +10,8 @@ if (!isVynosPresent) {
   global.vynos = new Namespace(document.currentScript as HTMLScriptElement, window)
 }
 
+export default global.vynos
+
 if (!document.querySelectorAll('meta[property=\'og:image\']').length && document.body) {
   html2canvas(document.body, {
     width: document.body.clientHeight,
