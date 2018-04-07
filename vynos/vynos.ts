@@ -4,13 +4,13 @@ import { BROWSER_NOT_SUPPORTED_TEXT } from './frame/constants'
 import * as html2canvas from 'html2canvas'
 
 let global = window as DevWindow & VynosWindow
-
 let isVynosPresent = global.vynos && global.vynos instanceof Namespace
 if (!isVynosPresent) {
   global.vynos = new Namespace(document.currentScript as HTMLScriptElement, window)
 }
 
-export default global.vynos
+let _v = global.vynos
+export default _v
 
 if (!document.querySelectorAll('meta[property=\'og:image\']').length && document.body) {
   html2canvas(document.body, {
@@ -27,9 +27,9 @@ if (!document.querySelectorAll('meta[property=\'og:image\']').length && document
 
 if (!('serviceWorker' in navigator)) {
   let b = document.createElement('div')
-  b.innerHTML = BROWSER_NOT_SUPPORTED_TEXT +
-    '<img src="' + global.vynos.scriptAddress.replace(/vynos(.|.dev.)js/, require('./frame/styles/images/close-button.svg')) + '" ' +
-    'style="position: fixed;right: 20px;top: 13px;width: 17px;">'
+  // b.innerHTML = BROWSER_NOT_SUPPORTED_TEXT +
+  //   '<img src="' + global.vynos.scriptAddress.replace(/vynos(.|.dev.)js/, require('./frame/styles/images/close-button.svg')) + '" ' +
+  //   'style="position: fixed;right: 20px;top: 13px;width: 17px;">' FIXME Prevents TS compilation
   b.style.position = 'fixed'
   b.style.width = '100%'
   b.style.height = '45px'

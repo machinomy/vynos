@@ -2,10 +2,7 @@
   "name": "vynos",
   "version": "0.0.1",
   "license": "Apache-2.0",
-  "types": "dist/dist/types/index.d.ts",
-  "files": [
-    "dist/"
-  ],
+  "types": "dist/types/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
     "start": "gulp serve:built",
@@ -15,6 +12,9 @@
     "index": "tsc -p tsconfig.json --outDir dist/",
     "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'"
   },
+  "files": [
+    "dist/"
+  ],
   "devDependencies": {
     "@machinomy/types-duplexify": "^0.0.4",
     "@machinomy/types-truffle-contract": "https://github.com/machinomy/types-truffle-contract",
