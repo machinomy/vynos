@@ -55,13 +55,13 @@
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@machinomy/types-safe-buffer/-/types-safe-buffer-0.0.1.tgz#bf80d94a2cc90b9d8438749aa3542dbf7a1f72b0"
 
-"@machinomy/types-truffle-contract@https://github.com/machinomy/types-truffle-contract":
-  version "0.0.1"
-  resolved "https://github.com/machinomy/types-truffle-contract#112f61ec4527a0fbf7c1b9bcc0bedaa6be42caa7"
+"@machinomy/types-truffle-contract@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@machinomy/types-truffle-contract/-/types-truffle-contract-0.0.3.tgz#76442f485647382ce8d676af04ebcff35afee68f"
   dependencies:
+    "@machinomy/types-web3" "^0.0.4"
     truffle-contract "^3.0.0"
     web3 "^0.20.2"
-    web3-typescript-typings "https://github.com/0xProject/web3-typescript-typings"
 
 "@machinomy/types-web3@^0.0.4":
   version "0.0.4"
@@ -108,9 +108,9 @@
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
 
-"@types/expect@^1.20.2":
-  version "1.20.2"
-  resolved "https://registry.yarnpkg.com/@types/expect/-/expect-1.20.2.tgz#d1326136f71c8b7a1986335498405529618ce846"
+"@types/expect@^1.20.3":
+  version "1.20.3"
+  resolved "https://registry.yarnpkg.com/@types/expect/-/expect-1.20.3.tgz#a99d059ace4bd051332faf03f5b4b4266149a501"
 
 "@types/express-serve-static-core@*":
   version "4.0.56"
@@ -1458,7 +1458,7 @@ big.js@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-3.1.3.tgz#4cada2193652eb3ca9ec8e55c9015669c9806978"
 
-bignumber.js@4.1.0, bignumber.js@^4.0.2, bignumber.js@^4.1.0, bignumber.js@~4.1.0:
+bignumber.js@4.1.0, bignumber.js@^4.0.2, bignumber.js@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-4.1.0.tgz#db6f14067c140bd46624815a7916c92d9b6c24b1"
 
@@ -1484,7 +1484,7 @@ binaryextensions@2:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/binaryextensions/-/binaryextensions-2.1.1.tgz#3209a51ca4a4ad541a3b8d3d6a6d5b83a2485935"
 
-bindings@1.2.1, bindings@^1.2.1:
+bindings@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.2.1.tgz#14ad6113812d2d37d72e67b4cacb4bb726505f11"
 
@@ -1759,13 +1759,6 @@ buffer@^4.3.0:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
     isarray "^1.0.0"
-
-buffer@^5.0.6:
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.0.6.tgz#2ea669f7eec0b6eda05b08f8b5ff661b28573588"
-  dependencies:
-    base64-js "^1.0.2"
-    ieee754 "^1.1.4"
 
 buffer@^5.0.7:
   version "5.0.8"
@@ -5530,13 +5523,6 @@ levelup@^1.2.1:
     semver "~5.1.0"
     xtend "~4.0.0"
 
-libpq@^1.7.0:
-  version "1.8.7"
-  resolved "https://registry.yarnpkg.com/libpq/-/libpq-1.8.7.tgz#c2deb121e28f7f84bd3b2451afff68b6663e74f9"
-  dependencies:
-    bindings "1.2.1"
-    nan "^2.3.0"
-
 lie@3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/lie/-/lie-3.0.2.tgz#ffda21d7bba26f377cad865d3649b2fc8ce39fea"
@@ -5914,17 +5900,18 @@ macaddress@^0.2.8:
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/macaddress/-/macaddress-0.2.8.tgz#5904dc537c39ec6dbefeae902327135fa8511f12"
 
-machinomy@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/machinomy/-/machinomy-1.7.2.tgz#ca9dc06027e98612e92a1e2699ced45f34a85cce"
+machinomy@^1.7.7:
+  version "1.7.7"
+  resolved "https://registry.yarnpkg.com/machinomy/-/machinomy-1.7.7.tgz#a2041893c5ddfd07fb0549cc94643ce09bf64e9f"
   dependencies:
     "@machinomy/contracts" "^4.0.5"
-    "@machinomy/types-truffle-contract" "https://github.com/machinomy/types-truffle-contract"
+    "@machinomy/types-truffle-contract" "^0.0.3"
+    "@machinomy/types-web3" "^0.0.4"
     "@types/bignumber.js" "^4.0.2"
     "@types/body-parser" "^1.16.4"
     "@types/commander" "^2.9.1"
     "@types/debug" "^0.0.30"
-    "@types/expect" "^1.20.2"
+    "@types/expect" "^1.20.3"
     "@types/express" "^4.0.36"
     "@types/nedb" "^1.8.3"
     "@types/request" "^2.0.13"
@@ -5937,16 +5924,14 @@ machinomy@^1.7.2:
     fetch-ponyfill "^5.0.1"
     homedir "https://github.com/ukstv/node-homedir"
     nedb "^1.8.0"
-    pg-native "^2.2.0"
     prompt "^1.0.0"
     request "^2.76.0"
     request-promise-native "^1.0.5"
     types-bn "^0.0.1"
-    types-ethereumjs-util "^0.0.6"
+    types-ethereumjs-util "^0.0.8"
     types-rlp "^0.0.1"
     uuid "^3.2.1"
     web3 "^0.20.1"
-    web3-typescript-typings "^0.9.7"
     whatwg-fetch "^2.0.3"
   optionalDependencies:
     mongodb "^2.2.31"
@@ -7064,31 +7049,9 @@ pg-connection-string@0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/pg-connection-string/-/pg-connection-string-0.1.3.tgz#da1847b20940e42ee1492beaf65d49d91b245df7"
 
-pg-int8@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/pg-int8/-/pg-int8-1.0.1.tgz#943bd463bf5b71b4170115f80f8efc9a0c0eb78c"
-
-pg-native@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/pg-native/-/pg-native-2.2.0.tgz#bc84756f4ecbf600ff7cb48ea5854141830cf1e4"
-  dependencies:
-    libpq "^1.7.0"
-    pg-types "^1.12.1"
-    readable-stream "1.0.31"
-
 pg-pool@~2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-2.0.3.tgz#c022032c8949f312a4f91fb6409ce04076be3257"
-
-pg-types@^1.12.1:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/pg-types/-/pg-types-1.13.0.tgz#75f490b8a8abf75f1386ef5ec4455ecf6b345c63"
-  dependencies:
-    pg-int8 "1.0.1"
-    postgres-array "~1.0.0"
-    postgres-bytea "~1.0.0"
-    postgres-date "~1.0.0"
-    postgres-interval "^1.1.0"
 
 pg-types@~1.12.1:
   version "1.12.1"
@@ -7998,15 +7961,6 @@ read@1.0.x:
 readable-stream@1.0, "readable-stream@>=1.0.33-1 <1.1.0-0", readable-stream@~1.0.15:
   version "1.0.34"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.0.34.tgz#125820e34bc842d2f2aaafafe4c2916ee32c157c"
-  dependencies:
-    core-util-is "~1.0.0"
-    inherits "~2.0.1"
-    isarray "0.0.1"
-    string_decoder "~0.10.x"
-
-readable-stream@1.0.31:
-  version "1.0.31"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.0.31.tgz#8f2502e0bc9e3b0da1b94520aabb4e2603ecafae"
   dependencies:
     core-util-is "~1.0.0"
     inherits "~2.0.1"
@@ -9761,15 +9715,6 @@ types-bn@^0.0.1:
   dependencies:
     bn.js "4.11.7"
 
-types-ethereumjs-util@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/types-ethereumjs-util/-/types-ethereumjs-util-0.0.6.tgz#41f4c9f6416748572b9fcb9ddcd83f0f749600d8"
-  dependencies:
-    bn.js "^4.11.7"
-    buffer "^5.0.6"
-    rlp "^2.0.0"
-    types-bn "https://github.com/machinomy/types-bn.git"
-
 types-ethereumjs-util@^0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/types-ethereumjs-util/-/types-ethereumjs-util-0.0.8.tgz#4530c4fe069da3ea93748baa3e18ea70133e4560"
@@ -10263,18 +10208,6 @@ web3-provider-engine@^13.2.8:
     tape "^4.4.0"
     xhr "^2.2.0"
     xtend "^4.0.1"
-
-web3-typescript-typings@^0.9.7:
-  version "0.9.11"
-  resolved "https://registry.yarnpkg.com/web3-typescript-typings/-/web3-typescript-typings-0.9.11.tgz#2f5464e572843b0853f47a1a0801029d6dfb5793"
-  dependencies:
-    bignumber.js "~4.1.0"
-
-"web3-typescript-typings@https://github.com/0xProject/web3-typescript-typings":
-  version "0.7.1"
-  resolved "https://github.com/0xProject/web3-typescript-typings#bceb42c44e30cc29f947f54672bef52e3c920ebd"
-  dependencies:
-    bignumber.js "^4.0.2"
 
 web3-utils@^1.0.0-beta.30:
   version "1.0.0-beta.30"

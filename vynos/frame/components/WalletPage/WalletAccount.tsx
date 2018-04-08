@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import Web3 = require('web3')
+import * as Web3 from 'web3'
 import { FrameState } from '../../redux/FrameState'
-import BigNumber = require('bignumber.js')
+import * as BigNumber from 'bignumber.js'
 import { Image } from 'semantic-ui-react'
 import BlockieComponent from '../../components/BlockieComponent'
 import Currency from '../../lib/currency'
+
 const style = require('../../styles/ynos.css')
 
 export interface WalletAccountProps {
