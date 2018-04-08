@@ -5,7 +5,7 @@
   "types": "dist/dist/types/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
-    "prepublish": "yarn lint && yarn package",
+    "prepublish": "yarn lint && NODE_ENV=production yarn package",
     "start": "gulp serve:harness",
     "build": "gulp build",
     "build:harness": "gulp build:harness",
