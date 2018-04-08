@@ -8,6 +8,8 @@ const NodeExternalsPlugin = require('webpack-node-externals')
 
 require('dotenv').config({ path: '.env' })
 const NODE_ENV = process.env.NODE_ENV || 'development'
+const BACKGROUND_PORT = process.env.BACKGROUND_PORT || 9001
+const HARNESS_PORT = process.env.HARNESS_PORT || 9000
 
 const DIST_PATH = 'dist'
 const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg)).*$/
@@ -18,6 +20,16 @@ function outputFilename() {
 
 function resolve(filePath) {
   return path.resolve(__dirname, '..', ...filePath.split('/'))
+}
+
+function define() {
+  return {
+    'process.env': {
+      'NODE_ENV': JSON.stringify(NODE_ENV),
+      'EMBED_ADDRESS': JSON.stringify(`http://localhost:${BACKGROUND_PORT}/vynos.js`)
+    },
+    'global.XMLHttpRequest': global.XMLHttpRequest
+  }
 }
 
 function bundle (entry) {
@@ -31,12 +43,7 @@ function bundle (entry) {
     devtool: 'source-map',
     externals: [NodeExternalsPlugin({whitelist: [EXTERNALS_WHITELIST]})],
     plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          'NODE_ENV': JSON.stringify(NODE_ENV) // This has effect on the react lib size
-        },
-        'global.XMLHttpRequest': global.XMLHttpRequest
-      })
+      new webpack.DefinePlugin(define())
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json']
@@ -150,6 +157,9 @@ function bundle (entry) {
 
 module.exports.bundle = bundle
 module.exports.resolve = resolve
+module.exports.BACKGROUND_PORT = BACKGROUND_PORT
+module.exports.HARNESS_PORT = HARNESS_PORT
+
 
 module.exports.HARNESS = bundle({
   harness: resolve('harness/harness.ts')

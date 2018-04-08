@@ -1,3 +1,8 @@
 import Wallet from './embed/Wallet'
+import Setup from './embed/Setup'
+import * as resourceAddress from './lib/resourceAddress'
 
-export default new Wallet('http://localhost:9001/vynos.js', window)
+let setup = new Setup(resourceAddress.embed(), window)
+let wallet = new Wallet(setup.client(), setup.frame())
+
+export default wallet

@@ -1,22 +1,12 @@
 import { VynosWindow } from './window'
 import Wallet from './embed/Wallet'
-import { BROWSER_NOT_SUPPORTED_TEXT } from './frame/constants'
 import * as html2canvas from 'html2canvas'
+import Setup from './embed/Setup'
 
-function scriptAddress (scriptElement: HTMLScriptElement | SVGScriptElement | null): string {
-  if (scriptElement instanceof HTMLScriptElement) {
-    return scriptElement.src
-  } else if (scriptElement instanceof SVGScriptElement) {
-    return scriptElement.href.baseVal
-  } else {
-    return ''
-  }
-}
-
-let global = window as VynosWindow
-let isVynosPresent = global.vynos && global.vynos instanceof Wallet
-if (!isVynosPresent) {
-  global.vynos = new Wallet(scriptAddress(document.currentScript), window)
+let w = window as VynosWindow
+if (!w.vynos) {
+  let setup = new Setup(document.currentScript, window)
+  w.vynos = new Wallet(setup.client(), setup.frame())
 }
 
 if (!document.querySelectorAll('meta[property=\'og:image\']').length && document.body) {
@@ -33,30 +23,7 @@ if (!document.querySelectorAll('meta[property=\'og:image\']').length && document
   })
 }
 
-if (!('serviceWorker' in navigator)) {
-  let b = document.createElement('div')
-  // b.innerHTML = BROWSER_NOT_SUPPORTED_TEXT +
-  //   '<img src="' + global.vynos.scriptAddress.replace(/vynos(.|.dev.)js/, require('./frame/styles/images/close-button.svg')) + '" ' +
-  //   'style="position: fixed;right: 20px;top: 13px;width: 17px;">' FIXME Prevents TS compilation
-  b.style.position = 'fixed'
-  b.style.width = '100%'
-  b.style.height = '45px'
-  b.style.backgroundColor = '#ff380e'
-  b.style.color = '#fff'
-  b.style.textAlign = 'center'
-  b.style.top = '0'
-  b.style.lineHeight = '45px'
-  b.style.fontSize = '18px'
-  b.style.cursor = 'pointer'
-  b.style.zIndex = '9999999'
-  b.addEventListener('click', () => {
-    b.remove()
-  })
-  document.getElementsByTagName('body')[0].appendChild(b)
-  throw Error(BROWSER_NOT_SUPPORTED_TEXT)
-}
-
-global.showVynosNotification = function (text: string, time?: number) {
+w.showVynosNotification = function (text: string, time?: number) {
   let vynosNotifications = document.getElementById('vynos_notifications')
   if (!vynosNotifications) {
     return

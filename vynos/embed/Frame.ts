@@ -7,23 +7,21 @@ const CLOSE_WIDTH = 130 // %
 
 export default class Frame {
   element: HTMLIFrameElement
-  containerElement: HTMLDivElement | undefined
-  closeButton: HTMLDivElement | undefined
-  style: HTMLStyleElement | undefined
+  containerElement: HTMLDivElement
+  closeButton: HTMLDivElement
+  style: HTMLStyleElement
   vynosScriptAddress: string
-  notifications: HTMLDivElement | undefined
+  notifications: HTMLDivElement
+
+  static CONTAINER_ID = 'machinomy-wallet-frame-container'
 
   constructor (scriptAddress: string) {
     this.vynosScriptAddress = scriptAddress
     // let srcCloseButton = this.vynosScriptAddress.replace(/vynos(.|.dev.)js/, imgUpArrow) FIXME Prevents TS compilation
-    this.containerElement = undefined
-    this.closeButton = undefined
-    this.style = undefined
-    this.notifications = undefined
-
     this.containerElement = document.createElement('div')
+    this.containerElement.id = Frame.CONTAINER_ID
+
     this.element = document.createElement('iframe')
-    this.element.id = 'ynos_frame'
     this.element.style.borderWidth = '0px'
     this.element.height = FRAME_HEIGHT + 'px'
     this.element.width = FRAME_WIDTH + 'px'
