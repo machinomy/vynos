@@ -1,9 +1,9 @@
-import { VynosWindow } from './window'
 import Wallet from './embed/Wallet'
 import * as html2canvas from 'html2canvas'
 import Setup from './embed/Setup'
+import IWalletWindow from './lib/IWalletWindow'
 
-let w = window as VynosWindow
+let w = window as IWalletWindow
 if (!w.vynos) {
   let setup = new Setup(document.currentScript, window)
   w.vynos = new Wallet(setup.client(), setup.frame())
