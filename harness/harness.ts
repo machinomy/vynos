@@ -1,15 +1,11 @@
-import { VynosWindow } from '../vynos/window'
-// import { PaymentChannel } from 'machinomy/lib/channel'
-// import { inspect } from 'util'
-// import Namespace from '../vynos/inpage/Namespace'
 import * as Web3 from 'web3'
 import VynosBuyResponse from '../vynos/lib/VynosBuyResponse'
-// import * as BigNumber from 'bignumber.js'
 import { WalletBuyArguments } from '../vynos/lib/Vynos'
-import { /* buyProcessEvent, */ BuyProcessEvent } from '../vynos/lib/rpc/buyProcessEventBroadcast'
+import { BuyProcessEvent } from '../vynos/lib/rpc/buyProcessEventBroadcast'
 import { ChannelMeta } from '../vynos/lib/storage/ChannelMetaStorage'
+import IWalletWindow from '../vynos/lib/IWalletWindow'
 
-let _window = (window as VynosWindow)
+let _window = window as IWalletWindow
 
 let recentBuyResponse: VynosBuyResponse | null = null
 let gateway = 'http://127.0.0.1:3001/v1/accept'
@@ -44,11 +40,6 @@ function updateRecentVynosBuyResponse (buyResponse: VynosBuyResponse) {
 
 window.addEventListener('load', function () {
   let vynos = _window.vynos
-
-  let customFrame = document.getElementById('custom_frame')
-  if (customFrame) {
-    vynos.init(customFrame as HTMLIFrameElement)
-  }
 
   vynos.ready().then(instance => {
     let provider = instance.provider

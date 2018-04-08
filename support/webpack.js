@@ -4,10 +4,13 @@ const path = require('path')
 const webpack = require('webpack')
 
 const CopyPlugin = require('copy-webpack-plugin')
+const HtmlPlugin = require('html-webpack-plugin')
 const NodeExternalsPlugin = require('webpack-node-externals')
 
 require('dotenv').config({ path: '.env' })
 const NODE_ENV = process.env.NODE_ENV || 'development'
+const BACKGROUND_PORT = process.env.BACKGROUND_PORT || 9001
+const HARNESS_PORT = process.env.HARNESS_PORT || 9000
 
 const DIST_PATH = 'dist'
 const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg)).*$/
@@ -18,6 +21,26 @@ function outputFilename() {
 
 function resolve(filePath) {
   return path.resolve(__dirname, '..', ...filePath.split('/'))
+}
+
+function embedAddress () {
+  let version = require('../package').version
+  switch (NODE_ENV) {
+    case 'production':
+      return `https://vynos.tech/v${version}/vynos.js`
+    default:
+      return `http://localhost:${BACKGROUND_PORT}/vynos.js`
+  }
+}
+
+function definitions() {
+  return {
+    'process.env': {
+      'NODE_ENV': JSON.stringify(NODE_ENV),
+      'EMBED_ADDRESS': JSON.stringify(embedAddress())
+    },
+    'global.XMLHttpRequest': global.XMLHttpRequest
+  }
 }
 
 function bundle (entry) {
@@ -31,11 +54,11 @@ function bundle (entry) {
     devtool: 'source-map',
     externals: [NodeExternalsPlugin({whitelist: [EXTERNALS_WHITELIST]})],
     plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          'NODE_ENV': JSON.stringify(NODE_ENV) // This has effect on the react lib size
-        },
-        'global.XMLHttpRequest': global.XMLHttpRequest
+      new webpack.DefinePlugin(definitions()),
+      new HtmlPlugin({
+        template: resolve('vynos/frame/frame.html'),
+        filename: 'frame.html',
+        excludeChunks: ['worker', 'vynos']
       })
     ],
     resolve: {
@@ -136,7 +159,6 @@ function bundle (entry) {
     case 'production':
       config.mode = 'production'
       config.plugins.push(new CopyPlugin([
-        resolve('vynos/frame.html'),
         resolve('vynos/check.html')
       ]))
       break
@@ -148,26 +170,30 @@ function bundle (entry) {
   return config
 }
 
-function index() {
-  let config = bundle({
-    index: resolve('vynos/index.ts')
-  })
-  config.output.library = 'vynos'
-  config.output.libraryTarget = 'umd'
+function workerBundle (entry) {
+  let config = bundle(entry)
+  config.output.globalObject = 'this'
   return config
 }
+
+module.exports.bundle = bundle
+module.exports.resolve = resolve
+module.exports.BACKGROUND_PORT = BACKGROUND_PORT
+module.exports.HARNESS_PORT = HARNESS_PORT
+
 
 module.exports.HARNESS = bundle({
   harness: resolve('harness/harness.ts')
 })
 
-module.exports.BACKGROUND = bundle({
+module.exports.FRAME = bundle({
   frame: resolve('vynos/frame.ts'),
+})
+
+module.exports.WORKER = workerBundle({
   worker: resolve('vynos/worker.ts')
 })
 
 module.exports.EMBED = bundle({
   vynos: resolve('vynos/vynos.ts')
 })
-
-module.exports.INDEX = index()

@@ -1,15 +1,17 @@
 {
   "name": "vynos",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "Apache-2.0",
   "types": "dist/dist/types/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
+    "prepublish": "yarn lint && yarn package",
     "start": "gulp serve:harness",
     "build": "gulp build",
     "build:harness": "gulp build:harness",
     "harness": "gulp serve:harness",
-    "index": "tsc -p tsconfig.json --outDir dist/",
+    "package": "yarn webpack --config support/package.webpack.js",
+    "package:watch": "yarn webpack --watch --config support/package.webpack.js",
     "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'"
   },
   "files": [
@@ -17,7 +19,7 @@
   ],
   "devDependencies": {
     "@machinomy/types-duplexify": "^0.0.4",
-    "@machinomy/types-truffle-contract": "https://github.com/machinomy/types-truffle-contract",
+    "@machinomy/types-truffle-contract": "^0.0.3",
     "@machinomy/types-web3": "^0.0.4",
     "@types/bignumber.js": "^4.0.2",
     "@types/bip39": "^2.4.0",
@@ -61,8 +63,10 @@
     "types-web3-provider-engine": "^0.0.2",
     "typescript": "2.8.1",
     "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14",
     "webpack-dev-server": "^3.1.2",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "webpack-stream": "^4.0.3"
   },
   "dependencies": {
     "@machinomy/types-browser-passworder": "^0.0.6",
@@ -72,6 +76,7 @@
     "@machinomy/types-readable-stream": "^0.0.2",
     "@machinomy/types-safe-buffer": "^0.0.1",
     "@types/react-tap-event-plugin": "^0.0.30",
+    "bignumber.js": "^4.1.0",
     "bip39": "^2.3.1",
     "browser-passworder": "^2.0.3",
     "crypto-price": "^0.0.4",
@@ -85,7 +90,7 @@
     "html2canvas": "^1.0.0-alpha.9",
     "localforage": "^1.5.0",
     "localforage-observable": "^1.3.1",
-    "machinomy": "^1.7.2",
+    "machinomy": "^1.7.7",
     "moment": "^2.19.1",
     "mux-demux": "^3.7.9",
     "nedb": "^1.8.0",

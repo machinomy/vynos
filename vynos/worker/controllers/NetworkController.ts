@@ -1,14 +1,13 @@
 import BackgroundController from './BackgroundController'
 import ZeroClientProvider = require('web3-provider-engine/zero')
-import { ProviderOpts } from 'web3-provider-engine'
-import Engine = require('web3-provider-engine')
+import * as Engine from 'web3-provider-engine'
 import { Payload } from '../../lib/Payload'
 import { EndFunction } from '../../lib/StreamServer'
-import Web3 = require('web3')
+import * as Web3 from 'web3'
 import ProviderOptions from './ProviderOptions'
 import TransactionService from '../TransactionService'
 import { default as SettingStorage, NetworkSetting } from '../../lib/storage/SettingStorage'
-import { default as bus } from '../../lib/bus'
+import bus from '../../lib/bus'
 import { CHANGE_NETWORK, CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER } from '../../lib/constants'
 
 const settingStorage = new SettingStorage()
@@ -48,7 +47,7 @@ export default class NetworkController {
     })
   }
 
-  providerOpts (rpcUrl: string): ProviderOpts {
+  providerOpts (rpcUrl: string): Engine.ProviderOpts {
     let providerOptions = new ProviderOptions(this.background, this.transactions, rpcUrl)
     return providerOptions.walled()
   }
