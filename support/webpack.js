@@ -23,11 +23,21 @@ function resolve(filePath) {
   return path.resolve(__dirname, '..', ...filePath.split('/'))
 }
 
+function embedAddress () {
+  let version = require('../package').version
+  switch (NODE_ENV) {
+    case 'production':
+      return `https://vynos.tech/v${version}/vynos.js`
+    default:
+      return `http://localhost:${BACKGROUND_PORT}/vynos.js`
+  }
+}
+
 function definitions() {
   return {
     'process.env': {
       'NODE_ENV': JSON.stringify(NODE_ENV),
-      'EMBED_ADDRESS': JSON.stringify(`http://localhost:${BACKGROUND_PORT}/vynos.js`)
+      'EMBED_ADDRESS': JSON.stringify(embedAddress())
     },
     'global.XMLHttpRequest': global.XMLHttpRequest
   }
