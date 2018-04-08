@@ -1,6 +1,6 @@
-import {ServiceWorkerClient} from '../lib/serviceWorkerClient'
+import { ServiceWorkerClient } from '../lib/serviceWorkerClient'
 import WorkerProxy from './WorkerProxy'
-import {Duplex} from "readable-stream"
+import { Duplex } from 'readable-stream'
 import renderApplication from './renderApplication'
 import FrameStream from '../lib/FrameStream'
 import PostStream from '../lib/PostStream'
