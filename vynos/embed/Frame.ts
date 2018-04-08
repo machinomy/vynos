@@ -32,7 +32,8 @@ function frameElement (document: HTMLDocument): HTMLIFrameElement {
 function closeElement(document: HTMLDocument) {
  let element = document.createElement('div')
   element.id = 'vynos_frame_close_button'
-  // element.innerHTML = '<img id="vynos_frame_img_close_button" src="' + srcCloseButton + '">' FIXME Prevents TS compilation
+  // let srcCloseButton = this.vynosScriptAddress.replace(/vynos(.|.dev.)js/, imgUpArrow) FIXME Prevents TS compilation
+  // _frameElement.innerHTML = '<img id="vynos_frame_img_close_button" src="' + srcCloseButton + '">' FIXME Prevents TS compilation
   element.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT) + 'px'
   element.style.cursor = 'pointer'
   element.style.width = CLOSE_WIDTH + '%'
@@ -43,61 +44,80 @@ function closeElement(document: HTMLDocument) {
 }
 
 export default class Frame {
-  element: HTMLIFrameElement
-  container: HTMLDivElement
-  closeButton: HTMLDivElement
-  style: HTMLStyleElement
+  private _frameElement?: HTMLIFrameElement
+  private _containerElement?: HTMLDivElement
   vynosScriptAddress: string
-  notifications: HTMLDivElement
 
   static CONTAINER_ID = 'machinomy-wallet-frame-container'
 
   constructor (baseAddress: string) {
     this.vynosScriptAddress = baseAddress
-    // let srcCloseButton = this.vynosScriptAddress.replace(/vynos(.|.dev.)js/, imgUpArrow) FIXME Prevents TS compilation
-    this.container = containerElement(document)
-    this.element = frameElement(document)
-    this.closeButton = closeElement(document)
-    this.closeButton.addEventListener('click', () => {
-      this.hide()
-    })
-
-    const style = '#vynos_frame_img_close_button{width: 40px;bottom: 3px;position: absolute;left: 50%;margin-left: -20px;opacity:0;transition: opacity 1s}' +
-      '#vynos_frame_close_button:hover > #vynos_frame_img_close_button{opacity: 1}'
-    this.style = document.createElement('style')
-    this.style.appendChild(document.createTextNode(style))
-
-    this.notifications = document.createElement('div')
-    this.notifications.id = 'vynos_notifications'
-    this.notifications.style.marginTop = '25px'
-
-    this.container.appendChild(this.element)
-    this.container.appendChild(this.closeButton)
-    this.container.appendChild(this.style)
-    this.container.appendChild(this.notifications)
-
-    this.hide()
-
-    this.element.style.transition = 'opacity 1s'
-    this.element.src = resourceAddress.frameHtml(this.vynosScriptAddress)
-    this.element.setAttribute('sandbox', 'allow-scripts allow-modals allow-same-origin allow-popups allow-forms')
   }
 
-  attach (document: HTMLDocument) {
-    if (this.container && !this.container.parentElement) {
-      document.body.insertBefore(this.container, document.body.firstChild)
-    } else if (!this.element.parentElement) {
-      document.body.insertBefore(this.container!, document.body.firstChild)
+  async element (): Promise<HTMLIFrameElement> {
+    if (!this._frameElement) {
+      this._frameElement = frameElement(document)
+      this._frameElement.style.transition = 'opacity 1s'
+      this._frameElement.src = resourceAddress.frameHtml(this.vynosScriptAddress)
+      this._frameElement.setAttribute('sandbox', 'allow-scripts allow-modals allow-same-origin allow-popups allow-forms')
+    }
+
+    return this._frameElement
+  }
+
+  async containerElement (): Promise<HTMLDivElement> {
+    console.log(resourceAddress.frameHtml(this.vynosScriptAddress))
+    if (!this._containerElement) {
+      this._containerElement = containerElement(document)
+
+      let frameElement = await this.element()
+      this._containerElement.appendChild(frameElement)
+
+      let closeButton = closeElement(document)
+      closeButton.addEventListener('click', async () => {
+        await this.hide()
+      })
+      this._containerElement.appendChild(closeButton)
+
+      const style = '#vynos_frame_img_close_button{width: 40px;bottom: 3px;position: absolute;left: 50%;margin-left: -20px;opacity:0;transition: opacity 1s}' +
+        '#vynos_frame_close_button:hover > #vynos_frame_img_close_button{opacity: 1}'
+      let styleElement = document.createElement('style')
+      styleElement.appendChild(document.createTextNode(style))
+      this._containerElement.appendChild(styleElement)
+
+      let notifications = document.createElement('div')
+      notifications.id = 'vynos_notifications'
+      notifications.style.marginTop = '25px'
+      this._containerElement.appendChild(notifications)
+    }
+
+    return this._containerElement
+  }
+
+  async attach (document: HTMLDocument): Promise<void> {
+    await this.hide()
+    let containerElement = await this.containerElement()
+    let frameElement = await this.element()
+    if (containerElement && !containerElement.parentElement) {
+      document.body.insertBefore(containerElement, document.body.firstChild)
+    } else if (!frameElement.parentElement) {
+      document.body.insertBefore(containerElement, document.body.firstChild)
     }
   }
 
-  display () {
-    this.container.style.marginTop = '0px'
-    this.element.style.opacity = '1'
+  async display (): Promise<void> {
+    let containerElement = await this.containerElement()
+    let frameElement = await this.element()
+
+    containerElement.style.marginTop = '0px'
+    frameElement.style.opacity = '1'
   }
 
-  hide () {
-    this.container.style.marginTop = '-500px'
-    this.element.style.opacity = '0'
+  async hide (): Promise<void> {
+    let containerElement = await this.containerElement()
+    let frameElement = await this.element()
+
+    containerElement.style.marginTop = '-500px'
+    frameElement.style.opacity = '0'
   }
 }

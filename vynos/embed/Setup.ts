@@ -39,7 +39,7 @@ export default class Setup {
     await this.canProceed()
     if (!this._frame) {
       this._frame = new Frame(this.baseAddress)
-      this._frame.attach(this.window.document)
+      await this._frame.attach(this.window.document)
     }
 
     return this._frame
@@ -48,8 +48,9 @@ export default class Setup {
   async client (): Promise<VynosClient> {
     await this.canProceed()
     if (!this._client) {
-      let _frame = await this.frame()
-      let stream = new FrameStream('vynos').toFrame(_frame.element)
+      let frame = await this.frame()
+      let frameElement = await frame.element()
+      let stream = new FrameStream('vynos').toFrame(frameElement)
       this._client = new VynosClient(stream)
     }
 

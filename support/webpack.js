@@ -44,7 +44,12 @@ function bundle (entry) {
     devtool: 'source-map',
     externals: [NodeExternalsPlugin({whitelist: [EXTERNALS_WHITELIST]})],
     plugins: [
-      new webpack.DefinePlugin(definitions())
+      new webpack.DefinePlugin(definitions()),
+      new HtmlPlugin({
+        template: resolve('vynos/frame/frame.html'),
+        filename: 'frame.html',
+        excludeChunks: ['worker', 'vynos']
+      })
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json']
@@ -146,11 +151,6 @@ function bundle (entry) {
       config.plugins.push(new CopyPlugin([
         resolve('vynos/check.html')
       ]))
-      config.plugins.push(new HtmlPlugin({
-        template: resolve('vynos/frame/frame.html'),
-        filename: 'frame.html',
-        excludeChunks: ['worker']
-      }))
       break
     default:
       config.plugins.push(new webpack.HotModuleReplacementPlugin())
