@@ -79,7 +79,7 @@ It triggers the building process, so you should wait a little bit staring on the
 You could change the port via `.env` file:
 ```
 HARNESS_PORT=9000
-BACKGROUND_PORT=9999
+BACKGROUND_PORT=9001
 ```
 
 ## WTF is Harness

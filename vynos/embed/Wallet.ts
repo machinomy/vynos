@@ -1,72 +1,41 @@
 import VynosClient from './VynosClient'
-import Frame from './Frame'
-import FrameStream from '../lib/FrameStream'
 import Vynos from '../lib/Vynos'
 import { BROWSER_NOT_SUPPORTED_TEXT } from '../frame/constants'
-
-// DOM and Window is ready.
-export function isReady (callback: () => void) {
-  const state = document.readyState
-  if (state === 'complete' || state === 'interactive') {
-    return setTimeout(callback, 0)
-  }
-
-  document.addEventListener('DOMContentLoaded', function onLoad () {
-    callback()
-  })
-}
-
-function scriptAddress (scriptElement: HTMLScriptElement | SVGScriptElement | null): string {
-  if (scriptElement instanceof HTMLScriptElement) {
-    return scriptElement.src
-  } else if (scriptElement instanceof SVGScriptElement) {
-    return scriptElement.href.baseVal
-  } else {
-    return ''
-  }
-}
+import Setup from './Setup'
 
 export default class Wallet {
-  private readonly scriptAddress: string
-  private readonly window: Window
   private client?: Promise<VynosClient>
-  private frame: Frame | undefined
+  private setup: Setup
 
-  constructor (scriptElement: HTMLScriptElement | SVGScriptElement | null, window: Window) {
-    this.scriptAddress = scriptAddress(scriptElement)
-    this.window = window
-    this.frame = undefined
+  constructor (scriptAddress: string, window: Window) {
+    this.setup = new Setup(scriptAddress, window.document)
   }
 
-  load (): Promise<Vynos> {
-    this.client = new Promise(resolve => {
-      isReady(() => {
-        this.frame = new Frame(this.scriptAddress)
-        this.frame.attach(this.window.document)
-        let stream = new FrameStream('vynos').toFrame(this.frame.element)
-        let client = new VynosClient(stream)
-        client.onSharedStateUpdate(state => {
-          if (state.isTransactionPending) {
-            this.display()
-          }
-        })
-        client.onBuyProcessEventReceived()
-        resolve(client)
+  async load (): Promise<Vynos> {
+    if (!this.client) {
+      let client = await this.setup.client()
+      client.onSharedStateUpdate(async state => {
+        if (state.isTransactionPending) {
+          await this.display()
+        }
       })
-    })
+      client.onBuyProcessEventReceived()
+      this.client = Promise.resolve(client)
+    }
+
     return this.client
   }
 
-  display (): void {
-    this.ready().then(() => {
-      this.frame!.display()
-    })
+  async display (): Promise<void> {
+    await this.ready()
+    let frame = await this.setup.frame()
+    return frame.display()
   }
 
-  hide (): void {
-    this.ready().then(() => {
-      this.frame!.hide()
-    })
+  async hide (): Promise<void> {
+    await this.ready()
+    let frame = await this.setup.frame()
+    return frame.hide()
   }
 
   ready (): Promise<Vynos> {

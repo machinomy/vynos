@@ -6,12 +6,12 @@ const webpack = require('webpack')
 const WebpackDevServer = require('webpack-dev-server')
 
 require('dotenv').config({ path: '.env' })
-const BACKGROUND_PORT = process.env.BACKGROUND_PORT || 9999
+const BACKGROUND_PORT = process.env.BACKGROUND_PORT || 9001
 const HARNESS_PORT = process.env.HARNESS_PORT || 9000
 
+const INDEX = require('./support/package.webpack')
 const EMBED = require('./support/webpack').EMBED
 const BACKGROUND = require('./support/webpack').BACKGROUND
-const INDEX = require('./support/webpack').INDEX
 const HARNESS = require('./support/webpack').HARNESS
 
 const COMPONENTS = [EMBED, BACKGROUND, INDEX]

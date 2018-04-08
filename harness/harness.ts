@@ -5,7 +5,7 @@ import { WalletBuyArguments } from '../vynos/lib/Vynos'
 import { BuyProcessEvent } from '../vynos/lib/rpc/buyProcessEventBroadcast'
 import { ChannelMeta } from '../vynos/lib/storage/ChannelMetaStorage'
 
-let _window = (window as VynosWindow)
+let _window = window as VynosWindow
 
 let recentBuyResponse: VynosBuyResponse | null = null
 let gateway = 'http://127.0.0.1:3001/v1/accept'

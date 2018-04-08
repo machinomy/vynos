@@ -148,14 +148,8 @@ function bundle (entry) {
   return config
 }
 
-function index() {
-  let config = bundle({
-    index: resolve('vynos/index.ts')
-  })
-  config.output.library = 'vynos'
-  config.output.libraryTarget = 'umd'
-  return config
-}
+module.exports.bundle = bundle
+module.exports.resolve = resolve
 
 module.exports.HARNESS = bundle({
   harness: resolve('harness/harness.ts')
@@ -169,5 +163,3 @@ module.exports.BACKGROUND = bundle({
 module.exports.EMBED = bundle({
   vynos: resolve('vynos/vynos.ts')
 })
-
-module.exports.INDEX = index()

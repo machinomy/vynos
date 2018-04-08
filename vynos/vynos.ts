@@ -3,14 +3,21 @@ import Wallet from './embed/Wallet'
 import { BROWSER_NOT_SUPPORTED_TEXT } from './frame/constants'
 import * as html2canvas from 'html2canvas'
 
+function scriptAddress (scriptElement: HTMLScriptElement | SVGScriptElement | null): string {
+  if (scriptElement instanceof HTMLScriptElement) {
+    return scriptElement.src
+  } else if (scriptElement instanceof SVGScriptElement) {
+    return scriptElement.href.baseVal
+  } else {
+    return ''
+  }
+}
+
 let global = window as VynosWindow
 let isVynosPresent = global.vynos && global.vynos instanceof Wallet
 if (!isVynosPresent) {
-  global.vynos = new Wallet(document.currentScript, window)
+  global.vynos = new Wallet(scriptAddress(document.currentScript), window)
 }
-
-let _v = global.vynos
-export default _v
 
 if (!document.querySelectorAll('meta[property=\'og:image\']').length && document.body) {
   let size = document.body.clientHeight

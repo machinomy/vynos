@@ -5,11 +5,12 @@
   "types": "dist/dist/types/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
+    "prepublish": "yarn lint && yarn package",
     "start": "gulp serve:harness",
     "build": "gulp build",
     "build:harness": "gulp build:harness",
     "harness": "gulp serve:harness",
-    "index": "tsc -p tsconfig.json --outDir dist/",
+    "package": "yarn webpack --config support/package.webpack.js",
     "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'"
   },
   "files": [
@@ -61,8 +62,10 @@
     "types-web3-provider-engine": "^0.0.2",
     "typescript": "2.8.1",
     "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14",
     "webpack-dev-server": "^3.1.2",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "webpack-stream": "^4.0.3"
   },
   "dependencies": {
     "@machinomy/types-browser-passworder": "^0.0.6",
