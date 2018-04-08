@@ -34,8 +34,7 @@ function install (client: ServiceWorkerClient, registration: ServiceWorkerRegist
 }
 
 export function register (client: ServiceWorkerClient) {
-  const a = false
-  if ('serviceWorker' in navigator && a) {
+  if ('serviceWorker' in navigator) {
     const workerSrc = 'worker.js'
     const src = window.location.href.match(/dev=true/) ? workerSrc.replace('.js', '.dev.js') : workerSrc
     const scriptUrl = window.location.href.replace('frame.html', src)

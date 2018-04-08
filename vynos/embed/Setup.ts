@@ -38,8 +38,8 @@ export default class Setup {
   async frame (): Promise<Frame> {
     await this.canProceed()
     if (!this._frame) {
-      this._frame = new Frame(this.baseAddress)
-      await this._frame.attach(this.window.document)
+      this._frame = new Frame(this.baseAddress, this.window.document)
+      await this._frame.attach()
     }
 
     return this._frame
