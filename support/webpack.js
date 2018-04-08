@@ -4,6 +4,7 @@ const path = require('path')
 const webpack = require('webpack')
 
 const CopyPlugin = require('copy-webpack-plugin')
+const HtmlPlugin = require('html-webpack-plugin')
 const NodeExternalsPlugin = require('webpack-node-externals')
 
 require('dotenv').config({ path: '.env' })
@@ -22,7 +23,7 @@ function resolve(filePath) {
   return path.resolve(__dirname, '..', ...filePath.split('/'))
 }
 
-function define() {
+function definitions() {
   return {
     'process.env': {
       'NODE_ENV': JSON.stringify(NODE_ENV),
@@ -43,7 +44,7 @@ function bundle (entry) {
     devtool: 'source-map',
     externals: [NodeExternalsPlugin({whitelist: [EXTERNALS_WHITELIST]})],
     plugins: [
-      new webpack.DefinePlugin(define())
+      new webpack.DefinePlugin(definitions())
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json']
@@ -143,9 +144,13 @@ function bundle (entry) {
     case 'production':
       config.mode = 'production'
       config.plugins.push(new CopyPlugin([
-        resolve('vynos/frame.html'),
         resolve('vynos/check.html')
       ]))
+      config.plugins.push(new HtmlPlugin({
+        template: resolve('vynos/frame/frame.html'),
+        filename: 'frame.html',
+        excludeChunks: ['worker']
+      }))
       break
     default:
       config.plugins.push(new webpack.HotModuleReplacementPlugin())

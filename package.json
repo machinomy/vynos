@@ -11,6 +11,7 @@
     "build:harness": "gulp build:harness",
     "harness": "gulp serve:harness",
     "package": "yarn webpack --config support/package.webpack.js",
+    "package:watch": "yarn webpack --watch --config support/package.webpack.js",
     "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'"
   },
   "files": [
