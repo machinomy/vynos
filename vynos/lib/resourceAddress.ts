@@ -1,4 +1,4 @@
-export function embed(scriptElement?: HTMLScriptElement | any): string {
+export function embed (scriptElement?: HTMLScriptElement | any): string {
   if (scriptElement instanceof HTMLScriptElement) {
     return scriptElement.src
   } else {
@@ -6,6 +6,6 @@ export function embed(scriptElement?: HTMLScriptElement | any): string {
   }
 }
 
-export function frameHtml(baseAddress: string): string {
+export function frameHtml (baseAddress: string): string {
   return baseAddress.replace(/vynos.js/, 'frame.html')
 }

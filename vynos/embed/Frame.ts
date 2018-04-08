@@ -4,12 +4,12 @@ const FRAME_HEIGHT = 440
 const FRAME_WIDTH = 320
 const CLOSE_HEIGHT = 40
 const CLOSE_WIDTH = 130
-
+const CONTAINER_ID = 'machinomy-wallet-frame-container'
 // const imgUpArrow = require('../frame/styles/images/up-arrow.svg') FIXME Prevents TS compilation
 
 function containerElement (document: HTMLDocument) {
   let element = document.createElement('div')
-  element.id = Frame.CONTAINER_ID
+  element.id = CONTAINER_ID
   element.style.position = 'fixed'
   element.style.top = '0px'
   element.style.right = '110px'
@@ -29,8 +29,8 @@ function frameElement (document: HTMLDocument): HTMLIFrameElement {
   return element
 }
 
-function closeElement(document: HTMLDocument) {
- let element = document.createElement('div')
+function closeElement (document: HTMLDocument) {
+  let element = document.createElement('div')
   element.id = 'vynos_frame_close_button'
   // let srcCloseButton = this.frameAddress.replace(/vynos(.|.dev.)js/, imgUpArrow) FIXME Prevents TS compilation
   // _frameElement.innerHTML = '<img id="vynos_frame_img_close_button" src="' + srcCloseButton + '">' FIXME Prevents TS compilation
@@ -48,8 +48,6 @@ export default class Frame {
   private _containerElement?: HTMLDivElement
   private frameAddress: string
   private document: HTMLDocument
-
-  static CONTAINER_ID = 'machinomy-wallet-frame-container'
 
   constructor (baseAddress: string, document: HTMLDocument) {
     this.frameAddress = resourceAddress.frameHtml(baseAddress)

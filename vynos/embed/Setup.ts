@@ -30,11 +30,6 @@ export default class Setup {
     this.browserSupport = new BrowserSupport(this.window)
   }
 
-  private async canProceed (): Promise<void> {
-    await isReady(this.window.document)
-    await this.browserSupport.assert()
-  }
-
   async frame (): Promise<Frame> {
     await this.canProceed()
     if (!this._frame) {
@@ -55,5 +50,10 @@ export default class Setup {
     }
 
     return this._client
+  }
+
+  private async canProceed (): Promise<void> {
+    await isReady(this.window.document)
+    await this.browserSupport.assert()
   }
 }
