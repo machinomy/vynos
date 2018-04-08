@@ -160,6 +160,12 @@ function bundle (entry) {
   return config
 }
 
+function workerBundle (entry) {
+  let config = bundle(entry)
+  config.output.globalObject = 'this'
+  return config
+}
+
 module.exports.bundle = bundle
 module.exports.resolve = resolve
 module.exports.BACKGROUND_PORT = BACKGROUND_PORT
@@ -170,8 +176,11 @@ module.exports.HARNESS = bundle({
   harness: resolve('harness/harness.ts')
 })
 
-module.exports.BACKGROUND = bundle({
+module.exports.FRAME = bundle({
   frame: resolve('vynos/frame.ts'),
+})
+
+module.exports.WORKER = workerBundle({
   worker: resolve('vynos/worker.ts')
 })
 

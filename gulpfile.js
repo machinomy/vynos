@@ -11,10 +11,11 @@ const HARNESS_PORT = require('./support/webpack').HARNESS_PORT
 
 const INDEX = require('./support/package.webpack')
 const EMBED = require('./support/webpack').EMBED
-const BACKGROUND = require('./support/webpack').BACKGROUND
+const FRAME = require('./support/webpack').FRAME
+const WORKER = require('./support/webpack').WORKER
 const HARNESS = require('./support/webpack').HARNESS
 
-const COMPONENTS = [EMBED, BACKGROUND, INDEX]
+const COMPONENTS = [EMBED, FRAME, WORKER, INDEX]
 
 gulp.task('build', callback => {
   webpack(COMPONENTS).run((err, stats) => {

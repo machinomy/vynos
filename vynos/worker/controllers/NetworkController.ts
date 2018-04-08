@@ -1,10 +1,10 @@
 import BackgroundController from './BackgroundController'
 import ZeroClientProvider = require('web3-provider-engine/zero')
 import { ProviderOpts } from 'web3-provider-engine'
-import Engine = require('web3-provider-engine')
+import * as Engine from 'web3-provider-engine'
 import { Payload } from '../../lib/Payload'
 import { EndFunction } from '../../lib/StreamServer'
-import Web3 = require('web3')
+import * as Web3 from 'web3'
 import ProviderOptions from './ProviderOptions'
 import TransactionService from '../TransactionService'
 import { default as SettingStorage, NetworkSetting } from '../../lib/storage/SettingStorage'
