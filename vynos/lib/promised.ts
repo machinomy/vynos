@@ -1,15 +1,15 @@
 import { BuyProcessEvent, buyProcessEvent } from './rpc/buyProcessEventBroadcast'
 import { WalletBuyArguments } from './Vynos'
 import VynosBuyResponse from './VynosBuyResponse'
-import VynosClient from '../embed/VynosClient'
+import Client from '../embed/Client'
 
 export default class PromisedWalletResponse {
   result: Promise<VynosBuyResponse>
   eventOnAddingCallbackName: string
   walletArgs: WalletBuyArguments
-  walletClient: VynosClient
+  walletClient: Client
 
-  constructor (walletClient: VynosClient, buyResponse: Promise<VynosBuyResponse>, eventOnAddingCallbackName?: string, walletArgs?: WalletBuyArguments) {
+  constructor (walletClient: Client, buyResponse: Promise<VynosBuyResponse>, eventOnAddingCallbackName?: string, walletArgs?: WalletBuyArguments) {
     this.walletClient = walletClient
     this.result = buyResponse
     this.eventOnAddingCallbackName = eventOnAddingCallbackName || 'PromisedWalletResponse'

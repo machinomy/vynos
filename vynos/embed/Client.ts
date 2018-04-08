@@ -35,12 +35,12 @@ function isPaymentChannel (pc: PaymentChannel): pc is PaymentChannel {
   return !!(PaymentChannelSerde.instance.serialize(pc))
 }
 
-export default class VynosClient implements Vynos {
+export default class Client implements Vynos {
   buyProcessCallbacks: Map<string, (args: WalletBuyArguments, tokenOrChannel?: string | ChannelMeta) => void>
   provider: StreamProvider
 
   constructor (stream: Duplex) {
-    this.provider = new StreamProvider('VynosClient')
+    this.provider = new StreamProvider('Client')
     this.provider.pipe(stream).pipe(this.provider)
 
     this.buyProcessCallbacks = new Map<string, (args: WalletBuyArguments, tokenOrChannelId?: string | ChannelMeta) => void>()

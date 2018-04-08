@@ -1,12 +1,12 @@
-import VynosClient from './VynosClient'
+import Client from './Client'
 import Vynos from '../lib/Vynos'
 import Frame from './Frame'
 
 export default class Wallet {
-  private readonly client: Promise<VynosClient>
+  private readonly client: Promise<Client>
   private readonly frame: Promise<Frame>
 
-  constructor (client: Promise<VynosClient>, frame: Promise<Frame>) {
+  constructor (client: Promise<Client>, frame: Promise<Frame>) {
     this.client = client
     this.frame = frame
 

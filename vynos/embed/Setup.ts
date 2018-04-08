@@ -1,4 +1,4 @@
-import VynosClient from './VynosClient'
+import Client from './Client'
 import Frame from './Frame'
 import FrameStream from '../lib/FrameStream'
 import BrowserSupport from './BrowserSupport'
@@ -22,7 +22,7 @@ export default class Setup {
   private readonly window: Window
   private readonly browserSupport: BrowserSupport
   private _frame?: Frame
-  private _client?: VynosClient
+  private _client?: Client
 
   constructor (scriptElement: HTMLScriptElement | any, window: Window) {
     this.baseAddress = resourceAddress.embed(scriptElement)
@@ -45,13 +45,13 @@ export default class Setup {
     return this._frame
   }
 
-  async client (): Promise<VynosClient> {
+  async client (): Promise<Client> {
     await this.canProceed()
     if (!this._client) {
       let frame = await this.frame()
       let frameElement = await frame.element()
       let stream = new FrameStream('vynos').toFrame(frameElement)
-      this._client = new VynosClient(stream)
+      this._client = new Client(stream)
     }
 
     return this._client
