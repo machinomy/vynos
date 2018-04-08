@@ -1,6 +1,12 @@
 {
   "name": "vynos",
   "version": "0.0.2",
+  "description": "Micropayments powered by Ethereum",
+  "keywords": [
+    "micropayments",
+    "ethereum",
+    "wallet"
+  ],
   "license": "Apache-2.0",
   "types": "dist/dist/types/index.d.ts",
   "main": "dist/index.js",
