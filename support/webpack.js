@@ -58,7 +58,7 @@ function bundle (entry) {
       new HtmlPlugin({
         template: resolve('vynos/frame/frame.html'),
         filename: 'frame.html',
-        excludeChunks: ['worker', 'vynos']
+        chunks: ['frame']
       })
     ],
     resolve: {
