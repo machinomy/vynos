@@ -38,6 +38,33 @@ function updateRecentVynosBuyResponse (buyResponse: VynosBuyResponse) {
 //   })
 // }
 
+let signMessage = function (message: string) {
+  if (message === undefined || message === null) {
+    message = ''
+  }
+  let vynos = _window.vynos
+  vynos.ready().then((wallet) => {
+    let web3 = new Web3(wallet.provider)
+    web3.eth.getAccounts((err, accounts) => {
+      if (err) {
+        if (err.message === 'invalid address') {
+          console.error('Please, login into Vynos.')
+        }
+        console.error(err)
+      } else {
+        web3.eth.sign(accounts[0], web3.sha3(message), (err, res) => {
+          if (err) {
+            console.error(err)
+          }
+          if (res) {
+            console.log(res)
+          }
+        })
+      }
+    })
+  })
+}
+
 window.addEventListener('load', function () {
   let vynos = _window.vynos
 
@@ -184,4 +211,14 @@ window.addEventListener('load', function () {
     }
   }
   */
+  let signMessageForm = document.getElementById('sign_message_form')
+  if (signMessageForm) {
+    signMessageForm.onsubmit = function (ev: Event) {
+      ev.preventDefault()
+      let messageElement = document.getElementById('sign_message_input') as HTMLInputElement
+      if (messageElement) {
+        signMessage(messageElement.value)
+      }
+    }
+  }
 })
