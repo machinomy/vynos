@@ -1,6 +1,5 @@
 import { Duplex } from 'readable-stream'
 import { RequestPayload, Payload } from './Payload'
-import _ = require('lodash')
 
 export type EndFunction = <A extends Payload>(error: null, response?: A) => void
 export type Handler = (message: Payload, next: Function, end: EndFunction) => void
@@ -23,7 +22,7 @@ export default class StreamServer extends Duplex {
   }
 
   handle<A extends Payload> (payload: A) {
-    const end = <A extends Payload>(error: null, response?: A) => {
+    const end = <A extends Payload> (error: null, response?: A) => {
       if (error) {
         console.error(error)
         this.push({
@@ -39,8 +38,8 @@ export default class StreamServer extends Duplex {
     }
 
     const nextHandler = (handlers: Array<Handler>) => {
-      let head = _.head(handlers)
-      let next = () => nextHandler(_.tail(handlers))
+      let head = (handlers || [])[0]
+      let next = () => nextHandler((handlers || []).slice(1))
       if (head) {
         head(payload, next, end)
       } else {

@@ -1,15 +1,14 @@
 import BackgroundController from './BackgroundController'
 import ZeroClientProvider = require('web3-provider-engine/zero')
-import { ProviderOpts } from 'web3-provider-engine'
-import Engine = require('web3-provider-engine')
+import * as Engine from 'web3-provider-engine'
 import { Payload } from '../../lib/Payload'
 import { EndFunction } from '../../lib/StreamServer'
-import Web3 = require('web3')
+import * as Web3 from 'web3'
 import ProviderOptions from './ProviderOptions'
 import TransactionService from '../TransactionService'
-import SettingStorage from '../../lib/storage/SettingStorage'
-import { default as bus } from '../../lib/bus'
-import { CHANGE_NETWORK } from '../../lib/constants'
+import { default as SettingStorage, NetworkSetting } from '../../lib/storage/SettingStorage'
+import bus from '../../lib/bus'
+import { CHANGE_NETWORK, CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER } from '../../lib/constants'
 
 const settingStorage = new SettingStorage()
 
@@ -19,7 +18,7 @@ export default class NetworkController {
   web3: Web3 | undefined
   transactions: TransactionService
   rpcUrl: string
-  ready: Promise<void> | undefined
+  ready: Promise<NetworkSetting> | undefined
 
   constructor (backgroundController: BackgroundController, transactions: TransactionService) {
     this.background = backgroundController
@@ -37,7 +36,7 @@ export default class NetworkController {
   }
 
   handler (message: Payload, next: Function, end: EndFunction) {
-    this.ready!.then(() => {
+    this.ready!.then((network: NetworkSetting) => {
       this.provider!.sendAsync(message, (error, response) => {
         if (error) {
           end(error)
@@ -48,16 +47,20 @@ export default class NetworkController {
     })
   }
 
-  providerOpts (rpcUrl: string): ProviderOpts {
+  providerOpts (rpcUrl: string): Engine.ProviderOpts {
     let providerOptions = new ProviderOptions(this.background, this.transactions, rpcUrl)
     return providerOptions.walled()
   }
 
   getNetwork () {
-    this.ready = settingStorage.getNetwork().then((network: any) => {
+    this.ready = settingStorage.getNetwork().then((network: NetworkSetting) => {
       this.rpcUrl = network.value
       this.provider = ZeroClientProvider(this.providerOpts(this.rpcUrl))
       this.web3 = new Web3(this.provider)
+      return Promise.resolve(network)
+    })
+    this.ready.then((network: NetworkSetting) => {
+      bus.emit(CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER)
     })
   }
 }

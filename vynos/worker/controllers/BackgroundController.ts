@@ -1,4 +1,5 @@
 import * as redux from 'redux'
+import { Buffer } from 'safe-buffer'
 import reducers from '../reducers'
 import {
   buildSharedState,
@@ -9,7 +10,7 @@ import {
   PersistentState
 } from '../WorkerState'
 import * as actions from '../actions'
-import bip39 = require('bip39')
+import * as bip39 from 'bip39'
 import hdkey = require('ethereumjs-wallet/hdkey')
 import Keyring from '../../frame/lib/Keyring'
 import { createLogger } from 'redux-logger'

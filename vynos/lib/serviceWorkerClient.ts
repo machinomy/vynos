@@ -1,5 +1,3 @@
-import { BROWSER_NOT_SUPPORTED_TEXT } from '../frame/constants'
-
 export interface ServiceWorkerClient {
   load: (serviceWorker: ServiceWorker) => void
   unload: () => void
@@ -11,7 +9,7 @@ function activate (client: ServiceWorkerClient, serviceWorker: ServiceWorker) {
   }
 }
 
-function install (client: ServiceWorkerClient, registration: ServiceWorkerRegistration) {
+function install (window: Window, client: ServiceWorkerClient, registration: ServiceWorkerRegistration) {
   registration.onupdatefound = () => {
     registration.update().then(() => {
       registration.unregister().then(() => {
@@ -25,7 +23,7 @@ function install (client: ServiceWorkerClient, registration: ServiceWorkerRegist
   serviceWorker.onstatechange = () => {
     if (serviceWorker.state === 'redundant') {
       client.unload()
-      register(client)
+      register(window, client)
     }
     activate(client, serviceWorker)
   }
@@ -33,17 +31,13 @@ function install (client: ServiceWorkerClient, registration: ServiceWorkerRegist
   activate(client, serviceWorker)
 }
 
-export function register (client: ServiceWorkerClient) {
-  if ('serviceWorker' in navigator) {
-    const workerSrc = 'worker.js'
-    const src = window.location.href.match(/dev=true/) ? workerSrc.replace('.js', '.dev.js') : workerSrc
-    const scriptUrl = window.location.href.replace('frame.html', src)
-    navigator.serviceWorker.register(scriptUrl, { scope: './' }).then(registration => {
-      install(client, registration)
-    }).catch(error => {
-      console.error(error)
-    })
-  } else {
-    throw new Error(BROWSER_NOT_SUPPORTED_TEXT)
-  }
+export function register (window: Window, client: ServiceWorkerClient) {
+  const workerSrc = 'worker.js'
+  const src = window.location.href.match(/dev=true/) ? workerSrc.replace('.js', '.dev.js') : workerSrc
+  const scriptUrl = window.location.href.replace('frame.html', src)
+  navigator.serviceWorker.register(scriptUrl, { scope: './' }).then(registration => {
+    install(window, client, registration)
+  }).catch(error => {
+    console.error(error)
+  })
 }

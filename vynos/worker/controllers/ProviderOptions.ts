@@ -1,8 +1,9 @@
 import BackgroundController from './BackgroundController'
 import { ProviderOpts } from 'web3-provider-engine'
-import ethUtil = require('ethereumjs-util')
-import sigUtil = require('eth-sig-util')
-import Tx = require('ethereumjs-tx')
+import * as ethUtil from 'ethereumjs-util'
+import * as sigUtil from 'eth-sig-util'
+import * as Tx from 'ethereumjs-tx'
+import { Buffer } from 'safe-buffer'
 import TransactionService from '../TransactionService'
 import { randomId } from '../../lib/Payload'
 import * as transactions from '../../lib/transactions'

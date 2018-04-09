@@ -1,16 +1,11 @@
-import { DevWindow, VynosWindow } from '../vynos/window'
-// import { PaymentChannel } from 'machinomy/lib/channel'
-// import { inspect } from 'util'
-// import Namespace from '../vynos/inpage/Namespace'
-import Web3 = require('web3')
+import * as Web3 from 'web3'
 import VynosBuyResponse from '../vynos/lib/VynosBuyResponse'
-// import * as BigNumber from 'bignumber.js'
 import { WalletBuyArguments } from '../vynos/lib/Vynos'
-import { /* buyProcessEvent, */ BuyProcessEvent } from '../vynos/lib/rpc/buyProcessEventBroadcast'
+import { BuyProcessEvent } from '../vynos/lib/rpc/buyProcessEventBroadcast'
 import { ChannelMeta } from '../vynos/lib/storage/ChannelMetaStorage'
+import IWalletWindow from '../vynos/lib/IWalletWindow'
 
-let _window = (window as VynosWindow)
-let devWindow = (window as DevWindow)
+let _window = window as IWalletWindow
 
 let recentBuyResponse: VynosBuyResponse | null = null
 let gateway = 'http://127.0.0.1:3001/v1/accept'
@@ -43,40 +38,8 @@ function updateRecentVynosBuyResponse (buyResponse: VynosBuyResponse) {
 //   })
 // }
 
-devWindow.signMessage = function (message: string) {
-  if (message === undefined || message === null) {
-    message = ''
-  }
-  let vynos = _window.vynos
-  vynos.ready().then((wallet) => {
-    let web3 = new Web3(wallet.provider)
-    web3.eth.getAccounts((err, accounts) => {
-      if (err) {
-        if (err.message === 'invalid address') {
-          console.error('Please, login into Vynos.')
-        }
-        console.error(err)
-      } else {
-        web3.eth.sign(accounts[0], web3.sha3(message), (err, res) => {
-          if (err) {
-            console.error(err)
-          }
-          if (res) {
-            console.log(res)
-          }
-        })
-      }
-    })
-  })
-}
-
 window.addEventListener('load', function () {
   let vynos = _window.vynos
-
-  let customFrame = document.getElementById('custom_frame')
-  if (customFrame) {
-    vynos.init(customFrame as HTMLIFrameElement)
-  }
 
   vynos.ready().then(instance => {
     let provider = instance.provider
@@ -90,17 +53,6 @@ window.addEventListener('load', function () {
   if (displayButton) {
     displayButton.onclick = () => {
       vynos.display()
-    }
-  }
-
-  let signMessageForm = document.getElementById('sign_message_form')
-  if (signMessageForm) {
-    signMessageForm.onsubmit = function (ev: Event) {
-      ev.preventDefault()
-      let messageElement = document.getElementById('sign_message_input') as HTMLInputElement
-      if (messageElement) {
-        devWindow.signMessage(messageElement.value)
-      }
     }
   }
 
