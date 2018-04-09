@@ -38,7 +38,7 @@ function updateRecentVynosBuyResponse (buyResponse: VynosBuyResponse) {
 //   })
 // }
 
-_window.signMessage = function (message: string) {
+let signMessage = function (message: string) {
   if (message === undefined || message === null) {
     message = ''
   }
@@ -217,7 +217,7 @@ window.addEventListener('load', function () {
       ev.preventDefault()
       let messageElement = document.getElementById('sign_message_input') as HTMLInputElement
       if (messageElement) {
-        _window.signMessage(messageElement.value)
+        signMessage(messageElement.value)
       }
     }
   }
