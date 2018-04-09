@@ -134,6 +134,10 @@ Wallet page
   flex: 1 100%;
 }
 
+.wallet-page .wrap > div > div {
+  background-color: #fff;
+}
+
 .wallet-account {
   flex: 1 0 100px;
   width: 100px;
