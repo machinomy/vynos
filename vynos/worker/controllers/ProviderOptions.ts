@@ -25,9 +25,6 @@ export default class ProviderOptions {
 
   getAccounts (callback: (err: any, accounts?: Array<string>) => void) {
     this.background.getAccounts().then(accounts => {
-      if (accounts.length === 0) {
-        bus.emit(DISPLAY_REQUEST, true)
-      }
       callback(null, accounts)
     }
     ).catch(error => {
@@ -96,6 +93,7 @@ export default class ProviderOptions {
       return
     }
 
+    bus.emit(DISPLAY_REQUEST, true)
     const transaction = transactions.signature(messageParams.from, messageParams.data)
     this.transactions.approveTransaction(transaction).then(result => {
       if (result) {
