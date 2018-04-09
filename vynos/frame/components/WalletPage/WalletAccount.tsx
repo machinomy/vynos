@@ -64,35 +64,38 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     if (this.props.web3) {
       let web3 = this.props.web3
       web3.eth.getAccounts((err, accounts) => {
-        let address = accounts[0]
-        this.updateBalanceTimer = setInterval(() => {
-          web3.eth.getBalance(address, async (err, balance) => {
-            let balanceInETH = parseFloat(web3.fromWei(balance, 'ether').toFixed(10))
+        // tslint:disable-next-line:strict-type-predicates
+        if (accounts !== undefined) {
+          let address = accounts[0]
+          this.updateBalanceTimer = setInterval(() => {
+            web3.eth.getBalance(address, async (err, balance) => {
+              let balanceInETH = parseFloat(web3.fromWei(balance, 'ether').toFixed(10))
 
-            if (this.props.displayCurrencyCode! === 'ETH') {
-              if (balanceInETH.toString() !== this.state.displayedBalance) {
+              if (this.props.displayCurrencyCode! === 'ETH') {
+                if (balanceInETH.toString() !== this.state.displayedBalance) {
+                  this.setState({
+                    balance: web3.fromWei(balance, 'ether').toString(),
+                    displayedBalance: balanceInETH.toString()
+                  })
+                  if (this.props.onChangeBalance) {
+                    this.props.onChangeBalance(parseFloat(this.state.balance))
+                  }
+                }
+              } else if (balanceInETH.toFixed(2) !== this.state.displayedBalance) {
                 this.setState({
                   balance: web3.fromWei(balance, 'ether').toString(),
-                  displayedBalance: balanceInETH.toString()
+                  displayedBalance: (await Currency.instance().convertCryptoOrCurrencyToCurrency(balanceInETH, 'ETH', this.props.displayCurrencyCode!)).toString()
                 })
                 if (this.props.onChangeBalance) {
                   this.props.onChangeBalance(parseFloat(this.state.balance))
                 }
               }
-            } else if (balanceInETH.toFixed(2) !== this.state.displayedBalance) {
-              this.setState({
-                balance: web3.fromWei(balance, 'ether').toString(),
-                displayedBalance: (await Currency.instance().convertCryptoOrCurrencyToCurrency(balanceInETH, 'ETH', this.props.displayCurrencyCode!)).toString()
-              })
-              if (this.props.onChangeBalance) {
-                this.props.onChangeBalance(parseFloat(this.state.balance))
-              }
-            }
-          })
-        }, 1000)
-        this.setState({ address: address })
-        if (this.props.onChangeAddress) {
-          this.props.onChangeAddress(address)
+            })
+          }, 1000)
+          this.setState({ address: address })
+          if (this.props.onChangeAddress) {
+            this.props.onChangeAddress(address)
+          }
         }
       })
     }

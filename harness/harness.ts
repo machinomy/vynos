@@ -71,9 +71,9 @@ window.addEventListener('load', function () {
   vynos.ready().then(instance => {
     let provider = instance.provider
     let web3 = new Web3(provider)
-    web3.eth.getAccounts((err, accounts) => {
-      console.log(accounts)
-    })
+    // web3.eth.getAccounts((err, accounts) => {
+    //   console.log(accounts)
+    // })
   })
 
   let displayButton = document.getElementById('display')

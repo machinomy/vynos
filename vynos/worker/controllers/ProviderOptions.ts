@@ -7,6 +7,8 @@ import { Buffer } from 'safe-buffer'
 import TransactionService from '../TransactionService'
 import { randomId } from '../../lib/Payload'
 import * as transactions from '../../lib/transactions'
+import { DISPLAY_REQUEST } from '../../lib/constants'
+import bus from '../../lib/bus'
 
 export type ApproveTransactionCallback = (error: any, isApproved?: boolean) => void
 export type ApproveSignCallback = (error: any, rawMsgSig?: string) => void
@@ -23,8 +25,9 @@ export default class ProviderOptions {
   }
 
   getAccounts (callback: (err: any, accounts?: Array<string>) => void) {
-    this.background.getAccounts().then(accounts =>
+    this.background.getAccounts().then(accounts => {
       callback(null, accounts)
+    }
     ).catch(error => {
       callback(error)
     })
@@ -91,6 +94,7 @@ export default class ProviderOptions {
       return
     }
 
+    bus.emit(DISPLAY_REQUEST, true)
     const transaction = transactions.signature(messageParams.from, messageParams.data)
     this.transactions.approveTransaction(transaction).then(result => {
       if (result) {
