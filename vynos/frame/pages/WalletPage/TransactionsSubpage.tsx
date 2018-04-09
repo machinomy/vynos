@@ -101,7 +101,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
 
     return (
       <List.Item className={styleListItem} key={transaction.id} title={transactionTitle}>
-        <List.Content floated="right">
+        <List.Content floated="right" style={{ display: transaction.kind === TransactionKind.SIGN ? 'none' : '' }}>
           <span className={style.channelBalance}>{value} {denomination}</span>
           <p>
             <span className={style.channelBalance}>Fee {fee.value} {fee.denomination}</span>
