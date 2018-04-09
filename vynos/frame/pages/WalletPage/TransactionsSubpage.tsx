@@ -7,8 +7,14 @@ import { List, Image } from 'semantic-ui-react'
 import { formatAmount, formatDate } from '../../../lib/formatting'
 import { connect } from 'react-redux'
 import { FrameState } from '../../redux/FrameState'
+import { default as Scrollbars } from 'react-custom-scrollbars'
 
 const style = require('../../styles/ynos.css')
+
+const TransactionsScrollbarStyle = {
+  width: '330px',
+  height: '315px'
+}
 
 export interface TransactionsSubpageProps {
   lastUpdateDb: number
@@ -116,9 +122,11 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
 
     if (rows.length) {
       return (
-        <List className={className} divided={true} verticalAlign="middle">
-          {rows}
-        </List>
+        <Scrollbars style={TransactionsScrollbarStyle} >
+          <List className={className} divided={true} verticalAlign="middle">
+            {rows}
+          </List>
+        </Scrollbars>
       )
     } else {
       return <p/>
