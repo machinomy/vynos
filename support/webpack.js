@@ -61,7 +61,8 @@ function bundle (entry) {
         filename: 'frame.html',
         excludeChunks: ['worker', 'vynos', 'harness']
       }),
-      new HardSourceWebpackPlugin()
+      new HardSourceWebpackPlugin(),
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json']
