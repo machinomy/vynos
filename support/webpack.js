@@ -6,6 +6,7 @@ const webpack = require('webpack')
 const CopyPlugin = require('copy-webpack-plugin')
 const HtmlPlugin = require('html-webpack-plugin')
 const NodeExternalsPlugin = require('webpack-node-externals')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
 require('dotenv').config({ path: '.env' })
 const NODE_ENV = process.env.NODE_ENV || 'development'
@@ -59,7 +60,8 @@ function bundle (entry) {
         template: resolve('vynos/frame/frame.html'),
         filename: 'frame.html',
         excludeChunks: ['worker', 'vynos', 'harness']
-      })
+      }),
+      new HardSourceWebpackPlugin()
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json']
