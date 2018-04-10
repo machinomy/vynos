@@ -187,7 +187,7 @@ module.exports.HARNESS = bundle({
 })
 
 module.exports.FRAME = bundle({
-  frame: resolve('vynos/frame.ts'),
+  frame: resolve('vynos/frame.ts')
 })
 
 module.exports.WORKER = workerBundle({
