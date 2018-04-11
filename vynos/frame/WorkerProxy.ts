@@ -24,10 +24,14 @@ import {
   SetRejectByIdRequest,
   ClearTransactionMetastorageRequest,
   ClearReduxPersistentStorageRequest,
-  ClearChannelMetastorageRequest
+  ClearChannelMetastorageRequest,
+  CloseChannelRequest,
+  ListChannelsRequest,
+  ListChannelsResponse
 } from '../lib/rpc/yns'
 import { Action } from 'redux'
 import Web3 = require('web3')
+import { PaymentChannel, PaymentChannelSerde } from 'machinomy/dist/lib/payment_channel'
 
 export default class WorkerProxy extends EventEmitter {
   provider: StreamProvider
@@ -242,6 +246,30 @@ export default class WorkerProxy extends EventEmitter {
     }
     this.provider.ask(request).then(() => {
       // Do nothing
+    })
+  }
+
+  closeChannel (channelId: string): Promise<void> {
+    let request: CloseChannelRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: CloseChannelRequest.method,
+      params: [channelId]
+    }
+    return this.provider.ask(request).then(() => {
+      return
+    })
+  }
+
+  listChannels (): Promise<Array<PaymentChannel>> {
+    let request: ListChannelsRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ListChannelsRequest.method,
+      params: []
+    }
+    return this.provider.ask(request).then((response: ListChannelsResponse) => {
+      return response.result.map(pc => PaymentChannelSerde.instance.deserialize(pc))
     })
   }
 }
