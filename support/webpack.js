@@ -15,7 +15,7 @@ const BACKGROUND_PORT = process.env.BACKGROUND_PORT || 9001
 const HARNESS_PORT = process.env.HARNESS_PORT || 9000
 
 const DIST_PATH = 'dist'
-const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg)).*$/
+const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg|mongodb)).*$/
 
 function outputFilename() {
   return '[name].js'
@@ -62,7 +62,6 @@ function bundle (entry) {
         filename: 'frame.html',
         excludeChunks: ['worker', 'vynos', 'harness']
       }),
-      new HardSourceWebpackPlugin(),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
     ],
     resolve: {
