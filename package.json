@@ -8,7 +8,7 @@
     "wallet"
   ],
   "license": "Apache-2.0",
-  "types": "dist/dist/types/index.d.ts",
+  "types": "dist/dist/types/vynos/vynos/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
     "prepublish": "yarn lint && NODE_ENV=production yarn package",
