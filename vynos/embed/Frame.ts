@@ -1,11 +1,12 @@
 import * as resourceAddress from '../lib/resourceAddress'
+import { getVersionPrefix, isLocalAddress } from '../lib/helpers'
 
 const FRAME_HEIGHT = 440
 const FRAME_WIDTH = 320
 const CLOSE_HEIGHT = 40
 const CLOSE_WIDTH = 130
 const CONTAINER_ID = 'machinomy-wallet-frame-container'
-// const imgUpArrow = require('../frame/styles/images/up-arrow.svg') FIXME Prevents TS compilation
+let imgUpArrow: string
 
 function containerElement (document: HTMLDocument) {
   let element = document.createElement('div')
@@ -29,11 +30,18 @@ function frameElement (document: HTMLDocument): HTMLIFrameElement {
   return element
 }
 
-function closeElement (document: HTMLDocument) {
-  let element = document.createElement('div')
+function closeElement (frame: Frame) {
+  if (isLocalAddress(frame.getFrameAddress())) {
+    imgUpArrow = '/frame/styles/images/up-arrow.svg'
+  } else {
+    imgUpArrow = getVersionPrefix() + '/frame/styles/images/up-arrow.svg'
+  }
+  let element = frame.getDocument().createElement('div')
   element.id = 'vynos_frame_close_button'
-  // let srcCloseButton = this.frameAddress.replace(/vynos(.|.dev.)js/, imgUpArrow) FIXME Prevents TS compilation
-  // _frameElement.innerHTML = '<img id="vynos_frame_img_close_button" src="' + srcCloseButton + '">' FIXME Prevents TS compilation
+  let el = document.createElement('img')
+  el.id = 'vynos_frame_img_close_button'
+  el.src = frame.getFrameAddress().replace(/\/frame.html/, imgUpArrow)
+  element.appendChild(el)
   element.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT) + 'px'
   element.style.cursor = 'pointer'
   element.style.width = CLOSE_WIDTH + '%'
@@ -72,7 +80,7 @@ export default class Frame {
       let frameElement = await this.element()
       this._containerElement.appendChild(frameElement)
 
-      let closeButton = closeElement(this.document)
+      let closeButton = closeElement(this)
       closeButton.addEventListener('click', async () => {
         await this.hide()
       })
@@ -118,5 +126,17 @@ export default class Frame {
 
     containerElement.style.marginTop = '-500px'
     frameElement.style.opacity = '0'
+  }
+
+  getDocument (): HTMLDocument {
+    return this.document
+  }
+
+  getFrameAddress (): string {
+    return this.frameAddress
+  }
+
+  getFrameElement (): HTMLIFrameElement | undefined {
+    return this._frameElement
   }
 }

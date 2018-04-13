@@ -59,7 +59,12 @@ function bundle (entry) {
         template: resolve('vynos/frame/frame.html'),
         filename: 'frame.html',
         excludeChunks: ['worker', 'vynos', 'harness']
-      })
+      }),
+      new CopyPlugin([{
+        context: 'vynos/frame/styles/images/',
+        from: '*',
+        to: resolve(DIST_PATH) + '/frame/styles/images/'
+      }])
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json']
