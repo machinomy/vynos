@@ -6,7 +6,6 @@ const FRAME_WIDTH = 320
 const CLOSE_HEIGHT = 40
 const CLOSE_WIDTH = 130
 const CONTAINER_ID = 'machinomy-wallet-frame-container'
-let imgUpArrow: string
 
 function containerElement (document: HTMLDocument) {
   let element = document.createElement('div')
@@ -30,13 +29,12 @@ function frameElement (document: HTMLDocument): HTMLIFrameElement {
   return element
 }
 
-function closeElement (frame: Frame) {
-  imgUpArrow = resource('/frame/styles/images/up-arrow.svg')
-  let element = frame.getDocument().createElement('div')
+function closeElement (document: HTMLDocument) {
+  let element = document.createElement('div')
   element.id = 'vynos_frame_close_button'
   let el = document.createElement('img')
   el.id = 'vynos_frame_img_close_button'
-  el.src = frame.getFrameAddress().replace(/\/frame.html/, imgUpArrow)
+  el.src = resource('/frame/styles/images/up-arrow.svg')
   element.appendChild(el)
   element.style.height = (FRAME_HEIGHT + CLOSE_HEIGHT) + 'px'
   element.style.cursor = 'pointer'
@@ -76,7 +74,7 @@ export default class Frame {
       let frameElement = await this.element()
       this._containerElement.appendChild(frameElement)
 
-      let closeButton = closeElement(this)
+      let closeButton = closeElement(this.document)
       closeButton.addEventListener('click', async () => {
         await this.hide()
       })
@@ -122,17 +120,5 @@ export default class Frame {
 
     containerElement.style.marginTop = '-500px'
     frameElement.style.opacity = '0'
-  }
-
-  getDocument (): HTMLDocument {
-    return this.document
-  }
-
-  getFrameAddress (): string {
-    return this.frameAddress
-  }
-
-  getFrameElement (): HTMLIFrameElement | undefined {
-    return this._frameElement
   }
 }

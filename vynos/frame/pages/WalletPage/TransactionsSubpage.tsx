@@ -60,9 +60,9 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
   }
 
   transactionIcon (transaction: Transaction) {
-    let kind = transaction.kind
-    let state = transaction.state
-    let imageSrc = resource('/frame/styles/images/') + kind.toLowerCase() + '-' + state.toLowerCase() + '.png'
+    let kind = transaction.kind.toLowerCase()
+    let state = transaction.state.toLowerCase()
+    let imageSrc = resource('/frame/styles/images/' + kind + '-' + state + '.png')
     return <div className={'ui mini image ' + style.listItemAvatar}><Image src={imageSrc} size="mini"/></div>
   }
 

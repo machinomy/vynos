@@ -123,7 +123,7 @@ export default class MicropaymentsController {
                 channelId: response.channelId,
                 title: purchaseMeta.siteName,
                 host: purchaseMeta.origin,
-                icon: resource('/frame/styles/images/channel.png', purchaseMeta.origin),
+                icon: resource('/frame/styles/images/channel.png', self.location.href),
                 openingTime: Date.now()
               }
               await this.channels.save(newChannelMeta)
