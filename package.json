@@ -13,7 +13,7 @@
   "scripts": {
     "prepublish": "yarn lint && NODE_ENV=production yarn package",
     "start": "gulp serve:harness",
-    "build": "gulp build",
+    "build": "node --max-old-space-size=4096 node_modules/gulp/bin/gulp.js build",
     "build:harness": "gulp build:harness",
     "harness": "gulp serve:harness",
     "package": "yarn webpack --config support/package.webpack.js",
