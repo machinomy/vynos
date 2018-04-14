@@ -6,7 +6,6 @@ import DashboardSubpage from './DashboardSubpage'
 import Channels from '../../components/Account/Channels/index'
 import Network from '../../components/Account/Network/index'
 import Preferences from '../../components/Account/Preferences/index'
-import TransactionStorage from '../../../lib/storage/TransactionMetaStorage'
 
 export interface WalletPageStateProps {
   path?: string
