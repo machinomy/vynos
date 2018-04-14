@@ -3,7 +3,7 @@ import { randomId } from './Payload'
 import TransactionKind from './TransactionKind'
 import TransactionState from './TransactionState'
 import PurchaseMeta from './PurchaseMeta'
-import { getVersionPrefix } from './helpers'
+import { resource } from './helpers'
 
 export function ethereum (id: string, to: string, amount: number, fee: number): Transaction {
   return {
@@ -54,7 +54,7 @@ export function closeChannel (description: string): Transaction {
     from: '',
     to: '',
     description: description,
-    icon: getVersionPrefix() + '/frame/styles/images/close_channel-approved.png',
+    icon: resource('/frame/styles/images/close_channel-approved.png'),
     time: Date.now(),
     amount: 0,
     fee: 0,
@@ -70,7 +70,7 @@ export function openChannel (title: string, description: string, from: string, t
     to: to,
     title: title,
     description: description,
-    icon: getVersionPrefix() + '/frame/styles/images/open_channel-approved.png',
+    icon: resource('/frame/styles/images/open_channel-approved.png'),
     time: Date.now(),
     amount: amount,
     fee: 0,

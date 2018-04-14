@@ -1,5 +1,5 @@
 import * as resourceAddress from '../lib/resourceAddress'
-import { getVersionPrefix, isLocalAddress } from '../lib/helpers'
+import { resource } from '../lib/helpers'
 
 const FRAME_HEIGHT = 440
 const FRAME_WIDTH = 320
@@ -31,11 +31,7 @@ function frameElement (document: HTMLDocument): HTMLIFrameElement {
 }
 
 function closeElement (frame: Frame) {
-  if (isLocalAddress(frame.getFrameAddress())) {
-    imgUpArrow = '/frame/styles/images/up-arrow.svg'
-  } else {
-    imgUpArrow = getVersionPrefix() + '/frame/styles/images/up-arrow.svg'
-  }
+  imgUpArrow = resource('/frame/styles/images/up-arrow.svg')
   let element = frame.getDocument().createElement('div')
   element.id = 'vynos_frame_close_button'
   let el = document.createElement('img')
