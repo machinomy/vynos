@@ -62,7 +62,12 @@ function bundle (entry) {
         filename: 'frame.html',
         excludeChunks: ['worker', 'vynos', 'harness']
       }),
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      new CopyPlugin([{
+        context: 'vynos/frame/styles/images/',
+        from: '*',
+        to: resolve(DIST_PATH) + '/frame/styles/images/'
+      }])
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json']

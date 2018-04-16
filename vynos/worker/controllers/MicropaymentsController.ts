@@ -21,6 +21,7 @@ import * as events from '../../lib/events'
 import { BuyProcessEvent } from '../../lib/rpc/buyProcessEventBroadcast'
 import { WalletBuyArguments } from '../../lib/Vynos'
 import { CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER } from '../../lib/constants'
+import { resource } from '../../lib/helpers'
 
 const timeparse = require('timeparse')
 
@@ -122,7 +123,7 @@ export default class MicropaymentsController {
                 channelId: response.channelId,
                 title: purchaseMeta.siteName,
                 host: purchaseMeta.origin,
-                icon: '/frame/styles/images/channel.png',
+                icon: resource('/frame/styles/images/channel.png', self.location.href),
                 openingTime: Date.now()
               }
               await this.channels.save(newChannelMeta)
