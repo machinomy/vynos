@@ -1,6 +1,6 @@
 {
   "name": "vynos",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Micropayments powered by Ethereum",
   "keywords": [
     "micropayments",
@@ -8,10 +8,10 @@
     "wallet"
   ],
   "license": "Apache-2.0",
-  "types": "dist/dist/types/index.d.ts",
+  "types": "dist/dist/types/vynos/vynos/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
-    "prepublish": "yarn lint && NODE_ENV=production yarn package",
+    "prepublish": "yarn lint && rm -rf dist && NODE_ENV=production yarn package",
     "start": "gulp serve:harness",
     "build": "node --max-old-space-size=4096 node_modules/gulp/bin/gulp.js build",
     "build:harness": "gulp build:harness",
