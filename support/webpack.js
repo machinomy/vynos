@@ -15,7 +15,7 @@ const BACKGROUND_PORT = process.env.BACKGROUND_PORT || 9001
 const HARNESS_PORT = process.env.HARNESS_PORT || 9000
 
 const DIST_PATH = 'dist'
-const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg|mongodb)).*$/
+const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg|mongodb|node\-pre\-gyp)).*$/
 
 function outputFilename() {
   return '[name].js'
@@ -159,7 +159,8 @@ function bundle (entry) {
       net: 'empty',
       tls: 'empty',
       module: 'empty',
-      dns: 'mock'
+      dns: 'mock',
+      child_process: 'empty'
     }
   }
 

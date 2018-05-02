@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Container, Form, Radio } from 'semantic-ui-react'
+import { Container, Form, Radio, Button } from 'semantic-ui-react'
 import SettingStorage from '../../../../lib/storage/SettingStorage'
 import { connect } from 'react-redux'
 import { FrameState } from '../../../redux/FrameState'
@@ -101,11 +101,7 @@ export class Network extends React.Component<NetworkProps, NetworkState> {
               value={this.state.customNetwork}
               id={'customNetwork'}
             />
-            <input
-              type="submit"
-              value="Save network"
-              style={{ marginTop: '30px', display: buttonStyle }}
-            />
+            <Button type="submit" content="Save network" primary={true} style={{ marginTop: '30px', display: buttonStyle }} />
           </Form.Group>
         </Form>
       </Container>
