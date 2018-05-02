@@ -6,6 +6,8 @@ const webpack = require('webpack')
 const CopyPlugin = require('copy-webpack-plugin')
 const HtmlPlugin = require('html-webpack-plugin')
 const NodeExternalsPlugin = require('webpack-node-externals')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
+const WebpackBundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 require('dotenv').config({ path: '.env' })
 const NODE_ENV = process.env.NODE_ENV || 'development'
@@ -13,7 +15,7 @@ const BACKGROUND_PORT = process.env.BACKGROUND_PORT || 9001
 const HARNESS_PORT = process.env.HARNESS_PORT || 9000
 
 const DIST_PATH = 'dist'
-const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg|node\-pre\-gyp)).*$/
+const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg|mongodb|node\-pre\-gyp)).*$/
 
 function outputFilename() {
   return '[name].js'
@@ -60,6 +62,7 @@ function bundle (entry) {
         filename: 'frame.html',
         excludeChunks: ['worker', 'vynos', 'harness']
       }),
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new CopyPlugin([{
         context: 'vynos/frame/styles/images/',
         from: '*',
@@ -193,7 +196,7 @@ module.exports.HARNESS = bundle({
 })
 
 module.exports.FRAME = bundle({
-  frame: resolve('vynos/frame.ts'),
+  frame: resolve('vynos/frame.ts')
 })
 
 module.exports.WORKER = workerBundle({
