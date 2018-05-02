@@ -2,18 +2,19 @@
 import * as React from 'react'
 import { List, Image } from 'semantic-ui-react'
 import Web3 = require('web3')
-import Machinomy from 'machinomy'
 import BlockieComponent from '../../BlockieComponent'
 import ChannelMetaStorage from '../../../../lib/storage/ChannelMetaStorage'
 import { connect } from 'react-redux'
 import { FrameState } from '../../../redux/FrameState'
 import { isUndefined } from 'util'
+import WorkerProxy from '../../../WorkerProxy'
 
 const style = require('../../../styles/ynos.css')
 
 export interface ChannelsSubpageProps {
   lastUpdateDb?: number,
   web3?: Web3
+  workerProxy?: WorkerProxy
 }
 
 export interface ChannelsSubpageState {
@@ -23,7 +24,6 @@ export interface ChannelsSubpageState {
 
 export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, ChannelsSubpageState> {
   channelMetaStorage: ChannelMetaStorage
-  machinomy: Machinomy | null
   localLastUpdateDb: number
 
   constructor (props?: ChannelsSubpageProps | undefined, context?: any) {
@@ -33,27 +33,7 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
       activeChannel: ''
     }
     this.channelMetaStorage = new ChannelMetaStorage()
-    this.machinomy = null
     this.localLastUpdateDb = props!.lastUpdateDb!
-  }
-
-  getMachinomy () {
-    return new Promise<Machinomy>((resolve, reject) => {
-      if (this.machinomy !== null) {
-        resolve(this.machinomy)
-      } else {
-        let web3 = this.props.web3
-        web3!.eth.getAccounts((err, accounts) => {
-          if (err) {
-            console.error(err)
-          } else {
-            // TODO Next line may cause bug - new Machinomy's interface 1.7.0
-            this.machinomy = new Machinomy(accounts[0], web3!, { databaseUrl: 'nedb://vynos' })
-            resolve(this.machinomy)
-          }
-        })
-      }
-    })
   }
 
   componentDidMount () {
@@ -70,49 +50,45 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
   }
 
   closeChannelId (channel: any) {
-    this.getMachinomy().then((machinomy: Machinomy) => {
-      machinomy.close(channel.channelId).then(() => {
-        this.channelMetaStorage.setClosingTime(channel.channelId, Date.now()).then(() => {
-          let change: any = {}
-          change[channel.channelId] = {
-            state: channel.state === 0 ? 1 : 2
-          }
-          this.setActiveChannel(channel.channelId)
-          this.updateListChannels(change)
-        })
+    this.props.workerProxy!.closeChannel(channel.channelId).then(() => {
+      this.channelMetaStorage.setClosingTime(channel.channelId, Date.now()).then(() => {
+        let change: any = {}
+        change[channel.channelId] = {
+          state: channel.state === 0 ? 1 : 2
+        }
+        this.setActiveChannel(channel.channelId)
+        this.updateListChannels(change)
       })
     })
   }
 
   updateListChannels (change: any) {
-    this.getMachinomy().then((machinomy: Machinomy) => {
-      machinomy.channels().then(channels => {
-        let balanceByChannelId: any = {}
-        let stateByChannelId: any = {}
-        let channelIds = channels.map((channel: any) => {
-          balanceByChannelId[channel.channelId.toString()] = channel.value - channel.spent
-          stateByChannelId[channel.channelId.toString()] = channel.state
-          return channel.channelId.toString()
+    this.props.workerProxy!.listChannels().then(channels => {
+      let balanceByChannelId: any = {}
+      let stateByChannelId: any = {}
+      let channelIds = channels.map((channel: any) => {
+        balanceByChannelId[channel.channelId.toString()] = channel.value - channel.spent
+        stateByChannelId[channel.channelId.toString()] = channel.state
+        return channel.channelId.toString()
+      })
+      this.channelMetaStorage.findByIds(channelIds).then((metaChannels: any) => {
+        metaChannels.map((channel: any) => {
+          if (!isUndefined(balanceByChannelId[channel.channelId])) {
+            channel.balance = balanceByChannelId[channel.channelId]
+          }
+          if (!isUndefined(stateByChannelId[channel.channelId])) {
+            channel.state = stateByChannelId[channel.channelId]
+          }
+          if (change[channel.channelId]) {
+            for (let key in change[channel.channelId]) {
+              channel[key] = change[channel.channelId][key]
+            }
+          }
+          channel.canClose = true // FIXME
+          return channel
         })
-        this.channelMetaStorage.findByIds(channelIds).then((metaChannels: any) => {
-          metaChannels.map((channel: any) => {
-            if (!isUndefined(balanceByChannelId[channel.channelId])) {
-              channel.balance = balanceByChannelId[channel.channelId]
-            }
-            if (!isUndefined(stateByChannelId[channel.channelId])) {
-              channel.state = stateByChannelId[channel.channelId]
-            }
-            if (change[channel.channelId]) {
-              for (let key in change[channel.channelId]) {
-                channel[key] = change[channel.channelId][key]
-              }
-            }
-            channel.canClose = true // FIXME
-            return channel
-          })
-          this.setState({
-            channels: metaChannels
-          })
+        this.setState({
+          channels: metaChannels
         })
       })
     })
@@ -194,7 +170,8 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
 function mapStateToProps (state: FrameState, ownProps: ChannelsSubpageProps): ChannelsSubpageProps {
   return {
     lastUpdateDb: state.shared.lastUpdateDb,
-    web3: state.temp.workerProxy.web3
+    web3: state.temp.workerProxy.web3,
+    workerProxy: state.temp.workerProxy
   }
 }
 

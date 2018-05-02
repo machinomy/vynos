@@ -29,7 +29,7 @@ function frameElement (document: HTMLDocument): HTMLIFrameElement {
   return element
 }
 
-function closeElement (document: HTMLDocument) {
+function closeElement (document: HTMLDocument, baseUrl: string) {
   let element = document.createElement('div')
   element.id = 'vynos_frame_close_button'
   let el = document.createElement('img')
@@ -74,7 +74,7 @@ export default class Frame {
       let frameElement = await this.element()
       this._containerElement.appendChild(frameElement)
 
-      let closeButton = closeElement(this.document)
+      let closeButton = closeElement(this.document, this.frameAddress)
       closeButton.addEventListener('click', async () => {
         await this.hide()
       })

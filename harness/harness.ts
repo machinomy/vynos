@@ -126,11 +126,11 @@ window.addEventListener('load', function () {
         }
         wallet.buyPromised(receiverAccount!, parseInt(amount, 10), gateway, Date.now().toString())
         .on(BuyProcessEvent.SENT_PAYMENT, (args: WalletBuyArguments) => {
-          console.log('PAYMENT WAS SENT!')
+          console.log('on BuyProcessEvent.SENT_PAYMENT')
         }).on(BuyProcessEvent.RECEIVED_TOKEN, (args: WalletBuyArguments, token: string) => {
-          console.log('Token is ' + token)
+          console.log('on BuyProcessEvent.RECEIVED_TOKEN. Token is ' + token)
         }).on(BuyProcessEvent.OPENING_CHANNEL_FINISHED, (args: WalletBuyArguments, channel: ChannelMeta) => {
-          console.log('Channel meta: ')
+          console.log('on BuyProcessEvent.OPENING_CHANNEL_FINISHED. Channel meta is ')
           console.log(channel)
         }).result.then((buyResponse: VynosBuyResponse) => {
           console.log(buyResponse)

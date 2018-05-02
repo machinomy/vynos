@@ -1,6 +1,6 @@
 {
   "name": "vynos",
-  "version": "0.0.8",
+  "version": "0.0.12",
   "description": "Micropayments powered by Ethereum",
   "keywords": [
     "micropayments",
@@ -11,7 +11,7 @@
   "types": "dist/dist/types/vynos/vynos/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
-    "prepublish": "yarn lint && NODE_ENV=production yarn package",
+    "prepublish": "yarn lint && rm -rf dist && NODE_ENV=production yarn package",
     "start": "gulp serve:harness",
     "build": "node --max-old-space-size=4096 node_modules/gulp/bin/gulp.js build",
     "build:harness": "gulp build:harness",
@@ -48,6 +48,7 @@
     "file-loader": "^1.1.11",
     "gulp": "^3.9.1",
     "gulp-cli": "^1.3.0",
+    "hard-source-webpack-plugin": "^0.6.4",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "4.8.3",
     "postcss-custom-properties": "^6.1.0",
@@ -57,7 +58,6 @@
     "postcss-scss": "^1.0.2",
     "react-hot-loader": "^4.0.0",
     "sass-loader": "6.0.7",
-    "semantic-ui-css": "^2.2.12",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
     "ts-loader": "^4.2.0",
@@ -69,6 +69,7 @@
     "types-web3-provider-engine": "^0.0.2",
     "typescript": "2.8.1",
     "webpack": "^4.5.0",
+    "webpack-bundle-analyzer": "^2.11.1",
     "webpack-cli": "^2.0.14",
     "webpack-dev-server": "^3.1.2",
     "webpack-node-externals": "^1.7.2",
@@ -85,14 +86,12 @@
     "bignumber.js": "^4.1.0",
     "bip39": "^2.3.1",
     "browser-passworder": "^2.0.3",
-    "crypto-price": "^0.0.4",
     "duplexify": "^3.5.0",
     "eth-sig-util": "^1.2.1",
     "ethereumjs-tx": "^1.3.1",
     "ethereumjs-util": "^5.1.2",
     "ethereumjs-wallet": "^0.6.0",
     "events": "^1.1.1",
-    "fixer-api": "^1.2.6",
     "html2canvas": "^1.0.0-alpha.9",
     "localforage": "^1.5.0",
     "localforage-observable": "^1.3.1",
@@ -126,5 +125,11 @@
     "web3": "^0.19.0",
     "web3-provider-engine": "^13.0.3",
     "web3-utils": "^1.0.0-beta.30"
+  },
+  "resolutions": {
+    "natives": "^1.1.3",
+    "upath": "^1.0.5",
+    "nan": "^2.10.0",
+    "sha3": "^1.2.1"
   }
 }

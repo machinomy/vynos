@@ -5,7 +5,7 @@ import { connect, Dispatch } from 'react-redux'
 import WorkerProxy from '../../../WorkerProxy'
 import { Preferences as PreferencesType } from '../../../../worker/WorkerState'
 import * as actions from '../../../redux/actions'
-const fixer = require('fixer-api')
+import Currency from '../../../lib/currency'
 const style = require('../../../styles/ynos.css')
 
 export interface PreferencesStateProps {
@@ -50,11 +50,9 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
 
   async componentWillMount () {
     this.privateKeyHex = await this.props.workerProxy!.getPrivateKeyHex()
-    let response = await fixer.latest()
     let listOfCurrencies: Array<DropdownCurrencyData> = []
-    listOfCurrencies.push({ 'value': 'ETH', 'text': 'ETH' })
-    for (const key of Object.keys(response.rates)) {
-      listOfCurrencies.push({ 'value': key, 'text': key })
+    for (const key of Currency.instance().currencies.keys()) {
+      listOfCurrencies.push({ 'value': key, 'text': key + ' ' + Currency.instance().currencies.get(key) })
     }
 
     this.setState({ ...this.state, currencies: listOfCurrencies })

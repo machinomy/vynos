@@ -71,7 +71,7 @@ For installation instructions go ts the [official web site](https://yarnpkg.com/
 ```
 git clone https://github.com/machinomy/vynos
 cd vynos
-yarn install --pure-lockfile
+yarn install
 ```
 
 ## Run
