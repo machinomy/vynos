@@ -139,11 +139,7 @@ window.addEventListener('load', function () {
           if (resultSpan) {
             resultSpan.textContent = recentBuyResponse!.channelId
           }
-        }).catch((error: Error) => {
-          if (error) {
-            console.error(error)
-          }
-        })
+        }).catch((error: Error) => { console.error(error) })
       })
     }
   }
