@@ -11,7 +11,7 @@ import {
 } from '../WorkerState'
 import * as actions from '../actions'
 import * as bip39 from 'bip39'
-import hdkey = require('ethereumjs-wallet/hdkey')
+import * as hdkey from 'ethereumjs-wallet/hdkey'
 import Keyring from '../../frame/lib/Keyring'
 import { createLogger } from 'redux-logger'
 import Wallet = require('ethereumjs-wallet')
@@ -24,6 +24,8 @@ import { WalletBuyArguments } from '../../lib/Vynos'
 import { BuyProcessEvent } from '../../lib/rpc/buyProcessEventBroadcast'
 import { ChannelMeta, default as ChannelMetaStorage } from '../../lib/storage/ChannelMetaStorage'
 import TransactionService from '../TransactionService'
+
+const HD_PATH = `m/44'/60'/0'/0`
 
 const STATE_UPDATED_EVENT = 'stateUpdated'
 
@@ -108,7 +110,11 @@ export default class BackgroundController {
   }
 
   _generateKeyring (password: string, mnemonic: string): Keyring {
-    let wallet = hdkey.fromMasterSeed(mnemonic).getWallet()
+    let seed = bip39.mnemonicToSeed(mnemonic)
+    let hdWallet = hdkey.fromMasterSeed(seed)
+    let root = hdWallet.derivePath(HD_PATH)
+    let child = root.deriveChild(0)
+    let wallet = child.getWallet()
     this.store.dispatch(actions.setWallet(wallet))
     let privateKey = wallet.getPrivateKey()
     return new Keyring(privateKey)
