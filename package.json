@@ -79,7 +79,7 @@
     "@machinomy/types-browser-passworder": "^0.0.7",
     "@machinomy/types-eth-sig-util": "^0.0.7",
     "@machinomy/types-ethereumjs-tx": "^0.0.7",
-    "@machinomy/types-ethereumjs-wallet": "^0.0.10",
+    "@machinomy/types-ethereumjs-wallet": "^0.0.12",
     "@machinomy/types-readable-stream": "^0.0.2",
     "@types/react-tap-event-plugin": "^0.0.30",
     "bignumber.js": "^4.1.0",
