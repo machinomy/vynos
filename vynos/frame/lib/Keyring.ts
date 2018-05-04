@@ -1,6 +1,6 @@
 import * as Wallet from 'ethereumjs-wallet'
-import utils = require('ethereumjs-util')
-import passworder = require('browser-passworder')
+import * as utils from 'ethereumjs-util'
+import * as passworder from 'browser-passworder'
 import { Buffer } from 'safe-buffer'
 
 interface BufferLike {
