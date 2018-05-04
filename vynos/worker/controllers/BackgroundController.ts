@@ -110,7 +110,7 @@ export default class BackgroundController {
   }
 
   _generateKeyring (password: string, mnemonic: string): Keyring {
-    let seed = bip39.mnemonicToSeed(mnemonic)
+    let seed = Buffer.from(bip39.mnemonicToSeed(mnemonic).toString('hex'), 'hex')
     let hdWallet = hdkey.fromMasterSeed(seed)
     let root = hdWallet.derivePath(HD_PATH)
     let child = root.deriveChild(0)
