@@ -6,7 +6,6 @@ import DashboardSubpage from './DashboardSubpage'
 import Channels from '../../components/Account/Channels/index'
 import Network from '../../components/Account/Network/index'
 import Preferences from '../../components/Account/Preferences/index'
-import TransactionStorage from '../../../lib/storage/TransactionMetaStorage'
 
 export interface WalletPageStateProps {
   path?: string
@@ -26,7 +25,6 @@ export class WalletPage extends React.Component<WalletPageStateProps, WalletPage
   }
 
   renderSubpage () {
-    console.log('WalletPage.renderSubpage', this.props.name)
     switch (this.props.name) {
       case 'Channels':
         return <Channels />
@@ -37,13 +35,6 @@ export class WalletPage extends React.Component<WalletPageStateProps, WalletPage
       default:
         return <DashboardSubpage />
     }
-  }
-
-  consoleLogPendingTxs () {
-    let storage = new TransactionStorage()
-    storage.pending().then(allpending => {
-      console.log(allpending)
-    })
   }
 
   render () {

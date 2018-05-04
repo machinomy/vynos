@@ -2,7 +2,6 @@ import * as React from 'react'
 import * as DOM from 'react-dom'
 import WorkerProxy from './WorkerProxy'
 import { Provider, Store } from 'react-redux'
-import 'semantic-ui-css/semantic.min.css'
 import { routerMiddleware } from 'react-router-redux'
 import { createLogger } from 'redux-logger'
 import * as redux from 'redux'
@@ -14,7 +13,7 @@ import { AppContainer } from 'react-hot-loader'
 
 const MOUNT_POINT_ID = 'mount-point'
 
-async function renderToMountPoint (mountPoint: HTMLElement, workerProxy: WorkerProxy) {
+async function renderToMountPoint (mountPoint: HTMLElement, workerProxy: WorkerProxy): Promise<void> {
   const history = createHashHistory()
   const middleware = redux.applyMiddleware(createLogger(), routerMiddleware(history))
   let store: Store<FrameState> = redux.createStore(reducers(workerProxy), initialState(workerProxy), middleware)
@@ -41,10 +40,10 @@ async function renderToMountPoint (mountPoint: HTMLElement, workerProxy: WorkerP
   }
 }
 
-export default function renderApplication (document: HTMLDocument, workerProxy: WorkerProxy) {
+export default async function renderApplication (document: HTMLDocument, workerProxy: WorkerProxy): Promise<void> {
   let mountPoint = document.getElementById(MOUNT_POINT_ID)
   if (mountPoint) {
-    renderToMountPoint(mountPoint, workerProxy)
+    return renderToMountPoint(mountPoint, workerProxy)
   } else {
     console.error(`Can not find mount point element #${MOUNT_POINT_ID}`)
   }

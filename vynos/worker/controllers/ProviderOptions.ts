@@ -1,11 +1,14 @@
 import BackgroundController from './BackgroundController'
 import { ProviderOpts } from 'web3-provider-engine'
-import ethUtil = require('ethereumjs-util')
-import sigUtil = require('eth-sig-util')
-import Tx = require('ethereumjs-tx')
+import * as ethUtil from 'ethereumjs-util'
+import * as sigUtil from 'eth-sig-util'
+import * as Tx from 'ethereumjs-tx'
+import { Buffer } from 'safe-buffer'
 import TransactionService from '../TransactionService'
 import { randomId } from '../../lib/Payload'
 import * as transactions from '../../lib/transactions'
+import { DISPLAY_REQUEST } from '../../lib/constants'
+import bus from '../../lib/bus'
 
 export type ApproveTransactionCallback = (error: any, isApproved?: boolean) => void
 export type ApproveSignCallback = (error: any, rawMsgSig?: string) => void
@@ -22,8 +25,9 @@ export default class ProviderOptions {
   }
 
   getAccounts (callback: (err: any, accounts?: Array<string>) => void) {
-    this.background.getAccounts().then(accounts =>
+    this.background.getAccounts().then(accounts => {
       callback(null, accounts)
+    }
     ).catch(error => {
       callback(error)
     })
@@ -61,7 +65,11 @@ export default class ProviderOptions {
   signMessageAlways (messageParams: any, callback: ApproveSignCallback) {
     this.background.getPrivateKey().then(privateKey => {
       let message = Buffer.from(messageParams.data.replace(/0x/, ''), 'hex')
-      let msgSig = ethUtil.ecsign(message, privateKey)
+      let prefix = Buffer.from('\x19Ethereum Signed Message:\n')
+      let messageLength = Buffer.from(message.length.toString())
+      let signed = Buffer.concat([prefix, messageLength, message])
+      let sha3edSigned = ethUtil.sha3(signed).toString('hex')
+      let msgSig = ethUtil.ecsign(Buffer.from(sha3edSigned, 'hex'), privateKey)
       let rawMsgSig = ethUtil.bufferToHex(sigUtil.concatSig(msgSig.v, msgSig.r, msgSig.s))
       callback(null, rawMsgSig)
     }).catch(error => {
@@ -86,6 +94,7 @@ export default class ProviderOptions {
       return
     }
 
+    bus.emit(DISPLAY_REQUEST, true)
     const transaction = transactions.signature(messageParams.from, messageParams.data)
     this.transactions.approveTransaction(transaction).then(result => {
       if (result) {

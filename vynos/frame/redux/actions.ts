@@ -38,3 +38,8 @@ export const setWorkerProxy: ActionCreator<WorkerProxy> = actionCreator<WorkerPr
 export function setWorkerProxyHandler (state: TempState, workerProxy: WorkerProxy): TempState {
   return { ...state, workerProxy: workerProxy }
 }
+
+export const clearTempState = actionCreator<boolean>('temp/clearTempState')
+export function clearTempStateHandler (state: TempState): TempState {
+  return { ...state, initPage: {  didAcceptTerms: false, mnemonic: null } }
+}

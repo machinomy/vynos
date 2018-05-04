@@ -8,13 +8,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha256-LA89z+k9fjgMKQ/kq4OO2Mrf8VltYml/VES+Rg0fh20=" crossorigin="anonymous" />
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha256-5+02zu5UULQkO7w1GIr6vftCgMfFdZcAHeDtFnKZsBs=" crossorigin="anonymous"></script>
-
     <!-- Vynos -->
-    <script src="http://localhost:9090/vynos.js"></script>
+    <script src="http://localhost:9001/vynos.js"></script>
     <script src="/harness.js"></script>
 </head>
 <body>
@@ -28,15 +23,12 @@
                 <button name="display" id="display">Display</button>
               </p>
                 <p>
-                  <a href="/custom_frame.html">In a custom frame</a>
-                </p>
-                <p>
                     <p>Account Address: <span id="account_address">Loading...</span></p>
                 </p>
 
                 <div>
                     <form id="open_channel">
-                        <p>Receiver Address: <input type="text" id="receiver_address" value="0xc8ebc512fd59a9e9b04233a2178e28aa3e42608d"/></p>
+                        <p>Receiver Address: <input type="text" id="receiver_address" value="0x363dfeAfB265A1e98403A7613A3325Ec00FaF222"/></p>
                         <p><button type="submit">Open Channel, 0.0001 Eth</button></p>
                         <p>Channel id: <span id="open_channel_id">n/a</span></p>
                         <p>
@@ -73,7 +65,6 @@
                 </div>
 
               <hr />
-
               <h4>Sign message</h4>
               <div>
                 <form id="sign_message_form">

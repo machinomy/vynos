@@ -1,4 +1,4 @@
-import Wallet from 'ethereumjs-wallet'
+import * as Wallet from 'ethereumjs-wallet'
 
 export interface Preferences {
   micropaymentThreshold: number
@@ -46,7 +46,7 @@ export const INITIAL_SHARED_STATE: SharedState = {
     micropaymentThrottlingHumanReadable: '-1ms',
     currency: 'ETH'
   },
-  lastMicropaymentTime: 0
+  lastMicropaymentTime: -1
 }
 
 export const INITIAL_STATE: WorkerState = {
@@ -62,7 +62,7 @@ export const INITIAL_STATE: WorkerState = {
   runtime: {
     isTransactionPending: 0,
     lastUpdateDb: 0,
-    lastMicropaymentTime: 0
+    lastMicropaymentTime: -1
   }
 }
 
@@ -73,7 +73,13 @@ export function buildSharedState (state: WorkerState): SharedState {
     isTransactionPending: state.runtime.isTransactionPending,
     rememberPath: state.persistent.rememberPath,
     lastUpdateDb: state.runtime.lastUpdateDb,
-    preferences: state.persistent.preferences,
+    preferences: state.persistent.preferences
+      ? state.persistent.preferences
+      : {
+        micropaymentThreshold: 1000000,
+        micropaymentThrottlingHumanReadable: '-1ms',
+        currency: 'ETH'
+      },
     lastMicropaymentTime: state.runtime.lastMicropaymentTime
   }
 }

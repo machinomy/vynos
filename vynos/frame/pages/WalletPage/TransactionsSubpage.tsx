@@ -7,8 +7,15 @@ import { List, Image } from 'semantic-ui-react'
 import { formatAmount, formatDate } from '../../../lib/formatting'
 import { connect } from 'react-redux'
 import { FrameState } from '../../redux/FrameState'
+import { default as Scrollbars } from 'react-custom-scrollbars'
+import { resource } from '../../../lib/helpers'
 
 const style = require('../../styles/ynos.css')
+
+const TransactionsScrollbarStyle = {
+  width: '330px',
+  height: '315px'
+}
 
 export interface TransactionsSubpageProps {
   lastUpdateDb: number
@@ -53,9 +60,9 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
   }
 
   transactionIcon (transaction: Transaction) {
-    let kind = transaction.kind
-    let state = transaction.state
-    let imageSrc = '/frame/styles/images/' + kind.toLowerCase() + '-' + state.toLowerCase() + '.png'
+    let kind = transaction.kind.toLowerCase()
+    let state = transaction.state.toLowerCase()
+    let imageSrc = resource('/frame/styles/images/' + kind + '-' + state + '.png')
     return <div className={'ui mini image ' + style.listItemAvatar}><Image src={imageSrc} size="mini"/></div>
   }
 
@@ -95,7 +102,7 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
 
     return (
       <List.Item className={styleListItem} key={transaction.id} title={transactionTitle}>
-        <List.Content floated="right">
+        <List.Content floated="right" style={{ display: transaction.kind === TransactionKind.SIGN ? 'none' : '' }}>
           <span className={style.channelBalance}>{value} {denomination}</span>
           <p>
             <span className={style.channelBalance}>Fee {fee.value} {fee.denomination}</span>
@@ -116,9 +123,11 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
 
     if (rows.length) {
       return (
-        <List className={className} divided={true} verticalAlign="middle">
-          {rows}
-        </List>
+        <Scrollbars style={TransactionsScrollbarStyle} >
+          <List className={className} divided={true} verticalAlign="middle">
+            {rows}
+          </List>
+        </Scrollbars>
       )
     } else {
       return <p/>
