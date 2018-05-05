@@ -45,7 +45,7 @@ function definitions() {
   }
 }
 
-function bundle (entry) {
+function bundle (entry, extension) {
   let config = {
     entry: entry,
     output: {
@@ -57,17 +57,7 @@ function bundle (entry) {
     externals: [NodeExternalsPlugin({whitelist: [EXTERNALS_WHITELIST]})],
     plugins: [
       new webpack.DefinePlugin(definitions()),
-      new HtmlPlugin({
-        template: resolve('vynos/frame/frame.html'),
-        filename: 'frame.html',
-        excludeChunks: ['worker', 'vynos', 'harness']
-      }),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      new CopyPlugin([{
-        context: 'vynos/frame/styles/images/',
-        from: '*',
-        to: resolve(DIST_PATH) + '/frame/styles/images/'
-      }])
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json']
@@ -170,18 +160,17 @@ function bundle (entry) {
       config.plugins.push(new CopyPlugin([
         resolve('vynos/check.html')
       ]))
+      config.plugins.push(new webpack.NamedModulesPlugin())
       break
     default:
       config.plugins.push(new webpack.HotModuleReplacementPlugin())
       config.plugins.push(new webpack.NamedModulesPlugin())
   }
 
-  return config
-}
+  if (extension) {
+    config = extension(config)
+  }
 
-function workerBundle (entry) {
-  let config = bundle(entry)
-  config.output.globalObject = 'this'
   return config
 }
 
@@ -190,19 +179,30 @@ module.exports.resolve = resolve
 module.exports.BACKGROUND_PORT = BACKGROUND_PORT
 module.exports.HARNESS_PORT = HARNESS_PORT
 
+module.exports.HARNESS = bundle({ harness: resolve('harness/harness.ts') })
 
-module.exports.HARNESS = bundle({
-  harness: resolve('harness/harness.ts')
+module.exports.FRAME = bundle({ frame: resolve('vynos/frame.ts') }, config => {
+  config.plugins.push(new HtmlPlugin({
+    template: resolve('vynos/frame/frame.html'),
+    filename: 'frame.html',
+    minify: {
+      collapseWhitespace: true,
+      minifyCSS: true,
+      useShortDoctype: true
+    },
+    chunks: ['frame']
+  }))
+  config.plugins.push(new CopyPlugin([{
+    context: 'vynos/frame/styles/images/',
+    from: '*',
+    to: resolve(DIST_PATH) + '/frame/styles/images/'
+  }]))
+  return config
 })
 
-module.exports.FRAME = bundle({
-  frame: resolve('vynos/frame.ts')
+module.exports.WORKER = bundle({ worker: resolve('vynos/worker.ts') }, config => {
+  config.output.globalObject = 'this'
+  return config
 })
 
-module.exports.WORKER = workerBundle({
-  worker: resolve('vynos/worker.ts')
-})
-
-module.exports.EMBED = bundle({
-  vynos: resolve('vynos/vynos.ts')
-})
+module.exports.EMBED = bundle({ vynos: resolve('vynos/vynos.ts') })
