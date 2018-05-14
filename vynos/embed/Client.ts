@@ -10,11 +10,8 @@ import {
   ListChannelsResponse,
   OpenChannelRequest,
   OpenChannelResponse,
-  PayInChannelRequest,
-  PayInChannelResponse
 } from '../lib/rpc/yns'
 import { JSONRPC, randomId } from '../lib/Payload'
-import VynosPayInChannelResponse from '../lib/VynosPayInChannelResponse'
 import Vynos, { WalletBuyArguments } from '../lib/Vynos'
 import VynosBuyResponse from '../lib/VynosBuyResponse'
 import PurchaseMeta, { purchaseMetaFromDocument } from '../lib/PurchaseMeta'
@@ -87,26 +84,6 @@ export default class Client implements Vynos {
       params: [channelId]
     }
     return this.provider.ask<CloseChannelRequest, any>(request)
-  }
-
-  payInChannel (channel: PaymentChannel, amount: number, override?: boolean): Promise<VynosPayInChannelResponse> {
-    let request: PayInChannelRequest = {
-      id: randomId(),
-      method: PayInChannelRequest.method,
-      jsonrpc: JSONRPC,
-      params: [PaymentChannelSerde.instance.serialize(channel), amount, override as boolean]
-    }
-    if (isPaymentChannel(channel)) {
-      request.params = [PaymentChannelSerde.instance.serialize(channel), amount, override as boolean]
-    }
-    return this.provider.ask(request).then((response: PayInChannelResponse) => {
-      let paymentChannel = PaymentChannelSerde.instance.deserialize(response.result[0])
-      let payment = response.result[1]
-      return {
-        channel: paymentChannel,
-        payment: payment
-      }
-    })
   }
 
   buy (receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number): Promise<VynosBuyResponse> {
