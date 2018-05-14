@@ -248,39 +248,6 @@ export interface CloseChannelResponse extends ResponsePayload {
   result: [string]
 }
 
-export class PayInChannelRequest implements RequestPayload {
-  static method = 'yns_payInChannel'
-
-  id: number
-  jsonrpc: typeof JSONRPC
-  method: typeof PayInChannelRequest.method
-  params: [SerializedPaymentChannel, number, boolean]
-
-  constructor () {
-    this.id = -1
-    this.jsonrpc = ''
-    this.method = ''
-    this.params = [
-      {
-        sender: '',
-        receiver: '',
-        channelId: '',
-        value: '',
-        spent: '',
-        state: -1,
-        contractAddress: undefined
-      }, -1, false]
-  }
-
-  static match (payload: RequestPayload): payload is PayInChannelRequest {
-    return payload.method === PayInChannelRequest.method
-  }
-}
-
-export interface PayInChannelResponse extends ResponsePayload {
-  result: [SerializedPaymentChannel, Payment]
-}
-
 export class BuyRequest implements RequestPayload {
   static method = 'yns_buyRequest'
 

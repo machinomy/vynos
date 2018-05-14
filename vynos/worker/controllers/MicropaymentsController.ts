@@ -82,12 +82,6 @@ export default class MicropaymentsController {
     })
   }
 
-  payInChannel (channel: PaymentChannel, amount: number, override?: boolean): Promise<[PaymentChannel, Payment]> {
-    return new Promise((resolve, reject) => {
-      resolve()
-    })
-  }
-
   buy (receiver: string, amount: number, gateway: string, meta: string, purchaseMeta: PurchaseMeta, channelValue?: number): Promise<VynosBuyResponse> {
     return this.checkGateway(gateway).then(() => {
       return new Promise<VynosBuyResponse>((resolve, reject) => {

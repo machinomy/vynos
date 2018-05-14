@@ -10,8 +10,6 @@ import {
   ListChannelsResponse,
   OpenChannelRequest,
   OpenChannelResponse,
-  PayInChannelRequest,
-  PayInChannelResponse,
   SetApproveByIdRequest,
   SetApproveByIdResponse,
   SetRejectByIdRequest,
@@ -48,22 +46,6 @@ export default class MicropaymentsHandler {
         id: message.id,
         jsonrpc: message.jsonrpc,
         result: [channelId]
-      }
-      end(null, response)
-    }).catch(end)
-  }
-
-  payInChannel (message: PayInChannelRequest, next: Function, end: EndFunction) {
-    let channel = PaymentChannelSerde.instance.deserialize(message.params[0])
-    let amount = message.params[1]
-    let override = message.params[2]
-    this.controller.payInChannel(channel, amount, override).then(tuple => {
-      let channel: PaymentChannel = tuple[0]
-      let payment: Payment = tuple[1]
-      let response: PayInChannelResponse = {
-        id: message.id,
-        jsonrpc: message.jsonrpc,
-        result: [PaymentChannelSerde.instance.serialize(channel), payment]
       }
       end(null, response)
     }).catch(end)
@@ -126,8 +108,6 @@ export default class MicropaymentsHandler {
       this.openChannel(message, next, end)
     } else if (CloseChannelRequest.match(message)) {
       this.closeChannel(message, next, end)
-    } else if (PayInChannelRequest.match(message)) {
-      this.payInChannel(message, next, end)
     } else if (ListChannelsRequest.match(message)) {
       this.listChannels(message, next, end)
     } else if (BuyRequest.match(message)) {
