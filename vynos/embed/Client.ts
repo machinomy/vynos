@@ -9,7 +9,7 @@ import {
   ListChannelsRequest,
   ListChannelsResponse,
   OpenChannelRequest,
-  OpenChannelResponse,
+  OpenChannelResponse
 } from '../lib/rpc/yns'
 import { JSONRPC, randomId } from '../lib/Payload'
 import Vynos, { WalletBuyArguments } from '../lib/Vynos'
@@ -28,10 +28,6 @@ import bus from '../lib/bus'
 import { ChannelMeta } from '../lib/storage/ChannelMetaStorage'
 import { PaymentChannel, PaymentChannelSerde } from 'machinomy/dist/lib/payment_channel'
 import { DisplayRequestBroadcast, DisplayRequestBroadcastType } from '../lib/rpc/DisplayRequestBroadcast'
-
-function isPaymentChannel (pc: PaymentChannel): pc is PaymentChannel {
-  return !!(PaymentChannelSerde.instance.serialize(pc))
-}
 
 export default class Client implements Vynos {
   buyProcessCallbacks: Map<string, (args: WalletBuyArguments, tokenOrChannel?: string | ChannelMeta) => void>
