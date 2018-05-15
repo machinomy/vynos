@@ -28,7 +28,7 @@ export default class ChannelMetaStorage {
   save (meta: ChannelMeta): Promise<void> {
     return new Promise((resolve, reject) => {
       this.datastore.then((datastore) => {
-        datastore.insert<ChannelMeta>(meta, err => {
+        datastore.insert<ChannelMeta>(meta, (err: Error) => {
           if (err) {
             reject(err)
           } else {
@@ -42,7 +42,7 @@ export default class ChannelMetaStorage {
   setClosingTime (channelId: string, time: number): Promise<void> {
     return new Promise((resolve, reject) => {
       this.datastore.then((datastore) => {
-        datastore.update({ channelId: channelId }, { $set: { closingTime: time } }, {}, err => {
+        datastore.update({ channelId: channelId }, { $set: { closingTime: time } }, {}, (err: Error) => {
           if (err) {
             reject(err)
           } else {
@@ -65,7 +65,7 @@ export default class ChannelMetaStorage {
   firstById (channelId: string): Promise<ChannelMeta | null> {
     return new Promise((resolve, reject) => {
       this.datastore.then((datastore) => {
-        datastore.findOne<ChannelMeta>({ channelId }, (err, meta) => {
+        datastore.findOne<ChannelMeta>({ channelId }, (err: Error, meta: any) => {
           if (err) {
             reject(err)
           } else {
@@ -83,7 +83,7 @@ export default class ChannelMetaStorage {
     let query = { $or: orQuery }
     return new Promise((resolve, reject) => {
       this.datastore.then((datastore) => {
-        datastore.find<ChannelMeta>(query).sort({ closingTime: -1, openingTime: -1 }).exec((err, metas) => {
+        datastore.find<ChannelMeta>(query).sort({ closingTime: -1, openingTime: -1 }).exec((err: Error, metas: any) => {
           if (err) {
             reject(err)
           } else {
@@ -97,8 +97,8 @@ export default class ChannelMetaStorage {
   clear () {
     this.datastore.then(datastore => {
       // https://github.com/louischatriot/nedb/issues/84
-      datastore.remove({ }, { multi: true }, function (err, numRemoved) {
-        datastore.loadDatabase(function (err) {
+      datastore.remove({ }, { multi: true }, function (err: Error, numRemoved: number) {
+        datastore.loadDatabase(function (err: Error) {
           if (err) {
             console.error('Error while deleting channels local database')
             console.error(err)

@@ -27,7 +27,7 @@ export default class SettingStorage {
     return new Promise((resolve, reject) => {
       this.get(name).then(res => {
         if (res) {
-          this.datastore.update({ name }, { $set: { value } }, {}, err => {
+          this.datastore.update({ name }, { $set: { value } }, {}, (err: Error) => {
             if (err) {
               reject(err)
             } else {
@@ -35,7 +35,7 @@ export default class SettingStorage {
             }
           })
         } else {
-          this.datastore.insert<Setting>({ name, value }, err => {
+          this.datastore.insert<Setting>({ name, value }, (err: Error) => {
             if (err) {
               reject(err)
             } else {
@@ -50,7 +50,7 @@ export default class SettingStorage {
   get (name: string): Promise<Setting | null> {
     return new Promise((resolve, reject) => {
       this.datastore.loadDatabase(() => {
-        this.datastore.findOne<Setting>({ name }, (err, value) => {
+        this.datastore.findOne<Setting>({ name }, (err: Error, value: any) => {
           if (err) {
             reject(err)
           } else {
@@ -64,7 +64,7 @@ export default class SettingStorage {
   getNetwork (): Promise<NetworkSetting> {
     return new Promise((resolve, reject) => {
       this.datastore.loadDatabase(() => {
-        this.datastore.findOne<Setting>({ name: 'network' }, (err, res) => {
+        this.datastore.findOne<Setting>({ name: 'network' }, (err: Error, res: any) => {
           if (err) {
             reject(err)
           } else {

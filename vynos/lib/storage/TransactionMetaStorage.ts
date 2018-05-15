@@ -18,7 +18,7 @@ export default class TransactionMetaStorage {
   add (transaction: TransactionMeta): Promise<TransactionMeta> {
     return new Promise((resolve, reject) => {
       this.datastore.then((datastore) => {
-        datastore.insert(transaction, err => {
+        datastore.insert(transaction, (err: Error) => {
           if (err) {
             reject(err)
           } else {
@@ -33,7 +33,7 @@ export default class TransactionMetaStorage {
     return new Promise((resolve, reject) => {
       this.datastore.then((datastore) => {
         datastore.loadDatabase(() => {
-          datastore.findOne<TransactionMeta>({ id: id }, (err, transaction) => {
+          datastore.findOne<TransactionMeta>({ id: id }, (err: Error, transaction: any) => {
             if (err) {
               reject(err)
             } else {

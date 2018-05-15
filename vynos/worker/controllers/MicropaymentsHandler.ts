@@ -15,7 +15,7 @@ import {
   SetRejectByIdRequest,
   SetRejectByIdResponse
 } from '../../lib/rpc/yns'
-import { PaymentChannelSerde } from 'machinomy/dist/lib/payment_channel'
+import { PaymentChannelSerde } from 'machinomy/dist/lib/PaymentChannel'
 
 export default class MicropaymentsHandler {
   controller: MicropaymentsController

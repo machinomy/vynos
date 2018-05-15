@@ -142,7 +142,8 @@ function bundle (entry, extension) {
           test: /\.(eot|woff|woff2|svg|ttf|png)([\?]?.*)$/,
           loader: 'file-loader'
         }
-      ]
+      ],
+      noParse: [/EngineMongo\.js/, /EnginePostgres\.js/, /EngineSqlite\.js/]
     },
     node: {
       fs: 'empty',

@@ -26,7 +26,7 @@ import {
 import { default as PromisedWalletResponse } from '../lib/promised'
 import bus from '../lib/bus'
 import { ChannelMeta } from '../lib/storage/ChannelMetaStorage'
-import { PaymentChannel, PaymentChannelSerde } from 'machinomy/dist/lib/payment_channel'
+import { PaymentChannel, PaymentChannelSerde } from 'machinomy/dist/lib/PaymentChannel'
 import { DisplayRequestBroadcast, DisplayRequestBroadcastType } from '../lib/rpc/DisplayRequestBroadcast'
 
 export default class Client implements Vynos {
