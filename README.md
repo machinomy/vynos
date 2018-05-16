@@ -84,6 +84,7 @@ It triggers the building process, so you should wait a little bit staring on the
 
 You could change the port via `.env` file:
 ```
+FRAME_PORT=9090
 HARNESS_PORT=9000
 BACKGROUND_PORT=9001
 ```
