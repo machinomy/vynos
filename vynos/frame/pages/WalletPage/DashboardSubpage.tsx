@@ -58,9 +58,11 @@ export class DashboardSubpage extends React.Component<DashboardSubpageProps, Das
     this.setState({ sendShown: false })
   }
 
-  render () {
+  componentDidMount () {
     settingStorage.getNetwork().then(networkSettings => this.setState({ network: networkSettings.name }))
+  }
 
+  render () {
     if (this.state.sendShown) {
       return <Send hideSend={this.hideSend.bind(this)}/>
     }
