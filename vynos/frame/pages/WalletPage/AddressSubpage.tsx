@@ -6,15 +6,12 @@ const style = require('../../styles/ynos.css')
 
 export interface AddressSubpageProps {
   address: string
+  network: string
   showSend (): void
 }
 
 export interface AddressSubpageState {
   copyToClipboardText: string
-}
-
-function etherscanLink (hexAddress: string): string {
-  return `https://ropsten.etherscan.io/address/${hexAddress}` // FIXME Networks
 }
 
 const LABEL_COPY_TO_CLIPBOARD = 'Copy to Clipboard'
@@ -25,6 +22,15 @@ export default class AddressSubpage extends React.Component<AddressSubpageProps,
     super(props)
     this.state = {
       copyToClipboardText: LABEL_COPY_TO_CLIPBOARD
+    }
+  }
+
+  etherscanLink (): string {
+    switch (this.props.network) {
+      case 'Ropsten': return `https://ropsten.etherscan.io/address/${this.props.address}`
+      case 'Rinkeby': return `https://rinkeby.etherscan.io/address/${this.props.address}`
+      case 'Main': return `https://etherscan.io/address/${this.props.address}`
+      default: return 'about:blank'
     }
   }
 
@@ -45,6 +51,14 @@ export default class AddressSubpage extends React.Component<AddressSubpageProps,
     return <img className="react-qr" src={dataURI} />
   }
 
+  renderLink () {
+    if (this.props.network) {
+      return <a href={this.etherscanLink()} target="_blank">View on Etherscan</a>
+    } else {
+      return <span>&nbsp;</span>
+    }
+  }
+
   render () {
     return (
       <div className={style.walletAddressSubpage}>
@@ -61,7 +75,7 @@ export default class AddressSubpage extends React.Component<AddressSubpageProps,
           {this.props.address}
         </p>
         <p className={style.walletAddressSubpageParagraph}>
-          <a href={etherscanLink(this.props.address)} target="_blank">View on Etherscan</a>
+          {this.renderLink()}
         </p>
         <Divider hidden={true} />
         <p className={style.walletAddressSubpageParagraph}>

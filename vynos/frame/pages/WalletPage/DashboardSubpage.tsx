@@ -7,8 +7,10 @@ import AddressSubpage from './AddressSubpage'
 import TransactionsSubpage from './TransactionsSubpage'
 import WalletAccount from '../../components/WalletPage/WalletAccount'
 import Send from './Send'
+import SettingStorage from '../../../lib/storage/SettingStorage'
 
 const style = require('../../styles/ynos.css')
+const settingStorage = new SettingStorage()
 
 export interface DashboardSubpageProps {
   web3?: Web3
@@ -18,6 +20,7 @@ export interface DashboardSubpageState {
   isDetailsDisplayed: boolean
   address: string
   sendShown: boolean
+  network: string
 }
 
 export class DashboardSubpage extends React.Component<DashboardSubpageProps, DashboardSubpageState> {
@@ -26,13 +29,14 @@ export class DashboardSubpage extends React.Component<DashboardSubpageProps, Das
     this.state = {
       isDetailsDisplayed: false,
       address: '',
-      sendShown: false
+      sendShown: false,
+      network: 'Ropsten'
     }
   }
 
   renderChildren () {
     if (this.state.isDetailsDisplayed && this.state.address) {
-      return <AddressSubpage address={this.state.address} showSend={this.showSend.bind(this)}/>
+      return <AddressSubpage address={this.state.address} showSend={this.showSend.bind(this)} network={this.state.network}/>
     } else {
       return <TransactionsSubpage />
     }
@@ -55,6 +59,8 @@ export class DashboardSubpage extends React.Component<DashboardSubpageProps, Das
   }
 
   render () {
+    settingStorage.getNetwork().then(networkSettings => this.setState({ network: networkSettings.name }))
+
     if (this.state.sendShown) {
       return <Send hideSend={this.hideSend.bind(this)}/>
     }
