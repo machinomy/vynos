@@ -1,6 +1,5 @@
 import Datastore = require('nedb')
 import Storage from '../Storage'
-import { CHANGE_NETWORK } from '../constants'
 
 export interface ChannelMeta {
   channelId: string
@@ -20,7 +19,7 @@ export default class ChannelMetaStorage {
   private d: Storage | undefined
 
   constructor () {
-    this.d = new Storage(CHANGE_NETWORK)
+    this.d = new Storage('channels')
     this.datastore = this.d.ready()
     this.datastore.then()
   }
