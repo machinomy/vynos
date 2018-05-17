@@ -71,26 +71,26 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
     let state = this.state
     if (this.isValid() && state.password) {
       if (state.fileIsHex && state.fileValue) {
-        this.props.workerProxy.restoreWallet(state.password, 'hex', state.fileValue).then((ok: string) => {
+        this.props.workerProxy.restoreWallet(state.password, 'hex', state.fileValue).then(async (ok: string) => {
           if (ok === 'true') {
-            localStorage.clear()
+            await this.clearIndexedDB()
             this.goBack()
           } else {
             this.setState({ incorrectKeyFile: true })
           }
         })
       } else if (state.fileIsJSON && state.fileValue) {
-        this.props.workerProxy.restoreWallet(state.password, 'json', state.fileValue).then((ok: string) => {
+        this.props.workerProxy.restoreWallet(state.password, 'json', state.fileValue).then(async (ok: string) => {
           if (ok === 'true') {
-            localStorage.clear()
+            await this.clearIndexedDB()
             this.goBack()
           } else {
             this.setState({ incorrectKeyFile: true })
           }
         })
       } else if (this.isValid() && state.seed) {
-        this.props.workerProxy.restoreWallet(state.password, 'seed', state.seed).then(() => {
-          localStorage.clear()
+        this.props.workerProxy.restoreWallet(state.password, 'seed', state.seed).then(async () => {
+          await this.clearIndexedDB()
           this.goBack()
         })
       }
@@ -286,6 +286,12 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
     } else {
       this.setState({ fileError: '', fileIsHex: false, fileIsJSON: false, incorrectKeyFile: false })
     }
+  }
+
+  async clearIndexedDB () {
+    await this.props.workerProxy.clearChannelMetastorage()
+    await this.props.workerProxy.clearTransactionMetastorage()
+    localStorage.setItem('mc_wallet_avatar', '')
   }
 
   render () {
