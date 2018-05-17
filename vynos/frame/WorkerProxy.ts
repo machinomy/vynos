@@ -213,39 +213,39 @@ export default class WorkerProxy extends EventEmitter {
     })
   }
 
-  clearTransactionMetastorage (): void {
+  clearTransactionMetastorage (): Promise<void> {
     let request: ClearTransactionMetastorageRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
       method: ClearTransactionMetastorageRequest.method,
       params: []
     }
-    this.provider.ask(request).then(() => {
-      // Do nothing
+    return this.provider.ask(request).then(() => {
+      return
     })
   }
 
-  clearChannelMetastorage (): void {
+  clearChannelMetastorage (): Promise<void> {
     let request: ClearChannelMetastorageRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
       method: ClearChannelMetastorageRequest.method,
       params: []
     }
-    this.provider.ask(request).then(() => {
-      // Do nothing
+    return this.provider.ask(request).then(() => {
+      return
     })
   }
 
-  clearReduxPersistentStorage (): void {
+  clearReduxPersistentStorage (): Promise<void> {
     let request: ClearReduxPersistentStorageRequest = {
       id: randomId(),
       jsonrpc: JSONRPC,
       method: ClearReduxPersistentStorageRequest.method,
       params: []
     }
-    this.provider.ask(request).then(() => {
-      // Do nothing
+    return this.provider.ask(request).then(() => {
+      return
     })
   }
 
