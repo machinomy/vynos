@@ -227,11 +227,11 @@ export default class BackgroundController {
 
   clearAccountInfo () {
     ['Ropsten', 'Rinkeby', 'Main', ''].map(async (network: string) => {
-      await localForage.removeItem('transactions_' + network)
-      await localForage.removeItem('channels_' + network)
+      await localForage.setItem('transactions_' + network, '')
+      await localForage.setItem('channels_' + network, '')
       this.store.dispatch(actions.setLastUpdateDb(Date.now()))
     })
-    localForage.removeItem('vynos')
+    localForage.setItem('vynos', '')
   }
 
   changeNetwork (): Promise<void> {
