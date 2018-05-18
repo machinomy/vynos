@@ -567,4 +567,3 @@ export class ClearAccountInfoRequest implements RequestPayload {
 export interface ClearAccountInfoResponse extends ResponsePayload {
   result: null
 }
-
