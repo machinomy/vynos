@@ -26,7 +26,9 @@ import {
   SetPreferencesResponse,
   ClearTransactionMetastorageRequest,
   ClearReduxPersistentStorageRequest,
-  ClearChannelMetastorageRequest
+  ClearChannelMetastorageRequest,
+  ClearMachinomyStorageRequest,
+  ClearAccountInfoRequest
 } from '../../lib/rpc/yns'
 import { Writable } from 'readable-stream'
 import { SharedStateBroadcast, SharedStateBroadcastType } from '../../lib/rpc/SharedStateBroadcast'
@@ -210,6 +212,16 @@ export default class BackgroundHandler {
     end(null)
   }
 
+  clearMachinomyStorage (message: ClearMachinomyStorageRequest, next: Function, end: EndFunction) {
+    this.controller.clearMachinomyStorage()
+    end(null)
+  }
+
+  clearAccountInfo (message: ClearAccountInfoRequest, next: Function, end: EndFunction) {
+    this.controller.clearAccountInfo()
+    end(null)
+  }
+
   handler (message: RequestPayload, next: Function, end: EndFunction) {
     if (GetSharedStateRequest.match(message)) {
       this.getSharedState(message, next, end)
@@ -241,6 +253,10 @@ export default class BackgroundHandler {
       this.clearTransactionMetastorage(message, next, end)
     } else if (ClearReduxPersistentStorageRequest.match(message)) {
       this.clearReduxPersistentStorage(message, next, end)
+    } else if (ClearMachinomyStorageRequest.match(message)) {
+      this.clearMachinomyStorage(message, next, end)
+    } else if (ClearAccountInfoRequest.match(message)) {
+      this.clearAccountInfo(message, next, end)
     } else {
       next()
     }

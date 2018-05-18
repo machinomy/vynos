@@ -101,9 +101,8 @@ export default class ChannelMetaStorage {
           if (err) {
             console.error('Error while deleting channels local database')
             console.error(err)
-          } else {
-            cb()
           }
+          cb()
         })
       })
     })

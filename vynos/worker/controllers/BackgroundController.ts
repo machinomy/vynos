@@ -221,6 +221,19 @@ export default class BackgroundController {
     this.store.dispatch(this.store.dispatch(actions.setPersistentState({} as PersistentState)))
   }
 
+  clearMachinomyStorage () {
+    localForage.removeItem('vynos')
+  }
+
+  clearAccountInfo () {
+    ['Ropsten', 'Rinkeby', 'Main', ''].map(async (network: string) => {
+      await localForage.removeItem('transactions_' + network)
+      await localForage.removeItem('channels_' + network)
+      this.store.dispatch(actions.setLastUpdateDb(Date.now()))
+    })
+    localForage.removeItem('vynos')
+  }
+
   changeNetwork (): Promise<void> {
     return new Promise(resolve => {
       bus.emit(CHANGE_NETWORK)
