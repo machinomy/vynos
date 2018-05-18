@@ -111,9 +111,8 @@ export default class TransactionMetaStorage {
           if (err) {
             console.error('Error while deleting transactions local database')
             console.error(err)
-          } else {
-            cb()
           }
+          cb()
         })
       })
     })

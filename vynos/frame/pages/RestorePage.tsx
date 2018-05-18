@@ -289,8 +289,7 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
   }
 
   async clearIndexedDB () {
-    this.props.workerProxy.clearChannelMetastorage()
-    this.props.workerProxy.clearTransactionMetastorage()
+    this.props.workerProxy.clearAccountInfo()
     localStorage.setItem('mc_wallet_avatar', '')
   }
 

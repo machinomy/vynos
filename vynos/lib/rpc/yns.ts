@@ -519,3 +519,52 @@ export class ClearReduxPersistentStorageRequest implements RequestPayload {
 export interface ClearReduxPersistentStorageResponse extends ResponsePayload {
   result: null
 }
+
+export class ClearMachinomyStorageRequest implements RequestPayload {
+  static method = 'yns_clearMachinomyStorageRequest'
+
+  id: number
+  jsonrpc: typeof JSONRPC
+  method: typeof ClearMachinomyStorageRequest.method
+  params: never[]
+
+  constructor () {
+    this.id = -1
+    this.jsonrpc = ''
+    this.method = ''
+    this.params = []
+  }
+
+  static match (payload: RequestPayload): payload is ClearMachinomyStorageRequest {
+    return payload.method === ClearMachinomyStorageRequest.method
+  }
+}
+
+export interface ClearMachinomyStorageResponse extends ResponsePayload {
+  result: null
+}
+
+export class ClearAccountInfoRequest implements RequestPayload {
+  static method = 'yns_clearAccountInfoRequest'
+
+  id: number
+  jsonrpc: typeof JSONRPC
+  method: typeof ClearAccountInfoRequest.method
+  params: never[]
+
+  constructor () {
+    this.id = -1
+    this.jsonrpc = ''
+    this.method = ''
+    this.params = []
+  }
+
+  static match (payload: RequestPayload): payload is ClearAccountInfoRequest {
+    return payload.method === ClearAccountInfoRequest.method
+  }
+}
+
+export interface ClearAccountInfoResponse extends ResponsePayload {
+  result: null
+}
+

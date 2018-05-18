@@ -27,7 +27,9 @@ import {
   ClearChannelMetastorageRequest,
   CloseChannelRequest,
   ListChannelsRequest,
-  ListChannelsResponse
+  ListChannelsResponse,
+  ClearMachinomyStorageRequest,
+  ClearAccountInfoRequest
 } from '../lib/rpc/yns'
 import { Action } from 'redux'
 import Web3 = require('web3')
@@ -242,6 +244,30 @@ export default class WorkerProxy extends EventEmitter {
       id: randomId(),
       jsonrpc: JSONRPC,
       method: ClearReduxPersistentStorageRequest.method,
+      params: []
+    }
+    return this.provider.ask(request).then(() => {
+      return
+    })
+  }
+
+  clearMachinomyStorage (): Promise<void> {
+    let request: ClearMachinomyStorageRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ClearMachinomyStorageRequest.method,
+      params: []
+    }
+    return this.provider.ask(request).then(() => {
+      return
+    })
+  }
+
+  clearAccountInfo (): Promise<void> {
+    let request: ClearAccountInfoRequest = {
+      id: randomId(),
+      jsonrpc: JSONRPC,
+      method: ClearAccountInfoRequest.method,
       params: []
     }
     return this.provider.ask(request).then(() => {
