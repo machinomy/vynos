@@ -206,11 +206,15 @@ export default class BackgroundController {
   }
 
   clearChannelMetastorage () {
-    this.channels!.clear()
+    this.channels!.clear(() => {
+      this.store.dispatch(actions.setLastUpdateDb(Date.now()))
+    })
   }
 
   clearTransactionMetastorage () {
-    this.transactionService!.storage.clear()
+    this.transactionService!.storage.clear(() => {
+      this.store.dispatch(actions.setLastUpdateDb(Date.now()))
+    })
   }
 
   clearReduxPersistentStorage () {

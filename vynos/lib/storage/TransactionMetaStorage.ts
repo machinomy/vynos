@@ -103,7 +103,7 @@ export default class TransactionMetaStorage {
     })
   }
 
-  clear () {
+  clear (cb: () => void) {
     this.datastore.then(datastore => {
       // https://github.com/louischatriot/nedb/issues/84
       datastore.remove({ }, { multi: true }, function (err, numRemoved) {
@@ -111,6 +111,8 @@ export default class TransactionMetaStorage {
           if (err) {
             console.error('Error while deleting transactions local database')
             console.error(err)
+          } else {
+            cb()
           }
         })
       })

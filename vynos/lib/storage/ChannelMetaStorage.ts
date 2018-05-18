@@ -93,7 +93,7 @@ export default class ChannelMetaStorage {
     })
   }
 
-  clear () {
+  clear (cb: () => void) {
     this.datastore.then(datastore => {
       // https://github.com/louischatriot/nedb/issues/84
       datastore.remove({ }, { multi: true }, function (err: Error, numRemoved: number) {
@@ -101,6 +101,8 @@ export default class ChannelMetaStorage {
           if (err) {
             console.error('Error while deleting channels local database')
             console.error(err)
+          } else {
+            cb()
           }
         })
       })
