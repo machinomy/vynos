@@ -4,6 +4,9 @@ import { WalletBuyArguments } from '../vynos/lib/Vynos'
 import { BuyProcessEvent } from '../vynos/lib/rpc/buyProcessEventBroadcast'
 import { ChannelMeta } from '../vynos/lib/storage/ChannelMetaStorage'
 import IWalletWindow from '../vynos/lib/IWalletWindow'
+import MockingIWalletWindow from './lib/MockingIWalletWindow'
+import MockingWallet from './embed/MockingWallet'
+import MockingVynos from './lib/MockingVynos'
 
 let _window = window as IWalletWindow
 
@@ -61,6 +64,26 @@ let signMessage = function (message: string) {
           }
         })
       }
+    })
+  })
+}
+
+let doUnsafeRequestsFromClient = () => {
+  let _window = window as MockingIWalletWindow
+  let vynos = _window.mockingVynos
+  vynos.ready().then((instance: MockingVynos) => {
+    // Intentionally do some evil
+    instance.getPrivateKey().then(response => {
+    })
+    instance.clearAccountInfo().then(() => {
+    })
+    instance.clearChannelMetastorage().then(() => {
+    })
+    instance.clearMachinomyStorage().then(() => {
+    })
+    instance.clearReduxPersistentStorage().then(() => {
+    })
+    instance.clearTransactionMetastorage().then(() => {
     })
   })
 }
@@ -223,6 +246,14 @@ window.addEventListener('load', function () {
       if (messageElement) {
         signMessage(messageElement.value)
       }
+    }
+  }
+
+  let testUnsafeRequestsForm = document.getElementById('test_unsafe_requests_form')
+  if (testUnsafeRequestsForm) {
+    testUnsafeRequestsForm.onsubmit = function (ev: Event) {
+      ev.preventDefault()
+      doUnsafeRequestsFromClient()
     }
   }
 })

@@ -2,11 +2,22 @@ import Wallet from './embed/Wallet'
 import * as html2canvas from 'html2canvas'
 import Setup from './embed/Setup'
 import IWalletWindow from './lib/IWalletWindow'
+import MockingIWalletWindow from '../harness/lib/MockingIWalletWindow'
+import MockingWallet from '../harness/embed/MockingWallet'
+import MockingSetup from '../harness/embed/MockingSetup'
+import * as resourceAddress from './lib/resourceAddress'
 
 let w = window as IWalletWindow
 if (!w.vynos) {
   let setup = new Setup(document.currentScript, window)
   w.vynos = new Wallet(setup.client(), setup.frame())
+}
+
+let setupMocking = new MockingSetup(resourceAddress.embed(), window)
+let walletMocking = new MockingWallet(setupMocking.client(), setupMocking.frame())
+let mockingW = window as MockingIWalletWindow
+if (mockingW && !mockingW.mockingVynos) {
+  mockingW.mockingVynos = walletMocking
 }
 
 if (!document.querySelectorAll('meta[property=\'og:image\']').length && document.body) {
