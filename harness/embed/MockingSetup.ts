@@ -22,8 +22,8 @@ export default class MockingSetup extends Setup {
   private readonly mockingsBaseAddress: string
   private readonly mockingWindow: Window
   private readonly mockingBrowserSupport: BrowserSupport
-  private mocking_frame?: Frame
-  private mocking_client?: MockingClient
+  private mockingFrame?: Frame
+  private mockingClient?: MockingClient
 
   constructor (scriptElement: HTMLScriptElement | any, window: Window) {
     super(scriptElement, window)
@@ -34,24 +34,24 @@ export default class MockingSetup extends Setup {
 
   async frame (): Promise<Frame> {
     await this.canProceedOwn()
-    if (!this.mocking_frame) {
-      this.mocking_frame = new Frame(this.mockingsBaseAddress, this.mockingWindow.document)
-      await this.mocking_frame.attach()
+    if (!this.mockingFrame) {
+      this.mockingFrame = new Frame(this.mockingsBaseAddress, this.mockingWindow.document)
+      await this.mockingFrame.attach()
     }
 
-    return this.mocking_frame
+    return this.mockingFrame
   }
 
   async client (): Promise<MockingClient> {
     await this.canProceedOwn()
-    if (!this.mocking_client) {
+    if (!this.mockingClient) {
       let frame = await this.frame()
       let frameElement = await frame.element()
       let stream = new FrameStream('mocking-vynos').toFrame(frameElement)
-      this.mocking_client = new MockingClient(stream)
+      this.mockingClient = new MockingClient(stream)
     }
 
-    return this.mocking_client
+    return this.mockingClient
   }
 
   private async canProceedOwn (): Promise<void> {
