@@ -1,4 +1,21 @@
 import { Duplex, Writable, Readable } from 'readable-stream'
+import {
+  ClearAccountInfoRequest,
+  ClearChannelMetastorageRequest,
+  ClearMachinomyStorageRequest,
+  ClearReduxPersistentStorageRequest,
+  ClearTransactionMetastorageRequest,
+  GetPrivateKeyHexRequest
+} from './rpc/yns'
+
+const restrictedMethodsForClient = [
+  GetPrivateKeyHexRequest.method,
+  ClearAccountInfoRequest.method,
+  ClearMachinomyStorageRequest.method,
+  ClearReduxPersistentStorageRequest.method,
+  ClearChannelMetastorageRequest.method,
+  ClearTransactionMetastorageRequest.method
+]
 
 export type Target = Window | ServiceWorker | null
 
@@ -81,7 +98,11 @@ export default class PostStream extends Duplex implements Writable, Readable {
       data: data
     }
     if (isWindow(this.targetWindow)) {
-      this.targetWindow.postMessage(message, this.origin)
+      if (restrictedMethodsForClient.includes(message.data.method)) {
+        console.error('Client requested restricted method: ' + message.data.method)
+      } else {
+        this.targetWindow.postMessage(message, this.origin)
+      }
     } else if (isServiceWorker(this.targetWindow)) {
       this.targetWindow.postMessage(message)
     } else {
