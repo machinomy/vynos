@@ -1,7 +1,7 @@
 import { default as MockingWallet } from '../embed/MockingWallet'
 
 export default interface MockingIWalletWindow extends Window {
-  vynos: MockingWallet,
-  wallet: MockingWallet,
+  mockingVynos: MockingWallet,
+  mockingWallet: MockingWallet,
   showVynosNotification: any
 }
