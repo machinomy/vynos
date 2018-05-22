@@ -11,7 +11,6 @@ import {
 import { Duplex } from 'readable-stream'
 import Client from '../../vynos/embed/Client'
 
-
 export default class MockingClient extends Client {
   constructor (stream: Duplex) {
     super(stream)

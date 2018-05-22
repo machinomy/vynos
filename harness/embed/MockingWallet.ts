@@ -9,7 +9,7 @@ export default class MockingWallet extends Wallet {
 
   constructor (client: Promise<MockingClient>, frame: Promise<Frame>) {
     super(client, frame)
-    this.clientOwn= client
+    this.clientOwn = client
     this.frameOwn = frame
 
     this.clientOwn.then(client => {
