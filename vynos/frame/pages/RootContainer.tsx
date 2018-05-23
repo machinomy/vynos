@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { FrameState } from '../redux/FrameState'
 import InitPage from './InitPage'
 import UnlockPage from './UnlockPage'
-import WalletPage from './WalletPage'
+import WalletPage from '../pages/WalletPage'
 import ApprovePage from '../components/WalletPage/ApprovePage'
 import VerifiablePage from '../components/Account/Verifiable/index'
 
