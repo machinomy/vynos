@@ -5,7 +5,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import Channels from '../components/Account/Channels'
 import Preferences from '../components/Account/Preferences'
 import Network from '../components/Account/Network'
-import Wallet from '../components/WalletPage'
+import Wallet from '../pages/WalletPage'
 import ApprovePage from '../components/WalletPage/ApprovePage'
 
 export interface RoutesProps {
