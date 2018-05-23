@@ -5,7 +5,7 @@ import { connect, Dispatch } from 'react-redux'
 import WorkerProxy from '../../../WorkerProxy'
 import { Preferences as PreferencesType } from '../../../../worker/WorkerState'
 import * as actions from '../../../redux/actions'
-import Currency from '../../../lib/currency'
+import Currency from '../../../lib/Currency'
 const style = require('../../../styles/ynos.css')
 
 export interface PreferencesStateProps {

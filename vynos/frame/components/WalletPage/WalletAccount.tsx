@@ -5,7 +5,7 @@ import { FrameState } from '../../redux/FrameState'
 import * as BigNumber from 'bignumber.js'
 import { Image } from 'semantic-ui-react'
 import BlockieComponent from '../../components/BlockieComponent'
-import Currency from '../../lib/currency'
+import Currency from '../../lib/Currency'
 
 const style = require('../../styles/ynos.css')
 
