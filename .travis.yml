@@ -6,3 +6,5 @@ script:
 notifications:
   slack:
     secure: BdpHim39GqF45/cP6LHOjb05mThH7E7mKCQ0c6CdLp710mwT5W+ZUp4PMiw/pcKXhxakMnfcwG6FMvUxTtjamUJEsHB9wwo5sA9sq8PcNjtI6RQ2IpceM2sv+Pkd/p9IFZYkxSxOmpDuwQGdXY4ovB93iASepWuEKLouQ+dwl+XLrtnZ+B9gUf9kLWQ3zBzyrhdBvNROKdGqh3ub4KVCktS1HqhP3a1HjweRDsWCW//9OmmPx6chS7nizCptx5ndkfja5dMcP+MOS09KukOBDgBbxwrLBm3Ete6hlr9GP1iriIBCkJ/cONrpRPidt4+onRIPqsnqJVYbTtVlqVOvztqYeaGdmwVdKmn3g4WInPliT1Ao+f+hUSDKsj847e8cqHF/3Ym7tCH3OX11roDwU26HsB79807XLX3GnYVxD2EDjL3+JTMcQc5ilYV3EngxwCeWE5GYmE2OJyOm4aZcMJ9W93/9FVYzEoYKveNRbpB/fv9t/aic3yAxpBx5higN0kukXK354fIohldEBSxFXVPXew+EJc/EfGasnqLB0N1dM0wKrCMZakffAwe2G2WTTX0odrdjNBM80xJEMIbS+jQqAeXwPX091BN6+jwTRgS+1GyV9XC0/rwICrc13i8m0joTShntpQWJ4ZEObTAGcRyK1+jmUGypTLcZ5wCFk1M=
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.6.0
