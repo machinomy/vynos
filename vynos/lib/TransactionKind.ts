@@ -3,7 +3,8 @@ enum TransactionKind {
   ETHEREUM = 'ETHEREUM',
   SIGN = 'SIGN',
   OPEN_CHANNEL = 'OPEN_CHANNEL',
-  CLOSE_CHANNEL = 'CLOSE_CHANNEL'
+  CLOSE_CHANNEL = 'CLOSE_CHANNEL',
+  INCOMING = 'INCOMING'
 }
 
 export default TransactionKind

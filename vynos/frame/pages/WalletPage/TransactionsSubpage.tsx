@@ -84,6 +84,10 @@ export class TransactionsSubpage extends React.Component<TransactionsSubpageProp
           description = parsedDescription.channelId.slice(0, 8) + '..' + parsedDescription.channelId.slice(-2)
         }
       }
+    } else if (transaction.kind === TransactionKind.INCOMING) {
+      if (transaction.from) {
+        description = 'Incoming from ' + transaction.from.slice(0, 8) + '..' + transaction.from.slice(-2)
+      }
     }
     return description
   }

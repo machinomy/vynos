@@ -78,3 +78,16 @@ export function openChannel (title: string, description: string, from: string, t
     state: TransactionState.APPROVED
   }
 }
+
+export function incoming (from: string, amount: BigNumber.BigNumber): Transaction {
+  return {
+    id: randomId().toString(),
+    from: from,
+    title: '',
+    time: Date.now(),
+    amount: amount.toNumber(),
+    fee: 0,
+    kind: TransactionKind.INCOMING,
+    state: TransactionState.APPROVED
+  }
+}

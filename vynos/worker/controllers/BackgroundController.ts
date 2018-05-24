@@ -19,11 +19,13 @@ import { persistStore, autoRehydrate } from 'redux-persist'
 import localForage = require('localforage')
 import { EventEmitter } from 'events'
 import bus from '../../lib/bus'
-import { CHANGE_NETWORK } from '../../lib/constants'
+import { CHANGE_NETWORK, NETWORK_CONTROLLER_WEB3_HAS_BEEN_INITIALIZED } from '../../lib/constants'
 import { WalletBuyArguments } from '../../lib/Vynos'
 import { BuyProcessEvent } from '../../lib/rpc/buyProcessEventBroadcast'
 import { ChannelMeta, default as ChannelMetaStorage } from '../../lib/storage/ChannelMetaStorage'
 import TransactionService from '../TransactionService'
+import NetworkController from './NetworkController'
+import * as transactions from '../../lib/transactions'
 
 const HD_PATH = `m/44'/60'/0'/0`
 
@@ -35,6 +37,7 @@ export default class BackgroundController {
   hydrated: boolean
   channels?: ChannelMetaStorage
   transactionService?: TransactionService
+  networkController: NetworkController | undefined
 
   constructor () {
     let middleware: redux.GenericStoreEnhancer = redux.compose(redux.applyMiddleware(createLogger()), autoRehydrate())
@@ -46,6 +49,31 @@ export default class BackgroundController {
       this.hydrated = true
       this.events.emit(STATE_UPDATED_EVENT)
     })
+    bus.once(NETWORK_CONTROLLER_WEB3_HAS_BEEN_INITIALIZED, () => {
+      const web3 = this.networkController!.getWeb3()!
+      const self = this
+      web3.eth.filter('latest').watch((error: Error, result: any) => {
+        web3.eth.getBlock(result, true, (err: Error, blockObj: any) => {
+          if (err) {
+            console.error(err)
+          } else {
+            for (let txIndex in blockObj.transactions) {
+              const tx = blockObj.transactions[txIndex]
+              web3.eth.getAccounts(async (err: Error, accounts: string[]) => {
+                if (err) {
+                  console.error(err)
+                } else {
+                  if (tx.to === accounts[0]) {
+                    const transactionToAppend = transactions.incoming(tx.from, tx.value)
+                    await self.transactionService!.addTransaction(transactionToAppend)
+                  }
+                }
+              })
+            }
+          }
+        })
+      })
+    })
   }
 
   setChannelMetastorage (channelMetaStorage: ChannelMetaStorage) {
@@ -54,6 +82,10 @@ export default class BackgroundController {
 
   setTransactionService (transactionService: TransactionService) {
     this.transactionService = transactionService
+  }
+
+  setNetworkController (networkController: NetworkController) {
+    this.networkController = networkController
   }
 
   awaitHydrated (fn: Function) {
