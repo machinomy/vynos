@@ -8,7 +8,11 @@ import ProviderOptions from './ProviderOptions'
 import TransactionService from '../TransactionService'
 import { default as SettingStorage, NetworkSetting } from '../../lib/storage/SettingStorage'
 import bus from '../../lib/bus'
-import { CHANGE_NETWORK, CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER } from '../../lib/constants'
+import {
+  CHANGE_NETWORK,
+  CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER,
+  NETWORK_CONTROLLER_WEB3_HAS_BEEN_INITIALIZED
+} from '../../lib/constants'
 
 const settingStorage = new SettingStorage()
 
@@ -61,6 +65,11 @@ export default class NetworkController {
     })
     this.ready.then((network: NetworkSetting) => {
       bus.emit(CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER)
+      bus.emit(NETWORK_CONTROLLER_WEB3_HAS_BEEN_INITIALIZED)
     })
+  }
+
+  getWeb3 (): Web3 | undefined {
+    return this.web3
   }
 }

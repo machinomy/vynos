@@ -17,6 +17,7 @@ asServiceWorker(self => {
 
   backgroundController.setChannelMetastorage(micropaymentsController.channels)
   backgroundController.setTransactionService(transactionService)
+  backgroundController.setNetworkController(networkController)
 
   let background = new BackgroundHandler(backgroundController)
   let server = new StreamServer('Worker', true)
