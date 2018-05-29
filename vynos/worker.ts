@@ -7,6 +7,7 @@ import NetworkController from './worker/controllers/NetworkController'
 import MicropaymentsHandler from './worker/controllers/MicropaymentsHandler'
 import MicropaymentsController from './worker/controllers/MicropaymentsController'
 import TransactionService from './worker/TransactionService'
+import IncomingTransactionService from './worker/IncomingTransactionService'
 
 asServiceWorker(self => {
   let backgroundController = new BackgroundController()
@@ -17,7 +18,6 @@ asServiceWorker(self => {
 
   backgroundController.setChannelMetastorage(micropaymentsController.channels)
   backgroundController.setTransactionService(transactionService)
-  backgroundController.setNetworkController(networkController)
 
   let background = new BackgroundHandler(backgroundController)
   let server = new StreamServer('Worker', true)
@@ -42,4 +42,8 @@ asServiceWorker(self => {
   self.onactivate = event => {
     event.waitUntil(self.clients.claim())
   }
+
+  let incomingTransactionService = new IncomingTransactionService(transactionService.storage, backgroundController.store, networkController)
+
+  incomingTransactionService.start()
 })

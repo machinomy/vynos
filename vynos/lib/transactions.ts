@@ -4,6 +4,7 @@ import TransactionKind from './TransactionKind'
 import TransactionState from './TransactionState'
 import PurchaseMeta from './PurchaseMeta'
 import { resource } from './helpers'
+import BigNumber from 'bignumber.js'
 
 export function ethereum (id: string, to: string, amount: number, fee: number): Transaction {
   return {
@@ -79,7 +80,7 @@ export function openChannel (title: string, description: string, from: string, t
   }
 }
 
-export function incoming (from: string, amount: BigNumber.BigNumber): Transaction {
+export function incoming (from: string, amount: BigNumber): Transaction {
   return {
     id: randomId().toString(),
     from: from,

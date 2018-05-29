@@ -19,13 +19,12 @@ import { persistStore, autoRehydrate } from 'redux-persist'
 import localForage = require('localforage')
 import { EventEmitter } from 'events'
 import bus from '../../lib/bus'
-import { CHANGE_NETWORK, NETWORK_CONTROLLER_WEB3_HAS_BEEN_INITIALIZED } from '../../lib/constants'
+import { CHANGE_NETWORK } from '../../lib/constants'
 import { WalletBuyArguments } from '../../lib/Vynos'
 import { BuyProcessEvent } from '../../lib/rpc/buyProcessEventBroadcast'
 import { ChannelMeta, default as ChannelMetaStorage } from '../../lib/storage/ChannelMetaStorage'
 import TransactionService from '../TransactionService'
 import NetworkController from './NetworkController'
-import * as transactions from '../../lib/transactions'
 
 const HD_PATH = `m/44'/60'/0'/0`
 
@@ -48,31 +47,6 @@ export default class BackgroundController {
     persistStore(this.store, { blacklist: ['runtime', 'shared'], storage: localForage }, (error, result) => {
       this.hydrated = true
       this.events.emit(STATE_UPDATED_EVENT)
-    })
-    bus.once(NETWORK_CONTROLLER_WEB3_HAS_BEEN_INITIALIZED, () => {
-      const web3 = this.networkController!.getWeb3()!
-      const self = this
-      web3.eth.filter('latest').watch((error: Error, result: any) => {
-        web3.eth.getBlock(result, true, (err: Error, blockObj: any) => {
-          if (err) {
-            console.error(err)
-          } else {
-            for (let txIndex in blockObj.transactions) {
-              const tx = blockObj.transactions[txIndex]
-              web3.eth.getAccounts(async (err: Error, accounts: string[]) => {
-                if (err) {
-                  console.error(err)
-                } else {
-                  if (tx.to === accounts[0]) {
-                    const transactionToAppend = transactions.incoming(tx.from, tx.value)
-                    await self.transactionService!.addTransaction(transactionToAppend)
-                  }
-                }
-              })
-            }
-          }
-        })
-      })
     })
   }
 
