@@ -18,7 +18,10 @@
     "harness": "gulp serve:harness",
     "package": "yarn webpack --config support/package.webpack.js",
     "package:watch": "yarn webpack --watch --config support/package.webpack.js",
-    "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'"
+    "lint": "tslint --format stylish --project . --exclude 'node_modules/**/*.ts'",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "files": [
     "dist/"
@@ -30,8 +33,12 @@
     "@machinomy/types-web3": "^0.0.4",
     "@types/bignumber.js": "^4.0.2",
     "@types/bip39": "^2.4.0",
+    "@types/chai": "^4.1.3",
+    "@types/enzyme": "^3.1.10",
+    "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/html2canvas": "^0.5.35",
     "@types/jasmine": "^2.5.52",
+    "@types/jest": "^22.2.3",
     "@types/qr-image": "^3.2.0",
     "@types/react": "16.1.0",
     "@types/react-copy-to-clipboard": "4.2.5",
@@ -41,16 +48,23 @@
     "@types/react-router-dom": "4.2.6",
     "@types/react-router-redux": "5.0.13",
     "@types/react-transition-group": "2.0.7",
+    "@types/sinon": "^5.0.0",
     "autoprefixer": "^7.1.1",
     "awesome-typescript-loader": "^3.1.3",
+    "chai": "^4.1.2",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.4",
     "dotenv": "^4.0.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.4",
     "file-loader": "^1.1.11",
     "gulp": "^3.9.1",
     "gulp-cli": "^1.3.0",
     "hard-source-webpack-plugin": "^0.6.4",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.0.1",
+    "jest-css-modules": "^1.1.0",
     "node-sass": "4.8.3",
     "postcss-custom-properties": "^6.1.0",
     "postcss-import": "^10.0.0",
@@ -59,8 +73,10 @@
     "postcss-scss": "^1.0.2",
     "react-hot-loader": "^4.0.0",
     "sass-loader": "6.0.7",
+    "sinon": "^5.0.10",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
+    "ts-jest": "^22.4.6",
     "ts-loader": "^4.2.0",
     "tslint": "^5.9.1",
     "tslint-config-standard": "^7.0.0",
@@ -93,6 +109,7 @@
     "ethereumjs-wallet": "^0.6.0",
     "events": "^1.1.1",
     "html2canvas": "^1.0.0-alpha.9",
+    "jest-raw-loader": "^1.0.1",
     "localforage": "^1.5.0",
     "localforage-observable": "^1.3.1",
     "machinomy": "^1.9.1",
@@ -131,5 +148,22 @@
     "upath": "^1.0.5",
     "nan": "^2.10.0",
     "sha3": "^1.2.2"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.(css|scss|less)$": "jest-css-modules",
+      "\\.svg$": "jest-raw-loader"
+    },
+    "testRegex": "/test/.*.(js|ts|tsx)?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }

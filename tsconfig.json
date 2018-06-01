@@ -14,7 +14,8 @@
       "node_modules/@types",
       "node_modules/@machinomy",
       "types"
-    ]
+    ],
+    "skipLibCheck": true
   },
   "include": [
     "vynos",
