@@ -74,7 +74,7 @@ export class Terms extends React.Component<TermsSubpageProps, TermsState> {
         <Divider hidden={true} />
         <a className={style.readTerms} onClick={this.doDisplayTermsText.bind(this)} />
         <Divider hidden={true} />
-        <Button onClick={this.props.didAcceptTerms} content="Accept" primary={true} className={style.buttonNav} />
+        <Button onClick={this.props.didAcceptTerms} content="Accept" primary={true} className={style.buttonNav + ' acceptTermsButton'} />
         <br />
         <a onClick={this.doDisplayRestore.bind(this)}>Restore wallet</a>
       </Container>
