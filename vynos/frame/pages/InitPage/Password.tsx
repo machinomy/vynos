@@ -156,17 +156,17 @@ export class Password extends React.Component<PasswordSubpageProps, PasswordStat
         <Header as="h1" className={style.encryptionHeader}>Encrypt your new wallet</Header>
         <Form onSubmit={this.handleSubmit} className={style.encryptionForm}>
           <div className="equal width fields" style={{ flexDirection: 'column', textAlign: 'left' }}>
-            <Form.Field className={style.clearIndent}>
+            <Form.Field className={style.clearIndent + ' newPasswordField'}>
               {this.renderPasswordInput()}
               {this.renderPasswordHint()}
             </Form.Field>
-            <Form.Field className={style.clearIndent}>
+            <Form.Field className={style.clearIndent + ' repeatNewPasswordField'}>
               {this.renderPasswordConfirmationInput()}
               {this.renderPasswordConfirmationHint()}
             </Form.Field>
           </div>
           <Divider hidden={true} />
-          <Button type="submit" content="Create wallet" primary={true} className={style.buttonNav} />
+          <Button type="submit" content="Create wallet" primary={true} className={style.buttonNav + ' createWalletButton'} />
           <br />
           <a onClick={this.doDisplayRestorePage.bind(this)}>Restore wallet</a>
         </Form>
