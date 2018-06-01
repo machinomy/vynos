@@ -25,7 +25,7 @@ const InitPage: React.SFC<InitPageProps> = (props) => {
   }
 }
 
-function mapStateToProps (state: FrameState, props: InitPageProps): InitPageProps {
+export function mapStateToProps (state: FrameState, props: InitPageProps): InitPageProps {
   return {
     needAcceptTerms: !state.temp.initPage.didAcceptTerms,
     needSetPassword: !state.temp.initPage.mnemonic,
