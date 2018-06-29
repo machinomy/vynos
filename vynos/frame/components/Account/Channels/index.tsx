@@ -2,7 +2,6 @@
 import * as React from 'react'
 import { List, Image } from 'semantic-ui-react'
 import Web3 = require('web3')
-import BlockieComponent from '../../BlockieComponent'
 import ChannelMetaStorage from '../../../../lib/storage/ChannelMetaStorage'
 import { connect } from 'react-redux'
 import { FrameState } from '../../../redux/FrameState'
@@ -95,19 +94,7 @@ export class ChannelsSubpage extends React.Component<ChannelsSubpageProps, Chann
   }
 
   getIcon (channel: any) {
-    if (channel.icon) {
-      return <Image avatar={true} src={channel.icon} size="mini"/>
-    } else {
-      return (
-              <BlockieComponent
-                classDiv={'ui mini avatar image'}
-                classCanvas={'ui mini avatar image'}
-                size={35}
-                scale={2}
-                seed={channel.host}
-              />
-      )
-    }
+    return <Image avatar={true} src={channel.icon} size="mini"/>
   }
 
   setActiveChannel (channelId: string) {
