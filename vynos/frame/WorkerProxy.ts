@@ -33,7 +33,7 @@ import {
 } from '../lib/rpc/yns'
 import { Action } from 'redux'
 import Web3 = require('web3')
-import { PaymentChannel, PaymentChannelSerde } from 'machinomy/dist/lib/PaymentChannel'
+import { PaymentChannel, PaymentChannelSerde } from 'machinomy/lib/PaymentChannel'
 
 export default class WorkerProxy extends EventEmitter {
   provider: StreamProvider
