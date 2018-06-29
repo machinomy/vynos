@@ -290,7 +290,6 @@ class RestorePage extends React.Component<RestorePageProps & OwnRestorePageProps
 
   clearIndexedDB () {
     this.props.workerProxy.clearAccountInfo()
-    localStorage.setItem('mc_wallet_avatar', '')
   }
 
   render () {
