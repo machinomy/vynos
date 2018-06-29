@@ -142,7 +142,6 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
     this.props.workerProxy!.clearReduxPersistentStorage()
     this.props.clearTempState!()
     this.props.workerProxy!.clearAccountInfo()
-    localStorage.setItem('mc_wallet_avatar', '')
   }
 
   handleSavePrivateKeyToFile () {
