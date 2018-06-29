@@ -15,7 +15,7 @@ const BACKGROUND_PORT = process.env.BACKGROUND_PORT || 9001
 const HARNESS_PORT = process.env.HARNESS_PORT || 9000
 
 const DIST_PATH = 'dist'
-const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg|mongodb|node\-pre\-gyp)).*$/
+const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg|mongodb|node\-pre\-gyp|db-migrate)).*$/
 
 function outputFilename() {
   return '[name].js'
@@ -41,7 +41,7 @@ function definitions() {
       'NODE_ENV': JSON.stringify(NODE_ENV),
       'EMBED_ADDRESS': JSON.stringify(embedAddress())
     },
-    'global.XMLHttpRequest': global.XMLHttpRequest
+    'global.XMLHttpRequest': global.XMLHttpRequest // FIXME 28.06.18 Still need this? Is it works in Firefox without it?
   }
 }
 
