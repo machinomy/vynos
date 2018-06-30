@@ -73,8 +73,12 @@ declare var module: NodeModule
 // Same as module.exports
 declare var exports: any
 
-declare module "redux-logger" {
-  import {Middleware} from "redux";
+declare module 'redux-logger' {
+  import { Middleware } from 'redux'
 
-  export function createLogger(): Middleware
+  export function createLogger (): Middleware
+}
+
+declare module 'jdenticon' {
+  export function update (selector: string, value: string): void
 }
