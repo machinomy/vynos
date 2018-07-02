@@ -5,7 +5,7 @@ import { FrameState } from '../../redux/FrameState'
 import * as BigNumber from 'bignumber.js'
 import Currency from '../../lib/Currency'
 import pify from '../../../lib/pify'
-import * as jdenticon from 'jdenticon'
+import { IconGenerator } from '../IconGenerator'
 
 const style = require('../../styles/ynos.css')
 
@@ -47,15 +47,6 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
       const address = accounts[0]
       this.setState({ ...this.state, address: address })
     }
-  }
-
-  renderAvatar () {
-    jdenticon.update('#walletAvatar', this.state.address!)
-    return (
-      <div className={'ui mini'}>
-        <canvas className={'ui mini'} id="walletAvatar" width="51" height="51" data-jdenticon-value={this.state.address}/>
-      </div>
-    )
   }
 
   componentDidMount () {
@@ -119,7 +110,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
   render () {
     return (
       <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
-        {this.renderAvatar()}
+        <IconGenerator id="walletAvatar" data={this.state.address || ''} size={51} />
         <div className={style.walletAccount}>
           <div className={style.walletAddress}>
             {this.state.address}
