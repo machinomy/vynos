@@ -13,6 +13,8 @@ export interface PreferencesStateProps {
   throttlingTimeFormatted: string
   currencies: Array<DropdownCurrencyData>
   currentCurrency: string
+  forgetConfirmation: boolean
+  forgetButtonText: string
 }
 
 export interface OwnPreferencesProps {
@@ -43,7 +45,9 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
       preferences : props.preferences!,
       throttlingTimeFormatted: props.preferences && props.preferences.micropaymentThrottlingHumanReadable ? props.preferences.micropaymentThrottlingHumanReadable : '-1ms',
       currencies: [],
-      currentCurrency: props.preferences!.currency
+      currentCurrency: props.preferences!.currency,
+      forgetConfirmation: false,
+      forgetButtonText: 'Forget account'
     }
     this.privateKeyHex = ''
   }
@@ -101,7 +105,7 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
             </select>
           </Form.Group>
           <p className={style.forgetAccount}>
-            <Button content="Forget account" primary={true} onClick={() => { this.handleForgetAccount() }}/>
+            <Button content={this.state.forgetButtonText} negative={this.state.forgetConfirmation} primary={!this.state.forgetConfirmation} onClick={() => { this.handleForgetAccount() }}/>
           </p>
         </Form>
         </Container>
@@ -139,10 +143,17 @@ export class Preferences extends React.Component<PreferencesProps & OwnPreferenc
   }
 
   handleForgetAccount () {
-    this.props.workerProxy!.clearReduxPersistentStorage()
-    this.props.clearTempState!()
-    this.props.workerProxy!.clearAccountInfo()
-    localStorage.setItem('mc_wallet_avatar', '')
+    if (this.state.forgetConfirmation !== true) {
+      this.setState({ ...this.state, forgetConfirmation: true, forgetButtonText: 'Click again to forget account' })
+      setTimeout(() => {
+        this.setState({ ...this.state, forgetConfirmation: false, forgetButtonText: 'Forget account' })
+      }, 4000)
+    } else {
+      this.props.workerProxy!.clearReduxPersistentStorage()
+      this.props.clearTempState!()
+      this.props.workerProxy!.clearAccountInfo()
+      localStorage.setItem('mc_wallet_avatar', '')
+    }
   }
 
   handleSavePrivateKeyToFile () {
