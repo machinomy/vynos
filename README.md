@@ -97,4 +97,4 @@ against each other malicious behaviour.
 
 ## Copyright Notice
 
-Vynos use icons from icons8.com
+Vynos use icons from [icons8](https://icons8.com)
