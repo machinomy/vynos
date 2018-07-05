@@ -59,6 +59,10 @@ Wallet instance provides the following API:
 * `wallet.listChannels(): Promise<Array<PaymentChannel>>` - list all the open channels,
 * `wallet.provider` - web3 provider.
 
+## Build configuration via environment variables
+
+`QR_TAB=true` - enable tab with QR-code (QR-encoded mnemonic) in Mnemonic dialog while creating new wallet. 
+
 # Development
 
 ## Prerequisites
