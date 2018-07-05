@@ -5,6 +5,7 @@ import WorkerProxy from '../../WorkerProxy'
 import { Container, Button, Form, Header, Divider, Tab } from 'semantic-ui-react'
 const style = require('../../styles/ynos.css')
 import * as qr from 'qr-image'
+import Logo from '../../components/Logo'
 
 export interface MnemonicStateProps {
   workerProxy?: WorkerProxy
@@ -16,6 +17,9 @@ export interface MnemonicProps extends MnemonicStateProps {
 }
 
 export class Mnemonic extends React.Component<MnemonicProps, {}> {
+  renderTabs: any
+  renderOnlySeedPhrase: any
+
   mnemonicTabPanes = [
     { menuItem: 'Words', render: () =>
         (
@@ -46,6 +50,42 @@ export class Mnemonic extends React.Component<MnemonicProps, {}> {
         )
     }]
 
+  constructor (props: MnemonicProps) {
+    super(props)
+
+    this.renderTabs = (
+      <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
+        <Form onSubmit={this.handleSubmit.bind(this)} className={style.mnemonicForm}>
+          <Tab menu={{ pointing: true }} panes={this.mnemonicTabPanes} className={style.mnemonicTabs} />
+          <Divider hidden={true}/>
+          <Button type="submit" content="Done" primary={true} className={style.buttonNav}/>
+        </Form>
+      </Container>
+    )
+
+    this.renderOnlySeedPhrase = (
+      <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
+        <Logo />
+        <Divider hidden={true} />
+        <Header as="h1" className={style.mnemonicHeader}>
+          Remember these words
+          <Header.Subheader>
+            Save them somewhere safe and secret. <br />
+            These restore the wallet.
+          </Header.Subheader>
+        </Header>
+        <Form onSubmit={this.handleSubmit.bind(this)} className={style.mnemonicForm}>
+          <Form.Field control="textarea" rows="3" value={this.props.mnemonic} readOnly={true} className={style.mnemonicTextarea} />
+          <Divider hidden={true} />
+          <Button type="submit" content="Done" primary={true} className={style.buttonNav} />
+          <p>
+            <a onClick={this.handleSaveToFile.bind(this)}>Save words to file</a>
+          </p>
+        </Form>
+      </Container>
+    )
+  }
+
   handleSubmit (ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     this.props.workerProxy!.didStoreMnemonic()
@@ -75,15 +115,7 @@ export class Mnemonic extends React.Component<MnemonicProps, {}> {
   }
 
   render () {
-    return (
-      <Container textAlign="center" className={`${style.flexContainer} ${style.clearBorder}`}>
-        <Form onSubmit={this.handleSubmit.bind(this)} className={style.mnemonicForm}>
-          <Tab menu={{ pointing: true }} panes={this.mnemonicTabPanes} className={style.mnemonicTabs} />
-          <Divider hidden={true}/>
-          <Button type="submit" content="Done" primary={true} className={style.buttonNav}/>
-        </Form>
-      </Container>
-    )
+    return process.env.QR_TAB ? this.renderTabs : this.renderOnlySeedPhrase
   }
 }
 

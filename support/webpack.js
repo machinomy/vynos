@@ -13,6 +13,7 @@ require('dotenv').config({ path: '.env' })
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const BACKGROUND_PORT = process.env.BACKGROUND_PORT || 9001
 const HARNESS_PORT = process.env.HARNESS_PORT || 9000
+const QR_TAB = !!process.env.QR_TAB
 
 const DIST_PATH = 'dist'
 const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg|mongodb|node\-pre\-gyp|db-migrate)).*$/
@@ -39,7 +40,8 @@ function definitions() {
   return {
     'process.env': {
       'NODE_ENV': JSON.stringify(NODE_ENV),
-      'EMBED_ADDRESS': JSON.stringify(embedAddress())
+      'EMBED_ADDRESS': JSON.stringify(embedAddress()),
+      'QR_TAB': QR_TAB
     },
     'global.XMLHttpRequest': global.XMLHttpRequest // FIXME 28.06.18 Still need this? Is it works in Firefox without it?
   }
