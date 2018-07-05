@@ -1,4 +1,4 @@
-import { PaymentChannel } from 'machinomy/dist/lib/PaymentChannel'
+import { PaymentChannel } from 'machinomy/lib/PaymentChannel'
 import * as Web3 from 'web3'
 import VynosBuyResponse from './VynosBuyResponse'
 import PurchaseMeta from './PurchaseMeta'
