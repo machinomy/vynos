@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import * as Web3 from 'web3'
 import { FrameState } from '../../redux/FrameState'
 import * as BigNumber from 'bignumber.js'
-import { Image } from 'semantic-ui-react'
-import BlockieComponent from '../../components/BlockieComponent'
 import Currency from '../../lib/Currency'
+import pify from '../../../lib/pify'
+import { IconGenerator } from '../IconGenerator'
 
 const style = require('../../styles/ynos.css')
 
@@ -37,26 +37,15 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
     }
   }
 
-  renderAvatar () {
-    if (localStorage.getItem('mc_wallet_avatar') && (localStorage.getItem('mc_wallet_avatar') as string).length > 0) {
-      return (
-        <div className={style.accountAvatar}>
-          <Image src={localStorage.getItem('mc_wallet_avatar') as string} />
-        </div>
-      )
-    } else {
-      return (
-        <BlockieComponent
-                classDiv={'ui mini avatar image'}
-                classCanvas={'ui mini avatar image'}
-                size={35}
-                scale={2}
-                seed={this.state.address ? this.state.address : ''}
-                onBlockieGenerated={(base64: string) => {
-                  localStorage.setItem('mc_wallet_avatar', base64)
-                }}
-        />
-      )
+  async componentWillMount () {
+    const accounts = await pify<string[]>((cb: (error: Error, accounts: string[]) => void) => {
+      this.props.web3!.eth.getAccounts(cb)
+    })
+
+    // tslint:disable-next-line:strict-type-predicates
+    if (accounts !== undefined) {
+      const address = accounts[0]
+      this.setState({ ...this.state, address: address })
     }
   }
 
@@ -121,7 +110,7 @@ export class WalletAccount extends React.Component<WalletAccountProps, WalletAcc
   render () {
     return (
       <div className={style.walletHeader} onClick={this.displayDetails.bind(this)}>
-        {this.renderAvatar()}
+        <IconGenerator id="walletAvatar" data={this.state.address || ''} size={51} />
         <div className={style.walletAccount}>
           <div className={style.walletAddress}>
             {this.state.address}
