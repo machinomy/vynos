@@ -1,6 +1,6 @@
 {
   "name": "vynos",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Micropayments powered by Ethereum",
   "keywords": [
     "micropayments",
@@ -96,7 +96,7 @@
     "jdenticon": "^2.1.0",
     "localforage": "^1.5.0",
     "localforage-observable": "^1.3.1",
-    "machinomy": "^1.10.1",
+    "machinomy": "^1.11.4",
     "moment": "^2.19.1",
     "mux-demux": "^3.7.9",
     "nedb": "^1.8.0",
