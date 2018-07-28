@@ -18,6 +18,13 @@ async function renderToMountPoint (mountPoint: HTMLElement, workerProxy: WorkerP
   const middleware = redux.applyMiddleware(createLogger(), routerMiddleware(history))
   let store: Store<FrameState> = redux.createStore(reducers(workerProxy), initialState(workerProxy), middleware)
 
+  if (module.hot) {
+    module.hot.accept('./redux/reducers', () => {
+      const nextRootReducer = require('./redux/reducers')
+      store.replaceReducer(nextRootReducer)
+    })
+  }
+
   const frameState = await workerProxy.getSharedState()
   let remoteStore = new RemoteStore(workerProxy, frameState)
   remoteStore.wireToLocal(store)
@@ -32,7 +39,7 @@ async function renderToMountPoint (mountPoint: HTMLElement, workerProxy: WorkerP
 
   reload()
 
-  let hotReload = (module as HotModule).hot
+  let hotReload = module.hot
   if (hotReload) {
     hotReload.accept('./vynos/frame/pages/RootContainer.tsx', () => {
       reload()
