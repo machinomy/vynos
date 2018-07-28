@@ -163,11 +163,11 @@ export default class MicropaymentsController {
         if (response.status >= 200 && response.status < 300) {
           resolve()
         } else {
-          reject('Unsuccessful response from gateway. Response status: ' + response.status)
+          reject(`Unsuccessful response from gateway ${gateway}. Response status: ${response.status}`)
         }
       }).catch(error => {
-        console.error('Gateway unavailable. Error: ' + error)
-        reject('Gateway unavailable. Error: ' + error)
+        console.error(`Gateway ${gateway} unavailable. Error: ${error}`)
+        reject(`Gateway ${gateway} unavailable. Error: ${error}`)
       })
     })
   }
