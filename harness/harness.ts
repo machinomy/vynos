@@ -11,7 +11,8 @@ import MockingVynos from './lib/MockingVynos'
 let _window = window as IWalletWindow
 
 let recentBuyResponse: VynosBuyResponse | null = null
-let gateway = 'http://127.0.0.1:3001/v1/accept'
+
+let gateway = `http://127.0.0.1:3030/payments/accept`
 
 function updateRecentVynosBuyResponse (buyResponse: VynosBuyResponse) {
   recentBuyResponse = buyResponse

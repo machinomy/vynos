@@ -16,7 +16,7 @@ const HARNESS_PORT = process.env.HARNESS_PORT || 9000
 const QR_TAB = !!process.env.QR_TAB
 
 const DIST_PATH = 'dist'
-const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg|mongodb|node\-pre\-gyp|db-migrate)).*$/
+const EXTERNALS_WHITELIST = /^(?!(require_optional|bindings|pg|mongodb|node\-pre\-gyp)).*$/
 
 function outputFilename() {
   return '[name].js'
