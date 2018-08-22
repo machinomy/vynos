@@ -199,7 +199,11 @@ module.exports.FRAME = bundle({ frame: resolve('vynos/frame.ts') }, config => {
     context: 'vynos/frame/styles/images/',
     from: '*',
     to: resolve(DIST_PATH) + '/frame/styles/images/'
-  }]))
+  }]), new CopyPlugin([{
+      context: 'vynos/',
+      from: 'index.d.ts',
+      to: resolve(DIST_PATH) + '/'
+    }]))
   return config
 })
 
