@@ -11,14 +11,16 @@ export class WalletBuyArguments {
   meta?: string
   purchaseMeta?: PurchaseMeta
   channelValue?: number
+  tokenContract?: string
 
-  constructor (receiver?: string, amount?: number, gateway?: string, meta?: string, purchaseMeta?: PurchaseMeta, channelValue?: number) {
+  constructor (receiver?: string, amount?: number, gateway?: string, meta?: string, purchaseMeta?: PurchaseMeta, channelValue?: number, tokenContract?: string) {
     this.receiver = receiver || undefined
     this.amount = amount || undefined
     this.gateway = gateway || undefined
     this.meta = meta || undefined
     this.purchaseMeta = purchaseMeta || undefined
     this.channelValue = channelValue || undefined
+    this.tokenContract = tokenContract || undefined
   }
 }
 
@@ -28,7 +30,7 @@ export default interface Vynos {
   depositToChannel: (ch: PaymentChannel) => Promise<PaymentChannel>
   closeChannel: (channelId: string) => Promise<void>
   listChannels: () => Promise<Array<PaymentChannel>>
-  buy: (receiver: string, amount: number, gateway: string, meta: string, purchaseMeta?: PurchaseMeta, channelValue?: number) => Promise<VynosBuyResponse>
-  buyPromised: (receiver: string, amount: number, gateway: string, meta: string, purchaseMeta?: PurchaseMeta, channelValue?: number) => PromisedWalletResponse
+  buy: (receiver: string, amount: number, gateway: string, meta: string, purchaseMeta?: PurchaseMeta, channelValue?: number, tokenContract?: string) => Promise<VynosBuyResponse>
+  buyPromised: (receiver: string, amount: number, gateway: string, meta: string, purchaseMeta?: PurchaseMeta, channelValue?: number, tokenContract?: string) => PromisedWalletResponse
   provider: Web3.Provider
 }

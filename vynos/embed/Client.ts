@@ -82,14 +82,14 @@ export default class Client implements Vynos {
     return this.provider.ask<CloseChannelRequest, any>(request)
   }
 
-  buy (receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number): Promise<VynosBuyResponse> {
+  buy (receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number, tokenContract?: string): Promise<VynosBuyResponse> {
     let _purchase = purchase || purchaseMetaFromDocument(document)
 
     let request: BuyRequest = {
       id: randomId(),
       method: BuyRequest.method,
       jsonrpc: JSONRPC,
-      params: [receiver, amount, gateway, meta, _purchase, channelValue ? channelValue : amount * 10]
+      params: [receiver, amount, gateway, meta, _purchase, channelValue ? channelValue : amount * 10, tokenContract ? tokenContract : '']
     }
     return this.provider.ask(request).then((response: BuyResponse) => {
       if (response.error) {
@@ -102,10 +102,10 @@ export default class Client implements Vynos {
     })
   }
 
-  buyPromised (receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number): PromisedWalletResponse {
+  buyPromised (receiver: string, amount: number, gateway: string, meta: string, purchase?: PurchaseMeta, channelValue?: number, tokenContract?: string): PromisedWalletResponse {
     let promiseBuyResponse = this.buy(receiver, amount, gateway, meta, purchase, channelValue)
     let _purchase = purchase || purchaseMetaFromDocument(document)
-    let walletBuyArgs: WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, _purchase, channelValue)
+    let walletBuyArgs: WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, _purchase, channelValue, tokenContract)
     return new PromisedWalletResponse(this, promiseBuyResponse, 'mc_wallet_buyProcessEvent', walletBuyArgs)
   }
 
