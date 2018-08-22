@@ -63,6 +63,5 @@ jspm_packages/
 .vscode
 .DS_Store
 
-**/*.d.ts
 **/*.js
 **/*.js.map
