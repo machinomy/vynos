@@ -172,6 +172,63 @@ window.addEventListener('load', function () {
     }
   }
 
+  let openChannelTokensForm = document.getElementById('open_channel_tokens')
+  if (openChannelTokensForm) {
+    openChannelTokensForm.onsubmit = function (ev: Event) {
+      ev.preventDefault()
+      vynos.ready().then((wallet) => {
+        let web3 = new Web3(wallet.provider)
+
+        let tokenContractAddress = ''
+        let tokenContractAddressInput = document.getElementById('token_contract_address')
+        if (tokenContractAddressInput) {
+          tokenContractAddress = (tokenContractAddressInput as HTMLInputElement).value
+        }
+
+        let tokenReceiverAddress = ''
+        let tokenReceiverAddressInput = document.getElementById('token_receiver_address')
+        if (tokenReceiverAddressInput) {
+          tokenReceiverAddress = (tokenReceiverAddressInput as HTMLInputElement).value
+        }
+        console.log(`tokenContractAddress = ${tokenContractAddress}`)
+        console.log(`tokenReceiverAddress = ${tokenReceiverAddress}`)
+        let amount = 5
+        let resultSpan = document.getElementById('open_channel_id_tokens')
+        if (resultSpan) {
+          resultSpan.textContent = 'Loading...'
+        }
+        wallet.buyPromised(tokenReceiverAddress!, amount, gateway, Date.now().toString(), undefined, undefined, tokenContractAddress)
+          .on(BuyProcessEvent.SENT_PAYMENT, (args: WalletBuyArguments) => {
+            console.log('on BuyProcessEvent.SENT_PAYMENT')
+          }).on(BuyProcessEvent.RECEIVED_TOKEN, (args: WalletBuyArguments, token: string) => {
+          console.log('on BuyProcessEvent.RECEIVED_TOKEN. Token is ' + token)
+        }).on(BuyProcessEvent.OPENING_CHANNEL_FINISHED, (args: WalletBuyArguments, channel: ChannelMeta) => {
+          console.log('on BuyProcessEvent.OPENING_CHANNEL_FINISHED. Channel meta is ')
+          console.log(channel)
+        }).result.then((buyResponse: VynosBuyResponse) => {
+          console.log(buyResponse)
+          recentBuyResponse = buyResponse
+          let channelCode = document.getElementById('payment-channel-code-tokens')
+          let tokenCode = document.getElementById('payment-token-code-tokens')
+          if (channelCode) {
+            channelCode.textContent = 'channelId: ' + JSON.stringify(buyResponse.channelId)
+          }
+          if (tokenCode) {
+            tokenCode.textContent = 'token: ' + JSON.stringify(buyResponse.token)
+          }
+          let resultSpan = document.getElementById('open_channel_id_tokens')
+          if (resultSpan) {
+            resultSpan.textContent = recentBuyResponse!.channelId
+          }
+        }).catch((error: Error) => {
+          if (error) {
+            console.dir(error)
+          }
+        })
+      })
+    }
+  }
+
   let closeChannelForm = document.getElementById('close_channel')
   if (closeChannelForm) {
     closeChannelForm.onsubmit = function (ev: Event) {
