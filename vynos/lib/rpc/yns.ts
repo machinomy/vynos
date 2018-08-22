@@ -253,7 +253,7 @@ export class BuyRequest implements RequestPayload {
   id: number
   jsonrpc: typeof JSONRPC
   method: typeof BuyRequest.method
-  params: [string, number, string, string, PurchaseMeta, number]
+  params: [string, number, string, string, PurchaseMeta, number, string]
 
   constructor () {
     this.id = -1
@@ -266,7 +266,7 @@ export class BuyRequest implements RequestPayload {
         siteName: '',
         url: '',
         origin: ''
-      }, -1]
+      }, -1, '']
   }
 
   static match (payload: RequestPayload): payload is BuyRequest {

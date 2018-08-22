@@ -81,7 +81,7 @@ export default class MicropaymentsController {
     })
   }
 
-  buy (receiver: string, amount: number, gateway: string, meta: string, purchaseMeta: PurchaseMeta, channelValue?: number): Promise<VynosBuyResponse> {
+  buy (receiver: string, amount: number, gateway: string, meta: string, purchaseMeta: PurchaseMeta, channelValue?: number, tokenContract?: string): Promise<VynosBuyResponse> {
     return this.checkGateway(gateway).then(() => {
       return new Promise<VynosBuyResponse>((resolve, reject) => {
         this.background.awaitUnlock(async () => {
@@ -89,7 +89,7 @@ export default class MicropaymentsController {
           let sharedState = await this.background.getSharedState()
           await this.approve(sharedState, transaction, async () => {
             try {
-              let walletBuyArguments: WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, purchaseMeta, channelValue)
+              let walletBuyArguments: WalletBuyArguments = new WalletBuyArguments(receiver, amount, gateway, meta, purchaseMeta, channelValue, tokenContract)
               let accounts = await this.background.getAccounts()
               let account = accounts[0]
               let options: any
@@ -103,7 +103,8 @@ export default class MicropaymentsController {
                 receiver: receiver,
                 price: amount,
                 gateway: gateway,
-                meta: meta
+                meta: meta,
+                tokenContract: tokenContract
               })
               bus.emit(BuyProcessEvent.SENT_PAYMENT, walletBuyArguments)
               bus.emit(BuyProcessEvent.RECEIVED_TOKEN, walletBuyArguments, response.token)
