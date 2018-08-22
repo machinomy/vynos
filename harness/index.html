@@ -25,7 +25,7 @@
                 <p>
                     <p>Account Address: <span id="account_address">Loading...</span></p>
                 </p>
-
+                <h4>Open channel for eth</h4>
                 <div>
                     <form id="open_channel">
                         <p>Receiver Address: <input type="text" id="receiver_address" value="0x363dfeAfB265A1e98403A7613A3325Ec00FaF222"/></p>
@@ -38,6 +38,24 @@
                         </p>
                     </form>
                 </div>
+              <h4>Open channel for tokens</h4>
+              <span>(You can use Rinkeby network (<a href="https://rinkeby.etherscan.io/address/0xf4222acef04d86f7304b8364734f22c00108d0cd">rinkeby.etherscan.io</a>) for pre-deployed token contract) with</span><br/>
+              <span>Sender account is <code>0xf4222acef04d86f7304b8364734f22c00108d0cd</code></span><br/>
+              <span>Sender mnemonic is <code>peanut giggle name tree canoe tube render ketchup survey segment army will</code></span><br/>
+              <span>Token contract address is <code>0x4966f0cfd7ca6961b9dd75e2ef237547a307ac51</code></span><br/>
+              <div>
+                <form id="open_channel_tokens">
+                  <p>Token contract address: <input type="text" id="token_contract_address" value="0x4966f0cfd7ca6961b9dd75e2ef237547a307ac51"/></p>
+                  <p>Receiver address: <input type="text" id="token_receiver_address" value="0xfaafc4b9a532c0e95c70b766bf5fb58e16b547d9"/></p>
+                  <p><button type="submit">Open Channel for 50 tokens, deposit 5 tokens</button></p>
+                  <p>Channel id: <span id="open_channel_id_tokens">n/a</span></p>
+                  <p>
+                    Vynos Buy Response:
+                  <pre><code id="payment-channel-code-tokens">N/A</code></pre>
+                  <pre><code id="payment-token-code-tokens">N/A</code></pre>
+                  </p>
+                </form>
+              </div>
 
                 <div>
                     <form id="close_channel">
@@ -79,7 +97,7 @@
                   <p><button type="submit">Do damage</button></p>
                 </form>
               </div>
-            </div>
+              <hr />
         </div>
     </div>
 </body>
