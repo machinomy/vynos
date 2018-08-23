@@ -19,7 +19,7 @@ export function ethereum (id: string, to: string, amount: number, fee: number): 
   }
 }
 
-export function micropayment (purchaseMeta: PurchaseMeta, receiver: string, amount: number): Transaction {
+export function micropayment (purchaseMeta: PurchaseMeta, receiver: string, amount: number, tokenContract?: string): Transaction {
   return {
     id: randomId().toString(),
     origin: purchaseMeta.origin,
@@ -28,6 +28,7 @@ export function micropayment (purchaseMeta: PurchaseMeta, receiver: string, amou
     icon: purchaseMeta.icon,
     time: Date.now(),
     amount: amount,
+    tokenContract: tokenContract ? tokenContract : '',
     fee: 0,
     kind: TransactionKind.MICROPAYMENT,
     state: TransactionState.APPROVED

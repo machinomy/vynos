@@ -20,7 +20,7 @@ import * as events from '../../lib/events'
 import { BuyProcessEvent } from '../../lib/rpc/buyProcessEventBroadcast'
 import { WalletBuyArguments } from '../../lib/Vynos'
 import { CHANGE_NETWORK_FOR_MICROPAYMENT_CONTROLLER } from '../../lib/constants'
-import { resource } from '../../lib/helpers'
+import { resource, isTokenContractDefined } from '../../lib/helpers'
 
 const timeparse = require('timeparse')
 
@@ -85,7 +85,7 @@ export default class MicropaymentsController {
     return this.checkGateway(gateway).then(() => {
       return new Promise<VynosBuyResponse>((resolve, reject) => {
         this.background.awaitUnlock(async () => {
-          let transaction = transactions.micropayment(purchaseMeta, receiver, amount)
+          let transaction = transactions.micropayment(purchaseMeta, receiver, amount, tokenContract)
           let sharedState = await this.background.getSharedState()
           await this.approve(sharedState, transaction, async () => {
             try {
@@ -186,7 +186,7 @@ export default class MicropaymentsController {
       throttlingInMs = timeparse(sharedState.preferences.micropaymentThrottlingHumanReadable)
     }
 
-    if (transaction.amount > sharedState.preferences.micropaymentThreshold || interval < throttlingInMs) {
+    if ((transaction.amount > sharedState.preferences.micropaymentThreshold || interval < throttlingInMs) && !isTokenContractDefined(transaction.tokenContract)) {
       transaction.state = TransactionState.PENDING
       await this.transactions.addTransaction(transaction)
       await this.transactions.store.dispatch(actions.setTransactionPending(true))
