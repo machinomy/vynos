@@ -38,6 +38,32 @@
                         </p>
                     </form>
                 </div>
+                <div>
+                  <form id="close_channel">
+                    <p><button type="submit">Start settle channel</button></p>
+                  </form>
+                </div>
+
+                <div>
+                  <form id="pay_in_channel">
+                    <p>Amount: <input type="text" id="payment-amount" /> Eth</p>
+                    <p><button type="submit">Generate payment</button></p>
+                    <p>
+                      Payment:
+                    <pre><code id="payment-code">N/A</code></pre>
+                    </p>
+                  </form>
+                </div>
+
+                <hr />
+
+                <div>
+                  <form id="finish_settle">
+                    <p><button type="submit">Finish settle channel</button></p>
+                  </form>
+                </div>
+
+              <hr />
               <h4>Open channel for tokens</h4>
               <span>(You can use Rinkeby network (<a href="https://rinkeby.etherscan.io/address/0xf4222acef04d86f7304b8364734f22c00108d0cd">rinkeby.etherscan.io</a>) for pre-deployed token contract) with</span><br/>
               <span>Sender account is <code>0xf4222acef04d86f7304b8364734f22c00108d0cd</code></span><br/>
@@ -56,33 +82,6 @@
                   </p>
                 </form>
               </div>
-
-                <div>
-                    <form id="close_channel">
-                        <p><button type="submit">Start settle channel</button></p>
-                    </form>
-                </div>
-
-                <div>
-                    <form id="pay_in_channel">
-                        <p>Amount: <input type="text" id="payment-amount" /> Eth</p>
-                        <p><button type="submit">Generate payment</button></p>
-                        <p>
-                            Payment:
-                            <pre><code id="payment-code">N/A</code></pre>
-                        </p>
-                    </form>
-                </div>
-
-                <hr />
-
-                <div>
-                    <form id="finish_settle">
-                        <p><button type="submit">Finish settle channel</button></p>
-                    </form>
-                </div>
-
-              <hr />
               <h4>Sign message</h4>
               <div>
                 <form id="sign_message_form">
