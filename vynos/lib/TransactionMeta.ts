@@ -15,4 +15,5 @@ export default interface TransactionMeta {
   data?: string
   from?: string
   to?: string
+  tokenContract?: string
 }
